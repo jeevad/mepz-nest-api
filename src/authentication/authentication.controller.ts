@@ -7,29 +7,43 @@ import {
   UseGuards,
   Get,
   UseInterceptors,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
-import RegisterDto from './dto/register.dto';
 import RequestWithUser from './requestWithUser.interface';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
 import MongooseClassSerializerInterceptor from '../utils/mongooseClassSerializer.interceptor';
 import { User } from 'src/schemas/user.schema';
+import { RegisterDto } from './dto/register.dto';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { classToPlain } from 'class-transformer';
 
 @Controller('authentication')
 @UseInterceptors(MongooseClassSerializerInterceptor(User))
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(private readonly authenticationService: AuthenticationService) { }
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
     return this.authenticationService.register(registrationData);
   }
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthenticationGuard)
-  @Post('log-in')
+  @Post('login')
   async logIn(@Req() request: RequestWithUser) {
+    const { user } = request;
+    console.log(user);
+    const access_token = this.authenticationService.getJwtToken(user._id);
+    return { access_token };
+    // return new UserEntity(classToPlain(user));
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(LocalAuthenticationGuard)
+  @Post('login-cookie')
+  async logInCookie(@Req() request: RequestWithUser) {
     const { user } = request;
     const cookie = this.authenticationService.getCookieWithJwtToken(user._id);
     request.res?.setHeader('Set-Cookie', cookie);
@@ -37,8 +51,8 @@ export class AuthenticationController {
   }
 
   @UseGuards(JwtAuthenticationGuard)
-  @Post('log-out')
-  @HttpCode(200)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
   async logOut(@Req() request: RequestWithUser) {
     request.res?.setHeader(
       'Set-Cookie',

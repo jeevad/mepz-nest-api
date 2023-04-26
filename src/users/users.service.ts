@@ -16,12 +16,13 @@ export class UsersService {
   ) {}
 
   async getByEmail(email: string) {
-    const user = await this.userModel.findOne({ email }).populate({
-      path: 'posts',
-      populate: {
-        path: 'categories',
-      },
-    });
+    const user = await this.userModel.findOne({ email });
+    // .populate({
+    //   path: 'posts',
+    //   populate: {
+    //     path: 'categories',
+    //   },
+    // });
 
     if (!user) {
       throw new NotFoundException();
@@ -31,12 +32,13 @@ export class UsersService {
   }
 
   async getById(id: string) {
-    const user = await this.userModel.findById(id).populate({
-      path: 'posts',
-      populate: {
-        path: 'categories',
-      },
-    });
+    const user = await this.userModel.findById(id);
+    // .populate({
+    //   path: 'posts',
+    //   populate: {
+    //     path: 'categories',
+    //   },
+    // });
 
     if (!user) {
       throw new NotFoundException();
@@ -65,7 +67,7 @@ export class UsersService {
     try {
       const user = await this.userModel
         .findByIdAndDelete(userId)
-        .populate('posts')
+        // .populate('posts')
         .session(session);
 
       if (!user) {

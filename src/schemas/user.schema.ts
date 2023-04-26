@@ -61,10 +61,10 @@ UserSchema.virtual('fullName').get(function (this: User) {
   return `${this.firstName} ${this.lastName}`;
 });
 
-UserSchema.virtual('posts', {
-  ref: 'Post',
-  localField: '_id',
-  foreignField: 'author',
-});
+// UserSchema.virtual('posts', {
+//   ref: 'Post',
+//   localField: '_id',
+//   foreignField: 'author',
+// });
 
 export { UserSchema };

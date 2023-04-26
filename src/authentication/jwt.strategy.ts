@@ -15,11 +15,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.Authentication;
+          // return request?.cookies?.Authentication;
+          return this.extractTokenFromHeader(request);
         },
       ]),
       secretOrKey: configService.get('JWT_SECRET'),
     });
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 
   async validate(payload: TokenPayload) {
