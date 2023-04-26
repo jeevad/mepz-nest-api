@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { PaginationParams } from 'src/utils/paginationParams';
 
 @Controller('company')
 export class CompanyController {
@@ -21,9 +23,18 @@ export class CompanyController {
   }
 
   @Get()
-  findAll() {
-    return this.companyService.findAll();
+  async findAll(
+    @Query() { skip, limit, startId }: PaginationParams,
+    // @Query('searchQuery') searchQuery?: string,
+  ) {
+    const searchQuery = '';
+    return this.companyService.findAll(skip, limit, startId, searchQuery);
   }
+
+  // @Get()
+  // findAll() {
+  //   return this.companyService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
