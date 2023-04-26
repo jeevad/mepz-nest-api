@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CompanyModule } from './master-file/company/company.module';
 import { DepartmentModule } from './master-file/department/department.module';
 import { UsersModule } from './users/users.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from './users/users.module';
       // useCreateIndex: true,
     }),
     UsersModule,
+    AuthenticationModule,
     CompanyModule,
     DepartmentModule,
   ],
