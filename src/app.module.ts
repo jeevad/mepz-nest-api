@@ -7,7 +7,18 @@ import { CompanyModule } from './master-file/company/company.module';
 import { DepartmentModule } from './master-file/department/department.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-
+import { RoomsModule } from './master-file/rooms/rooms.module';
+import { GroupModule } from './master-file/group/group.module';
+import { UtilityModule } from './master-file/utility/utility.module';
+import { PackageModule } from './master-file/package/package.module';
+import { ClassificationModule } from './master-file/classification/classification.module';
+import { CurrencyModule } from './master-file/currency/currency.module';
+import { EquipmentModule } from './master-file/equipment/equipment.module';
+import { ProjecttemplateModule } from './projecttemplate/projecttemplate.module';
+import { ProjectModule } from './project/project.module';
+import { AdmingroupModule } from './admingroup/admingroup.module';
+import { UsermodelModule } from './usermodel/usermodel.module';
+import { RegistermodelModule } from './registermodel/registermodel.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -19,8 +30,20 @@ import { AuthenticationModule } from './authentication/authentication.module';
     UsersModule,
     AuthenticationModule,
     CompanyModule,
+    RoomsModule,
+    GroupModule,
     DepartmentModule,
-  ],
+    UtilityModule,
+    PackageModule,
+    ClassificationModule,
+    CurrencyModule,
+    EquipmentModule,
+    ProjectModule,
+    ProjecttemplateModule,
+    AdmingroupModule,
+    UsermodelModule,
+    RegistermodelModule
+   ],
   controllers: [AppController],
   providers: [AppService],
 })
