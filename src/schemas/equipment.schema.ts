@@ -14,10 +14,10 @@ export class Equipment {
   equipmentName: string;
 
   @Prop({ required: true })
-  cost: string;
+  cost: number;
 
   @Prop({ required: true })
-  markUp: string;
+  markUp: number;
 
   @Prop({ required: true })
   heatDissipation: string;

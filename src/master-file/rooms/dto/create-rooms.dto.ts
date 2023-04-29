@@ -9,13 +9,13 @@ import {
 
 export class CreateRoomsDto {
   @ApiProperty({
-    type: Number,
+    type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  roomcode: number;
+  roomcode: string;
 
   @ApiProperty({
     type: String,

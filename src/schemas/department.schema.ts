@@ -8,7 +8,7 @@ export type DepartmentDocument = Department & Document;
 })
 export class Department {
   @Prop({ required: true })
-  departmentcode: number;
+  departmentcode: string;
 
   @Prop({ required: true })
   departmentname: string;

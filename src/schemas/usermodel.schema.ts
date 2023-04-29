@@ -11,13 +11,13 @@ export class Usermodel {
   username: string;
 
   @Prop({ required: true })
-  staffid: string;
+  staffid: number;
 
   @Prop({ required: true })
-  admin: string;
+  admin: boolean;
 
   @Prop({ required: true })
-  active: string;
+  active: boolean;
 
   @Prop({ required: true })
   valid: string;

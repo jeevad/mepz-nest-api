@@ -27,22 +27,22 @@ export class CreateEquipmentDto {
   equipmentName: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  cost: string;
+  cost: number;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  markUp: string;
+  markUp: number;
 
   @ApiProperty({
     type: String,

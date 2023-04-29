@@ -1,5 +1,5 @@
 export class Department {
-  departmentcode: number;
+  departmentcode: string;
   departmentname: string;
   active: string;
   created: Date;
