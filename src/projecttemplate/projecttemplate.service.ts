@@ -6,7 +6,7 @@ import { Model, FilterQuery } from 'mongoose';
 import {
   Projecttemplate,
   ProjecttemplateDocument,
-} from 'src/schemas/Projecttemplate.schema';
+} from '../schemas/Projecttemplate.schema';
 
 @Injectable()
 export class ProjecttemplateService {
