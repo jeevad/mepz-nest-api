@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {
   Projecttemplate,
   ProjecttemplateSchema,
-} from 'src/schemas/projecttemplate.schema';
+} from '../schemas/projecttemplate.schema';
 
 @Module({
   imports: [
