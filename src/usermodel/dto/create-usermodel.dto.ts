@@ -18,31 +18,31 @@ export class CreateUsermodelDto {
   username: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  staffid: string;
+  staffid: number;
 
   @ApiProperty({
-    type: String,
+    type: Boolean,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  admin: string;
+  admin: boolean;
 
   @ApiProperty({
-    type: String,
+    type: Boolean,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  active: string;
+  active: boolean;
 
   @ApiProperty({
     type: String,

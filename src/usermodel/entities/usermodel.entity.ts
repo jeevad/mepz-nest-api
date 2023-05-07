@@ -1,8 +1,8 @@
 export class Usermodel {
   username: string;
-  staffid: string;
-  admin: string;
-  active: string;
+  staffid: number;
+  admin: boolean;
+  active: boolean;
   valid: string;
   remarks: string;
   password: string;

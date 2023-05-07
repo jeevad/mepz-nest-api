@@ -19,6 +19,11 @@ import { ProjectModule } from './project/project.module';
 import { AdmingroupModule } from './admingroup/admingroup.module';
 import { UsermodelModule } from './usermodel/usermodel.module';
 import { RegistermodelModule } from './registermodel/registermodel.module';
+import { EquipmentBrandModule } from './master-file/equipment-brand/equipment-brand.module';
+import { EquipmentAllocationModule } from './equipment-allocation/equipment-allocation.module';
+import { EquipmentSummaryModule } from './equipment-summary/equipment-summary.module';
+import { CurrentTransactionModule } from './current-transaction/current-transaction.module';
+import { PastTransactionModule } from './past-transaction/past-transaction.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -42,7 +47,12 @@ import { RegistermodelModule } from './registermodel/registermodel.module';
     ProjecttemplateModule,
     AdmingroupModule,
     UsermodelModule,
-    RegistermodelModule
+    RegistermodelModule,
+    EquipmentBrandModule,
+    EquipmentAllocationModule,
+    EquipmentSummaryModule,
+    CurrentTransactionModule,
+    PastTransactionModule
    ],
   controllers: [AppController],
   providers: [AppService],

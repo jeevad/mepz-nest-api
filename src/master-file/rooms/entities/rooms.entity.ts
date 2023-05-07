@@ -1,5 +1,5 @@
 export class Rooms {
-  roomcode: number;
+  roomcode: string;
   roomname: string;
   active: string;
   created: Date;

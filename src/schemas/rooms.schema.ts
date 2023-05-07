@@ -8,7 +8,7 @@ export type RoomsDocument = Rooms & Document;
 })
 export class Rooms {
   @Prop({ required: true })
-  roomcode: number;
+  roomcode: string;
 
   @Prop({ required: true })
   roomname: string;

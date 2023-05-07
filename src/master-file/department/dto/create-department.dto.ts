@@ -9,13 +9,13 @@ import {
 
 export class CreateDepartmentDto {
   @ApiProperty({
-    type: Number,
+    type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  departmentcode: number;
+  departmentcode: string;
 
   @ApiProperty({
     type: String,

@@ -45,22 +45,22 @@ export class CreateProjectDto {
   clientOwner: string;
 
    @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  contractNo: string;
+  contractNo: number;
 
    @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  noofBeds: string;
+  noofBeds: number;
 
    @ApiProperty({
     type: String,

@@ -18,13 +18,13 @@ export class CreateProjecttemplateDto {
   name: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  noofbeds: string;
+  noofbeds: number;
 
   @ApiProperty({
     type: String,
