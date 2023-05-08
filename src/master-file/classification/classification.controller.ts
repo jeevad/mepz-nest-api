@@ -36,11 +36,15 @@ export class ClassificationController {
   @Get()
   @ApiOperation({ summary: 'get all Classifications' })
   async findAll(
-    @Query() { skip, limit, startId }: PaginationParams,
-  ) // @Query('searchQuery') searchQuery?: string,
-
-  {
-    return this.classificationService.findAll();
+    @Query() { skip, limit, startId }: PaginationParams, // @Query('searchQuery') searchQuery?: string,
+  ) {
+    const searchQuery = '';
+    return this.classificationService.findAll(
+      skip,
+      limit,
+      startId,
+      searchQuery,
+    );
   }
 
   @Get(':id')

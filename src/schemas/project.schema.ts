@@ -20,10 +20,10 @@ export class Project {
   clientOwner: string;
 
   @Prop({ required: true })
-  contractNo: number;
+  contractNo: string;
 
   @Prop({ required: true })
-  noofBeds: number;
+  noofBeds: string;
 
   @Prop({ required: true })
   classification: string;

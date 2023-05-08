@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type RoomsDocument = Rooms & Document;
 
 @Schema({
-  timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  // timestamps: { createdAt: 'created', updatedAt: 'updated' },
 })
 export class Rooms {
   @Prop({ required: true })

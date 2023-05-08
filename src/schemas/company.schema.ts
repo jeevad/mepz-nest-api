@@ -53,7 +53,7 @@ export class Company {
   show3: boolean;
 
   @Prop({ required: true })
-  contact: string;
+  contact: number;
 
   @Prop({ required: true })
   phone: number;

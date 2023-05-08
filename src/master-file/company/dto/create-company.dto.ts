@@ -156,14 +156,14 @@ export class CreateCompanyDto {
   show3: boolean;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
   // @MinLength(5)
   // @MaxLength(300)
-  contact: string;
+  contact: number;
 
   @ApiProperty({
     type: Number,

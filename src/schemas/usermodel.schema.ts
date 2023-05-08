@@ -23,6 +23,9 @@ export class Usermodel {
   valid: string;
 
   @Prop({ required: true })
+  group: string;
+
+  @Prop({ required: true })
   remarks: string;
 
   @Prop({ required: true })

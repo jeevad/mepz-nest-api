@@ -3,8 +3,8 @@ export class Project {
   projectname: string;
   fullProjectName: string;
   clientOwner: string;
-  contractNo: number;
-  noofBeds: number;
+  contractNo: string;
+  noofBeds: string;
   classification: string;
   projecttype: string;
   company: string;

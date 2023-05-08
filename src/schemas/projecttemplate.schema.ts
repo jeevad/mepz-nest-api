@@ -11,7 +11,7 @@ export class Projecttemplate {
   name: string;
 
   @Prop({ required: true })
-  noofbeds: string;
+  noofbeds: number;
 
   @Prop({ required: true })
   classification: string;

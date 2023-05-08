@@ -14,7 +14,7 @@ export class Company {
   show2: boolean;
   logo3: string;
   show3: boolean;
-  contact: string;
+  contact: number;
   phone: number;
   mobile: number;
   fax: string;

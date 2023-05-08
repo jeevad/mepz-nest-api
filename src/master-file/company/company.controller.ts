@@ -25,7 +25,7 @@ import {
 @Controller('company')
 @ApiTags('Company')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) { }
+  constructor(private readonly companyService: CompanyService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create Company' })
@@ -36,8 +36,7 @@ export class CompanyController {
   @Get()
   @ApiOperation({ summary: 'get all Company' })
   async findAll(
-    @Query() { skip, limit, startId }: PaginationParams,
-    // @Query('searchQuery') searchQuery?: string,
+    @Query() { skip, limit, startId }: PaginationParams, // @Query('searchQuery') searchQuery?: string,
   ) {
     const searchQuery = '';
     return this.companyService.findAll(skip, limit, startId, searchQuery);

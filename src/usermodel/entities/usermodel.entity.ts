@@ -3,6 +3,7 @@ export class Usermodel {
   staffid: number;
   admin: boolean;
   active: boolean;
+  group: string;
   valid: string;
   remarks: string;
   password: string;
