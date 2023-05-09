@@ -1,6 +1,6 @@
 export class Projecttemplate {
   name: string;
-  noofbeds: number;
+  noofbeds: string;
   classification: string;
   projecttype: string;
   remarks: string;

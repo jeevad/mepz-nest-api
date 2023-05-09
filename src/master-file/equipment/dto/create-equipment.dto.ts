@@ -33,7 +33,7 @@ export class CreateEquipmentDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  cost: number;
+  cost: string;
 
   @ApiProperty({
     type: Number,
@@ -42,7 +42,7 @@ export class CreateEquipmentDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  markUp: number;
+  markUp: string;
 
   @ApiProperty({
     type: String,

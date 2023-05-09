@@ -2,8 +2,8 @@ export class Equipment {
   equipmentCode: string;
   equipmentName: string;
   packagename: string;
-  cost: number;
-  markUp: number;
+  cost: string;
+  markUp: string;
   heatDissipation: string;
   ictPort: string;
   bssPort: string;
