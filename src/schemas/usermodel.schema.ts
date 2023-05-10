@@ -14,16 +14,16 @@ export class Usermodel {
   staffid: number;
 
   @Prop({ required: true })
-  admin: boolean;
+  admin: string;
 
   @Prop({ required: true })
-  active: boolean;
-
-  @Prop({ required: true })
-  valid: string;
+  active: string;
 
   @Prop({ required: true })
   group: string;
+
+  @Prop({ required: true })
+  valid: string;
 
   @Prop({ required: true })
   remarks: string;
