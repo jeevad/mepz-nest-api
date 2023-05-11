@@ -1,9 +1,17 @@
 import { Exclude } from 'class-transformer';
+import { ObjectId } from 'mongoose';
 
 export class UserEntity {
-  id: number;
-  firstName: string;
-  lastName: string;
+  _id: ObjectId;
+  username: string;
+  staffid: number;
+  admin: boolean;
+  active: boolean;
+  group: string;
+  valid: string;
+  remarks: string;
+  createdAt: Date;
+  updatedAt: Date;
 
   @Exclude()
   password: string;

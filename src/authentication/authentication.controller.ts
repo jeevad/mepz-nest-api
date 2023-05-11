@@ -24,10 +24,10 @@ import { classToPlain } from 'class-transformer';
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) { }
 
-  @Post('register')
-  async register(@Body() registrationData: RegisterDto) {
-    return this.authenticationService.register(registrationData);
-  }
+  // @Post('register')
+  // async register(@Body() registrationData: RegisterDto) {
+  //   return this.authenticationService.register(registrationData);
+  // }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthenticationGuard)
