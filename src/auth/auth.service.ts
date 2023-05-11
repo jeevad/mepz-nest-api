@@ -24,14 +24,12 @@ export class AuthService {
       const user = await this.usersService.getByUsername(username);
 
       await this.verifyPassword(plainTextPassword, user.password);
-      const payload = { username: user.username, sub: user._id };
-      const userData = user.toJSON();
-      delete userData.password;
+      const payload = { username: user.username, id: user._id };
+
       return {
-        userData,
+        user: new UserEntity(user.toJSON()),
         access_token: await this.jwtService.signAsync(payload),
       };
-      return user;
     } catch (error) {
       throw new BadRequestException(error?.response?.message);
     }

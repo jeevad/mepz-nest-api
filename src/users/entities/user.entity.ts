@@ -2,7 +2,7 @@ import { Exclude } from 'class-transformer';
 import { ObjectId } from 'mongoose';
 
 export class UserEntity {
-  _id: ObjectId;
+  _id: string;
   username: string;
   staffid: number;
   admin: boolean;

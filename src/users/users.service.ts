@@ -10,17 +10,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import mongoose, { FilterQuery, Model } from 'mongoose';
-import MongoError from '../utils/mongoError.enum';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    // private readonly postsService: PostsService,
     @InjectConnection() private readonly connection: mongoose.Connection,
-  ) { }
+  ) {}
 
   async getByEmail(email: string): Promise<UserDocument | undefined> {
     const user = await this.userModel.findOne({ email });
@@ -52,15 +49,9 @@ export class UsersService {
 
   async getById(id: string) {
     const user = await this.userModel.findById(id);
-    // .populate({
-    //   path: 'posts',
-    //   populate: {
-    //     path: 'categories',
-    //   },
-    // });
 
     if (!user) {
-      throw new NotFoundException();
+      throw new NotFoundException('User not exists');
     }
 
     return user;
