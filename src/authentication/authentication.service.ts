@@ -18,10 +18,10 @@ export class AuthenticationService {
   public async register(registrationData: RegisterDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
-      return await this.usersService.create({
-        ...registrationData,
-        password: hashedPassword,
-      });
+      // return await this.usersService.create({
+      //   ...registrationData,
+      //   password: hashedPassword,
+      // });
     } catch (error) {
       if (error?.code === MongoError.DuplicateKey) {
         throw new HttpException(

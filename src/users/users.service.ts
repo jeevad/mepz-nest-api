@@ -1,28 +1,44 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
-import mongoose, { Model } from 'mongoose';
-
+import mongoose, { FilterQuery, Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    // private readonly postsService: PostsService,
     @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
-  async getByEmail(email: string) {
+  async getByEmail(email: string): Promise<UserDocument | undefined> {
     const user = await this.userModel.findOne({ email });
-    // .populate({
-    //   path: 'posts',
-    //   populate: {
-    //     path: 'categories',
-    //   },
-    // });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
+  }
+
+  async getByUsername(username: string) {
+    const user = await this.userModel.findOne({ username });
+    if (!user) {
+      throw new NotFoundException('User not exists');
+    }
+    return user;
+  }
+
+  async findOne(id: string): Promise<UserDocument | undefined> {
+    const user = await this.userModel.findById(id);
 
     if (!user) {
       throw new NotFoundException();
@@ -33,21 +49,15 @@ export class UsersService {
 
   async getById(id: string) {
     const user = await this.userModel.findById(id);
-    // .populate({
-    //   path: 'posts',
-    //   populate: {
-    //     path: 'categories',
-    //   },
-    // });
 
     if (!user) {
-      throw new NotFoundException();
+      throw new NotFoundException('User not exists');
     }
 
     return user;
   }
 
-  async create(userData: CreateUserDto) {
+  async create_bkp(userData: CreateUserDto) {
     const createdUser = new this.userModel(userData);
     // await createdUser
     //   .populate({
@@ -58,6 +68,40 @@ export class UsersService {
     //   })
     //   .execPopulate();
     return createdUser.save();
+  }
+
+  public async create(userData: CreateUserDto) {
+    // confirm password
+    if (userData.password !== userData.reEnterPassword) {
+      throw new BadRequestException(
+        'Password and Re-Enter Password not matched',
+      );
+    }
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    await this.checkUnique({ username: userData.username }, 'username'); //check unique username
+    await this.checkUnique({ staffid: userData.staffid }, 'staffid'); //check unique staffid
+
+    try {
+      return await this.userModel.create({
+        ...userData,
+        password: hashedPassword,
+      });
+    } catch (error) {
+      if (error?.response) {
+        throw new HttpException(error?.response, error?.status);
+      }
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async checkUnique(userData, field) {
+    const isUnique = await this.userModel.findOne(userData);
+    if (isUnique) {
+      throw new BadRequestException(`User with ${field} already exists`);
+    }
   }
 
   async delete(userId: string) {
@@ -87,23 +131,50 @@ export class UsersService {
       session.endSession();
     }
   }
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(
+    documentsToSkip = 0,
+    limitOfDocuments?: number,
+    startId?: string,
+    searchQuery?: string,
+  ) {
+    const filters: FilterQuery<UserDocument> = startId
+      ? {
+        _id: {
+          $gt: startId,
+        },
+      }
+      : {};
+
+    // if (searchQuery) {
+    //   filters.$text = {
+    //     $search: searchQuery,
+    //   };
+    // }
+
+    const findQuery = this.userModel
+      .find(filters)
+      .sort({ _id: 1 })
+      .skip(documentsToSkip);
+
+    if (limitOfDocuments) {
+      findQuery.limit(limitOfDocuments);
+    }
+
+    const results = await findQuery;
+    const count = await this.userModel.count();
+
+    return { results, count };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async update(
+    id: string,
+    updateUsermodelDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    return this.userModel.findByIdAndUpdate(id, updateUsermodelDto);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return this.userModel.findByIdAndRemove(id);
   }
 }

@@ -21,8 +21,8 @@ export class CreateUsermodelDto {
     type: Number,
     description: 'This is a required property',
   })
-
   @IsNotEmpty()
+  @IsNumber()
   // @MinLength(20)
   staffid: number;
 

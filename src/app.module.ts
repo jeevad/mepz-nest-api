@@ -24,6 +24,7 @@ import { EquipmentAllocationModule } from './equipment-allocation/equipment-allo
 import { EquipmentSummaryModule } from './equipment-summary/equipment-summary.module';
 import { CurrentTransactionModule } from './current-transaction/current-transaction.module';
 import { PastTransactionModule } from './past-transaction/past-transaction.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -31,7 +32,9 @@ import { PastTransactionModule } from './past-transaction/past-transaction.modul
       // useNewUrlParser: true,
       // useUnifiedTopology: true,
       // useCreateIndex: true,
+      autoIndex: true,
     }),
+    AuthModule,
     UsersModule,
     AuthenticationModule,
     CompanyModule,
