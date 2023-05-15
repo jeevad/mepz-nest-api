@@ -34,7 +34,7 @@ export class AdmingroupController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'get all Utilities' })
+  @ApiOperation({ summary: 'get all Admin Groups' })
   async findAll(
     @Query() { skip, limit, startId }: PaginationParams,
   ) // @Query('searchQuery') searchQuery?: string,
