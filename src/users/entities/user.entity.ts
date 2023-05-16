@@ -5,13 +5,15 @@ export class UserEntity {
   _id: string;
   username: string;
   staffid: number;
-  admin: boolean;
-  active: boolean;
+  admin: string;
+  active: string;
   group: string;
   valid: string;
   remarks: string;
   createdAt: Date;
   updatedAt: Date;
+  reEnterPassword: string;
+
 
   @Exclude()
   password: string;

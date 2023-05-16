@@ -17,7 +17,6 @@ import { EquipmentModule } from './master-file/equipment/equipment.module';
 import { ProjecttemplateModule } from './projecttemplate/projecttemplate.module';
 import { ProjectModule } from './project/project.module';
 import { AdmingroupModule } from './admingroup/admingroup.module';
-import { UsermodelModule } from './usermodel/usermodel.module';
 import { RegistermodelModule } from './registermodel/registermodel.module';
 import { EquipmentBrandModule } from './master-file/equipment-brand/equipment-brand.module';
 import { EquipmentAllocationModule } from './equipment-allocation/equipment-allocation.module';
@@ -49,7 +48,6 @@ import { AuthModule } from './auth/auth.module';
     ProjectModule,
     ProjecttemplateModule,
     AdmingroupModule,
-    UsermodelModule,
     RegistermodelModule,
     EquipmentBrandModule,
     EquipmentAllocationModule,

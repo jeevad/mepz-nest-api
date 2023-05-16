@@ -9,14 +9,14 @@ export type UserDocument = User & Document;
 
 @Schema({
   autoIndex: true,
-  timestamps: true,
   toJSON: {
     getters: true,
     virtuals: true,
   },
+  timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  
 })
 export class User {
-
   @Transform(({ value }) => value.toString())
   _id: ObjectId;
 
@@ -27,10 +27,10 @@ export class User {
   staffid: number;
 
   @Prop({ required: true })
-  admin: boolean;
+  admin: string;
 
   @Prop({ required: true })
-  active: boolean;
+  active: string;
 
   @Prop({ required: true })
   valid: string;
@@ -51,12 +51,9 @@ export class User {
   @Prop({ default: now() })
   updatedAt: Date;
 
-
-  // @Prop({ required: true })
-  // @Exclude()
-  // reEnterPassword: string;
-
-
+  @Prop({ required: true })
+  @Exclude()
+  reEnterPassword: string;
 
   // @Prop({ unique: true })
   // email: string;
