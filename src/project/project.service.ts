@@ -4,11 +4,15 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from 'src/schemas/project.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, FilterQuery } from 'mongoose';
+import { AddProjectDepartmentDto } from './dto/add-project-department.dto';
+import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
+import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto';
 
 @Injectable()
 export class ProjectService {
   constructor(
-    @InjectModel(Project.name) private readonly ProjectModel: Model<ProjectDocument>,
+    @InjectModel(Project.name)
+    private readonly ProjectModel: Model<ProjectDocument>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<ProjectDocument> {
@@ -40,8 +44,7 @@ export class ProjectService {
     //   };
     // }
 
-    const findQuery = this.ProjectModel
-      .find(filters)
+    const findQuery = this.ProjectModel.find(filters)
       .sort({ _id: 1 })
       .skip(documentsToSkip);
 
@@ -68,5 +71,52 @@ export class ProjectService {
 
   async remove(id: string) {
     return this.ProjectModel.findByIdAndRemove(id);
+  }
+
+  async addDepartment(
+    projectId: string,
+    addProjectDepartmentDto: AddProjectDepartmentDto,
+  ): Promise<any> {
+    return this.ProjectModel.updateOne(
+      { _id: projectId },
+      { $push: { departments: addProjectDepartmentDto } },
+    );
+  }
+  async addRoom(
+    projectId: string,
+    departmentId: string,
+    addProjectDepartmentRoomDto: AddProjectDepartmentRoomDto,
+  ): Promise<any> {
+    return this.ProjectModel.updateOne(
+      { _id: projectId, 'departments._id': departmentId },
+      { $push: { 'departments.$.rooms': addProjectDepartmentRoomDto } },
+    );
+  }
+  async addRoomEquipment(
+    projectId: string,
+    departmentId: string,
+    roomId: string,
+    addProjectRoomEquipmentDto: AddProjectRoomEquipmentDto,
+  ): Promise<any> {
+    return this.ProjectModel.updateMany(
+      {
+        _id: projectId,
+      },
+      {
+        $push: {
+          'departments.$[i].rooms.$[j].equipments': addProjectRoomEquipmentDto,
+        },
+      },
+      {
+        arrayFilters: [
+          {
+            'i.departmentId': departmentId,
+          },
+          {
+            'j.roomId': roomId,
+          },
+        ],
+      },
+    );
   }
 }
