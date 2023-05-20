@@ -20,10 +20,6 @@ export class ProjectService {
     return Project.save();
   }
 
-  // async findAll(): Promise<ProjectDocument[]> {
-  //   return this.ProjectModel.find();
-  // }
-
   async findAll(
     documentsToSkip = 0,
     limitOfDocuments?: number,
@@ -82,6 +78,7 @@ export class ProjectService {
       { $push: { departments: addProjectDepartmentDto } },
     );
   }
+
   async addRoom(
     projectId: string,
     departmentId: string,
@@ -92,28 +89,27 @@ export class ProjectService {
       { $push: { 'departments.$.rooms': addProjectDepartmentRoomDto } },
     );
   }
+
   async addRoomEquipment(
     projectId: string,
     departmentId: string,
     roomId: string,
     addProjectRoomEquipmentDto: AddProjectRoomEquipmentDto,
   ): Promise<any> {
-    return this.ProjectModel.updateMany(
+    return this.ProjectModel.updateOne(
       {
         _id: projectId,
+        'departments._id': departmentId,
       },
       {
         $push: {
-          'departments.$[i].rooms.$[j].equipments': addProjectRoomEquipmentDto,
+          'departments.$.rooms.$[j].equipments': addProjectRoomEquipmentDto,
         },
       },
       {
         arrayFilters: [
           {
-            'i.departmentId': departmentId,
-          },
-          {
-            'j.roomId': roomId,
+            'j._id': roomId,
           },
         ],
       },
