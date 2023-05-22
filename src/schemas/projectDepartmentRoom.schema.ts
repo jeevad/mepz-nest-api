@@ -17,6 +17,9 @@ export class ProjectDepartmentRoom {
   name: string;
 
   @Prop()
+  roomId: string;
+
+  @Prop()
   alias: string;
 
   @Prop()

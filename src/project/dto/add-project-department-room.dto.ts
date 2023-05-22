@@ -8,6 +8,14 @@ export class AddProjectDepartmentRoomDto {
   })
   @IsString()
   @IsNotEmpty()
+  roomId: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a required property',
+  })
+  @IsString()
+  @IsNotEmpty()
   code: string;
 
   @ApiProperty({

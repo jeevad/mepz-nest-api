@@ -8,6 +8,14 @@ export class AddProjectDepartmentDto {
   })
   @IsString()
   @IsNotEmpty()
+  departmentId: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a required property',
+  })
+  @IsString()
+  @IsNotEmpty()
   code: string;
 
   @ApiProperty({
@@ -27,7 +35,7 @@ export class AddProjectDepartmentDto {
   alias: string;
 
   @ApiProperty({
-    type: String,
+    type: Boolean,
     description: 'This is a required property',
   })
   @IsBoolean()

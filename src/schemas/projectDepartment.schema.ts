@@ -14,6 +14,9 @@ export class ProjectDepartment {
   _id: string;
 
   @Prop()
+  departmentId: string;
+  
+  @Prop()
   name: string;
 
   @Prop()

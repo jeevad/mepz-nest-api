@@ -10,6 +10,9 @@ export class ProjectRoomEquipment {
   _id: string;
 
   @Prop()
+  equipmentId: string;
+
+  @Prop()
   name: string;
 
   @Prop()
