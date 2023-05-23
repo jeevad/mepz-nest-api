@@ -16,10 +16,6 @@ export class CompanyService {
     return company.save();
   }
 
-  // async findAll(): Promise<CompanyDocument[]> {
-  //   return this.companyModel.find();
-  // }
-
   async findAll(
     documentsToSkip = 0,
     limitOfDocuments?: number,
@@ -33,12 +29,6 @@ export class CompanyService {
           },
         }
       : {};
-
-    // if (searchQuery) {
-    //   filters.$text = {
-    //     $search: searchQuery,
-    //   };
-    // }
 
     const findQuery = this.companyModel
       .find(filters)

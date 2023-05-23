@@ -104,7 +104,7 @@ export class CreateCompanyDto {
   // @MinLength(5)
   // @MaxLength(300)
   logo1: string;
-
+ 
   @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
@@ -115,15 +115,15 @@ export class CreateCompanyDto {
   // @MaxLength(300)
   show1: boolean;
 
-  @ApiProperty({
-    type: String,
-    description: 'This is a required property',
-  })
-  @IsString()
-  @IsNotEmpty()
-  // @MinLength(5)
-  // @MaxLength(300)
-  logo2: string;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // // @MinLength(5)
+  // // @MaxLength(300)
+  // logo2: string;
 
   @ApiProperty({
     type: Boolean,
@@ -135,15 +135,15 @@ export class CreateCompanyDto {
   // @MaxLength(300)
   show2: boolean;
 
-  @ApiProperty({
-    type: String,
-    description: 'This is a required property',
-  })
-  @IsString()
-  @IsNotEmpty()
-  // @MinLength(5)
-  // @MaxLength(300)
-  logo3: string;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // // @MinLength(5)
+  // // @MaxLength(300)
+  // logo3: string;
 
   @ApiProperty({
     type: Boolean,
@@ -159,7 +159,7 @@ export class CreateCompanyDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   // @MinLength(5)
   // @MaxLength(300)
@@ -169,7 +169,7 @@ export class CreateCompanyDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   // @MinLength(5)
   // @MaxLength(300)
@@ -179,7 +179,7 @@ export class CreateCompanyDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   // @MinLength(5)
   // @MaxLength(300)

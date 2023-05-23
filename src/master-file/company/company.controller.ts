@@ -7,11 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  HttpStatus,
+  Res,
+  UploadedFile,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { PaginationParams } from 'src/utils/paginationParams';
+import { diskStorage } from 'multer';
 import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -21,7 +26,9 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
+import { Company } from './entities/company.entity';
 @Controller('company')
 @ApiTags('Company')
 export class CompanyController {
@@ -64,4 +71,45 @@ export class CompanyController {
   remove(@Param('id') id: string) {
     return this.companyService.remove(id);
   }
+
+  @Post('/uploadFile')
+  @ApiOperation({ summary: 'Upload Images' })
+  @UseInterceptors(
+    FileInterceptor('logo1', {
+      storage: diskStorage({
+        destination: './src/assets/userImage',
+        filename: (req, file, callBack) => {
+          const fileName =
+            path.parse(file.originalname).name.replace(/\s/g, '') + Date.now();
+          const extension = path.parse(file.originalname).ext;
+          callBack(null, `${fileName}${extension}`);
+        },
+      }),
+    }),
+  )
+  UploadedFile(@Res() res, @UploadedFile() file) {
+    return res.status(HttpStatus.OK).json({
+      success: true,
+      data: file.path,
+    });
+  }
+  // UploadedFile(@Res() res, @UploadedFile() file) {
+  //   const company = new Company(); 
+
+  //   company.logo1 = file.path;
+  //   company
+  //     .save()
+  //     .then((savedCompany) => {
+  //       return res.status(HttpStatus.OK).json({
+  //         success: true,
+  //         data: savedCompany,
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+  //         success: false,
+  //         error: error.message,
+  //       });
+  //     });
+  // }
 }
