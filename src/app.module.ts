@@ -19,11 +19,13 @@ import { ProjectModule } from './project/project.module';
 import { AdmingroupModule } from './admingroup/admingroup.module';
 import { RegistermodelModule } from './registermodel/registermodel.module';
 import { EquipmentBrandModule } from './master-file/equipment-brand/equipment-brand.module';
-import { EquipmentAllocationModule } from './equipment-allocation/equipment-allocation.module';
-import { EquipmentSummaryModule } from './equipment-summary/equipment-summary.module';
-import { CurrentTransactionModule } from './current-transaction/current-transaction.module';
-import { PastTransactionModule } from './past-transaction/past-transaction.module';
+
+
 import { AuthModule } from './auth/auth.module';
+import { PastTransactionModule } from './project/past-transaction/past-transaction.module';
+import { EquipmentAllocationModule } from './project/equipment-allocation/equipment-allocation.module';
+import { CurrentTransactionModule } from './project/current-transaction/current-transaction.module';
+import { EquipmentSummaryModule } from './project/equipment-summary/equipment-summary.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
