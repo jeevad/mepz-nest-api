@@ -8,7 +8,7 @@ export type AdmingroupDocument = Admingroup & Document;
 })
 export class Admingroup {
   @Prop({ required: true })
-  groupname: string;
+  name: string;
 }
 
 export const AdmingroupSchema = SchemaFactory.createForClass(Admingroup);

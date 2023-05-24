@@ -15,6 +15,6 @@ export class CreateAdmingroupDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  groupname: string;
+  name: string;
 }
 

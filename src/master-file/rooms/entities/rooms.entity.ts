@@ -1,5 +1,5 @@
 export class Rooms {
-  roomcode: string;
-  roomname: string;
+  code: string;
+  name: string;
   active: string;
 }

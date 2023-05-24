@@ -15,7 +15,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  SupplierName: string;
+  name: string;
 
   @ApiProperty({
     type: String,
@@ -24,7 +24,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  Brand: string;
+  groupName: string;
 
   @ApiProperty({
     type: String,
@@ -33,7 +33,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  Model: string;
+  model: string;
 
   @ApiProperty({
     type: String,
@@ -42,7 +42,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  CountryofOrigin: string;
+  countryOfOrigin: string;
 
   @ApiProperty({
     type: String,
@@ -51,7 +51,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  UnitPrice: string;
+  unitPrice: string;
 
   @ApiProperty({
     type: String,
@@ -60,7 +60,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  ContactPerson: string;
+  contactPerson: string;
 
   @ApiProperty({
     type: String,
@@ -69,5 +69,5 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  TelMail: string;
+  mail: string;
 }

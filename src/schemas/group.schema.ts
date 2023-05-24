@@ -8,10 +8,10 @@ export type GroupDocument = Group & Document;
 })
 export class Group {
   @Prop({ required: true })
-  groupcode: string;
+  code: string;
 
   @Prop({ required: true })
-  groupname: string;
+  name: string;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

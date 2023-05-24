@@ -15,7 +15,7 @@ export class CreatePackageDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  packagecode: string;
+  code: string;
 
   @ApiProperty({
     type: String,
@@ -24,7 +24,7 @@ export class CreatePackageDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  packagename: string;
+  name: string;
 
   @ApiProperty({
     type: String,

@@ -8,25 +8,25 @@ export type EquipmentBrandDocument = EquipmentBrand & Document;
 })
 export class EquipmentBrand {
   @Prop({ required: true })
-  SupplierName: string;
+  name: string;
 
   @Prop({ required: true })
-  Brand: string;
+  brand: string;
 
   @Prop({ required: true })
-  Model: string;
+  model: string;
 
   @Prop({ required: true })
-  CountryofOrigin: string;
+  countryOfOrigin: string;
 
   @Prop({ required: true })
-  UnitPrice: string;
+  unitPrice: string;
 
   @Prop({ required: true })
-  ContactPerson: string;
+  contactPerson: string;
 
   @Prop({ required: true })
-  TelMail: string;
+  mail: string;
 }
 
 export const EquipmentBrandSchema =

@@ -10,6 +10,7 @@ import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto
 
 @Injectable()
 export class ProjectService {
+  ProjectDepartmentModel: any;
   constructor(
     @InjectModel(Project.name)
     private readonly ProjectModel: Model<ProjectDocument>,

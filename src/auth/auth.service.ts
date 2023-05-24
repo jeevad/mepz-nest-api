@@ -18,13 +18,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async signIn(username: string, plainTextPassword: string) {
+  async signIn(userName: string, plainTextPassword: string) {
     // mongoose.set('debug', true);
     try {
-      const user = await this.usersService.getByUsername(username);
+      const user = await this.usersService.getByUsername(userName);
 
       await this.verifyPassword(plainTextPassword, user.password);
-      const payload = { username: user.username, id: user._id };
+      const payload = { userName: user.userName, id: user._id };
 
       return {
         user: new UserEntity(user.toJSON()),

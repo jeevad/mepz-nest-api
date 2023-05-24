@@ -29,8 +29,8 @@ export class UsersService {
     return user;
   }
 
-  async getByUsername(username: string) {
-    const user = await this.userModel.findOne({ username });
+  async getByUsername(userName: string) {
+    const user = await this.userModel.findOne({ userName });
     if (!user) {
       throw new NotFoundException('User not exists');
     }
@@ -78,8 +78,8 @@ export class UsersService {
       );
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    await this.checkUnique({ username: userData.username }, 'username'); //check unique username
-    await this.checkUnique({ staffid: userData.staffid }, 'staffid'); //check unique staffid
+    await this.checkUnique({ userName: userData.userName }, 'userName'); //check unique userName
+    await this.checkUnique({ staffId: userData.staffId }, 'staffId'); //check unique staffId
 
     try {
       return await this.userModel.create({

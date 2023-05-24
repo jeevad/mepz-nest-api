@@ -1,8 +1,8 @@
 export class Projecttemplate {
   name: string;
-  noofbeds: string;
+  noOfBeds: string;
   classification: string;
-  projecttype: string;
+  type: string;
   remarks: string;
   created: Date;
   updated: Date;

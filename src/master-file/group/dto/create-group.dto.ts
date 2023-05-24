@@ -15,7 +15,7 @@ export class CreateGroupDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  groupcode: string;
+  code: string;
 
   @ApiProperty({
     type: String,
@@ -24,5 +24,5 @@ export class CreateGroupDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  groupname: string;
+  name: string;
 }

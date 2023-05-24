@@ -24,7 +24,7 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  projectname: string;
+  name: string;
 
    @ApiProperty({
     type: String,
@@ -33,7 +33,7 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  fullProjectName: string;
+  fullName: string;
 
    @ApiProperty({
     type: String,
@@ -60,7 +60,7 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  noofBeds: string;
+  noOfBeds: string;
 
    @ApiProperty({
     type: String,
@@ -78,7 +78,7 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  projecttype: string;
+  type: string;
 
    @ApiProperty({
     type: String,

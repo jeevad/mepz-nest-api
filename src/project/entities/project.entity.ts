@@ -1,14 +1,14 @@
 export class Project {
   code: string;
-  projectname: string;
-  fullProjectName: string;
+  name: string;
+  fullName: string;
   clientOwner: string;
   contractNo: string;
-  noofBeds: string;
+  noOfBeds: string;
   classification: string;
-  projecttype: string;
+  type: string;
   company: string;
-  groupname: string;
+  groupName: string;
   signature1: string;
   signature2: string;
   created: Date;

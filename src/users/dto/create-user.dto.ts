@@ -16,7 +16,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  username: string;
+  userName: string;
 
   @ApiProperty({
     type: String,
@@ -33,7 +33,7 @@ export class CreateUserDto {
   // @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  staffid: number;
+  staffId: number;
 
   @ApiProperty({
     type: Boolean,

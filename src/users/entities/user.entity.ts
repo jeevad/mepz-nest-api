@@ -3,8 +3,8 @@ import { ObjectId } from 'mongoose';
 
 export class UserEntity {
   _id: string;
-  username: string;
-  staffid: number;
+  userName: string;
+  staffId: number;
   admin: string;
   active: string;
   group: string;

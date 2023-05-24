@@ -1,6 +1,6 @@
 export class Package {
-  packagecode: string;
-  packagename: string;
+  code: string;
+  name: string;
   active: string;
   created: Date;
   updated: Date;

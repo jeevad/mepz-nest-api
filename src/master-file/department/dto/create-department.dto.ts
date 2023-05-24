@@ -15,7 +15,7 @@ export class CreateDepartmentDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  departmentcode: string;
+  code: string;
 
   @ApiProperty({
     type: String,
@@ -24,7 +24,7 @@ export class CreateDepartmentDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  departmentname: string;
+  name: string;
 
   @ApiProperty({
     type: String,

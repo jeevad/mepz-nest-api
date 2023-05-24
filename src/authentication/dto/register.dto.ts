@@ -9,7 +9,7 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  username: string;
+  userName: string;
 
   @ApiProperty({
     type: Number,
@@ -18,7 +18,7 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  staffid: number;
+  staffId: number;
 
   @ApiProperty({
     type: Boolean,

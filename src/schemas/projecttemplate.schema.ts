@@ -11,13 +11,13 @@ export class Projecttemplate {
   name: string;
 
   @Prop({ required: true })
-  noofbeds: string;
+  noOfBeds: string;
 
   @Prop({ required: true })
   classification: string;
 
   @Prop({ required: true })
-  projecttype: string;
+  type: string;
 
   @Prop({ required: true })
   remarks: string;

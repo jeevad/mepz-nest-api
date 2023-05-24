@@ -8,10 +8,10 @@ export type PackageDocument = Package & Document;
 })
 export class Package {
   @Prop({ required: true })
-  packagecode: string;
+  code: string;
 
   @Prop({ required: true })
-  packagename: string;
+  name: string;
 
   @Prop({ required: true })
   active: string;

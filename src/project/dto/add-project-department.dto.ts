@@ -8,7 +8,7 @@ export class AddProjectDepartmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  departmentId: string;
+  id: string;
 
   @ApiProperty({
     type: String,

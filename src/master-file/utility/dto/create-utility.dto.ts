@@ -15,7 +15,7 @@ export class CreateUtilityDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  utilitycode: string;
+  code: string;
 
   @ApiProperty({
     type: String,
@@ -24,5 +24,5 @@ export class CreateUtilityDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  utilityname: string;
+  name: string;
 }

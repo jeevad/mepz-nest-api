@@ -1,5 +1,5 @@
 export class Admingroup {
-  groupname: string;
+  name: string;
   created: Date;
   updated: Date;
 }

@@ -15,7 +15,7 @@ export class CreateRoomsDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  roomcode: string;
+  code: string;
 
   @ApiProperty({
     type: String,
@@ -24,7 +24,7 @@ export class CreateRoomsDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  roomname: string;
+  name: string;
 
   @ApiProperty({
     type: String,

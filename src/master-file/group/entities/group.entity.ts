@@ -1,6 +1,6 @@
 export class Group {
-  groupcode: string;
-  groupname: string;
+  code: string;
+  name: string;
   created: Date;
   updated: Date;
 }

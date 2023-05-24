@@ -21,10 +21,10 @@ export class User {
   _id: ObjectId;
 
   @Prop({ unique: true, required: true })
-  username: string;
+  userName: string;
 
   @Prop({ required: true })
-  staffid: number;
+  staffId: number;
 
   @Prop({ required: true })
   admin: string;
@@ -93,7 +93,7 @@ export class User {
 
 const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.index({ username: 'text' }, { unique: true });
+UserSchema.index({ userName: 'text' }, { unique: true });
 
 // UserSchema.virtual('fullName').get(function (this: User) {
 //   return `${this.firstName} ${this.lastName}`;

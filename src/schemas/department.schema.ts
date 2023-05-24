@@ -8,10 +8,10 @@ export type DepartmentDocument = Department & Document;
 })
 export class Department {
   @Prop({ required: true })
-  departmentcode: string;
+  code: string;
 
   @Prop({ required: true })
-  departmentname: string;
+  name: string;
 
   @Prop({ required: true })
   active: string;

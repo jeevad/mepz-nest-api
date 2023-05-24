@@ -8,10 +8,10 @@ export type EquipmentDocument = Equipment & Document;
 })
 export class Equipment {
   @Prop({ required: true })
-  equipmentCode: string;
+  code: string;
 
   @Prop({ required: true })
-  equipmentName: string;
+  name: string;
 
   @Prop({ required: true })
   cost: string;

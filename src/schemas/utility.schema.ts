@@ -8,10 +8,10 @@ export type UtilityDocument = Utility & Document;
 })
 export class Utility {
   @Prop({ required: true })
-  utilitycode: string;
+  code: string;
 
   @Prop({ required: true })
-  utilityname: string;
+  name: string;
 }
 
 export const UtilitySchema = SchemaFactory.createForClass(Utility);

@@ -15,7 +15,7 @@ export class CreateEquipmentDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  equipmentCode: string;
+  code: string;
 
   @ApiProperty({
     type: String,
@@ -24,7 +24,7 @@ export class CreateEquipmentDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  equipmentName: string;
+  name: string;
 
   @ApiProperty({
     type: Number,

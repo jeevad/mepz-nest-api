@@ -13,10 +13,10 @@ export class Project {
   code: string;
 
   @Prop({ required: true })
-  projectname: string;
+  name: string;
 
   @Prop({ required: true })
-  fullProjectName: string;
+  fullName: string;
 
   @Prop({ required: true })
   clientOwner: string;
@@ -25,13 +25,13 @@ export class Project {
   contractNo: string;
 
   @Prop({ required: true })
-  noofBeds: string;
+  noOfBeds: string;
 
   @Prop({ required: true })
   classification: string;
 
   @Prop({ required: true })
-  projecttype: string;
+  type: string;
 
   @Prop({ required: true })
   company: string;

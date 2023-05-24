@@ -24,7 +24,7 @@ export class CreateProjecttemplateDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  noofbeds: string;
+  noOfBeds: string;
 
   @ApiProperty({
     type: String,
@@ -42,7 +42,7 @@ export class CreateProjecttemplateDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(50)
-  projecttype: string;
+  type: string;
 
   @ApiProperty({
     type: String,

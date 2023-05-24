@@ -1,6 +1,6 @@
 export class Department {
-  departmentcode: string;
-  departmentname: string;
+  code: string;
+  name: string;
   active: string;
   created: Date;
   updated: Date;

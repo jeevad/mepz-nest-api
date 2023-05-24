@@ -8,10 +8,10 @@ export type RoomsDocument = Rooms & Document;
 })
 export class Rooms {
   @Prop({ required: true })
-  roomcode: string;
+  code: string;
 
   @Prop({ required: true })
-  roomname: string;
+  name: string;
 
   @Prop({ required: true })
   active: string;

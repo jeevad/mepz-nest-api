@@ -61,16 +61,34 @@ export class ProjectController {
     return this.projectService.remove(id);
   }
 
+  // @Post('addDepartment/:projectId')
+  // @ApiOperation({ summary: 'Add Department' })
+  // addDepartment(
+  //   @Param('projectId') projectId: string,
+  //   @Body() addProjectDepartmentDto: AddProjectDepartmentDto,
+  // ) {
+  //   return this.projectService.addDepartment(
+  //     projectId,
+  //     addProjectDepartmentDto,
+  //   );
+  // }
+
   @Post('addDepartment/:projectId')
   @ApiOperation({ summary: 'Add Department' })
-  addDepartment(
+  async addDepartment(
     @Param('projectId') projectId: string,
-    @Body() addProjectDepartmentDto: AddProjectDepartmentDto,
+    @Body() addProjectDepartmentDtos: AddProjectDepartmentDto[],
   ) {
-    return this.projectService.addDepartment(
-      projectId,
-      addProjectDepartmentDto,
-    );
+    const promises = addProjectDepartmentDtos.map((departmentDto) => {
+      const department = new this.projectService.ProjectDepartmentModel(
+        departmentDto,
+      );
+      return department.save();
+    });
+
+    await Promise.all(promises);
+
+    return { message: 'Departments added successfully' };
   }
 
   @Post('addRoom/:projectId/:departmentId')

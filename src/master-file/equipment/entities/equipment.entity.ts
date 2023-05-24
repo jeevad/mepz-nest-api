@@ -1,7 +1,7 @@
 export class Equipment {
-  equipmentCode: string;
-  equipmentName: string;
-  packagename: string;
+  code: string;
+  name: string;
+  groupName: string;
   cost: string;
   markUp: string;
   heatDissipation: string;
