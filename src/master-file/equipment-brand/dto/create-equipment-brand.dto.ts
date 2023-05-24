@@ -24,7 +24,7 @@ export class CreateEquipmentBrandDto {
   @IsString()
   @IsNotEmpty()
   // @MinLength(20)
-  groupName: string;
+  brand: string;
 
   @ApiProperty({
     type: String,
