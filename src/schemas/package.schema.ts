@@ -14,7 +14,7 @@ export class Package {
   name: string;
 
   @Prop({ required: true })
-  active: boolean;
+  active: string;
 }
 
 export const PackageSchema = SchemaFactory.createForClass(Package);

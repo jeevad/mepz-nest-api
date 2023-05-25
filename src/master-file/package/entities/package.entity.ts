@@ -1,7 +1,7 @@
 export class Package {
   code: string;
   name: string;
-  active: boolean;
+  active: string;
   created: Date;
   updated: Date;
 }

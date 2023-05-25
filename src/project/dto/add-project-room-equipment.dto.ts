@@ -38,7 +38,6 @@ export class AddProjectRoomEquipmentDto {
     type: Boolean,
     description: 'This is a required property',
   })
-  @IsBoolean()
   @IsNotEmpty()
   active: boolean;
 }

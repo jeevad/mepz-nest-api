@@ -25,10 +25,9 @@ export class CreateDepartmentDto {
   name: string;
 
   @ApiProperty({
-    type: String,
+    type: Boolean,
     description: 'This is a required property',
   })
-  @IsString()
   @IsNotEmpty()
   active: boolean;
 }
