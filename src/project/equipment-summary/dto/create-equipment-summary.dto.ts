@@ -14,7 +14,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   num: number;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   code: number;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   equipment: string;
 
   @ApiProperty({
@@ -41,7 +38,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   package: string;
 
   @ApiProperty({
@@ -50,7 +46,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   fpq: number;
 
   @ApiProperty({
@@ -59,7 +54,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   apq: number;
 
   @ApiProperty({
@@ -68,7 +62,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   qty: number;
 
   @ApiProperty({
@@ -77,7 +70,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   unitPrice: number;
 
   @ApiProperty({
@@ -86,7 +78,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   markUp: string;
 
   @ApiProperty({
@@ -95,7 +86,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   totalPrice: number;
 
   @ApiProperty({
@@ -104,7 +94,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   group: string;
 
   @ApiProperty({
@@ -113,7 +102,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   utility: string;
 
   @ApiProperty({
@@ -122,7 +110,6 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   remarks: string;
 
   @ApiProperty({
@@ -131,6 +118,5 @@ export class CreateEquipmentSummaryDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   label: string;
 }

@@ -14,7 +14,6 @@ export class CreatePastTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   id: number;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreatePastTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   revision: number;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreatePastTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   date: string;
 
   @ApiProperty({
@@ -41,6 +38,5 @@ export class CreatePastTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   action: string;
 }

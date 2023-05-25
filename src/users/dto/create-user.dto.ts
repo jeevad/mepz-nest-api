@@ -15,7 +15,6 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   userName: string;
 
   @ApiProperty({
@@ -32,7 +31,6 @@ export class CreateUserDto {
   })
   // @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   staffId: number;
 
   @ApiProperty({
@@ -41,7 +39,6 @@ export class CreateUserDto {
   })
   // @IsBoolean()
   @IsNotEmpty()
-  // @MinLength(20)
   admin: boolean;
 
   @ApiProperty({
@@ -50,7 +47,6 @@ export class CreateUserDto {
   })
   // @IsBoolean()
   @IsNotEmpty()
-  // @MinLength(20)
   active: boolean;
 
   @ApiProperty({
@@ -59,7 +55,6 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   valid: string;
 
   @ApiProperty({
@@ -68,7 +63,6 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   remarks: string;
 
   @ApiProperty({
@@ -77,7 +71,6 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   password: string;
 
   @ApiProperty({
@@ -86,7 +79,6 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   reEnterPassword: string;
 }
 

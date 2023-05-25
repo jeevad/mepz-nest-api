@@ -14,7 +14,8 @@ export class Classification {
   name: string;
 
   @Prop({ required: true })
-  active: string;
+  active: boolean;
 }
 
-export const ClassificationSchema = SchemaFactory.createForClass(Classification);
+export const ClassificationSchema =
+  SchemaFactory.createForClass(Classification);

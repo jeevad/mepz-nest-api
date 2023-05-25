@@ -14,7 +14,7 @@ export class Department {
   name: string;
 
   @Prop({ required: true })
-  active: string;
+  active: boolean;
 }
 
 export const DepartmentSchema = SchemaFactory.createForClass(Department);

@@ -14,7 +14,6 @@ export class CreateCurrencyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   code: string;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateCurrencyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   name: string;
 
   @ApiProperty({
@@ -32,6 +30,5 @@ export class CreateCurrencyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   symbol: string;
 }

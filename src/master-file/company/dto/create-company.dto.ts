@@ -14,7 +14,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   code: string;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   name: string;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   inactive: boolean;
 
   @ApiProperty({
@@ -41,7 +38,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   address1: string;
 
@@ -51,7 +48,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   address2: string;
 
@@ -61,7 +58,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   city: string;
 
@@ -71,7 +68,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   state: string;
 
@@ -81,7 +78,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   postal: string;
 
@@ -91,7 +88,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   country: string;
 
@@ -101,17 +98,17 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   logo1: string;
- 
+
   @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   show1: boolean;
 
@@ -121,8 +118,6 @@ export class CreateCompanyDto {
   // })
   // @IsString()
   // @IsNotEmpty()
-  // // @MinLength(5)
-  // // @MaxLength(300)
   // logo2: string;
 
   @ApiProperty({
@@ -131,7 +126,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   show2: boolean;
 
@@ -141,8 +136,6 @@ export class CreateCompanyDto {
   // })
   // @IsString()
   // @IsNotEmpty()
-  // // @MinLength(5)
-  // // @MaxLength(300)
   // logo3: string;
 
   @ApiProperty({
@@ -151,8 +144,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
-  // @MaxLength(300)
   show3: boolean;
 
   @ApiProperty({
@@ -161,7 +152,7 @@ export class CreateCompanyDto {
   })
   // @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   contact: number;
 
@@ -171,7 +162,7 @@ export class CreateCompanyDto {
   })
   // @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   phone: number;
 
@@ -181,7 +172,7 @@ export class CreateCompanyDto {
   })
   // @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   mobile: number;
 
@@ -191,7 +182,7 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   fax: string;
 
@@ -201,11 +192,9 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(5)
+
   // @MaxLength(300)
   email: string;
-
-
 
   // @IsNumber()
   // @IsNotEmpty()

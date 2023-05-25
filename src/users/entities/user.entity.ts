@@ -6,7 +6,7 @@ export class UserEntity {
   userName: string;
   staffId: number;
   admin: string;
-  active: string;
+  active: boolean;
   group: string;
   valid: string;
   remarks: string;

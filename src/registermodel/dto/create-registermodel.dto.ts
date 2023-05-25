@@ -14,7 +14,6 @@ export class CreateRegistermodelDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   name: string;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateRegistermodelDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   email: string;
 
   @ApiProperty({
@@ -32,6 +30,5 @@ export class CreateRegistermodelDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   password: string;
 }

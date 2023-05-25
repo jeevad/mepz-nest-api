@@ -1,5 +1,5 @@
 export class Rooms {
   code: string;
   name: string;
-  active: string;
+  active: boolean;
 }

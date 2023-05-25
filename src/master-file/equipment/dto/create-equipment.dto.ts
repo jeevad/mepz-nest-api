@@ -14,7 +14,6 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   code: string;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   name: string;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   cost: string;
 
   @ApiProperty({
@@ -41,7 +38,6 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   markUp: string;
 
   @ApiProperty({
@@ -50,7 +46,6 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   heatDissipation: string;
 
   @ApiProperty({
@@ -59,7 +54,6 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   ictPort: string;
 
   @ApiProperty({
@@ -68,6 +62,5 @@ export class CreateEquipmentDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   bssPort: string;
 }

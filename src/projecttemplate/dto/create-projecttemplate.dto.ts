@@ -14,7 +14,6 @@ export class CreateProjecttemplateDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   name: string;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateProjecttemplateDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   noOfBeds: string;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreateProjecttemplateDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   classification: string;
 
   @ApiProperty({
@@ -41,7 +38,6 @@ export class CreateProjecttemplateDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   type: string;
 
   @ApiProperty({
@@ -50,6 +46,5 @@ export class CreateProjecttemplateDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   remarks: string;
 }

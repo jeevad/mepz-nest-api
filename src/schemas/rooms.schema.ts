@@ -14,7 +14,7 @@ export class Rooms {
   name: string;
 
   @Prop({ required: true })
-  active: string;
+  active: boolean;
 }
 
 export const RoomsSchema = SchemaFactory.createForClass(Rooms);

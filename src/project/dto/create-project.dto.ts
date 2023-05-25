@@ -14,97 +14,85 @@ export class CreateProjectDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   code: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   name: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   fullName: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   clientOwner: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   contractNo: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   noOfBeds: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   classification: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   type: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   company: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   signature1: string;
 
-   @ApiProperty({
+  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   signature2: string;
 }
-

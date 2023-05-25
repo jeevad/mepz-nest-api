@@ -14,7 +14,6 @@ export class CreateEquipmentAllocationDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(20)
   department: number;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateEquipmentAllocationDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   room: string;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreateEquipmentAllocationDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   equipment: string;
 
   @ApiProperty({
@@ -41,7 +38,6 @@ export class CreateEquipmentAllocationDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   apq: string;
 
   @ApiProperty({
@@ -50,7 +46,6 @@ export class CreateEquipmentAllocationDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   fpq: string;
 
   @ApiProperty({
@@ -59,6 +54,5 @@ export class CreateEquipmentAllocationDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   qty: string;
 }

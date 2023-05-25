@@ -14,7 +14,6 @@ export type UserDocument = User & Document;
     virtuals: true,
   },
   timestamps: { createdAt: 'created', updatedAt: 'updated' },
-  
 })
 export class User {
   @Transform(({ value }) => value.toString())
@@ -30,7 +29,7 @@ export class User {
   admin: string;
 
   @Prop({ required: true })
-  active: string;
+  active: boolean;
 
   @Prop({ required: true })
   valid: string;

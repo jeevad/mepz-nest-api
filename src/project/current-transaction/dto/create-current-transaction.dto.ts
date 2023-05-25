@@ -14,7 +14,6 @@ export class CreateCurrentTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   department: string;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateCurrentTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   code: string;
 
   @ApiProperty({
@@ -32,7 +30,6 @@ export class CreateCurrentTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   alias: string;
 
   @ApiProperty({
@@ -41,7 +38,6 @@ export class CreateCurrentTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   level: string;
 
   @ApiProperty({
@@ -50,6 +46,5 @@ export class CreateCurrentTransactionDto {
   })
   @IsString()
   @IsNotEmpty()
-  // @MinLength(50)
   action: string;
 }

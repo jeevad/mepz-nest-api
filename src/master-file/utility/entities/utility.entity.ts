@@ -1,7 +1,7 @@
 export class Utility {
   code: string;
   name: string;
-  active: string;
+  active: boolean;
   created: Date;
   updated: Date;
 }
