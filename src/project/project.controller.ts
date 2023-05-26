@@ -102,4 +102,10 @@ export class ProjectController {
       addProjectRoomEquipmentDto,
     );
   }
+
+  @Get('getDepartments/:id')
+  @ApiOperation({ summary: 'get Project by id' })
+  getDepartments(@Param('id') id: string) {
+    return this.projectService.getDepartments(id);
+  }
 }

@@ -31,9 +31,11 @@ export class ProjectDepartmentRoom {
   @Prop()
   active: boolean;
 
-  @Prop({ type: ProjectRoomEquipmentSchema })
+  @Prop({ type: [ProjectRoomEquipmentSchema] })
   @Type(() => ProjectRoomEquipment)
   equipments: ProjectRoomEquipment[];
 }
 
-export const ProjectDepartmentRoomSchema = SchemaFactory.createForClass(ProjectDepartmentRoom);
+export const ProjectDepartmentRoomSchema = SchemaFactory.createForClass(
+  ProjectDepartmentRoom,
+);

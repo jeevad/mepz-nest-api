@@ -3,7 +3,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from 'src/schemas/project.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
+import mongoose, { Model, FilterQuery } from 'mongoose';
 import { AddProjectDepartmentDto } from './dto/add-project-department.dto';
 import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
 import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto';
@@ -56,6 +56,7 @@ export class ProjectService {
   }
 
   findOne(id: string) {
+    mongoose.set('debug', true);
     return this.ProjectModel.findById(id);
   }
 
@@ -68,6 +69,11 @@ export class ProjectService {
 
   async remove(id: string) {
     return this.ProjectModel.findByIdAndRemove(id);
+  }
+
+  getDepartments(id: string) {
+    // mongoose.set('debug', true);
+    return this.ProjectModel.findById(id).select({ name: 1, _id: 0 });
   }
 
   async addDepartment(

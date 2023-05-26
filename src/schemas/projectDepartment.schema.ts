@@ -28,7 +28,7 @@ export class ProjectDepartment {
   @Prop()
   active: boolean;
 
-  @Prop({ type: ProjectDepartmentRoomSchema })
+  @Prop({ type: [ProjectDepartmentRoomSchema] })
   @Type(() => ProjectDepartmentRoom)
   rooms: ProjectDepartmentRoom[];
 }

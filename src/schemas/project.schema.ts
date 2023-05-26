@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { ProjectDepartment, ProjectDepartmentSchema } from './projectDepartment.schema';
+import {
+  ProjectDepartment,
+  ProjectDepartmentSchema,
+} from './projectDepartment.schema';
 import { Type } from 'class-transformer';
 
 export type ProjectDocument = Project & Document;
@@ -42,7 +45,7 @@ export class Project {
   @Prop({ required: true })
   signature2: string;
 
-  @Prop({ type: ProjectDepartmentSchema })
+  @Prop({ type: [ProjectDepartmentSchema] })
   @Type(() => ProjectDepartment)
   departments: ProjectDepartment[];
 }
