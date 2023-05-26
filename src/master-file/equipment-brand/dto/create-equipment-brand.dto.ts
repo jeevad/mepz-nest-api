@@ -62,5 +62,5 @@ export class CreateEquipmentBrandDto {
   })
   @IsString()
   @IsNotEmpty()
-  mail: string;
+  email: string;
 }

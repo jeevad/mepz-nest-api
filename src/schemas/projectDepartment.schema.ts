@@ -13,20 +13,20 @@ export class ProjectDepartment {
   @Transform(({ value }) => value.toString())
   _id: string;
 
-  @Prop()
-  departmentId: string;
+  // @Prop()
+  // departmentId: string;
   
   @Prop()
   name: string;
 
-  @Prop()
-  alias: string;
+  // @Prop()
+  // alias: string;
 
   @Prop()
   code: string;
 
-  @Prop()
-  active: boolean;
+  // @Prop()
+  // active: boolean;
 
   @Prop({ type: [ProjectDepartmentRoomSchema] })
   @Type(() => ProjectDepartmentRoom)

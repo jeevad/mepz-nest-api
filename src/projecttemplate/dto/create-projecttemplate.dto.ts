@@ -20,7 +20,7 @@ export class CreateProjecttemplateDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   noOfBeds: string;
 

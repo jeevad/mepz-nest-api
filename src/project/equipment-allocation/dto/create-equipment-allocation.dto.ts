@@ -9,12 +9,12 @@ import {
 
 export class CreateEquipmentAllocationDto {
   @ApiProperty({
-    type: Number,
+    type: String,
     description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()
-  department: number;
+  department: string;
 
   @ApiProperty({
     type: String,
@@ -33,26 +33,26 @@ export class CreateEquipmentAllocationDto {
   equipment: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  apq: string;
+  apq: number;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  fpq: string;
+  fpq: number;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  qty: string;
+  qty: number;
 }

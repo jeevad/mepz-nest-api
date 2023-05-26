@@ -26,7 +26,7 @@ export class EquipmentBrand {
   contactPerson: string;
 
   @Prop({ required: true })
-  mail: string;
+  email: string;
 }
 
 export const EquipmentBrandSchema =

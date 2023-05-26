@@ -29,7 +29,7 @@ export class CreateUserDto {
     type: Number,
     description: 'This is a required property',
   })
-  // @IsString()
+  @IsNumber()
   @IsNotEmpty()
   staffId: number;
 

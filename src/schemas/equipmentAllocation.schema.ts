@@ -17,13 +17,13 @@ export class EquipmentAllocation {
   equipment: string;
 
   @Prop({ required: true })
-  apq: string;
+  apq: number;
 
   @Prop({ required: true })
-  fpq: string;
+  fpq: number;
 
   @Prop({ required: true })
-  qty: string;
+  qty: number;
 }
 
 export const EquipmentAllocationSchema =

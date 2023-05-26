@@ -28,7 +28,7 @@ export class CreateCompanyDto {
     type: Boolean,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   inactive: boolean;
 
@@ -38,8 +38,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   address1: string;
 
   @ApiProperty({
@@ -48,8 +46,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   address2: string;
 
   @ApiProperty({
@@ -58,8 +54,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   city: string;
 
   @ApiProperty({
@@ -68,8 +62,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   state: string;
 
   @ApiProperty({
@@ -78,8 +70,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   postal: string;
 
   @ApiProperty({
@@ -88,61 +78,53 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   country: string;
 
   @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   logo1: string;
 
   @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   show1: boolean;
 
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
+  @ApiProperty({
+    type: String,
+    description: 'This is a required property',
+  })
   // @IsString()
-  // @IsNotEmpty()
-  // logo2: string;
+  @IsNotEmpty()
+  logo2: string;
 
   @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   show2: boolean;
 
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
+  @ApiProperty({
+    type: String,
+    description: 'This is a required property',
+  })
   // @IsString()
-  // @IsNotEmpty()
-  // logo3: string;
+  @IsNotEmpty()
+  logo3: string;
 
   @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   show3: boolean;
 
@@ -150,30 +132,24 @@ export class CreateCompanyDto {
     type: Number,
     description: 'This is a required property',
   })
-  // @IsString()
+  @IsNumber()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   contact: number;
 
   @ApiProperty({
     type: Number,
     description: 'This is a required property',
   })
-  // @IsString()
+  @IsNumber()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   phone: number;
 
   @ApiProperty({
     type: Number,
     description: 'This is a required property',
   })
-  // @IsString()
+  @IsNumber()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   mobile: number;
 
   @ApiProperty({
@@ -182,8 +158,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   fax: string;
 
   @ApiProperty({
@@ -192,8 +166,6 @@ export class CreateCompanyDto {
   })
   @IsString()
   @IsNotEmpty()
-
-  // @MaxLength(300)
   email: string;
 
   // @IsNumber()

@@ -12,7 +12,7 @@ export class CreatePastTransactionDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   id: number;
 
@@ -20,7 +20,7 @@ export class CreatePastTransactionDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   revision: number;
 

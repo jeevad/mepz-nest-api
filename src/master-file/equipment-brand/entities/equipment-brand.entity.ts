@@ -5,7 +5,7 @@ export class EquipmentBrand {
   countryOfOrigin: string;
   unitPrice: string;
   contactPerson: string;
-  mail: string;
+  email: string;
   created: Date;
   updated: Date;
 }

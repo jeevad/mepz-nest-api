@@ -52,7 +52,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   noOfBeds: string;
 

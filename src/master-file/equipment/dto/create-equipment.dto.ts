@@ -28,7 +28,7 @@ export class CreateEquipmentDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   cost: string;
 
@@ -36,7 +36,7 @@ export class CreateEquipmentDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   markUp: string;
 
@@ -52,7 +52,7 @@ export class CreateEquipmentDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   ictPort: string;
 
@@ -60,7 +60,7 @@ export class CreateEquipmentDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   bssPort: string;
 }

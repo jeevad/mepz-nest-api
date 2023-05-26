@@ -28,7 +28,7 @@ export class CreateCurrencyDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   symbol: string;
 }

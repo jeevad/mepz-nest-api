@@ -12,7 +12,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   num: number;
 
@@ -20,7 +20,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   code: number;
 
@@ -44,7 +44,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   fpq: number;
 
@@ -52,7 +52,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   apq: number;
 
@@ -60,7 +60,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   qty: number;
 
@@ -68,7 +68,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   unitPrice: number;
 
@@ -76,7 +76,7 @@ export class CreateEquipmentSummaryDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   markUp: string;
 
@@ -84,7 +84,7 @@ export class CreateEquipmentSummaryDto {
     type: Number,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
   @IsNotEmpty()
   totalPrice: number;
 
@@ -92,7 +92,7 @@ export class CreateEquipmentSummaryDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   group: string;
 
