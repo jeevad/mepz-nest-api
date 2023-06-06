@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { PackageService } from './package.service';
 import { CreatePackageDto } from './dto/create-package.dto';
 import { UpdatePackageDto } from './dto/update-package.dto';
@@ -15,7 +24,6 @@ import {
 
 @Controller('package')
 @ApiTags('Package')
-
 export class PackageController {
   constructor(private readonly packageService: PackageService) {}
 
@@ -29,8 +37,8 @@ export class PackageController {
   @ApiOperation({ summary: 'get all Packages' })
   async findAll(
     @Query() { skip, limit, startId }: PaginationParams,
-    // @Query('searchQuery') searchQuery?: string,
-  ) {
+  ) // @Query('searchQuery') searchQuery?: string,
+  {
     const searchQuery = '';
     return this.packageService.findAll(skip, limit, startId, searchQuery);
   }

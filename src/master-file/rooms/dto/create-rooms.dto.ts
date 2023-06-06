@@ -5,6 +5,7 @@ import {
   IsNumber,
   MaxLength,
   MinLength,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateRoomsDto {
@@ -28,6 +29,7 @@ export class CreateRoomsDto {
     type: Boolean,
     description: 'This is a required property',
   })
+  @IsBoolean()
   @IsNotEmpty()
   active: boolean;
 }

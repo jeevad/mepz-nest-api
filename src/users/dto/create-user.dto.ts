@@ -45,7 +45,7 @@ export class CreateUserDto {
     type: Boolean,
     description: 'This is a required property',
   })
-  // @IsBoolean()
+  @IsBoolean()
   @IsNotEmpty()
   active: boolean;
 

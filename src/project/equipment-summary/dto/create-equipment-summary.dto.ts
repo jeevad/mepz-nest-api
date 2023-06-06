@@ -76,7 +76,7 @@ export class CreateEquipmentSummaryDto {
     type: String,
     description: 'This is a required property',
   })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   markUp: string;
 

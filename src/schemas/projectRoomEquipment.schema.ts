@@ -9,23 +9,23 @@ export class ProjectRoomEquipment {
   @Transform(({ value }) => value.toString())
   _id: string;
 
-  @Prop()
-  equipmentId: string;
+  // @Prop()
+  // equipmentId: string;
 
   @Prop()
   name: string;
 
-  @Prop()
-  alias: string;
+  // @Prop()
+  // alias: string;
 
-  @Prop()
-  code: string;
+  // @Prop()
+  // code: string;
 
-  @Prop()
-  size: number;
+  // @Prop()
+  // size: number;
 
-  @Prop()
-  active: boolean;
+  // @Prop()
+  // active: boolean;
 }
 
 export const ProjectRoomEquipmentSchema =

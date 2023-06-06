@@ -35,9 +35,7 @@ export class CurrencyController {
 
   @Get()
   @ApiOperation({ summary: 'get all Currencies' })
-  async findAll(
-    @Query() { skip, limit, startId }: PaginationParams, // @Query('searchQuery') searchQuery?: string,
-  ) {
+  async findAll(@Query() { skip, limit, startId }: PaginationParams) {
     const searchQuery = '';
     return this.currencyService.findAll(skip, limit, startId, searchQuery);
   }

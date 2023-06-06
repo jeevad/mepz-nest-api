@@ -37,12 +37,6 @@ export class CurrencyService {
         }
       : {};
 
-    // if (searchQuery) {
-    //   filters.$text = {
-    //     $search: searchQuery,
-    //   };
-    // }
-
     const findQuery = this.CurrencyModel.find(filters)
       .sort({ _id: 1 })
       .skip(documentsToSkip);

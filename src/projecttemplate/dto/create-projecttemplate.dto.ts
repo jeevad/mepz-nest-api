@@ -17,10 +17,10 @@ export class CreateProjecttemplateDto {
   name: string;
 
   @ApiProperty({
-    type: Number,
+    type: String,
     description: 'This is a required property',
   })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   noOfBeds: string;
 

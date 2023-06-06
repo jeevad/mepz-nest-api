@@ -71,19 +71,92 @@ export class ProjectService {
     return this.ProjectModel.findByIdAndRemove(id);
   }
 
-  getDepartments(id: string) {
-    // mongoose.set('debug', true);
-    return this.ProjectModel.findById(id).select({ name: 1, _id: 0 });
-  }
-
   async addDepartment(
     projectId: string,
-    addProjectDepartmentDto: AddProjectDepartmentDto,
+    addProjectDepartmentDtos: AddProjectDepartmentDto[], // [] added
   ): Promise<any> {
-    return this.ProjectModel.updateOne(
+    // return this.ProjectModel.findOneAndUpdate(  // Old
+    return this.ProjectModel.findOneAndUpdate(
+      // Line Changes
       { _id: projectId },
-      { $push: { departments: addProjectDepartmentDto } },
+      // { $push: { departments: addProjectDepartmentDto } },  // Old
+      { $addToSet: { departments: { $each: addProjectDepartmentDtos } } }, //Line Changes
     );
+  }
+
+  //Old
+  // getDepartments(id: string) {
+  //   // mongoose.set('debug', true);
+  //   return this.ProjectModel.findById(id).select({ name: 1, _id: 0 });
+  // }
+
+  //Get Departments by projectID
+  async getDepartments(
+    projectId: string,
+    skip: number,
+    limit: number,
+    startId: string,
+    searchQuery: string,
+  ) {
+    const project = await this.ProjectModel.findById(projectId).select(
+      'departments',
+    );
+
+    if (!project) {
+      return null;
+    }
+
+    return {
+      departments: project.departments,
+    };
+  }
+
+  //Get Rooms by projectID
+  async getRooms(projectId: string) {
+    const project = await this.ProjectModel.findById(projectId)
+      .select('departments.rooms')
+      .populate('departments.rooms.equipments', 'name code');
+
+    if (!project) {
+      return null;
+    }
+
+    const departments = project.departments || [];
+    const rooms = departments.reduce((result, department) => {
+      return result.concat(department.rooms || []);
+    }, []);
+
+    return {
+      rooms: rooms.map((room) => ({
+        name: room.name,
+        code: room.code,
+        equipments: room.equipments || [],
+      })),
+    };
+  }
+
+  //Get Equipments by projectID
+  async getEquipments(projectId: string) {
+    const project = await this.ProjectModel.findById(projectId)
+      .select('departments.rooms.equipments')
+      .populate('departments.rooms.equipments', 'name code');
+
+    if (!project) {
+      return null;
+    }
+
+    const departments = project.departments || [];
+    const equipments = departments.reduce((result, department) => {
+      const rooms = department.rooms || [];
+      return result.concat(rooms.flatMap((room) => room.equipments || []));
+    }, []);
+
+    return {
+      equipments: equipments.map((equipment) => ({
+        name: equipment.name,
+        code: equipment.code,
+      })),
+    };
   }
 
   async addRoom(

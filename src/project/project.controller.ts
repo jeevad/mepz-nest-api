@@ -65,12 +65,49 @@ export class ProjectController {
   @ApiOperation({ summary: 'Add Department' })
   addDepartment(
     @Param('projectId') projectId: string,
-    @Body() addProjectDepartmentDto: AddProjectDepartmentDto,
+    @Body() addProjectDepartmentDto: AddProjectDepartmentDto[], // [] added
   ) {
     return this.projectService.addDepartment(
       projectId,
       addProjectDepartmentDto,
     );
+  }
+  //Old
+  // @Get('getDepartments/:id')
+  // @ApiOperation({ summary: 'get Project by id' })
+  // getDepartments(@Param('id') id: string) {
+  //   return this.projectService.getDepartments(id);
+  // }
+
+  //Get Departments by projectId
+  @Get('getDepartments/:projectId')
+  @ApiOperation({ summary: 'get departments by id' })
+  async getDepartments(
+    @Param('projectId') projectId: string,
+    @Query() { skip, limit, startId }: PaginationParams,
+  ) {
+    const searchQuery = '';
+    return this.projectService.getDepartments(
+      projectId,
+      skip,
+      limit,
+      startId,
+      searchQuery,
+    );
+  }
+
+  //Get Rooms by projectId 
+  @Get('getRooms/:projectId')
+  @ApiOperation({ summary: 'get rooms by project id' })
+  getRooms(@Param('projectId') projectId: string) {
+    return this.projectService.getRooms(projectId);
+  }
+
+  //Get Equipments by projectId
+  @Get('getEquipments/:projectId')
+  @ApiOperation({ summary: 'get equipments by project id' })
+  getEquipments(@Param('projectId') projectId: string) {
+    return this.projectService.getEquipments(projectId);
   }
 
   @Post('addRoom/:projectId/:departmentId')
@@ -101,11 +138,5 @@ export class ProjectController {
       roomId,
       addProjectRoomEquipmentDto,
     );
-  }
-
-  @Get('getDepartments/:id')
-  @ApiOperation({ summary: 'get Project by id' })
-  getDepartments(@Param('id') id: string) {
-    return this.projectService.getDepartments(id);
   }
 }

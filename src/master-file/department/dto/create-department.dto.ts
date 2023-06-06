@@ -5,6 +5,8 @@ import {
   IsNumber,
   MaxLength,
   MinLength,
+  isBoolean,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateDepartmentDto {
@@ -28,6 +30,7 @@ export class CreateDepartmentDto {
     type: Boolean,
     description: 'This is a required property',
   })
+  @IsBoolean()
   @IsNotEmpty()
   active: boolean;
 }

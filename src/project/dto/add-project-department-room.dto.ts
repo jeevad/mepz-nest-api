@@ -2,13 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class AddProjectDepartmentRoomDto {
-  @ApiProperty({
-    type: String,
-    description: 'This is a required property',
-  })
-  @IsString()
-  @IsNotEmpty()
-  roomId: string;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // roomId: string;
 
   @ApiProperty({
     type: String,
@@ -26,18 +26,18 @@ export class AddProjectDepartmentRoomDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({
-    type: String,
-    description: 'This is a required property',
-  })
-  @IsString()
-  @IsNotEmpty()
-  alias: string;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // alias: string;
 
-  @ApiProperty({
-    type: Boolean,
-    description: 'This is a required property',
-  })
-  @IsNotEmpty()
-  active: boolean;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsNotEmpty()
+  // active: boolean;
 }
