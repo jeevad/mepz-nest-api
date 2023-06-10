@@ -98,65 +98,139 @@ export class ProjectService {
     startId: string,
     searchQuery: string,
   ) {
-    const project = await this.ProjectModel.findById(projectId).select(
-      'departments',
-    );
+    // const results1 = await this.ProjectModel.findById(projectId).select(
+    //   'name departments',
+    // );
 
-    if (!project) {
-      return null;
-    }
-
-    return {
-      departments: project.departments,
-    };
+    const results = await this.ProjectModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: {
+            $map: {
+              input: '$departments',
+              as: 'dept',
+              in: {
+                deparmtentId: '$$dept.departmentId',
+                name: '$$dept.name',
+                code: '$$dept.code',
+              },
+            },
+          },
+        },
+      },
+    ]);
+    return { results };
   }
 
   //Get Rooms by projectID
-  async getRooms(projectId: string) {
-    const project = await this.ProjectModel.findById(projectId)
-      .select('departments.rooms')
-      .populate('departments.rooms.equipments', 'name code');
+  async getRooms(projectId: string, deptId: string) {
+    // mongoose.set('debug', true);
+    // const project = await this.ProjectModel.findOne({
+    //   _id: projectId,
+    //   // 'departments._id': deptId,
+    // })
+    //   .select('departments.rooms')
+    //   .populate('departments.rooms.equipments', 'name code');
 
-    if (!project) {
-      return null;
-    }
+    const results = await this.ProjectModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+      {
+        $match: {
+          'departments._id': new mongoose.Types.ObjectId(deptId),
+        },
+      },
+    ]);
+    return { results };
+    // const result = await this.ProjectModel.findOne(
+    //   {
+    //     _id: projectId,
+    //   },
+    //   {
+    //     code: 1,
+    //     name: 1,
+    //     departments: {
+    //       $elemMatch: {
+    //         _id: deptId,
+    //       },
+    //     },
+    //   },
+    // )
+    //   .select('departments.rooms')
+    //   .populate('departments.rooms.equipments', 'name code');
 
-    const departments = project.departments || [];
-    const rooms = departments.reduce((result, department) => {
-      return result.concat(department.rooms || []);
-    }, []);
+    // if (!project) {
+    //   return null;
+    // }
 
-    return {
-      rooms: rooms.map((room) => ({
-        name: room.name,
-        code: room.code,
-        equipments: room.equipments || [],
-      })),
-    };
+    // const departments = project.departments || [];
+    // const rooms = departments.reduce((result, department) => {
+    //   return result.concat(department.rooms || []);
+    // }, []);
+
+    // return {
+    //   rooms: rooms.map((room) => ({
+    //     name: room.name,
+    //     code: room.code,
+    //     equipments: room.equipments || [],
+    //   })),
+    // };
   }
 
   //Get Equipments by projectID
-  async getEquipments(projectId: string) {
-    const project = await this.ProjectModel.findById(projectId)
-      .select('departments.rooms.equipments')
-      .populate('departments.rooms.equipments', 'name code');
+  async getEquipments(projectId: string, deptId: string, roomId: string) {
+    // const project = await this.ProjectModel.findOne({
+    //   _id: projectId,
+    //   'departments._id': deptId,
+    //   'departments._id.rooms._id': roomId,
+    // })
+    //   .select('departments.rooms.equipments')
+    //   .populate('departments.rooms.equipments', 'name code');
 
-    if (!project) {
-      return null;
-    }
+    const results = await this.ProjectModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+      { $unwind: '$departments.rooms' },
+      {
+        $match: {
+          'departments.rooms._id': new mongoose.Types.ObjectId(roomId),
+        },
+      },
+    ]);
+    return { results };
+    // if (!project) {
+    //   return null;
+    // }
 
-    const departments = project.departments || [];
-    const equipments = departments.reduce((result, department) => {
-      const rooms = department.rooms || [];
-      return result.concat(rooms.flatMap((room) => room.equipments || []));
-    }, []);
+    // const departments = project.departments || [];
+    // const equipments = departments.reduce((result, department) => {
+    //   const rooms = department.rooms || [];
+    //   return result.concat(rooms.flatMap((room) => room.equipments || []));
+    // }, []);
 
-    return {
-      equipments: equipments.map((equipment) => ({
-        name: equipment.name,
-        code: equipment.code,
-      })),
-    };
+    // return {
+    //   equipments: equipments.map((equipment) => ({
+    //     name: equipment.name,
+    //     code: equipment.code,
+    //   })),
+    // };
   }
 
   async addRoom(

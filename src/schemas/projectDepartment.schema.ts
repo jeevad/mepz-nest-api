@@ -13,8 +13,8 @@ export class ProjectDepartment {
   @Transform(({ value }) => value.toString())
   _id: string;
 
-  // @Prop()
-  // departmentId: string;
+  @Prop()
+  departmentId: string;
   
   @Prop()
   name: string;

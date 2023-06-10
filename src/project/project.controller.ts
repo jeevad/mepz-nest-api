@@ -96,18 +96,25 @@ export class ProjectController {
     );
   }
 
-  //Get Rooms by projectId 
-  @Get('getRooms/:projectId')
+  //Get Rooms by projectId
+  @Get('getRooms/:projectId/:deptId')
   @ApiOperation({ summary: 'get rooms by project id' })
-  getRooms(@Param('projectId') projectId: string) {
-    return this.projectService.getRooms(projectId);
+  getRooms(
+    @Param('projectId') projectId: string,
+    @Param('deptId') deptId: string,
+  ) {
+    return this.projectService.getRooms(projectId, deptId);
   }
 
   //Get Equipments by projectId
-  @Get('getEquipments/:projectId')
+  @Get('getEquipments/:projectId/:deptId/:roomId')
   @ApiOperation({ summary: 'get equipments by project id' })
-  getEquipments(@Param('projectId') projectId: string) {
-    return this.projectService.getEquipments(projectId);
+  getEquipments(
+    @Param('projectId') projectId: string,
+    @Param('deptId') deptId: string,
+    @Param('roomId') roomId: string,
+  ) {
+    return this.projectService.getEquipments(projectId, deptId, roomId);
   }
 
   @Post('addRoom/:projectId/:departmentId')

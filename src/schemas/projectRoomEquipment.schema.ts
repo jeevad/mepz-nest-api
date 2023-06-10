@@ -9,8 +9,8 @@ export class ProjectRoomEquipment {
   @Transform(({ value }) => value.toString())
   _id: string;
 
-  // @Prop()
-  // equipmentId: string;
+  @Prop()
+  equipmentId: string;
 
   @Prop()
   name: string;
