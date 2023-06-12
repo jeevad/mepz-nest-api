@@ -72,12 +72,6 @@ export class ProjectController {
       addProjectDepartmentDto,
     );
   }
-  //Old
-  // @Get('getDepartments/:id')
-  // @ApiOperation({ summary: 'get Project by id' })
-  // getDepartments(@Param('id') id: string) {
-  //   return this.projectService.getDepartments(id);
-  // }
 
   //Get Departments by projectId
   @Get('getDepartments/:projectId')
@@ -117,6 +111,8 @@ export class ProjectController {
     return this.projectService.getEquipments(projectId, deptId, roomId);
   }
 
+
+  
   @Post('addRoom/:projectId/:departmentId')
   @ApiOperation({ summary: 'Add room' })
   addRoom(

@@ -135,7 +135,6 @@ export class ProjectService {
     // })
     //   .select('departments.rooms')
     //   .populate('departments.rooms.equipments', 'name code');
-
     const results = await this.ProjectModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       {

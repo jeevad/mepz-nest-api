@@ -18,8 +18,8 @@ export class ProjectRoomEquipment {
   // @Prop()
   // alias: string;
 
-  // @Prop()
-  // code: string;
+  @Prop()
+  code: string;
 
   // @Prop()
   // size: number;
