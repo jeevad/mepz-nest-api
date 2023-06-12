@@ -113,6 +113,7 @@ export class ProjectService {
               input: '$departments',
               as: 'dept',
               in: {
+                _id: '$$dept._id',
                 deparmtentId: '$$dept.departmentId',
                 name: '$$dept.name',
                 code: '$$dept.code',
