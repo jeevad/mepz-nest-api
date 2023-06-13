@@ -9,7 +9,7 @@ import {
 export type ProjectDepartmentDocument = ProjectDepartment & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class ProjectDepartment {
   @Transform(({ value }) => value.toString())

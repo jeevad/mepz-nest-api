@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type EquipmentSummaryDocument = EquipmentSummary & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class EquipmentSummary {
   @Prop({ required: true })

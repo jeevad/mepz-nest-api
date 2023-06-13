@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type AdmingroupDocument = Admingroup & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class Admingroup {
   @Prop({ required: true })
