@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type ProjecttemplateDocument = Projecttemplate & Document;
 
 @Schema({
-  timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
 })
 export class Projecttemplate {
   @Prop({ required: true })

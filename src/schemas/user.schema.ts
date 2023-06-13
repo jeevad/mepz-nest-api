@@ -13,7 +13,7 @@ export type UserDocument = User & Document;
     getters: true,
     virtuals: true,
   },
-  timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
 })
 export class User {
   @Transform(({ value }) => value.toString())

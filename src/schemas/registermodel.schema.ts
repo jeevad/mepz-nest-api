@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type RegistermodelDocument = Registermodel & Document;
 
 @Schema({
-  timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
 })
 export class Registermodel {
   @Prop({ required: true })

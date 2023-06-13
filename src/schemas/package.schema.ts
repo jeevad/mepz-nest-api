@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type PackageDocument = Package & Document;
 
 @Schema({
-  timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
 })
 export class Package {
   @Prop({ required: true })
