@@ -9,7 +9,7 @@ import { Type } from 'class-transformer';
 export type ProjectDocument = Project & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class Project {
   @Prop({ required: true })

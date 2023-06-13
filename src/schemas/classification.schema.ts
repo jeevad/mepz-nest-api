@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type ClassificationDocument = Classification & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class Classification {
   @Prop({ required: true })

@@ -5,7 +5,7 @@ import { Transform } from 'class-transformer';
 export type ProjectRoomEquipmentDocument = ProjectRoomEquipment & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class ProjectRoomEquipment {
   @Transform(({ value }) => value.toString())

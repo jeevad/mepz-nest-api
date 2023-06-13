@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type PastTransactionDocument = PastTransaction & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class PastTransaction {
   @Prop({ required: true })

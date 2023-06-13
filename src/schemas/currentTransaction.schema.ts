@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type CurrentTransactionDocument = CurrentTransaction & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class CurrentTransaction {
   @Prop({ required: true })

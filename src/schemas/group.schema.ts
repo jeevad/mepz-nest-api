@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type GroupDocument = Group & Document;
 
 @Schema({
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+  timestamps: true,
 })
 export class Group {
   @Prop({ required: true })
