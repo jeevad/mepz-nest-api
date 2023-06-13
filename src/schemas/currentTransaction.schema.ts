@@ -13,8 +13,8 @@ export class CurrentTransaction {
   @Prop({ required: true })
   code: string;
 
-  @Prop({ required: true })
-  alias: string;
+  // @Prop({ required: true })
+  // alias: string;
 
   @Prop({ required: true })
   level: string;

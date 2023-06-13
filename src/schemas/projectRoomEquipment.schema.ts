@@ -17,8 +17,8 @@ export class ProjectRoomEquipment {
   @Prop()
   name: string;
 
-  @Prop()
-  alias: string;
+  // @Prop()
+  // alias: string;
 
   @Prop()
   code: string;

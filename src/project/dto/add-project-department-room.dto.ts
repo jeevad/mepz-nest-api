@@ -26,13 +26,13 @@ export class AddProjectDepartmentRoomDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({
-    type: String,
-    description: 'This is a required property',
-  })
-  @IsString()
-  @IsNotEmpty()
-  alias: string;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // alias: string;
 
   // @ApiProperty({
   //   type: String,

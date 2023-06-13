@@ -24,13 +24,13 @@ export class CreateCurrentTransactionDto {
   @IsNotEmpty()
   code: string;
 
-  @ApiProperty({
-    type: String,
-    description: 'This is a required property',
-  })
-  @IsString()
-  @IsNotEmpty()
-  alias: string;
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // alias: string;
 
   @ApiProperty({
     type: String,
