@@ -33,13 +33,14 @@ export class AddProjectDepartmentDto {
   // @IsString()
   @IsNotEmpty()
   departmentId: string;
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
+  
+  @ApiProperty({
+    type: String,
+    description: 'This is a required property',
+  })
   // @IsString()
-  // @IsNotEmpty()
-  // alias: string;
+  @IsNotEmpty()
+  alias: string;
 
   // @ApiProperty({
   //   type: Boolean,
