@@ -84,6 +84,30 @@ export class ProjectService {
     );
   }
 
+  async updateDepartment(
+    projectId: string,
+    departmentId: string,
+    field: string,
+    value: string,
+  ): Promise<any> {
+    // mongoose.set('debug', true);
+    const res = await this.ProjectModel.updateOne(
+      { _id: projectId },
+      {
+        $set: {
+          [`departments.$[i].${field}`]: value,
+        },
+      },
+      {
+        arrayFilters: [
+          {
+            'i._id': departmentId,
+          },
+        ],
+      },
+    );
+    return res;
+  }
   //Old
   // getDepartments(id: string) {
   //   // mongoose.set('debug', true);

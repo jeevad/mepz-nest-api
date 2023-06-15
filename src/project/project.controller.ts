@@ -73,6 +73,23 @@ export class ProjectController {
     );
   }
 
+  // update selected department fields
+  @Post('updateDepartment/:projectId/:departmentId/:field/:value')
+  @ApiOperation({ summary: 'Update Department' })
+  updateDepartment( 
+    @Param('projectId') projectId: string,
+    @Param('departmentId') departmentId: string,
+    @Param('field') field: string,
+    @Param('value') value: string,
+  ) {
+    return this.projectService.updateDepartment(
+      projectId,
+      departmentId,
+      field,
+      value,
+    );
+  }
+
   //Get Departments by projectId
   @Get('getDepartments/:projectId')
   @ApiOperation({ summary: 'get departments by id' })
@@ -111,8 +128,6 @@ export class ProjectController {
     return this.projectService.getEquipments(projectId, deptId, roomId);
   }
 
-
-  
   @Post('addRoom/:projectId/:departmentId')
   @ApiOperation({ summary: 'Add room' })
   addRoom(
