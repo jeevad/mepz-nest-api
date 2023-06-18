@@ -24,6 +24,7 @@ import {
 import { AddProjectDepartmentDto } from './dto/add-project-department.dto';
 import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto';
 import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
+import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
 
 @Controller('project')
 @ApiTags('Project')
@@ -73,20 +74,16 @@ export class ProjectController {
     );
   }
 
-  // update selected department fields
-  @Post('updateDepartment/:projectId/:departmentId/:field/:value')
-  @ApiOperation({ summary: 'Update Department' })
-  updateDepartment( 
+  // update selected project fields
+  @Post('updateProjectFields/:projectId')
+  @ApiOperation({ summary: 'Update Project Fields' })
+  updateDepartment(
     @Param('projectId') projectId: string,
-    @Param('departmentId') departmentId: string,
-    @Param('field') field: string,
-    @Param('value') value: string,
+    @Body() updateProjectFieldDto: UpdateProjectFieldDto,
   ) {
     return this.projectService.updateDepartment(
       projectId,
-      departmentId,
-      field,
-      value,
+      updateProjectFieldDto,
     );
   }
 

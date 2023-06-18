@@ -7,6 +7,7 @@ import mongoose, { Model, FilterQuery } from 'mongoose';
 import { AddProjectDepartmentDto } from './dto/add-project-department.dto';
 import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
 import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto';
+import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
 
 @Injectable()
 export class ProjectService {
@@ -86,28 +87,99 @@ export class ProjectService {
 
   async updateDepartment(
     projectId: string,
+    updateProjectFieldDto: UpdateProjectFieldDto,
+  ): Promise<any> {
+    mongoose.set('debug', true);
+
+    let match: any = { _id: projectId };
+    let update = {};
+    let arrFilter: any = [];
+    switch (updateProjectFieldDto.type) {
+      case 'department':
+        update = {
+          [`departments.$[i].${updateProjectFieldDto.field}`]:
+            updateProjectFieldDto.value,
+        };
+        arrFilter[0] = {
+          'i._id': updateProjectFieldDto.departmentId,
+        };
+        break;
+      case 'room':
+        match = {
+          ...match,
+          'departments._id': updateProjectFieldDto.departmentId,
+        };
+        update = {
+          [`departments.$.rooms.$[j].${updateProjectFieldDto.field}`]:
+            updateProjectFieldDto.value,
+        };
+        arrFilter.push = {
+          // 'i._id': updateProjectFieldDto.departmentId,
+          'j._id': updateProjectFieldDto.roomId,
+        };
+        break;
+      case 'equipment':
+        // match = {
+        //   ...match,
+        //   'departments._id': updateProjectFieldDto.departmentId,
+        //   // 'departments._id.rooms._id': updateProjectFieldDto.roomId,
+        //   // 'departments._id.rooms._id': updateProjectFieldDto.roomId,
+        //   // departments: {
+        //   //   $elemMatch: {
+        //   //     _id: projectId,
+        //   //     'departments._id': updateProjectFieldDto.departmentId,
+        //   //   },
+        //   // },
+        // };
+        update = {
+          [`departments.$[i].rooms.$[j].equipments.${updateProjectFieldDto.equipmentIndex}.${updateProjectFieldDto.field}`]:
+            updateProjectFieldDto.value,
+        };
+        arrFilter = [
+          { 'i._id': updateProjectFieldDto.departmentId },
+          { 'j._id': updateProjectFieldDto.roomId },
+        ];
+        break;
+    }
+    // console.log('update', update);
+    // return false;
+
+    const res = await this.ProjectModel.updateOne(
+      match,
+      {
+        $set: update,
+      },
+      {
+        arrayFilters: arrFilter,
+      },
+    );
+    return res;
+  }
+
+  async deleteDepartment(
+    projectId: string,
     departmentId: string,
     field: string,
     value: string,
   ): Promise<any> {
     // mongoose.set('debug', true);
-    const res = await this.ProjectModel.updateOne(
-      { _id: projectId },
+
+    const res = await this.ProjectModel.findOneAndUpdate(
       {
-        $set: {
-          [`departments.$[i].${field}`]: value,
-        },
+        _id: projectId,
       },
-      {
-        arrayFilters: [
-          {
-            'i._id': departmentId,
-          },
-        ],
-      },
+      // { $pull: { "models.$[e1].reviews": { _id: req.params._id } } },
+      // {
+      //   arrayFilters: [
+      //     { "e1.name": req.params.model },
+      //     { "e2._id": req.params._id },
+      //   ],
+      // }
     );
+
     return res;
   }
+
   //Old
   // getDepartments(id: string) {
   //   // mongoose.set('debug', true);
