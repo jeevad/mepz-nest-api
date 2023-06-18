@@ -202,6 +202,8 @@ export class ProjectService {
                 deparmtentId: '$$dept.departmentId',
                 name: '$$dept.name',
                 code: '$$dept.code',
+                alias: '$$dept.alias',
+                level: '$$dept.level',
               },
             },
           },

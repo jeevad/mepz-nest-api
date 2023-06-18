@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProjectFieldDto {
   @ApiProperty({
@@ -20,16 +20,17 @@ export class UpdateProjectFieldDto {
 
   @ApiProperty({
     type: String,
-    description: 'This is a required property',
   })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   roomId: string;
 
   @ApiProperty({
     type: Number,
     description: 'This is a required property',
   })
+  @IsOptional()
   @IsNumber()
   // @IsNotEmpty()
   equipmentIndex: number;

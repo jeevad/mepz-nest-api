@@ -23,8 +23,14 @@ export class ProjectRoomEquipment {
   @Prop()
   code: string;
 
-  // @Prop()
-  // size: number;
+  @Prop()
+  apq: number;
+
+  @Prop()
+  fpq: number;
+
+  @Prop()
+  quantity: number;
 
   // @Prop()
   // active: boolean;

@@ -17,12 +17,15 @@ export class ProjectDepartment {
 
   @Prop()
   departmentId: string;
-  
+
   @Prop()
   name: string;
 
-  // @Prop()
-  // alias: string;
+  @Prop()
+  alias: string;
+
+  @Prop()
+  level: string;
 
   @Prop()
   code: string;
