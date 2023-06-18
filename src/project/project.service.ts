@@ -8,6 +8,7 @@ import { AddProjectDepartmentDto } from './dto/add-project-department.dto';
 import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
 import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto';
 import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
+import { PaginationParams } from 'src/utils/paginationParams';
 
 @Injectable()
 export class ProjectService {
@@ -251,6 +252,50 @@ export class ProjectService {
         },
       },
     ];
+    const results = await this.ProjectModel.aggregate(pipeline);
+    return { results };
+  }
+  //Get Equipments by projectID
+  async getProjectEquipments(
+    projectId: string,
+    paginationParams: PaginationParams,
+  ) {
+    const pipeline: any = [
+      { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+      { $unwind: '$departments.rooms' },
+      // { $unwind: '$departments.rooms.equipments' },
+      {
+        $unwind: {
+          path: '$departments.rooms.equipments',
+          includeArrayIndex: 'arrayIndex',
+        },
+      },
+      // { $sort: { 'departments.rooms.equipments.name': -1 } },
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }, { $addFields: { page: 3 } }],
+          data: [
+            { $skip: paginationParams.skip },
+            { $limit: paginationParams.limit },
+          ], // add projection here wish you re-shape the docs
+        },
+      },
+    ];
+    // if (roomId) {
+    //   pipeline.push({
+    //     $match: {
+    //       'departments.rooms._id': new mongoose.Types.ObjectId(roomId),
+    //     },
+    //   });
+    // }
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }

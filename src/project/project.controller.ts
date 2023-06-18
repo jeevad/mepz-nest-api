@@ -125,6 +125,21 @@ export class ProjectController {
     return this.projectService.getEquipments(projectId, deptId, roomId);
   }
 
+  //Get Equipments by projectId
+  @Get('getProjectEquipments/:projectId')
+  @ApiOperation({ summary: 'get equipments by project id' })
+  getProjectEquipments(
+    @Param('projectId') projectId: string,
+    @Query() paginationParams: PaginationParams,
+  ) {
+    const deptId = '';
+    const roomId = '';
+    return this.projectService.getProjectEquipments(
+      projectId,
+      paginationParams,
+    );
+  }
+
   @Post('addRoom/:projectId/:departmentId')
   @ApiOperation({ summary: 'Add room' })
   addRoom(
