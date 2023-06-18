@@ -234,7 +234,7 @@ export class ProjectService {
 
   //Get Equipments by projectID
   async getEquipments(projectId: string, deptId: string, roomId: string) {
-    const results = await this.ProjectModel.aggregate([
+    const pipeline = [
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       {
         $project: {
@@ -250,7 +250,8 @@ export class ProjectService {
           'departments.rooms._id': new mongoose.Types.ObjectId(roomId),
         },
       },
-    ]);
+    ];
+    const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
 

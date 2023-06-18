@@ -27,7 +27,7 @@ export class UpdateProjectFieldDto {
   roomId: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsNumber()
