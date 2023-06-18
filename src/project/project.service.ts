@@ -113,24 +113,12 @@ export class ProjectService {
           [`departments.$.rooms.$[j].${updateProjectFieldDto.field}`]:
             updateProjectFieldDto.value,
         };
-        arrFilter.push = {
-          // 'i._id': updateProjectFieldDto.departmentId,
-          'j._id': updateProjectFieldDto.roomId,
-        };
+        arrFilter = [
+          // { 'i._id': updateProjectFieldDto.departmentId },
+          { 'j._id': updateProjectFieldDto.roomId },
+        ];
         break;
       case 'equipment':
-        // match = {
-        //   ...match,
-        //   'departments._id': updateProjectFieldDto.departmentId,
-        //   // 'departments._id.rooms._id': updateProjectFieldDto.roomId,
-        //   // 'departments._id.rooms._id': updateProjectFieldDto.roomId,
-        //   // departments: {
-        //   //   $elemMatch: {
-        //   //     _id: projectId,
-        //   //     'departments._id': updateProjectFieldDto.departmentId,
-        //   //   },
-        //   // },
-        // };
         update = {
           [`departments.$[i].rooms.$[j].equipments.${updateProjectFieldDto.equipmentIndex}.${updateProjectFieldDto.field}`]:
             updateProjectFieldDto.value,
@@ -225,12 +213,6 @@ export class ProjectService {
   //Get Rooms by projectID
   async getRooms(projectId: string, deptId: string) {
     // mongoose.set('debug', true);
-    // const project = await this.ProjectModel.findOne({
-    //   _id: projectId,
-    //   // 'departments._id': deptId,
-    // })
-    //   .select('departments.rooms')
-    //   .populate('departments.rooms.equipments', 'name code');
     const results = await this.ProjectModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       {
@@ -248,51 +230,10 @@ export class ProjectService {
       },
     ]);
     return { results };
-    // const result = await this.ProjectModel.findOne(
-    //   {
-    //     _id: projectId,
-    //   },
-    //   {
-    //     code: 1,
-    //     name: 1,
-    //     departments: {
-    //       $elemMatch: {
-    //         _id: deptId,
-    //       },
-    //     },
-    //   },
-    // )
-    //   .select('departments.rooms')
-    //   .populate('departments.rooms.equipments', 'name code');
-
-    // if (!project) {
-    //   return null;
-    // }
-
-    // const departments = project.departments || [];
-    // const rooms = departments.reduce((result, department) => {
-    //   return result.concat(department.rooms || []);
-    // }, []);
-
-    // return {
-    //   rooms: rooms.map((room) => ({
-    //     name: room.name,
-    //     code: room.code,
-    //     equipments: room.equipments || [],
-    //   })),
-    // };
   }
 
   //Get Equipments by projectID
   async getEquipments(projectId: string, deptId: string, roomId: string) {
-    // const project = await this.ProjectModel.findOne({
-    //   _id: projectId,
-    //   'departments._id': deptId,
-    //   'departments._id.rooms._id': roomId,
-    // })
-    //   .select('departments.rooms.equipments')
-    //   .populate('departments.rooms.equipments', 'name code');
-
     const results = await this.ProjectModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       {
@@ -311,22 +252,6 @@ export class ProjectService {
       },
     ]);
     return { results };
-    // if (!project) {
-    //   return null;
-    // }
-
-    // const departments = project.departments || [];
-    // const equipments = departments.reduce((result, department) => {
-    //   const rooms = department.rooms || [];
-    //   return result.concat(rooms.flatMap((room) => room.equipments || []));
-    // }, []);
-
-    // return {
-    //   equipments: equipments.map((equipment) => ({
-    //     name: equipment.name,
-    //     code: equipment.code,
-    //   })),
-    // };
   }
 
   async addRoom(
