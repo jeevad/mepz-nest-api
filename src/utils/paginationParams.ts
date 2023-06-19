@@ -3,7 +3,6 @@ import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PaginationParams {
-  
   // @ApiProperty()
   @IsOptional()
   @IsMongoId()

@@ -25,6 +25,7 @@ import { AddProjectDepartmentDto } from './dto/add-project-department.dto';
 import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto';
 import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
 import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
+import { FilterEquipmentDto } from './dto/filter-equipment.dto';
 
 @Controller('project')
 @ApiTags('Project')
@@ -42,12 +43,6 @@ export class ProjectController {
   findAll(@Query() { skip, limit, startId }: PaginationParams) {
     const searchQuery = '';
     return this.projectService.findAll(skip, limit, startId, searchQuery);
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: 'get Projects by id' })
-  findOne(@Param('id') id: string) {
-    return this.projectService.findOne(id);
   }
 
   @Patch(':id')
@@ -140,6 +135,21 @@ export class ProjectController {
     );
   }
 
+  @Get('getAllEquipments')
+  @ApiOperation({ summary: 'get all equipments' })
+  getAllEquipments(
+    @Query() paginationParams: PaginationParams,
+    // @Query() filterParams: FilterParams,
+    @Query() filterEquipmentDto: FilterEquipmentDto,
+  ) {
+    console.log('filterEquipmentDto', filterEquipmentDto);
+    // return 'test';
+    return this.projectService.getAllEquipments(
+      filterEquipmentDto,
+      paginationParams,
+    );
+  }
+
   @Post('addRoom/:projectId/:departmentId')
   @ApiOperation({ summary: 'Add room' })
   addRoom(
@@ -168,5 +178,11 @@ export class ProjectController {
       roomId,
       addProjectRoomEquipmentDto,
     );
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'get Projects by id' })
+  findOne(@Param('id') id: string) {
+    return this.projectService.findOne(id);
   }
 }

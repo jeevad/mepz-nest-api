@@ -28,7 +28,6 @@ export class UpdateProjectFieldDto {
 
   @ApiProperty({
     type: Number,
-    description: 'This is a required property',
   })
   @IsOptional()
   @IsNumber()
