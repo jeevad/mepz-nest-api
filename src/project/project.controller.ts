@@ -161,10 +161,6 @@ export class ProjectController {
       paginationParams,
     );
     return results;
-    let depts = [];
-    results.forEach((element) => {
-      depts = [...depts, ...element.departments];
-    });
   }
 
   //Get Rooms by projectId

@@ -352,24 +352,41 @@ export class ProjectService {
     });
     const pipeline: any = [
       { $match: { _id: { $in: projectId } } },
+      { $unwind: '$departments' },
+      { $unwind: '$departments.rooms' },
       {
-        $project: {
-          name: 1,
-          code: 1,
-          departments: 1,
+        $facet: {
+          metadata: [{ $count: 'total' }, { $addFields: { page: 1 } }],
+          data: [
+            {
+              $project: {
+                name: 1,
+                code: 1,
+                'departments.code': '$departments.code',
+                'departments.name': '$departments.name',
+                'departments._id': '$departments._id',
+                'departments.departmentId': '$departments.departmentId',
+                'departments.rooms.code': '$departments.rooms.code',
+                'departments.rooms.name': '$departments.rooms.name',
+                'departments.rooms._id': '$departments.rooms._id',
+                'departments.rooms.roomId': '$departments.rooms.roomId',
+              },
+            },
+            { $skip: paginationParams.skip },
+            { $limit: paginationParams.limit },
+          ], // add projection here wish you re-shape the docs
         },
       },
-      { $unwind: '$departments' },
     ];
-    if (filterEquipmentDto.departmentId) {
-      pipeline.push({
-        $match: {
-          'departments._id': new mongoose.Types.ObjectId(
-            filterEquipmentDto.departmentId,
-          ),
-        },
-      });
-    }
+    // if (filterEquipmentDto.departmentId) {
+    //   pipeline.push({
+    //     $match: {
+    //       'departments._id': new mongoose.Types.ObjectId(
+    //         filterEquipmentDto.departmentId,
+    //       ),
+    //     },
+    //   });
+    // }
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
@@ -423,11 +440,115 @@ export class ProjectService {
     pipeline = [
       ...pipeline,
       { $unwind: '$departments.rooms.equipments' },
+      // {
+      //   $group: {
+      //     _id: '$departments.rooms.equipments.equipmentId',
+      //     code: { $first: '$departments.rooms.equipments.code' },
+      //     name: { $first: '$departments.rooms.equipments.name' },
+      //     room_code: { $first: '$departments.rooms.code' },
+      //     room_name: { $first: '$departments.rooms.name' },
+      //   },
+      // },
+    ];
+
+    if (filterEquipmentDto.searchInput) {
+      pipeline.push({
+        $match: {
+          $or: [
+            {
+              'departments.rooms.equipments.code':
+                filterEquipmentDto.searchInput,
+            },
+            {
+              'departments.rooms.equipments.name':
+                filterEquipmentDto.searchInput,
+            },
+          ],
+        },
+      });
+    }
+    pipeline = [
+      ...pipeline,
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }, { $addFields: { page: 1 } }],
+          data: [
+            {
+              $project: {
+                _id: '$departments.rooms.equipments.equipmentId',
+                code: '$departments.rooms.equipments.code',
+                name: '$departments.rooms.equipments.name',
+                room_code: '$departments.rooms.code',
+                room_name: '$departments.rooms.name',
+              },
+            },
+            { $skip: paginationParams.skip },
+            { $limit: paginationParams.limit },
+          ], // add projection here wish you re-shape the docs
+        },
+      },
+    ];
+
+    const results = await this.ProjectModel.aggregate(pipeline);
+    return { results };
+  }
+
+  async getAllEquipments_unique(
+    filterEquipmentDto: FilterEquipmentDto,
+    paginationParams: PaginationParams,
+  ) {
+    mongoose.set('debug', true);
+    const projectId = filterEquipmentDto.projectId.map((item) => {
+      return new mongoose.Types.ObjectId(item);
+    });
+    let pipeline: any = [
+      {
+        $match: {
+          _id: { $in: projectId },
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+
+      // { $sort: { 'departments.rooms.equipments.name': -1 } },
+    ];
+
+    if (filterEquipmentDto.departmentId) {
+      pipeline.push({
+        $match: {
+          'departments._id': new mongoose.Types.ObjectId(
+            filterEquipmentDto.departmentId,
+          ),
+        },
+      });
+    }
+    pipeline = [...pipeline, { $unwind: '$departments.rooms' }];
+    if (filterEquipmentDto.roomId) {
+      pipeline.push({
+        $match: {
+          'departments.rooms._id': new mongoose.Types.ObjectId(
+            filterEquipmentDto.roomId,
+          ),
+        },
+      });
+    }
+
+    pipeline = [
+      ...pipeline,
+      { $unwind: '$departments.rooms.equipments' },
       {
         $group: {
           _id: '$departments.rooms.equipments.equipmentId',
           code: { $first: '$departments.rooms.equipments.code' },
           name: { $first: '$departments.rooms.equipments.name' },
+          room_code: { $first: '$departments.rooms.code' },
+          room_name: { $first: '$departments.rooms.name' },
         },
       },
     ];

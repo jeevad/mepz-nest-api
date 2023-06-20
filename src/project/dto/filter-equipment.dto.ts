@@ -12,7 +12,7 @@ export class FilterEquipmentDto {
   @IsOptional()
   projectId: string[];
 
-  @ApiProperty({ type: String })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
   departmentId?: string;
 
