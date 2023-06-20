@@ -217,7 +217,7 @@ export class ProjectService {
   //Get Rooms by projectID
   async getRooms(projectId: string, deptId: string) {
     // mongoose.set('debug', true);
-    const results = await this.ProjectModel.aggregate([
+    const pipeline: any = [
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       {
         $project: {
@@ -227,12 +227,15 @@ export class ProjectService {
         },
       },
       { $unwind: '$departments' },
-      {
+    ];
+    if (deptId) {
+      pipeline.push({
         $match: {
           'departments._id': new mongoose.Types.ObjectId(deptId),
         },
-      },
-    ]);
+      });
+    }
+    const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
 
@@ -303,6 +306,73 @@ export class ProjectService {
     return { results };
   }
 
+  //Get Departments by projectID
+  async getAllDepartments(
+    filterEquipmentDto: FilterEquipmentDto,
+    paginationParams: PaginationParams,
+  ) {
+    const projectId = filterEquipmentDto.projectId.map((item) => {
+      return new mongoose.Types.ObjectId(item);
+    });
+
+    const results = await this.ProjectModel.aggregate([
+      { $match: { _id: { $in: projectId } } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: {
+            $map: {
+              input: '$departments',
+              as: 'dept',
+              in: {
+                _id: '$$dept._id',
+                deparmtentId: '$$dept.departmentId',
+                name: '$$dept.name',
+                code: '$$dept.code',
+                alias: '$$dept.alias',
+                level: '$$dept.level',
+              },
+            },
+          },
+        },
+      },
+    ]);
+    return { results };
+  }
+
+  //Get Rooms by projectID
+  async getAllRooms(
+    filterEquipmentDto: FilterEquipmentDto,
+    paginationParams: PaginationParams,
+  ) {
+    // mongoose.set('debug', true);
+    const projectId = filterEquipmentDto.projectId.map((item) => {
+      return new mongoose.Types.ObjectId(item);
+    });
+    const pipeline: any = [
+      { $match: { _id: { $in: projectId } } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+    ];
+    if (filterEquipmentDto.departmentId) {
+      pipeline.push({
+        $match: {
+          'departments._id': new mongoose.Types.ObjectId(
+            filterEquipmentDto.departmentId,
+          ),
+        },
+      });
+    }
+    const results = await this.ProjectModel.aggregate(pipeline);
+    return { results };
+  }
   //Get Equipments by projectID
   async getAllEquipments(
     filterEquipmentDto: FilterEquipmentDto,

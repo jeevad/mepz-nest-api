@@ -139,12 +139,42 @@ export class ProjectController {
   @ApiOperation({ summary: 'get all equipments' })
   getAllEquipments(
     @Query() paginationParams: PaginationParams,
-    // @Query() filterParams: FilterParams,
     @Query() filterEquipmentDto: FilterEquipmentDto,
   ) {
     console.log('filterEquipmentDto', filterEquipmentDto);
     // return 'test';
     return this.projectService.getAllEquipments(
+      filterEquipmentDto,
+      paginationParams,
+    );
+  }
+
+  //Get Departments by projectId
+  @Get('getAllDepartments')
+  @ApiOperation({ summary: 'get departments by id' })
+  async getAllDepartments(
+    @Query() paginationParams: PaginationParams,
+    @Query() filterEquipmentDto: FilterEquipmentDto,
+  ) {
+    const results: any = await this.projectService.getAllDepartments(
+      filterEquipmentDto,
+      paginationParams,
+    );
+    return results;
+    let depts = [];
+    results.forEach((element) => {
+      depts = [...depts, ...element.departments];
+    });
+  }
+
+  //Get Rooms by projectId
+  @Get('getAllRooms')
+  @ApiOperation({ summary: 'get rooms by project id' })
+  getAllRooms(
+    @Query() paginationParams: PaginationParams,
+    @Query() filterEquipmentDto: FilterEquipmentDto,
+  ) {
+    return this.projectService.getAllRooms(
       filterEquipmentDto,
       paginationParams,
     );
