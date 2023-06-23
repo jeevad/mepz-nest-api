@@ -20,7 +20,7 @@ export class EquipmentBrand {
   countryOfOrigin: string;
 
   @Prop({ required: true })
-  unitPrice: string;
+  unitPrice: number;
 
   @Prop({ required: true })
   contactPerson: string;

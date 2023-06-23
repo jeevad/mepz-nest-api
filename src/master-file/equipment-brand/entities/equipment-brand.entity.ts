@@ -3,7 +3,7 @@ export class EquipmentBrand {
   brand: string;
   model: string;
   countryOfOrigin: string;
-  unitPrice: string;
+  unitPrice: number;
   contactPerson: string;
   email: string;
   created: Date;

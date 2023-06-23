@@ -46,7 +46,7 @@ export class CreateEquipmentBrandDto {
   })
   @IsString()
   @IsNotEmpty()
-  unitPrice: string;
+  unitPrice: number;
 
   @ApiProperty({
     type: String,
