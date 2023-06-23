@@ -45,6 +45,9 @@ export class Project {
   @Prop({ required: true })
   signature2: string;
 
+  // @Prop({ required: true })
+  // isDeleted: boolean;
+
   @Prop({ type: [ProjectDepartmentSchema] })
   @Type(() => ProjectDepartment)
   departments: ProjectDepartment[];

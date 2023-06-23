@@ -32,8 +32,9 @@ export class ProjectRoomEquipment {
   @Prop()
   quantity: number;
 
-  // @Prop()
-  // active: boolean;
+  // @Prop({ required: true })
+  // isDeleted: boolean;
+
 }
 
 export const ProjectRoomEquipmentSchema =

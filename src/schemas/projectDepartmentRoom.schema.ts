@@ -33,6 +33,9 @@ export class ProjectDepartmentRoom {
   @Prop()
   active: boolean;
 
+  @Prop({ required: true })
+  isDeleted: boolean;
+
   @Prop({ type: [ProjectRoomEquipmentSchema] })
   @Type(() => ProjectRoomEquipment)
   equipments: ProjectRoomEquipment[];
