@@ -5,6 +5,7 @@ import {
   IsNumber,
   MaxLength,
   MinLength,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateProjectDto {
@@ -95,4 +96,12 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   signature2: string;
+
+  @ApiProperty({
+    type: Boolean,
+    description: 'This is a required property',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isTemplate: boolean;
 }

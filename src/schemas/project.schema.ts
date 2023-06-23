@@ -48,6 +48,9 @@ export class Project {
   // @Prop({ required: true })
   // isDeleted: boolean;
 
+  @Prop({ required: true })
+  isTemplate: boolean;
+
   @Prop({ type: [ProjectDepartmentSchema] })
   @Type(() => ProjectDepartment)
   departments: ProjectDepartment[];

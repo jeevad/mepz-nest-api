@@ -24,32 +24,29 @@ export class ProjectService {
     return Project.save();
   }
 
-  async findAll(
-    documentsToSkip = 0,
-    limitOfDocuments?: number,
-    startId?: string,
-    searchQuery?: string,
-  ) {
-    const filters: FilterQuery<ProjectDocument> = startId
+  async findAll(paginationParams: PaginationParams, projectType) {
+    mongoose.set('debug', true);
+    const filters: FilterQuery<ProjectDocument> = paginationParams.startId
       ? {
           _id: {
-            $gt: startId,
+            $gt: paginationParams.startId,
           },
         }
       : {};
-
-    // if (searchQuery) {
-    //   filters.$text = {
-    //     $search: searchQuery,
-    //   };
-    // }
+    filters.isTemplate = projectType === 'template';
+    if (paginationParams.searchQuery) {
+      filters.$text = {
+        $search: paginationParams.searchQuery,
+      };
+    }
 
     const findQuery = this.ProjectModel.find(filters)
+      .select({ departments: 0 })
       .sort({ _id: 1 })
-      .skip(documentsToSkip);
+      .skip(paginationParams.skip);
 
-    if (limitOfDocuments) {
-      findQuery.limit(limitOfDocuments);
+    if (paginationParams.limit) {
+      findQuery.limit(paginationParams.limit);
     }
 
     const results = await findQuery;

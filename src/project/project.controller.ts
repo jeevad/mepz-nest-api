@@ -40,9 +40,13 @@ export class ProjectController {
 
   @Get()
   @ApiOperation({ summary: 'get all Projects' })
-  findAll(@Query() { skip, limit, startId }: PaginationParams) {
+  findAll(
+    // @Query() { skip, limit, startId }: PaginationParams,
+    @Query() paginationParams: PaginationParams,
+    @Query('projectType') projectType: string,
+  ) {
     const searchQuery = '';
-    return this.projectService.findAll(skip, limit, startId, searchQuery);
+    return this.projectService.findAll(paginationParams, projectType);
   }
 
   @Patch(':id')

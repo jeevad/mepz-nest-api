@@ -1,12 +1,17 @@
 import { IsNumber, IsMongoId, Min, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PaginationParams {
   // @ApiProperty()
   @IsOptional()
   @IsMongoId()
   startId?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsMongoId()
+  searchQuery?: string;
 
   @ApiProperty({
     minimum: 0,
