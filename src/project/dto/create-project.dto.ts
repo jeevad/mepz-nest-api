@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsString,
@@ -6,6 +6,8 @@ import {
   MaxLength,
   MinLength,
   IsBoolean,
+  ValidateIf,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateProjectDto {
@@ -13,6 +15,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   code: string;
@@ -29,6 +32,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   fullName: string;
@@ -37,6 +41,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   clientOwner: string;
@@ -45,6 +50,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   contractNo: string;
@@ -77,6 +83,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   company: string;
@@ -85,6 +92,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   signature1: string;
@@ -93,6 +101,7 @@ export class CreateProjectDto {
     type: String,
     description: 'This is a required property',
   })
+  @ValidateIf((o) => !o.isTemplate)
   @IsString()
   @IsNotEmpty()
   signature2: string;
@@ -104,4 +113,11 @@ export class CreateProjectDto {
   @IsBoolean()
   @IsNotEmpty()
   isTemplate: boolean;
+
+  @ApiPropertyOptional({
+    type: String,
+  })
+  @IsOptional()
+  @IsString()
+  remarks: string;
 }

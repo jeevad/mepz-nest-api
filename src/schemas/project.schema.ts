@@ -12,19 +12,20 @@ export type ProjectDocument = Project & Document;
   timestamps: true,
 })
 export class Project {
-  @Prop({ required: true })
+  @Prop()
+  // { required: true }
   code: string;
 
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop()
   fullName: string;
 
-  @Prop({ required: true })
+  @Prop()
   clientOwner: string;
 
-  @Prop({ required: true })
+  @Prop()
   contractNo: string;
 
   @Prop({ required: true })
@@ -36,13 +37,13 @@ export class Project {
   @Prop({ required: true })
   type: string;
 
-  @Prop({ required: true })
+  @Prop()
   company: string;
 
-  @Prop({ required: true })
+  @Prop()
   signature1: string;
 
-  @Prop({ required: true })
+  @Prop()
   signature2: string;
 
   // @Prop({ required: true })
