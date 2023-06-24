@@ -9,6 +9,7 @@ import {
   ValidateIf,
   IsOptional,
 } from 'class-validator';
+import { AddProjectDepartmentDto } from './add-project-department.dto';
 
 export class CreateProjectDto {
   @ApiProperty({
@@ -120,4 +121,11 @@ export class CreateProjectDto {
   @IsOptional()
   @IsString()
   remarks: string;
+
+  @ApiPropertyOptional({
+    type: [AddProjectDepartmentDto],
+    description: 'This is a required property',
+  })
+  @IsOptional()
+  departments: AddProjectDepartmentDto[];
 }

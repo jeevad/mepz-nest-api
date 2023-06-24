@@ -42,7 +42,7 @@ export class ProjectService {
 
     const findQuery = this.ProjectModel.find(filters)
       .select({ departments: 0 })
-      .sort({ _id: 1 })
+      .sort({ _id: -1 })
       .skip(paginationParams.skip);
 
     if (paginationParams.limit) {
@@ -50,7 +50,7 @@ export class ProjectService {
     }
 
     const results = await findQuery;
-    const count = await this.ProjectModel.count();
+    const count = await this.ProjectModel.count(filters);
 
     return { results, count };
   }
@@ -453,12 +453,14 @@ export class ProjectService {
         $match: {
           $or: [
             {
-              'departments.rooms.equipments.code':
-                filterEquipmentDto.searchInput,
+              'departments.rooms.equipments.code': {
+                $regex: new RegExp(filterEquipmentDto.searchInput, 'i'),
+              },
             },
             {
-              'departments.rooms.equipments.name':
-                filterEquipmentDto.searchInput,
+              'departments.rooms.equipments.name': {
+                $regex: new RegExp(filterEquipmentDto.searchInput, 'i'),
+              },
             },
           ],
         },

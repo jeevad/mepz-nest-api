@@ -30,7 +30,7 @@ export class ProjectDepartment {
   @Prop()
   code: string;
 
-  @Prop({ required: true })
+  @Prop()
   isDeleted: boolean;
 
   @Prop({ type: [ProjectDepartmentRoomSchema] })
