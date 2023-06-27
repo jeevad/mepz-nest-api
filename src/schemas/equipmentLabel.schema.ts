@@ -2,10 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Transform } from 'class-transformer';
 
-export type EEquipmentLabelUpdationDocument = EquipmentLabelUpdation & Document;
+export type EquipmentLabelDocument = EquipmentLabel & Document;
 
 @Schema()
-export class EquipmentLabelUpdation {
+export class EquipmentLabel {
   @Transform(({ value }) => value.toString())
   _id: string;
 
@@ -19,6 +19,5 @@ export class EquipmentLabelUpdation {
   label: string;
 }
 
-export const EquipmentLabelUpdationSchema = SchemaFactory.createForClass(
-  EquipmentLabelUpdation,
-);
+export const EquipmentLabelSchema =
+  SchemaFactory.createForClass(EquipmentLabel);

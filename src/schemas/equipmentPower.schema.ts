@@ -2,16 +2,16 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Transform } from 'class-transformer';
 
-export type EquipmentPowerRequirementDocument = EquipmentPowerRequirement &
+export type EquipmentPowerDocument = EquipmentPower &
   Document;
 
 @Schema()
-export class EquipmentPowerRequirement {
+export class EquipmentPower {
   @Transform(({ value }) => value.toString())
   _id: string;
 
   @Prop()
-  heatDissipation: string;
+  heatDissipationPower: string;
 
   @Prop()
   data: string;
@@ -74,9 +74,9 @@ export class EquipmentPowerRequirement {
   fileThree: string;
 
   @Prop()
-  powerRequirementRemarks: string;
+  powerRemarks: string;
 }
 
-export const EquipmentPowerRequirementSchema = SchemaFactory.createForClass(
-  EquipmentPowerRequirement,
+export const EquipmentPowerSchema = SchemaFactory.createForClass(
+  EquipmentPower,
 );

@@ -6,6 +6,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { EquipmentPackageDto } from './equipment-package.dto';
+import { EquipmentPowerDto } from './equipment-power.dto';
+import { EquipmentlabelDto } from './equipment-label.dto';
 
 export class CreateEquipmentDto {
   @ApiProperty({
@@ -52,7 +55,6 @@ export class CreateEquipmentDto {
     type: String,
     description: 'This is a required property',
   })
-  // @IsString()
   @IsNotEmpty()
   ictPort: string;
 
@@ -60,7 +62,47 @@ export class CreateEquipmentDto {
     type: String,
     description: 'This is a required property',
   })
-  // @IsString()
+
   @IsNotEmpty()
   bssPort: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  @IsString()
+  remarks: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  @IsString()
+  utility: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  @IsString()
+  labels: string;
+
+  @ApiProperty({
+    type: EquipmentPackageDto,
+    description: 'This is a optional property',
+  })
+  equipmentPackage: EquipmentPackageDto;
+
+  @ApiProperty({
+    type: EquipmentPowerDto,
+    description: 'This is a optional property',
+  })
+  equipmentlabel: EquipmentPowerDto;
+
+  @ApiProperty({
+    type: EquipmentlabelDto,
+    description: 'This is a optional property',
+  })
+  equipmentLabel: EquipmentlabelDto;
+
 }

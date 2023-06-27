@@ -6,13 +6,14 @@ import {
 } from './equipmentPackage.schema';
 import { Type } from 'class-transformer';
 import {
-  EquipmentPowerRequirementSchema,
-  EquipmentPowerRequirement,
-} from './equipmentPowerRequirement.schema';
+  EquipmentPowerSchema,
+  EquipmentPower,
+} from './equipmentPower.schema';
 import {
-  EquipmentLabelUpdation,
-  EquipmentLabelUpdationSchema,
-} from './equipmentLabelUpdation.schema';
+  EquipmentLabel,
+  EquipmentLabelSchema,
+} from './equipmentLabel.schema';
+import { ApiProperty } from '@nestjs/swagger';
 
 export type EquipmentDocument = Equipment & Document;
 
@@ -41,17 +42,27 @@ export class Equipment {
   @Prop({ required: true })
   bssPort: string;
 
+  @Prop()
+  remarks: string;
+  
+  @Prop()
+  utility: string; 
+  
+  @Prop()
+  labels: string; 
+  
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)
-  EquipmentPackage: EquipmentPackage;
+  equipmentPackage: EquipmentPackage; 
 
-  @Prop({ type: EquipmentPowerRequirementSchema })
-  @Type(() => EquipmentPowerRequirement)
-  EquipmentPowerRequirement: EquipmentPowerRequirement;
+  @Prop({ type: EquipmentPowerSchema })
+  @Type(() => EquipmentPower)
+  equipmentPower: EquipmentPower; 
 
-  @Prop({ type: EquipmentLabelUpdationSchema })
-  @Type(() => EquipmentLabelUpdation)
-  EquipmentLabelUpdation: EquipmentLabelUpdation;
+  @Prop({ type: EquipmentLabelSchema })
+  @Type(() => EquipmentLabel)
+  equipmentLabel: EquipmentLabel; 
+
 }
 
 export const EquipmentSchema = SchemaFactory.createForClass(Equipment);

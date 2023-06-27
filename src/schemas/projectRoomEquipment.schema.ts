@@ -2,17 +2,17 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Transform, Type } from 'class-transformer';
 import {
-  EquipmentLabelUpdationSchema,
-  EquipmentLabelUpdation,
-} from './equipmentLabelUpdation.schema';
+  EquipmentLabelSchema,
+  EquipmentLabel,
+} from './equipmentLabel.schema';
 import {
   EquipmentPackageSchema,
   EquipmentPackage,
 } from './equipmentPackage.schema';
 import {
-  EquipmentPowerRequirementSchema,
-  EquipmentPowerRequirement,
-} from './equipmentPowerRequirement.schema';
+  EquipmentPowerSchema,
+  EquipmentPower,
+} from './equipmentPower.schema';
 
 export type ProjectRoomEquipmentDocument = ProjectRoomEquipment & Document;
 
@@ -63,13 +63,13 @@ export class ProjectRoomEquipment {
   @Type(() => EquipmentPackage)
   EquipmentPackage: EquipmentPackage;
 
-  @Prop({ type: EquipmentPowerRequirementSchema })
-  @Type(() => EquipmentPowerRequirement)
-  EquipmentPowerRequirement: EquipmentPowerRequirement;
+  @Prop({ type: EquipmentPowerSchema })
+  @Type(() => EquipmentPower)
+  EquipmentPowerRequirement: EquipmentPower;
 
-  @Prop({ type: EquipmentLabelUpdationSchema })
-  @Type(() => EquipmentLabelUpdation)
-  EquipmentLabelUpdation: EquipmentLabelUpdation;
+  @Prop({ type: EquipmentLabelSchema })
+  @Type(() => EquipmentLabel)
+  EquipmentLabel: EquipmentLabel;
 
   // @Prop({ required: true })
   // isDeleted: boolean;
