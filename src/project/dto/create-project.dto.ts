@@ -108,6 +108,78 @@ export class CreateProjectDto {
   signature2: string;
 
   @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  dateInitiatedProposal: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  proposedFacilityCompletionDate: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  address1: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  address2: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  city: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  postalZip: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  state: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'This is a optional property',
+  })
+  // @ValidateIf((o) => !o.isTemplate)
+  // @IsString()
+  // @IsNotEmpty()
+  country: string;
+
+  @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })

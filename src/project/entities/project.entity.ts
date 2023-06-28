@@ -11,6 +11,14 @@ export class Project {
   groupName: string;
   signature1: string;
   signature2: string;
+  dateInitiatedProposal: string;
+  proposedFacilityCompletionDate: string;
+  address1: string;
+  address2: string;
+  city: string;
+  postalZip: string;
+  state: string;
+  country: string;
   created: Date;
   updated: Date;
 }

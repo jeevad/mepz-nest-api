@@ -12,8 +12,7 @@ export type ProjectDocument = Project & Document;
   timestamps: true,
 })
 export class Project {
-  @Prop()
-  // { required: true }
+  @Prop({ required: true })
   code: string;
 
   @Prop({ required: true })
@@ -46,8 +45,29 @@ export class Project {
   @Prop()
   signature2: string;
 
-  // @Prop({ required: true })
-  // isDeleted: boolean;
+  @Prop()
+  dateInitiatedProposal: string;
+
+  @Prop()
+  proposedFacilityCompletionDate: string;
+
+  @Prop()
+  address1: string;
+
+  @Prop()
+  address2: string;
+
+  @Prop()
+  city: string;
+
+  @Prop()
+  postalZip: string;
+
+  @Prop()
+  state: string;
+
+  @Prop()
+  country: string;
 
   @Prop({ required: true })
   isTemplate: boolean;
