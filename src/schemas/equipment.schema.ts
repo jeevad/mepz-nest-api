@@ -51,9 +51,6 @@ export class Equipment {
   @Prop()
   labels: string;
   
-  // @Prop()
-  // fileOne: string; 
-  
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)
   equipmentPackage: EquipmentPackage; 

@@ -17,9 +17,7 @@ export class EquipmentService {
   async create(
     createEquipmentDto: CreateEquipmentDto,
   ): Promise<EquipmentDocument> {
-    // createEquipmentDto.fileOne = createEquipmentDto.filePath; 
     const Equipment = new this.EquipmentModel(createEquipmentDto);
-    // createEquipmentDto.fileOne = createEquipmentDto.filePath; // new line
     return Equipment.save();
   }
 
@@ -69,11 +67,6 @@ export class EquipmentService {
     id: string,
     updateEquipmentDto: UpdateEquipmentDto,
   ): Promise<EquipmentDocument> {
-    //newly added if
-    // if (updateEquipmentDto.filePath) {
-    //   updateEquipmentDto.fileOne = updateEquipmentDto.filePath;
-    // }
-
     return this.EquipmentModel.findByIdAndUpdate(id, updateEquipmentDto);
   }
 

@@ -58,68 +58,6 @@ export class EquipmentController {
     return this.equipmentService.findOne(id);
   }
 
-  //Default
-  // @Patch(':id')
-  // @ApiOperation({ summary: 'Update Equipments' })
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateEquipmentDto: UpdateEquipmentDto,
-  // ) {
-  //   return this.equipmentService.update(id, updateEquipmentDto);
-  // }
-
-  // @Patch(':id')
-  // @ApiOperation({ summary: 'Update Equipments' })
-  // async update(
-  //   @Param('id') id: string,
-  //   @Body() updateEquipmentDto: UpdateEquipmentDto,
-  //   @UploadedFile() file: Express.Multer.File,
-  // ) {
-  //   if (file) {
-  //     updateEquipmentDto.equipmentPower.fileOne = file.path;
-  //   }
-
-  //   return this.equipmentService.update(id, updateEquipmentDto);
-  // }
-
-  //using update dto
-  // @Patch(':id')
-  // @UseInterceptors(
-  //   FileInterceptor('fileOne', {
-  //     storage: diskStorage({
-  //       destination: './src/assets/userImage',
-  //       filename: (req, file, callBack) => {
-  //         const fileName = file.originalname.replace(/\s/g, '');
-  //         const fileExtension = path.extname(fileName);
-  //         const randomName = Array(32)
-  //           .fill(null)
-  //           .map(() => Math.round(Math.random() * 16).toString(16))
-  //           .join('');
-  //         callBack(null, `${randomName}${fileExtension}`);
-  //       },
-  //     }),
-  //   }),
-  // )
-  // async update(
-  //   @Param('id') id: string,
-  //   @Body() updateEquipmentDto: UpdateEquipmentDto,
-  //   @UploadedFile() file: Express.Multer.File,
-  // ) {
-  //   if (file) {
-  //     updateEquipmentDto.equipmentPower.fileOne = file.path;
-  //   }
-
-  //   const updatedEquipment = await this.equipmentService.update(
-  //     id,
-  //     updateEquipmentDto,
-  //   );
-
-  //   return {
-  //     success: true,
-  //     data: updatedEquipment,
-  //   };
-  // }
-
   // using create dto
   @Patch(':id')
   @ApiOperation({ summary: 'Update Equipment' })
@@ -173,28 +111,4 @@ export class EquipmentController {
     return this.equipmentService.remove(id);
   }
 
-  // @Post('/uploadFile')
-  // @ApiOperation({ summary: 'Upload Images' })
-  // @UseInterceptors(
-  //   FileInterceptor('fileOne', {
-  //     storage: diskStorage({
-  //       destination: './src/assets/userImage',
-  //       filename: (req, file, callBack) => {
-  //         const fileName = file.originalname.replace(/\s/g, '');
-  //         const fileExtension = path.extname(fileName);
-  //         const randomName = Array(32)
-  //           .fill(null)
-  //           .map(() => Math.round(Math.random() * 16).toString(16))
-  //           .join('');
-  //         callBack(null, `${randomName}${fileExtension}`);
-  //       },
-  //     }),
-  //   }),
-  // )
-  // UploadedFile(@Res() res, @UploadedFile() file) {
-  //   return res.status(HttpStatus.OK).json({
-  //     success: true,
-  //     data: file.path,
-  //   });
-  // }
 }

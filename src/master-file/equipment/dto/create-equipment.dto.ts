@@ -91,12 +91,6 @@ export class CreateEquipmentDto {
   })
   labels: string;
 
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
-  // filePath: string;
-
   @ApiProperty({
     type: EquipmentPackageDto,
     description: 'This is a optional property',
