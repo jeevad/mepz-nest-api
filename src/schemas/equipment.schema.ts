@@ -49,7 +49,10 @@ export class Equipment {
   utility: string; 
   
   @Prop()
-  labels: string; 
+  labels: string;
+  
+  // @Prop()
+  // fileOne: string; 
   
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)

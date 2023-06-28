@@ -133,4 +133,5 @@ export class EquipmentPowerDto {
     description: 'This is a optional property',
   })
   powerRemarks: string;
+
 }

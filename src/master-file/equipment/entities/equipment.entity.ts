@@ -3,6 +3,7 @@ import { EquipmentPower } from 'src/schemas/equipmentPower.schema';
 export class Equipment {
   code: string;
   name: string;
+  // fileOne: string;
   groupName: string;
   cost: string;
   markUp: string;
@@ -16,5 +17,4 @@ export class Equipment {
   updated: Date;
   equipmentPackage: EquipmentPackage; 
   equipmentPower: EquipmentPower; 
-
 }

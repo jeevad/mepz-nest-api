@@ -11,12 +11,15 @@ export class EquipmentService {
   constructor(
     @InjectModel(Equipment.name)
     private readonly EquipmentModel: Model<EquipmentDocument>,
-  ) {}
+  ) { }
 
+  //Create
   async create(
     createEquipmentDto: CreateEquipmentDto,
   ): Promise<EquipmentDocument> {
+    // createEquipmentDto.fileOne = createEquipmentDto.filePath; 
     const Equipment = new this.EquipmentModel(createEquipmentDto);
+    // createEquipmentDto.fileOne = createEquipmentDto.filePath; // new line
     return Equipment.save();
   }
 
@@ -32,10 +35,10 @@ export class EquipmentService {
   ) {
     const filters: FilterQuery<EquipmentDocument> = startId
       ? {
-          _id: {
-            $gt: startId,
-          },
-        }
+        _id: {
+          $gt: startId,
+        },
+      }
       : {};
 
     // if (searchQuery) {
@@ -66,10 +69,16 @@ export class EquipmentService {
     id: string,
     updateEquipmentDto: UpdateEquipmentDto,
   ): Promise<EquipmentDocument> {
+    //newly added if
+    // if (updateEquipmentDto.filePath) {
+    //   updateEquipmentDto.fileOne = updateEquipmentDto.filePath;
+    // }
+
     return this.EquipmentModel.findByIdAndUpdate(id, updateEquipmentDto);
   }
 
   async remove(id: string) {
     return this.EquipmentModel.findByIdAndRemove(id);
   }
+
 }

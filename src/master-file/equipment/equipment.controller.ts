@@ -7,11 +7,17 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  HttpStatus,
+  Res,
+  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { EquipmentService } from './equipment.service';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { PaginationParams } from 'src/utils/paginationParams';
+import { diskStorage } from 'multer';
 import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -21,7 +27,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
+import { Equipment } from './entities/equipment.entity';
 @Controller('equipment')
 @ApiTags('Equipment')
 export class EquipmentController {
@@ -49,12 +58,112 @@ export class EquipmentController {
     return this.equipmentService.findOne(id);
   }
 
+  //Default
+  // @Patch(':id')
+  // @ApiOperation({ summary: 'Update Equipments' })
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateEquipmentDto: UpdateEquipmentDto,
+  // ) {
+  //   return this.equipmentService.update(id, updateEquipmentDto);
+  // }
+
+  // @Patch(':id')
+  // @ApiOperation({ summary: 'Update Equipments' })
+  // async update(
+  //   @Param('id') id: string,
+  //   @Body() updateEquipmentDto: UpdateEquipmentDto,
+  //   @UploadedFile() file: Express.Multer.File,
+  // ) {
+  //   if (file) {
+  //     updateEquipmentDto.equipmentPower.fileOne = file.path;
+  //   }
+
+  //   return this.equipmentService.update(id, updateEquipmentDto);
+  // }
+
+  //using update dto
+  // @Patch(':id')
+  // @UseInterceptors(
+  //   FileInterceptor('fileOne', {
+  //     storage: diskStorage({
+  //       destination: './src/assets/userImage',
+  //       filename: (req, file, callBack) => {
+  //         const fileName = file.originalname.replace(/\s/g, '');
+  //         const fileExtension = path.extname(fileName);
+  //         const randomName = Array(32)
+  //           .fill(null)
+  //           .map(() => Math.round(Math.random() * 16).toString(16))
+  //           .join('');
+  //         callBack(null, `${randomName}${fileExtension}`);
+  //       },
+  //     }),
+  //   }),
+  // )
+  // async update(
+  //   @Param('id') id: string,
+  //   @Body() updateEquipmentDto: UpdateEquipmentDto,
+  //   @UploadedFile() file: Express.Multer.File,
+  // ) {
+  //   if (file) {
+  //     updateEquipmentDto.equipmentPower.fileOne = file.path;
+  //   }
+
+  //   const updatedEquipment = await this.equipmentService.update(
+  //     id,
+  //     updateEquipmentDto,
+  //   );
+
+  //   return {
+  //     success: true,
+  //     data: updatedEquipment,
+  //   };
+  // }
+
+  // using create dto
   @Patch(':id')
-  @ApiOperation({ summary: 'Update Equipments' })
-  update(
+  @ApiOperation({ summary: 'Update Equipment' })
+
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'fileOne', maxCount: 1 },
+        { name: 'fileTwo', maxCount: 1 },
+        { name: 'fileThree', maxCount: 1 },
+      ],
+      {
+        storage: diskStorage({
+          destination: './src/assets/userImage',
+          filename: (req, file, callBack) => {
+            const fileName = file.originalname.replace(/\s/g, '');
+            const fileExtension = path.extname(fileName);
+            const randomName = Array(32)
+              .fill(null)
+              .map(() => Math.round(Math.random() * 16).toString(16))
+              .join('');
+            callBack(null, `${randomName}${fileExtension}`);
+          },
+        }),
+      },
+    ),
+  )
+  async update(
     @Param('id') id: string,
+    @UploadedFiles() files: Record<string, Express.Multer.File[]>,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
   ) {
+    if (files) {
+      if (files.fileOne && files.fileOne.length > 0) {
+        updateEquipmentDto.equipmentPower.fileOne = files.fileOne[0].path;
+      }
+      if (files.fileTwo && files.fileTwo.length > 0) {
+        updateEquipmentDto.equipmentPower.fileTwo = files.fileTwo[0].path;
+      }
+      if (files.fileThree && files.fileThree.length > 0) {
+        updateEquipmentDto.equipmentPower.fileThree = files.fileThree[0].path;
+      }
+    }
+
     return this.equipmentService.update(id, updateEquipmentDto);
   }
 
@@ -63,4 +172,29 @@ export class EquipmentController {
   remove(@Param('id') id: string) {
     return this.equipmentService.remove(id);
   }
+
+  // @Post('/uploadFile')
+  // @ApiOperation({ summary: 'Upload Images' })
+  // @UseInterceptors(
+  //   FileInterceptor('fileOne', {
+  //     storage: diskStorage({
+  //       destination: './src/assets/userImage',
+  //       filename: (req, file, callBack) => {
+  //         const fileName = file.originalname.replace(/\s/g, '');
+  //         const fileExtension = path.extname(fileName);
+  //         const randomName = Array(32)
+  //           .fill(null)
+  //           .map(() => Math.round(Math.random() * 16).toString(16))
+  //           .join('');
+  //         callBack(null, `${randomName}${fileExtension}`);
+  //       },
+  //     }),
+  //   }),
+  // )
+  // UploadedFile(@Res() res, @UploadedFile() file) {
+  //   return res.status(HttpStatus.OK).json({
+  //     success: true,
+  //     data: file.path,
+  //   });
+  // }
 }

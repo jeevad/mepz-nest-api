@@ -11,6 +11,13 @@ import { EquipmentPowerDto } from './equipment-power.dto';
 import { EquipmentlabelDto } from './equipment-label.dto';
 
 export class CreateEquipmentDto {
+ 
+  @ApiProperty({
+    type: String,
+    description: 'This is a required property',
+  })
+  fileOne: string;
+  
   @ApiProperty({
     type: String,
     description: 'This is a required property',
@@ -70,22 +77,25 @@ export class CreateEquipmentDto {
     type: String,
     description: 'This is a optional property',
   })
-  @IsString()
   remarks: string;
 
   @ApiProperty({
     type: String,
     description: 'This is a optional property',
   })
-  @IsString()
   utility: string;
 
   @ApiProperty({
     type: String,
     description: 'This is a optional property',
   })
-  @IsString()
   labels: string;
+
+  // @ApiProperty({
+  //   type: String,
+  //   description: 'This is a required property',
+  // })
+  // filePath: string;
 
   @ApiProperty({
     type: EquipmentPackageDto,
@@ -97,7 +107,8 @@ export class CreateEquipmentDto {
     type: EquipmentPowerDto,
     description: 'This is a optional property',
   })
-  equipmentlabel: EquipmentPowerDto;
+  // equipmentPower: EquipmentPowerDto;
+  equipmentPower: EquipmentPowerDto = new EquipmentPowerDto();
 
   @ApiProperty({
     type: EquipmentlabelDto,

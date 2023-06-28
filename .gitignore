@@ -33,5 +33,10 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Backup and history folders
 .history
 bkp/
+
+# userImage folder inside assets
+src/assets/userImage
