@@ -71,7 +71,7 @@ export class EquipmentController {
       ],
       {
         storage: diskStorage({
-          destination: './src/assets/userImage',
+          destination: './src/assets/equipmentEditPageImages',
           filename: (req, file, callBack) => {
             const fileName = file.originalname.replace(/\s/g, '');
             const fileExtension = path.extname(fileName);

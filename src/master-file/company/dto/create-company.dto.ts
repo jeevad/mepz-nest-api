@@ -28,7 +28,6 @@ export class CreateCompanyDto {
     type: Boolean,
     description: 'This is a required property',
   })
-  // @IsString()
   @IsNotEmpty()
   inactive: boolean;
 
@@ -84,47 +83,38 @@ export class CreateCompanyDto {
     type: String,
     description: 'This is a required property',
   })
-  // @IsString()
-  @IsNotEmpty()
   logo1: string;
 
   @ApiProperty({
-    type: Boolean,
-    description: 'This is a required property',
-  })
-  // @IsString()
-  @IsNotEmpty()
-  show1: boolean;
-
-  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
-  // @IsString()
-  @IsNotEmpty()
   logo2: string;
 
   @ApiProperty({
-    type: Boolean,
-    description: 'This is a required property',
-  })
-  // @IsString()
-  @IsNotEmpty()
-  show2: boolean;
-
-  @ApiProperty({
     type: String,
     description: 'This is a required property',
   })
-  // @IsString()
-  @IsNotEmpty()
   logo3: string;
 
   @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })
-  // @IsString()
+  @IsNotEmpty()
+  show1: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+    description: 'This is a required property',
+  })
+  @IsNotEmpty()
+  show2: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+    description: 'This is a required property',
+  })
   @IsNotEmpty()
   show3: boolean;
 
@@ -167,8 +157,4 @@ export class CreateCompanyDto {
   @IsString()
   @IsNotEmpty()
   email: string;
-
-  // @IsNumber()
-  // @IsNotEmpty()
-  // zip: number;
 }

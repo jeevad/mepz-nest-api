@@ -14,8 +14,8 @@ export class Company {
   name: string;
 
   @Prop({ required: true })
-  inactive: boolean; 
-  
+  inactive: boolean;
+
   @Prop({ required: true })
   address1: string;
 
@@ -38,16 +38,16 @@ export class Company {
   logo1: string;
 
   @Prop({ required: true })
-  show1: boolean;
-
-  @Prop({ required: true })
   logo2: string;
 
   @Prop({ required: true })
-  show2: boolean;
+  logo3: string;
 
   @Prop({ required: true })
-  logo3: string;
+  show1: boolean;
+
+  @Prop({ required: true })
+  show2: boolean;
 
   @Prop({ required: true })
   show3: boolean;
