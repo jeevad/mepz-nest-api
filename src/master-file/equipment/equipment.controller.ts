@@ -27,7 +27,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
 import { Equipment } from './entities/equipment.entity';
@@ -45,9 +48,8 @@ export class EquipmentController {
   @Get()
   @ApiOperation({ summary: 'get all Equipments' })
   async findAll(
-    @Query() { skip, limit, startId }: PaginationParams,
-  ) // @Query('searchQuery') searchQuery?: string,
-  {
+    @Query() { skip, limit, startId }: PaginationParams, // @Query('searchQuery') searchQuery?: string,
+  ) {
     const searchQuery = '';
     return this.equipmentService.findAll(skip, limit, startId, searchQuery);
   }
@@ -61,9 +63,10 @@ export class EquipmentController {
   // using create dto
   @Patch(':id')
   @ApiOperation({ summary: 'Update Equipment' })
-
   @UseInterceptors(
+    // interceptors to intercept the request/response
     FileFieldsInterceptor(
+      // Interceptor for handling multipart/form-data file uploads with multiple files
       [
         { name: 'fileOne', maxCount: 1 },
         { name: 'fileTwo', maxCount: 1 },
@@ -71,15 +74,17 @@ export class EquipmentController {
       ],
       {
         storage: diskStorage({
+          // Configuration for storing uploaded files on the disk
           destination: './src/assets/equipmentEditPageImages',
           filename: (req, file, callBack) => {
-            const fileName = file.originalname.replace(/\s/g, '');
-            const fileExtension = path.extname(fileName);
+            // Function to generate the filename for each file
+            const fileName = file.originalname.replace(/\s/g, ''); // Remove whitespaces from the original filename
+            const fileExtension = path.extname(fileName); // Get the file extension
             const randomName = Array(32)
               .fill(null)
               .map(() => Math.round(Math.random() * 16).toString(16))
               .join('');
-            callBack(null, `${randomName}${fileExtension}`);
+            callBack(null, `${randomName}${fileExtension}`); // Pass the generated filename to the callback
           },
         }),
       },
@@ -88,8 +93,21 @@ export class EquipmentController {
   async update(
     @Param('id') id: string,
     @UploadedFiles() files: Record<string, Express.Multer.File[]>,
-    @Body() updateEquipmentDto: UpdateEquipmentDto,
+    @UploadedFile() file: Express.Multer.File,
+
+    @Body() updateEquipmentDto: UpdateEquipmentDto, //  extract the payload data
+    @Query('deleteFile') deleteFile: string, // delete
   ) {
+    if (deleteFile) {
+      if (deleteFile === 'fileOne') {
+        delete updateEquipmentDto.equipmentPower.fileOne;
+      } else if (deleteFile === 'fileTwo') {
+        delete updateEquipmentDto.equipmentPower.fileTwo;
+      } else if (deleteFile === 'fileThree') {
+        delete updateEquipmentDto.equipmentPower.fileThree;
+      }
+    }
+
     if (files) {
       if (files.fileOne && files.fileOne.length > 0) {
         updateEquipmentDto.equipmentPower.fileOne = files.fileOne[0].path;
@@ -110,5 +128,4 @@ export class EquipmentController {
   remove(@Param('id') id: string) {
     return this.equipmentService.remove(id);
   }
-
 }

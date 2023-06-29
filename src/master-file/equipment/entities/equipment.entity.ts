@@ -3,7 +3,9 @@ import { EquipmentPower } from 'src/schemas/equipmentPower.schema';
 export class Equipment {
   code: string;
   name: string;
-  // fileOne: string;
+  fileOne: string;
+  fileTwo: string;
+  fileThree: string;
   groupName: string;
   cost: string;
   markUp: string;

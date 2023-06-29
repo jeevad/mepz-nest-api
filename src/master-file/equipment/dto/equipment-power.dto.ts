@@ -112,24 +112,31 @@ export class EquipmentPowerDto {
 
   @ApiProperty({
     type: String,
+    format: 'binary',
+
     description: 'This is a optional property',
   })
   fileOne: string;
 
   @ApiProperty({
     type: String,
+    format: 'binary',
+
     description: 'This is a optional property',
   })
   fileTwo: string;
 
   @ApiProperty({
     type: String,
+    format: 'binary',
+
     description: 'This is a optional property',
   })
   fileThree: string;
 
   @ApiProperty({
     type: String,
+    
     description: 'This is a optional property',
   })
   powerRemarks: string;

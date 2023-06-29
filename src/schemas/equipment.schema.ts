@@ -21,6 +21,16 @@ export type EquipmentDocument = Equipment & Document;
   timestamps: true,
 })
 export class Equipment {
+
+  @Prop()
+  fileOne: string;
+
+  @Prop()
+  fileTwo: string;
+
+  @Prop()
+  fileThree: string;
+
   @Prop({ required: true })
   code: string;
 

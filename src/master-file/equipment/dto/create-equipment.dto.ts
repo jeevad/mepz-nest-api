@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiConsumes, ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsString,
@@ -11,13 +11,33 @@ import { EquipmentPowerDto } from './equipment-power.dto';
 import { EquipmentlabelDto } from './equipment-label.dto';
 
 export class CreateEquipmentDto {
- 
   @ApiProperty({
-    type: String,
+
+    format: 'binary',
     description: 'This is a required property',
   })
-  fileOne: string;
-  
+ 
+ 
+  fileOne: any;
+
+  @ApiProperty({
+ 
+    format: 'binary',
+    description: 'This is a required property',
+  })
+
+
+  fileTwo: any;
+
+  @ApiProperty({
+
+    format: 'binary',
+    description: 'This is a required property',
+  })
+
+
+  fileThree: any;
+
   @ApiProperty({
     type: String,
     description: 'This is a required property',
@@ -69,7 +89,6 @@ export class CreateEquipmentDto {
     type: String,
     description: 'This is a required property',
   })
-
   @IsNotEmpty()
   bssPort: string;
 
@@ -109,5 +128,4 @@ export class CreateEquipmentDto {
     description: 'This is a optional property',
   })
   equipmentLabel: EquipmentlabelDto;
-
 }
