@@ -69,6 +69,22 @@ export class Project {
   @Prop()
   country: string;
 
+  @Prop({
+    type: [
+      {
+        currencyCode: String,
+        currencyDescription: String,
+        currencySymbol: String,
+      },
+    ],
+  })
+  @Type(() => Object)
+  currencies: {
+    currencyCode: string;
+    currencyDescription: string;
+    currencySymbol: string;
+  }[];
+
   @Prop({ required: true })
   isTemplate: boolean;
 

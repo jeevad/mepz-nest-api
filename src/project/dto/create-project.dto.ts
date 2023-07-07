@@ -180,6 +180,17 @@ export class CreateProjectDto {
   country: string;
 
   @ApiProperty({
+    type: () => [Object],
+    description: 'This is a required property',
+  })
+  // @IsNotEmpty()
+  currencies: {
+    currencyCode: string;
+    currencyDescription: string;
+    currencySymbol: string;
+  }[];
+
+  @ApiProperty({
     type: Boolean,
     description: 'This is a required property',
   })

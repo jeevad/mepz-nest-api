@@ -19,6 +19,11 @@ export class Project {
   postalZip: string;
   state: string;
   country: string;
+  currencies: {
+    currencyCode: string;
+    currencyDescription: string;
+    currencySymbol: string;
+  }[];
   created: Date;
   updated: Date;
 }

@@ -41,7 +41,7 @@ export class CreateEquipmentBrandDto {
   countryOfOrigin: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'This is a required property',
   })
   @IsString()
