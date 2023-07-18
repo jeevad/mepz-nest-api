@@ -26,6 +26,7 @@ import { PastTransactionModule } from './project/past-transaction/past-transacti
 import { EquipmentAllocationModule } from './project/equipment-allocation/equipment-allocation.module';
 import { CurrentTransactionModule } from './project/current-transaction/current-transaction.module';
 import { EquipmentSummaryModule } from './project/equipment-summary/equipment-summary.module';
+import { ReportsModule } from './reports/reports.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -55,7 +56,8 @@ import { EquipmentSummaryModule } from './project/equipment-summary/equipment-su
     EquipmentAllocationModule,
     EquipmentSummaryModule,
     CurrentTransactionModule,
-    PastTransactionModule
+    PastTransactionModule,
+    ReportsModule
    ],
   controllers: [AppController],
   providers: [AppService],
