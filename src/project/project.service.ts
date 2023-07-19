@@ -344,6 +344,8 @@ export class ProjectService {
     paginationParams: PaginationParams,
   ) {
     // mongoose.set('debug', true);
+    console.log('filterEquipmentDto.projectId', filterEquipmentDto.projectId);
+
     const projectId = filterEquipmentDto.projectId.map((item) => {
       return new mongoose.Types.ObjectId(item);
     });

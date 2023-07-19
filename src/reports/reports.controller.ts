@@ -1,6 +1,8 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PaginationParams } from 'src/utils/paginationParams';
+import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 
 @Controller('reports')
 @ApiTags('Reports')
@@ -9,13 +11,21 @@ export class ReportsController {
 
   @Get('getAllRooms')
   @ApiOperation({ summary: 'Get All Rooms' })
-  async getAllRooms(@Res() res) {
-    const buffer = await this.reportsService.secondExample();
+  async getAllRooms(
+    @Query() paginationParams: PaginationParams,
+    @Query() filterEquipmentDto: FilterEquipmentDto,
+    @Res() res,
+  ) {
+    const buffer = await this.reportsService.getRoomList(
+      filterEquipmentDto,
+      paginationParams,
+    );
+    return buffer;
     res.set({
       // pdf
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename=pdf.pdf`,
-      'Content-Length': buffer.length,
+      // 'Content-Length': buffer.length,
       // prevent cache
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',

@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { createPdf } from '@saemhco/nestjs-html-pdf';
 import { join } from 'path';
+import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
 import { Project } from 'src/schemas/project.schema';
+import { PaginationParams } from 'src/utils/paginationParams';
 
 @Injectable()
 export class ReportsService {
@@ -22,7 +24,16 @@ export class ReportsService {
     };
   }
 
-  getRoomList() {}
+  async getRoomList(
+    filterEquipmentDto: FilterEquipmentDto,
+    paginationParams: PaginationParams,
+  ) {
+    const rooms = await this.projectService.getAllRooms(
+      filterEquipmentDto,
+      paginationParams,
+    );
+    return rooms;
+  }
 
   secondExample() {
     const data = {
