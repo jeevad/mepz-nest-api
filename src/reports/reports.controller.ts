@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Query, Res, Param } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationParams } from 'src/utils/paginationParams';
@@ -40,5 +40,26 @@ export class ReportsController {
     const buffer = await this.reportsService.secondExample();
     res.set(this.reportsService.getPdfHeader('test', buffer));
     res.end(buffer);
+  }
+
+  //Get Departments by projectId
+  @Get('getDepartments/:projectId')
+  @ApiOperation({ summary: 'get departments by id' })
+  async getDepartments(
+    @Param('projectId') projectId: string,
+    @Query() { skip, limit, startId }: PaginationParams,
+    @Res() res
+  ) {
+    const searchQuery = '';
+    const results: any = await this.reportsService.getDepartmentList(
+      projectId,
+      skip,
+      limit,
+      startId,
+      searchQuery,
+    );
+    // return results;
+    res.set(this.reportsService.getPdfHeader('department-list', results));
+    res.end(results);
   }
 }

@@ -4,12 +4,13 @@ import { createPdf } from '@saemhco/nestjs-html-pdf';
 import { join } from 'path';
 import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
-import { Project } from 'src/schemas/project.schema';
 import { PaginationParams } from 'src/utils/paginationParams';
 
 @Injectable()
 export class ReportsService {
-  constructor(private projectService: ProjectService) {}
+  constructor(
+    private projectService: ProjectService
+  ) { }
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
@@ -91,7 +92,41 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px;">@saemhco CORP</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = join(process.cwd(), 'views/reports', 'pdf-invoice.hbs');
+    return createPdf(filePath, options, data);
+  }
+
+  async getDepartmentList(
+    projectId: string,
+    skip: number,
+    limit: number,
+    startId: string,
+    searchQuery: string,
+  ) {
+    const department = await this.projectService.getDepartments(
+      projectId,
+      skip,
+      limit,
+      startId,
+      searchQuery,
+    );
+    // return department;
+    const data = department.results[0];
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
