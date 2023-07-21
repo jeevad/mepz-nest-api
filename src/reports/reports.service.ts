@@ -17,7 +17,7 @@ export class ReportsService {
       // pdf
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename=${filename}.pdf`,
-      'Content-Length': buffer.length,
+      // 'Content-Length': buffer.length,
       // prevent cache
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',
@@ -25,16 +25,17 @@ export class ReportsService {
     };
   }
 
-  async getRoomList(
-    filterEquipmentDto: FilterEquipmentDto,
-    paginationParams: PaginationParams,
-  ) {
-    const rooms = await this.projectService.getAllRooms(
-      filterEquipmentDto,
-      paginationParams,
-    );
-    return rooms;
-  }
+  // async getRoomList(
+  //   filterEquipmentDto: FilterEquipmentDto,
+  //   paginationParams: PaginationParams,
+  // ) {
+  //   const rooms = await this.projectService.getAllRooms(
+  //     filterEquipmentDto,
+  //     paginationParams,
+  //   );
+  //   console.log("romms >>",rooms);
+  //   return rooms;
+  // }
 
   secondExample() {
     const data = {
@@ -131,7 +132,34 @@ export class ReportsService {
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
     };
-    const filePath = join(process.cwd(), 'views/reports', 'pdf-invoice.hbs');
+    const filePath = join(process.cwd(), 'views/reports', 'department-list-report.hbs');
+    return createPdf(filePath, options, data);
+  }
+
+  async getRoomList(
+    // paginationParams: PaginationParams,
+    projectId: string,
+  ) {
+    const rooms = await this.projectService.getRoomListReport(
+      // paginationParams,
+      projectId,
+    );
+    const data = rooms.results[0].data[0];
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = join(process.cwd(), 'views/reports', 'room-list-report.hbs');
     return createPdf(filePath, options, data);
   }
 }

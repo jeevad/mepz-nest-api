@@ -9,30 +9,30 @@ import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
-  @Get('getAllRooms')
-  @ApiOperation({ summary: 'Get All Rooms' })
-  async getAllRooms(
-    @Query() paginationParams: PaginationParams,
-    @Query() filterEquipmentDto: FilterEquipmentDto,
-    @Res() res,
-  ) {
-    const buffer = await this.reportsService.getRoomList(
-      filterEquipmentDto,
-      paginationParams,
-    );
-    return buffer;
-    res.set({
-      // pdf
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename=pdf.pdf`,
-      // 'Content-Length': buffer.length,
-      // prevent cache
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      Pragma: 'no-cache',
-      Expires: 0,
-    });
-    res.end(buffer);
-  }
+  // @Get('getAllRooms')
+  // @ApiOperation({ summary: 'Get All Rooms' })
+  // async getAllRooms(
+  //   @Query() paginationParams: PaginationParams,
+  //   @Query() filterEquipmentDto: FilterEquipmentDto,
+  //   @Res() res,
+  // ) {
+  //   const buffer = await this.reportsService.getRoomList(
+  //     filterEquipmentDto,
+  //     paginationParams,
+  //   );
+  //   return buffer;
+  //   res.set({
+  //     // pdf
+  //     'Content-Type': 'application/pdf',
+  //     'Content-Disposition': `attachment; filename=pdf.pdf`,
+  //     // 'Content-Length': buffer.length,
+  //     // prevent cache
+  //     'Cache-Control': 'no-cache, no-store, must-revalidate',
+  //     Pragma: 'no-cache',
+  //     Expires: 0,
+  //   });
+  //   res.end(buffer);
+  // }
 
   @Get('pdf')
   @ApiOperation({ summary: 'pdf example' })
@@ -58,8 +58,23 @@ export class ReportsController {
       startId,
       searchQuery,
     );
-    // return results;
-    res.set(this.reportsService.getPdfHeader('department-list', results));
+    res.set(this.reportsService.getPdfHeader('department-list',results));
+    res.end(results);
+  }
+
+  //Get Rooms by projectId
+  @Get('getAllRooms/:projectId')
+  @ApiOperation({ summary: 'get rooms by project id' })
+  async getAllRooms(
+    // @Query() paginationParams: PaginationParams,
+    @Param('projectId') projectId: string,
+    @Res() res
+  ) {
+    const results: any = await this.reportsService.getRoomList(
+      // paginationParams,
+      projectId,
+    );
+    res.set(this.reportsService.getPdfHeader('room-list',results));
     res.end(results);
   }
 }

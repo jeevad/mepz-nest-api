@@ -26,18 +26,10 @@ export class ProjectService {
 
   async findAll(paginationParams: PaginationParams, projectType) {
     mongoose.set('debug', true);
-    const filters: FilterQuery<ProjectDocument> = paginationParams.startId
-      ? {
-          _id: {
-            $gt: paginationParams.startId,
-          },
-        }
-      : {};
+    const filters: FilterQuery<ProjectDocument> = paginationParams.startId ? { _id: { $gt: paginationParams.startId,},} : {};
     filters.isTemplate = projectType === 'template';
     if (paginationParams.searchQuery) {
-      filters.$text = {
-        $search: paginationParams.searchQuery,
-      };
+      filters.$text = { $search: paginationParams.searchQuery, };
     }
 
     const findQuery = this.ProjectModel.find(filters)
@@ -344,11 +336,10 @@ export class ProjectService {
     paginationParams: PaginationParams,
   ) {
     // mongoose.set('debug', true);
-    console.log('filterEquipmentDto.projectId', filterEquipmentDto.projectId);
-
     const projectId = filterEquipmentDto.projectId.map((item) => {
       return new mongoose.Types.ObjectId(item);
     });
+
     const pipeline: any = [
       { $match: { _id: { $in: projectId } } },
       { $unwind: '$departments' },
@@ -718,5 +709,65 @@ export class ProjectService {
         ],
       },
     );
+  }
+
+  //Get Rooms by projectID
+  async getRoomListReport(
+    // paginationParams: PaginationParams,
+    projectId : string,
+  ) {
+    const pipeline: any = [
+      { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }, { $addFields: { page: 1 } }],
+          data: [
+            {
+              $project: {
+                fullName: 0,
+                clientOwner: 0,
+                contractNo: 0,
+                noOfBeds: 0,
+                classification: 0,
+                type: 0,
+                company: 0,
+                signature1: 0,
+                signature2: 0,
+                departments : {
+                  createdAt: 0,
+                  updatedAt: 0,
+                  rooms : {
+                    createdAt: 0,
+                    updatedAt: 0,
+                    equipments : 0,
+                    alias: 0,
+                    size: 0, 
+                  },
+                  alias: 0,
+                  level: 0,
+                },
+                createdAt: 0,
+                updatedAt: 0,
+                __v: 0,
+                isTemplate: 0,
+                address1: 0,
+                address2: 0,
+                city: 0,
+                country: 0,
+                dateInitiatedProposal: 0,
+                postalZip: 0,
+                proposedFacilityCompletionDate: 0,
+                state: 0,
+                currencies : 0
+              }
+            },
+            // { $skip: paginationParams.skip },
+            // { $limit: paginationParams.limit },
+          ],
+        },
+      },
+    ];
+    const results = await this.ProjectModel.aggregate(pipeline);
+    return { results };
   }
 }
