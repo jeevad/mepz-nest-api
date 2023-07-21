@@ -8,9 +8,7 @@ import { PaginationParams } from 'src/utils/paginationParams';
 
 @Injectable()
 export class ReportsService {
-  constructor(
-    private projectService: ProjectService
-  ) { }
+  constructor(private projectService: ProjectService) {}
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
@@ -132,7 +130,11 @@ export class ReportsService {
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
     };
-    const filePath = join(process.cwd(), 'views/reports', 'department-list-report.hbs');
+    const filePath = join(
+      process.cwd(),
+      'views/reports',
+      'department-list-report.hbs',
+    );
     return createPdf(filePath, options, data);
   }
 
@@ -159,7 +161,103 @@ export class ReportsService {
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
     };
-    const filePath = join(process.cwd(), 'views/reports', 'room-list-report.hbs');
+    const filePath = join(
+      process.cwd(),
+      'views/reports',
+      'room-list-report.hbs',
+    );
+    return createPdf(filePath, options, data);
+  }
+
+  async getEquipmentList(
+    paginationParams: PaginationParams,
+    projectId: string,
+  ) {
+    const filterEquipmentDto: any = { projectId: [projectId] };
+    const results = await this.projectService.getAllEquipments(
+      filterEquipmentDto,
+      paginationParams,
+    );
+    console.log('results', results.results[0].data);
+
+    const data = results.results[0];
+    // console.log(data);
+    // return data;
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = join(
+      process.cwd(),
+      'views/reports',
+      'eqp-list-report.hbs',
+    );
+    return createPdf(filePath, options, data);
+  }
+
+  async getAllEquipmentsByDept(projectId: string) {
+    const results = await this.projectService.findOne(projectId);
+
+    const data = results;
+    // console.log(data);
+    // return data;
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = join(
+      process.cwd(),
+      'views/reports',
+      'eqp-list-report.hbs',
+    );
+    return createPdf(filePath, options, data);
+  }
+
+  async getAllEquipmentsByDeptAndRoom(projectId: string) {
+    const results = await this.projectService.findOne(projectId);
+
+    const data = results;
+    // console.log(data);
+    // return data;
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = join(
+      process.cwd(),
+      'views/reports',
+      'eqp-list-report.hbs',
+    );
     return createPdf(filePath, options, data);
   }
 }
