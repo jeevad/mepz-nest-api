@@ -26,10 +26,12 @@ export class ProjectService {
 
   async findAll(paginationParams: PaginationParams, projectType) {
     mongoose.set('debug', true);
-    const filters: FilterQuery<ProjectDocument> = paginationParams.startId ? { _id: { $gt: paginationParams.startId,},} : {};
+    const filters: FilterQuery<ProjectDocument> = paginationParams.startId
+      ? { _id: { $gt: paginationParams.startId } }
+      : {};
     filters.isTemplate = projectType === 'template';
     if (paginationParams.searchQuery) {
-      filters.$text = { $search: paginationParams.searchQuery, };
+      filters.$text = { $search: paginationParams.searchQuery };
     }
 
     const findQuery = this.ProjectModel.find(filters)
@@ -300,9 +302,14 @@ export class ProjectService {
     filterEquipmentDto: FilterEquipmentDto,
     paginationParams: PaginationParams,
   ) {
-    const projectId = filterEquipmentDto.projectId.map((item) => {
-      return new mongoose.Types.ObjectId(item);
-    });
+    let projectId = [];
+    if (Array.isArray(filterEquipmentDto.projectId)) {
+      projectId = filterEquipmentDto.projectId.map((item) => {
+        return new mongoose.Types.ObjectId(item);
+      });
+    } else {
+      projectId = [new mongoose.Types.ObjectId(filterEquipmentDto.projectId)];
+    }
 
     const results = await this.ProjectModel.aggregate([
       { $match: { _id: { $in: projectId } } },
@@ -336,9 +343,14 @@ export class ProjectService {
     paginationParams: PaginationParams,
   ) {
     // mongoose.set('debug', true);
-    const projectId = filterEquipmentDto.projectId.map((item) => {
-      return new mongoose.Types.ObjectId(item);
-    });
+    let projectId = [];
+    if (Array.isArray(filterEquipmentDto.projectId)) {
+      projectId = filterEquipmentDto.projectId.map((item) => {
+        return new mongoose.Types.ObjectId(item);
+      });
+    } else {
+      projectId = [new mongoose.Types.ObjectId(filterEquipmentDto.projectId)];
+    }
 
     const pipeline: any = [
       { $match: { _id: { $in: projectId } } },
@@ -386,9 +398,15 @@ export class ProjectService {
     paginationParams: PaginationParams,
   ) {
     mongoose.set('debug', true);
-    const projectId = filterEquipmentDto.projectId.map((item) => {
-      return new mongoose.Types.ObjectId(item);
-    });
+    let projectId = [];
+    if (Array.isArray(filterEquipmentDto.projectId)) {
+      projectId = filterEquipmentDto.projectId.map((item) => {
+        return new mongoose.Types.ObjectId(item);
+      });
+    } else {
+      projectId = [new mongoose.Types.ObjectId(filterEquipmentDto.projectId)];
+    }
+
     let pipeline: any = [
       {
         $match: {
@@ -490,9 +508,14 @@ export class ProjectService {
     paginationParams: PaginationParams,
   ) {
     mongoose.set('debug', true);
-    const projectId = filterEquipmentDto.projectId.map((item) => {
-      return new mongoose.Types.ObjectId(item);
-    });
+    let projectId = [];
+    if (Array.isArray(filterEquipmentDto.projectId)) {
+      projectId = filterEquipmentDto.projectId.map((item) => {
+        return new mongoose.Types.ObjectId(item);
+      });
+    } else {
+      projectId = [new mongoose.Types.ObjectId(filterEquipmentDto.projectId)];
+    }
     let pipeline: any = [
       {
         $match: {
@@ -580,9 +603,14 @@ export class ProjectService {
     paginationParams: PaginationParams,
   ) {
     mongoose.set('debug', true);
-    const projectId = filterEquipmentDto.projectId.map((item) => {
-      return new mongoose.Types.ObjectId(item);
-    });
+    let projectId = [];
+    if (Array.isArray(filterEquipmentDto.projectId)) {
+      projectId = filterEquipmentDto.projectId.map((item) => {
+        return new mongoose.Types.ObjectId(item);
+      });
+    } else {
+      projectId = [new mongoose.Types.ObjectId(filterEquipmentDto.projectId)];
+    }
     const pipeline: any = [
       {
         $match: {
@@ -714,7 +742,7 @@ export class ProjectService {
   //Get Rooms by projectID
   async getRoomListReport(
     // paginationParams: PaginationParams,
-    projectId : string,
+    projectId: string,
   ) {
     const pipeline: any = [
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
@@ -733,15 +761,15 @@ export class ProjectService {
                 company: 0,
                 signature1: 0,
                 signature2: 0,
-                departments : {
+                departments: {
                   createdAt: 0,
                   updatedAt: 0,
-                  rooms : {
+                  rooms: {
                     createdAt: 0,
                     updatedAt: 0,
-                    equipments : 0,
+                    equipments: 0,
                     alias: 0,
-                    size: 0, 
+                    size: 0,
                   },
                   alias: 0,
                   level: 0,
@@ -758,8 +786,8 @@ export class ProjectService {
                 postalZip: 0,
                 proposedFacilityCompletionDate: 0,
                 state: 0,
-                currencies : 0
-              }
+                currencies: 0,
+              },
             },
             // { $skip: paginationParams.skip },
             // { $limit: paginationParams.limit },
