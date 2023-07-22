@@ -122,7 +122,7 @@ export class ReportsController {
       await this.reportsService.getAllEquipmentsByDeptAndRoom(projectId);
 
     // return results;
-    res.set(this.reportsService.getPdfHeader('equipment-list', results));
+    // res.set(this.reportsService.getPdfHeader('equipment-list', results));
     res.end(results);
   }
 }

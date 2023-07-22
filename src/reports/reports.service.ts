@@ -91,7 +91,7 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -125,7 +125,7 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -156,7 +156,7 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -192,7 +192,7 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -206,10 +206,10 @@ export class ReportsService {
   }
 
   async getAllEquipmentsByDept(projectId: string) {
-    const results = await this.projectService.findOne(projectId);
+    const results = await this.projectService.findOne(projectId).lean();
 
     const data = results;
-    // console.log(data);
+    console.log(data.departments[0].rooms);
     // return data;
     const options = {
       format: 'A4',
@@ -220,7 +220,7 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -228,13 +228,13 @@ export class ReportsService {
     const filePath = join(
       process.cwd(),
       'views/reports',
-      'eqp-list-report.hbs',
+      'eqp-list-by-dept.hbs',
     );
     return createPdf(filePath, options, data);
   }
 
   async getAllEquipmentsByDeptAndRoom(projectId: string) {
-    const results = await this.projectService.findOne(projectId);
+    const results = await this.projectService.findOne(projectId).lean();
 
     const data = results;
     // console.log(data);
@@ -248,7 +248,7 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">MEPS</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -256,7 +256,7 @@ export class ReportsService {
     const filePath = join(
       process.cwd(),
       'views/reports',
-      'eqp-list-report.hbs',
+      'eqp-list-by-dept-and-room.hbs',
     );
     return createPdf(filePath, options, data);
   }
