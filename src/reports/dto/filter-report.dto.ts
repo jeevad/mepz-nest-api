@@ -7,26 +7,38 @@ import {
   IsString,
 } from 'class-validator';
 
-export class FilterEquipmentDto {
-  @ApiProperty({ type: [String] })
+export class FilterReportDto {
+  @ApiProperty({ type: String })
   @IsOptional()
-  projectId: string[];
+  projectId: string;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   departmentId?: string;
 
-  @ApiPropertyOptional({
-    type: String,
-  })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
-  @IsString()
-  roomId?: string;
+  filename?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  reportType?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  reportFormat?: string;
 
   @ApiPropertyOptional({
     type: String,
   })
   @IsOptional()
   @IsString()
-  searchInput?: string;
+  roomId: string;
+
+  @ApiPropertyOptional({
+    type: String,
+  })
+  @IsOptional()
+  @IsString()
+  searchInput: string;
 }

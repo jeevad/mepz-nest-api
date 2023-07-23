@@ -5,6 +5,7 @@ import { join } from 'path';
 import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
 import { PaginationParams } from 'src/utils/paginationParams';
+import { FilterReportDto } from './dto/filter-report.dto';
 
 @Injectable()
 export class ReportsService {
@@ -203,6 +204,57 @@ export class ReportsService {
       'eqp-list-report.hbs',
     );
     return createPdf(filePath, options, data);
+  }
+
+  async getEquipmentReports(filterReportDto: FilterReportDto) {
+    let results: any;
+    if (filterReportDto.reportType === 'equipment-location-listing') {
+      // results = this.getAllEqp(filterReportDto);
+      results = await this.projectService.getAllEquipmentsByLocation(
+        filterReportDto,
+      );
+    } else {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+    }
+    console.log('results', results);
+    // return;
+
+    const data = results;
+    const options = {
+      format: 'A4',
+      displayHeaderFooter: true,
+      margin: {
+        left: '10mm',
+        top: '25mm',
+        right: '10mm',
+        bottom: '15mm',
+      },
+      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
+      footerTemplate:
+        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+      landscape: true,
+    };
+    const filePath = join(
+      process.cwd(),
+      'views/reports/common',
+      `${filterReportDto.reportType}.hbs`,
+    );
+    return createPdf(filePath, options, data);
+  }
+
+  async getAllEqp(filterReportDto) {
+    const results = await this.projectService.getAllEquipmentsByLocation(
+      filterReportDto,
+    );
+    // const eqps = [];
+    // results.results[0].data.forEach((element) => {
+    //   // if (eqps[element._id] === undefined) {
+    //   //   eqps[element._id] = [];
+    //   // }
+    //   eqps[element._id].push(element);
+    // });
   }
 
   async getAllEquipmentsByDept(projectId: string) {
