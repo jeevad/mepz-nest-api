@@ -12,9 +12,23 @@ export class FilterReportDto {
   @IsOptional()
   projectId: string;
 
-  @ApiPropertyOptional({ type: String })
-  @IsOptional()
-  departmentId?: string;
+  // @ApiPropertyOptional({ type: String })
+  // @IsOptional()
+  // departmentId?: string;
+
+  // @ApiPropertyOptional({
+  //   type: String,
+  // })
+  // @IsOptional()
+  // @IsString()
+  // roomId: string;
+
+  // @ApiPropertyOptional({
+  //   type: String,
+  // })
+  // @IsOptional()
+  // @IsString()
+  // searchInput: string;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
@@ -27,18 +41,4 @@ export class FilterReportDto {
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   reportFormat?: string;
-
-  @ApiPropertyOptional({
-    type: String,
-  })
-  @IsOptional()
-  @IsString()
-  roomId: string;
-
-  @ApiPropertyOptional({
-    type: String,
-  })
-  @IsOptional()
-  @IsString()
-  searchInput: string;
 }
