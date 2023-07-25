@@ -531,39 +531,41 @@ export class ProjectService {
       // { $sort: { 'departments.rooms.equipments.name': -1 } },
     ];
 
-    pipeline = [
-      ...pipeline,
-
-      {
-        $group: {
-          _id: '$departments.rooms.equipments.equipmentId',
-          // locations: '$departments',
-          locations: { $addToSet: '$departments' },
-          equipment_code: { $first: '$departments.rooms.equipments.code' },
-          equipment_name: { $first: '$departments.rooms.equipments.name' },
-          department_code: { $first: '$departments.code' },
-          department_name: { $first: '$departments.name' },
-          room_code: { $first: '$departments.rooms.code' },
-          room_name: { $first: '$departments.rooms.name' },
-        },
-      },
-    ];
-
     // pipeline = [
     //   ...pipeline,
+
     //   {
-    //     $project: {
+    //     $group: {
     //       _id: '$departments.rooms.equipments.equipmentId',
-    //       code: '$departments.rooms.equipments.code',
-    //       name: '$departments.rooms.equipments.name',
-    //       quantity: '$departments.rooms.equipments.quantity',
-    //       room_code: '$departments.rooms.code',
-    //       room_name: '$departments.rooms.name',
-    //       department_code: '$departments.code',
-    //       department_name: '$departments.name',
+    //       // locations: '$departments',
+    //       locations: { $addToSet: '$departments' },
+    //       equipment_code: { $first: '$departments.rooms.equipments.code' },
+    //       equipment_name: { $first: '$departments.rooms.equipments.name' },
+    //       department_code: { $first: '$departments.code' },
+    //       department_name: { $first: '$departments.name' },
+    //       room_code: { $first: '$departments.rooms.code' },
+    //       room_name: { $first: '$departments.rooms.name' },
     //     },
     //   },
     // ];
+
+    pipeline = [
+      ...pipeline,
+      {
+        $project: {
+          _id: '$departments.rooms.equipments.equipmentId',
+          code: '$departments.rooms.equipments.code',
+          name: '$departments.rooms.equipments.name',
+          quantity: '$departments.rooms.equipments.quantity',
+          project_code: '$code',
+          project_name: '$name',
+          room_code: '$departments.rooms.code',
+          room_name: '$departments.rooms.name',
+          department_code: '$departments.code',
+          department_name: '$departments.name',
+        },
+      },
+    ];
 
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;

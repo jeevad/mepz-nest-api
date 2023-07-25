@@ -9,6 +9,8 @@ import { FilterReportDto } from './dto/filter-report.dto';
 
 @Injectable()
 export class ReportsService {
+  reportType = {};
+
   constructor(private projectService: ProjectService) {}
 
   getPdfHeader(filename = 'pdf', buffer) {
@@ -140,16 +142,17 @@ export class ReportsService {
   async getEquipmentReports(filterReportDto: FilterReportDto) {
     let results: any;
     if (filterReportDto.reportType === 'equipment-location-listing') {
-      // results = this.getAllEqp(filterReportDto);
-      results = await this.projectService.getAllEquipmentsByLocation(
-        filterReportDto,
-      );
+      const equipments = await this.getAllEqp(filterReportDto);
+      // results = await this.projectService.getAllEquipmentsByLocation(
+      //   filterReportDto,
+      // );
+      results = { equipments };
+      // results = { equipments: ['test', 'ere', 'dfdf'] };
     } else {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
     }
-    console.log('results', results);
     // return;
 
     const data = results;
@@ -172,6 +175,8 @@ export class ReportsService {
       'views/reports/common',
       `${filterReportDto.reportType}.hbs`,
     );
+    console.log('data', data);
+
     return createPdf(filePath, options, data);
   }
 
@@ -179,12 +184,42 @@ export class ReportsService {
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
     );
-    // const eqps = [];
-    // results.results[0].data.forEach((element) => {
-    //   // if (eqps[element._id] === undefined) {
-    //   //   eqps[element._id] = [];
-    //   // }
+    // console.log('results', results);
+    // return results;
+    const eqps = [];
+    for (const element of results) {
+      if (eqps[element._id] === undefined) {
+        eqps[element._id] = [];
+      }
+      // console.log('ele', element);
+
+      eqps[element._id].push(element);
+    }
+    console.log('eqps', typeof eqps);
+    // console.log('eqps1', eqps.length);
+    // console.log('eqps2', eqps);
+    const lists = [];
+    for (const element1 in eqps) {
+      // console.log('element', element1);
+      console.log('eqps[element1]', Object.keys(eqps[element1]));
+      lists.push({
+        project_name: eqps[element1][0].project_name,
+        project_code: eqps[element1][0].project_code,
+        eqp_code: eqps[element1][0].code,
+        eqp_name: eqps[element1][0].name,
+        locations: eqps[element1],
+      });
+    }
+
+    // results.forEach((element) => {
+    //   if (eqps[element._id] === undefined) {
+    //     eqps[element._id] = [];
+    //   }
+    //   // console.log('ele', element);
+
     //   eqps[element._id].push(element);
     // });
+    // eqps.forEach();
+    return lists;
   }
 }

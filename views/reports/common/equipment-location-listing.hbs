@@ -16,29 +16,37 @@
         <div class='col-xl-12'>
           <p
             style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          >Project Name1 : <strong>{{name}}</strong></p>
-          {{#each departments}}
+          >Project Name : <strong>{{equipments.0.project_name}}</strong></p>
+          {{#each equipments}}
+            {{!-- {{this}} --}}
+
+            {{!-- {{@index}}: --}}
+            {{!-- {{this}} --}}
             <p
               style='color: #000;font-size: 18px; margin-bottom: 15px;'
-            >Department : {{code}} - {{name}}</p>
+            >Equipments : {{eqp_code}} - {{eqp_name}}</p>
 
             <table class='table table-bordered'>
               <thead class='table-light'>
                 <tr>
-                  <th>Equipment Code</th>
-                  <th>Equipment Name</th>
+                  <th>Dept Code</th>
+                  <th>Dept Name</th>
+                  <th>Room Code</th>
+                  <th>Room Name</th>
                   <th>Qty</th>
                 </tr>
               </thead>
               <tbody>
-                {{#each rooms}}
-                  {{#each equipments}}
-                    <tr>
-                      <td>{{code}}</td>
-                      <td>{{name}}</td>
-                      <td>{{quantity}}</td>
-                    </tr>
-                  {{/each}}
+                {{!-- {{#each rooms}} --}}
+                {{#each locations}}
+                  <tr>
+                    <td>{{department_code}}</td>
+                    <td>{{department_name}}</td>
+                    <td>{{room_code}}</td>
+                    <td>{{room_name}}</td>
+                    <td>{{quantity}}</td>
+                  </tr>
+                  {{!-- {{/each}} --}}
                 {{/each}}
               </tbody>
             </table>
