@@ -253,7 +253,90 @@ export class ProjectService {
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
+  //Get Equipments by projectID
+  async getProjectEquipmentsbyroom(projectId: string,
+    roomId: string,equipmentId: string
+    
+  ) {
+        mongoose.set('debug', true);
+    //let projectId = [];
+    
+    //projectId = [new mongoose.Types.ObjectId(projectId)];
+   
 
+    let pipeline: any = [
+       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+
+      // { $sort: { 'departments.rooms.equipments.name': -1 } },
+    ];
+
+    pipeline = [...pipeline, { $unwind: '$departments.rooms' }];
+    if (roomId) {
+      pipeline.push({
+        $match: {
+          'departments.rooms._id': new mongoose.Types.ObjectId(
+            roomId,
+          ),
+        },
+      });
+    }
+
+    pipeline = [
+      ...pipeline,
+      { $unwind: '$departments.rooms.equipments' },
+      // {
+      //   $group: {
+      //     _id: '$departments.rooms.equipments.equipmentId',
+      //     code: { $first: '$departments.rooms.equipments.code' },
+      //     name: { $first: '$departments.rooms.equipments.name' },
+      //     room_code: { $first: '$departments.rooms.code' },
+      //     room_name: { $first: '$departments.rooms.name' },
+      //   },
+      // },
+    ];
+
+    pipeline.push({
+        $match: {
+          'departments.rooms.equipments.code': equipmentId
+        },
+      });
+    pipeline = [
+      ...pipeline,
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }, { $addFields: { page: 1 } }],
+          data: [
+            {
+              $project: {
+                _id: '$departments.rooms.equipments.equipmentId',
+                code: '$departments.rooms.equipments.code',
+                name: '$departments.rooms.equipments.name',
+                quantity: '$departments.rooms.equipments.quantity',
+                room_code: '$departments.rooms.code',
+                room_name: '$departments.rooms.name',
+                department_code: '$departments.code',
+                department_name: '$departments.name',
+              },
+            }
+          ], // add projection here wish you re-shape the docs
+        },
+      },
+    ];
+
+
+
+    
+    const results = await this.ProjectModel.aggregate(pipeline);
+    return { results };
+  }
   //Get Equipments by projectID
   async getProjectEquipments(
     projectId: string,
@@ -530,7 +613,7 @@ export class ProjectService {
 
       // { $sort: { 'departments.rooms.equipments.name': -1 } },
     ];
-
+    
     // pipeline = [
     //   ...pipeline,
 
@@ -548,8 +631,8 @@ export class ProjectService {
     //     },
     //   },
     // ];
-
-    pipeline = [
+    	
+	pipeline = [
       ...pipeline,
       {
         $project: {
@@ -566,6 +649,8 @@ export class ProjectService {
         },
       },
     ];
+
+     //console.log(pipeline);
 
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;

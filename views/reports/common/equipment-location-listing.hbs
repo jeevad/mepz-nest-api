@@ -17,8 +17,13 @@
           <p
             style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
           >Project Name : <strong>{{equipments.0.project_name}}</strong></p>
+		   <p
+            style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
+          > Equipment Location Listing</p>
+		  
+		  
           {{#each equipments}}
-            {{!-- {{this}} --}}
+            {{!--@index--}}
 
             {{!-- {{@index}}: --}}
             {{!-- {{this}} --}}
@@ -38,16 +43,26 @@
               </thead>
               <tbody>
                 {{!-- {{#each rooms}} --}}
+				
                 {{#each locations}}
+				
                   <tr>
-                    <td>{{department_code}}</td>
+                    <td> {{department_code}}  </td>
                     <td>{{department_name}}</td>
                     <td>{{room_code}}</td>
                     <td>{{room_name}}</td>
-                    <td>{{quantity}}</td>
+                    <td>{{total}}</td>
                   </tr>
                   {{!-- {{/each}} --}}
+				
                 {{/each}}
+				<tr>
+                    <td>   </td>
+                    <td></td>
+                    <td></td>
+                    <td>Sub-Total:</td>
+                    <td>{{sum}}</td>
+                  </tr>
               </tbody>
             </table>
           {{/each}}

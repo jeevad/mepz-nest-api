@@ -17,10 +17,11 @@
           <p
             style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
           >Project Name : <strong>{{name}}</strong></p>
-          {{#each departments}}
-            <p
-              style='color: #000;font-size: 18px; margin-bottom: 15px;'
-            >Department : {{code}} - {{name}}</p>
+          {{!-- {{#each departments}}  {{/each}} --}}
+           
+            <p style='color: #000;font-size: 18px; margin-bottom: 15px;'
+            <p style='color: #000;font-size: 18px; margin-bottom: 15px;'
+            >Equipment Listing (BQ) </p>
 
             <table class='table table-bordered'>
               <thead class='table-light'>
@@ -31,18 +32,18 @@
                 </tr>
               </thead>
               <tbody>
-                {{#each rooms}}
-                  {{#each equipments}}
+               
+                  {{#each EquipmentItemlist}}
                     <tr>
                       <td>{{code}}</td>
                       <td>{{name}}</td>
-                      <td>{{quantity}}</td>
+                      <td>{{total}}</td>
                     </tr>
                   {{/each}}
-                {{/each}}
+                 {{!-- {{#each rooms}}{{/each}} --}}
               </tbody>
             </table>
-          {{/each}}
+         
         </div>
       </div>
     </div>
