@@ -35,6 +35,19 @@ export class ReportsController {
     res.end(results);
   }
 
+  //Get common reports
+  @Get('exportExcel')
+  @ApiOperation({ summary: 'get rooms by project id' })
+  async exportExcel(@Query() filterReportDto: FilterReportDto, @Res() res) {
+    const results: any = await this.reportsService.exportExcel();
+
+    // return results;
+    // res.set(
+    //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
+    // );
+    res.download(results);
+  }
+
   //Get Rooms by projectId
   @Get('getAllEquipments/:projectId')
   @ApiOperation({ summary: 'get rooms by project id' })

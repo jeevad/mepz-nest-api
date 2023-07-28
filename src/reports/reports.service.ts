@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { createPdf } from '@saemhco/nestjs-html-pdf';
-import { join } from 'path';
+import path, { join } from 'path';
 import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
+import Excel from 'exceljs';
+
+interface WeeklySalesNumbers {
+  product: string;
+  week1: number;
+  week2: number;
+  week3: number;
+}
 
 @Injectable()
 export class ReportsService {
@@ -142,21 +150,20 @@ export class ReportsService {
   async getEquipmentReports(filterReportDto: FilterReportDto) {
     let results: any;
     if (filterReportDto.reportType === 'equipment-location-listing') {
-
-    type EquipmentItem = {
-  _id: string;
-  code: string;
-  name: string;
-  project_code: string;
-  project_name: string;
-  room_code: string;
-  room_name: string;
-  department_code: string;
-  department_name: string;
-  qty1: number;
-  totalequ: number;
-  total?: number;
-   };
+      type EquipmentItem = {
+        _id: string;
+        code: string;
+        name: string;
+        project_code: string;
+        project_name: string;
+        room_code: string;
+        room_name: string;
+        department_code: string;
+        department_name: string;
+        qty1: number;
+        totalequ: number;
+        total?: number;
+      };
 
       const equipments = await this.getAllEqp(filterReportDto);
       // results = await this.projectService.getAllEquipmentsByLocation(
@@ -164,21 +171,21 @@ export class ReportsService {
       // );
       results = { equipments };
       // results = { equipments: ['test', 'ere', 'dfdf'] };
-    } 
-    else if (filterReportDto.reportType === 'equipment-listing-bq') {
-          results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-      
-     results.EquipmentItemlist = await this.getAllremove_duplicates(results.departments);
-   
-     console.log(results);
-    }
-    else {
+    } else if (filterReportDto.reportType === 'equipment-listing-bq') {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-       console.log(results);
+
+      results.EquipmentItemlist = await this.getAllremove_duplicates(
+        results.departments,
+      );
+
+      console.log(results);
+    } else {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      console.log(results);
     }
     // return;
 
@@ -206,130 +213,129 @@ export class ReportsService {
 
     return createPdf(filePath, options, data);
   }
- async getAllremove_duplicates(department) {
- 
-      type EquipmentItem = {
-  equipmentId: string;
-  name: string;
-  code: string;
-  _id: string;
-  total?: number;
-   };
-  const eqps = [];
-   for(const element3 of department) {
-   for(const element2 of element3.rooms) {
-    for (const element of element2.equipments) {
-
-       if (eqps[element._id] === undefined) {
-        //eqps[element._id] = [];
+  async getAllremove_duplicates(department) {
+    type EquipmentItem = {
+      equipmentId: string;
+      name: string;
+      code: string;
+      _id: string;
+      total?: number;
+    };
+    const eqps = [];
+    for (const element3 of department) {
+      for (const element2 of element3.rooms) {
+        for (const element of element2.equipments) {
+          if (eqps[element._id] === undefined) {
+            //eqps[element._id] = [];
+          }
+          console.log('ggggggelement' + element.code);
+          eqps.push(element);
+        }
       }
-      console.log('ggggggelement'+element.code);
-       eqps.push(element);
-     }
     }
-     }   
-  console.log('EquipmentList', eqps);
+    console.log('EquipmentList', eqps);
     const lists = [];
     //for (const element1 in eqps) {
-       
-           const items = eqps;
 
-  console.log('items', items);
-   const inputArray: EquipmentItem[] = eqps;
-      //const uniqueItems: { [id: string]  } = {};
+    const items = eqps;
 
-   const uniqueItems: { [id: string]: EquipmentItem } = {};
-       items.forEach(item => {
-    if (uniqueItems[item.code]) {
-      uniqueItems[item.code].total = (uniqueItems[item.code].total || 0) + 1;
-    } else {
-      uniqueItems[item.code] = { ...item, total: 1 };
-    }
-   });
-     console.log('uniqueeitems', Object.values(uniqueItems));
-     return Object.values(uniqueItems);
-   }
+    console.log('items', items);
+    const inputArray: EquipmentItem[] = eqps;
+    //const uniqueItems: { [id: string]  } = {};
+
+    const uniqueItems: { [id: string]: EquipmentItem } = {};
+    items.forEach((item) => {
+      if (uniqueItems[item.code]) {
+        uniqueItems[item.code].total = (uniqueItems[item.code].total || 0) + 1;
+      } else {
+        uniqueItems[item.code] = { ...item, total: 1 };
+      }
+    });
+    console.log('uniqueeitems', Object.values(uniqueItems));
+    return Object.values(uniqueItems);
+  }
   async getAllEqp(filterReportDto) {
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
     );
-	
-	
-	
-     //console.log('results12345', results);
+
+    //console.log('results12345', results);
     // return results;
     const eqps = [];
     for (const element of results) {
       if (eqps[element._id] === undefined) {
         eqps[element._id] = [];
       }
-      
-	   
-	    const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.projectId,element.room_id,element.code);
-		element.qty1= Object.values(results2).length;
-		
-		 //console.log('ele', results2);
-		 //console.log('ele', element.code);
-		 //console.log('ele', results2.results[0].metadata[0].total);
-       element.totalequ = results2.results[0].metadata[0].total;
+
+      const results2 = await this.projectService.getProjectEquipmentsbyroom(
+        filterReportDto.projectId,
+        element.room_id,
+        element.code,
+      );
+      element.qty1 = Object.values(results2).length;
+
+      //console.log('ele', results2);
+      //console.log('ele', element.code);
+      //console.log('ele', results2.results[0].metadata[0].total);
+      element.totalequ = results2.results[0].metadata[0].total;
       //const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.element.room_id);
-	//console.log('eqps555', filterReportDto.projectId);
-	//console.log('eqps555', filterReportDto);
-	//element.qty1= Object.values(results2).length;
+      //console.log('eqps555', filterReportDto.projectId);
+      //console.log('eqps555', filterReportDto);
+      //element.qty1= Object.values(results2).length;
       eqps[element._id].push(element);
-	  
-	  	// const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.projectId,eqps[element][0].room_id);
-	//console.log('eqps555', filterReportDto.projectId);
-	//console.log('eqps555', filterReportDto);
-	//eqps[element.qty1]= Object.values(results2).length;
-	  
+
+      // const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.projectId,eqps[element][0].room_id);
+      //console.log('eqps555', filterReportDto.projectId);
+      //console.log('eqps555', filterReportDto);
+      //eqps[element.qty1]= Object.values(results2).length;
     }
-   // console.log('eqps', typeof eqps);
+    // console.log('eqps', typeof eqps);
     // console.log('eqps1', eqps.length);
-	//console.log('vineesh');
-   // console.log('eqps2', eqps);
+    //console.log('vineesh');
+    // console.log('eqps2', eqps);
     const lists = [];
     for (const element1 in eqps) {
       // console.log('element', element1);
-	 //const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.projectId,eqps[element1][0].room_id);
-	//console.log('eqps555', filterReportDto.projectId);
-	//console.log('eqps555', filterReportDto);
-	//eqps[element1][0].qty1= Object.values(results2).length;
-	//console.log('eqps555', Object.values(results2).length);
+      //const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.projectId,eqps[element1][0].room_id);
+      //console.log('eqps555', filterReportDto.projectId);
+      //console.log('eqps555', filterReportDto);
+      //eqps[element1][0].qty1= Object.values(results2).length;
+      //console.log('eqps555', Object.values(results2).length);
       //console.log('eqps[element1]', Object.keys(eqps[element1]));
-	  var total=0;
-      var room_info=[];
-      var rooms=[];
-      var total_equ_array=[];
+      var total = 0;
+      var room_info = [];
+      var rooms = [];
+      var total_equ_array = [];
       const items = eqps[element1];
       type EquipmentItem = {
-  _id: string;
-  code: string;
-  name: string;
-  project_code: string;
-  project_name: string;
-  room_code: string;
-  room_name: string;
-  department_code: string;
-  department_name: string;
-  qty1: number;
-  totalequ: number;
-  total?: number;
-   };
+        _id: string;
+        code: string;
+        name: string;
+        project_code: string;
+        project_name: string;
+        room_code: string;
+        room_name: string;
+        department_code: string;
+        department_name: string;
+        qty1: number;
+        totalequ: number;
+        total?: number;
+      };
 
-   const inputArray: EquipmentItem[] = eqps[element1];
+      const inputArray: EquipmentItem[] = eqps[element1];
       //const uniqueItems: { [id: string]  } = {};
 
-   const uniqueItems: { [id: string]: EquipmentItem } = {};
-       items.forEach(item => {
-    if (uniqueItems[item.room_code]) {
-      uniqueItems[item.room_code].total = (uniqueItems[item.room_code].total || 0) + 1;
-    } else {
-      uniqueItems[item.room_code] = { ...item, total: 1 };
-    }
-   });
-   //console.log('tttttttttttt', Object.values(uniqueItems));
-   /*
+      const uniqueItems: { [id: string]: EquipmentItem } = {};
+      items.forEach((item) => {
+        if (uniqueItems[item.room_code]) {
+          uniqueItems[item.room_code].total =
+            (uniqueItems[item.room_code].total || 0) + 1;
+        } else {
+          uniqueItems[item.room_code] = { ...item, total: 1 };
+        }
+      });
+      //console.log('tttttttttttt', Object.values(uniqueItems));
+      /*
 
 	   for (const element2 in eqps[element1]) {
       
@@ -353,27 +359,24 @@ export class ReportsService {
 	  //console.log('v4444888', data1);
      
 	   } */
-	  console.log('length', Object.values(uniqueItems).length);
-	  //console.log('length', eqps[element1][0].code);
-    //  if(Object.values(uniqueItems).length > 0)
-     // {
+      console.log('length', Object.values(uniqueItems).length);
+      //console.log('length', eqps[element1][0].code);
+      //  if(Object.values(uniqueItems).length > 0)
+      // {
       lists.push({
         project_name: eqps[element1][0].project_name,
         project_code: eqps[element1][0].project_code,
         eqp_code: eqps[element1][0].code,
         eqp_name: eqps[element1][0].name,
         sum: eqps[element1][0].totalequ,
-		
+
         //locations: room_info,
         locations: Object.values(uniqueItems),
-        total_equ:total_equ_array,
+        total_equ: total_equ_array,
         //data1:data1,
-		
       });
-     //}    
+      //}
     }
-	
-	
 
     // results.forEach((element) => {
     //   if (eqps[element._id] === undefined) {
@@ -385,5 +388,113 @@ export class ReportsService {
     // });
     // eqps.forEach();
     return lists;
+  }
+
+  exportExcel() {
+    const numbers: WeeklySalesNumbers[] = [
+      { product: 'Product A', week1: 5, week2: 10, week3: 27 },
+      { product: 'Product B', week1: 5, week2: 5, week3: 11 },
+      { product: 'Product C', week1: 1, week2: 2, week3: 3 },
+      { product: 'Product D', week1: 6, week2: 1, week3: 2 },
+    ];
+  }
+
+  async generateSalesReport(weeklySalesNumbers: WeeklySalesNumbers[]) {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sales Data');
+    weeklySalesNumbers.forEach((data, index) => {
+      worksheet.addRow({
+        ...data,
+        // productTotals: generateProductTotalsCell(worksheet, index + 1),
+      });
+    });
+  }
+
+  async expExcel() {
+    type Country = {
+      name: string;
+      countryCode: string;
+      capital: string;
+      phoneIndicator: number;
+    };
+
+    const countries: Country[] = [
+      {
+        name: 'Cameroon',
+        capital: 'Yaounde',
+        countryCode: 'CM',
+        phoneIndicator: 237,
+      },
+      {
+        name: 'France',
+        capital: 'Paris',
+        countryCode: 'FR',
+        phoneIndicator: 33,
+      },
+      {
+        name: 'United States',
+        capital: 'Washington, D.C.',
+        countryCode: 'US',
+        phoneIndicator: 1,
+      },
+      {
+        name: 'India',
+        capital: 'New Delhi',
+        countryCode: 'IN',
+        phoneIndicator: 91,
+      },
+      {
+        name: 'Brazil',
+        capital: 'Brasília',
+        countryCode: 'BR',
+        phoneIndicator: 55,
+      },
+      {
+        name: 'Japan',
+        capital: 'Tokyo',
+        countryCode: 'JP',
+        phoneIndicator: 81,
+      },
+      {
+        name: 'Australia',
+        capital: 'Canberra',
+        countryCode: 'AUS',
+        phoneIndicator: 61,
+      },
+      {
+        name: 'Nigeria',
+        capital: 'Abuja',
+        countryCode: 'NG',
+        phoneIndicator: 234,
+      },
+      {
+        name: 'Germany',
+        capital: 'Berlin',
+        countryCode: 'DE',
+        phoneIndicator: 49,
+      },
+    ];
+
+    const exportCountriesFile = async () => {
+      const workbook = new Excel.Workbook();
+      const worksheet = workbook.addWorksheet('Countries List');
+
+      worksheet.columns = [
+        { key: 'name', header: 'Name' },
+        { key: 'countryCode', header: 'Country Code' },
+        { key: 'capital', header: 'Capital' },
+        { key: 'phoneIndicator', header: 'International Direct Dialling' },
+      ];
+
+      countries.forEach((item) => {
+        worksheet.addRow(item);
+      });
+
+      const exportPath = path.resolve(__dirname, 'countries.xlsx');
+
+      await workbook.xlsx.writeFile(exportPath);
+    };
+
+    exportCountriesFile();
   }
 }
