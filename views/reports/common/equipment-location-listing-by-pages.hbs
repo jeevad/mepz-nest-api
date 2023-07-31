@@ -35,10 +35,11 @@
             {{!-- {{this}} --}}
 			 {{#index_gt @index}}
 			<div class="page-break">
+			 {{/index_gt}}
     <p style='color: #000;font-size: 18px; margin-bottom: 15px;'
             >Equipments : {{eqp_code}} - {{eqp_name}}</p>
-        </div>
-               {{/index_gt}}
+       {{#index_gt @index}}  </div>  {{/index_gt}}
+              
 
             <table class='table table-bordered'>
               <thead class='table-light'>

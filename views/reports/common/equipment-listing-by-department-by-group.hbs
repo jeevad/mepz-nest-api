@@ -9,6 +9,12 @@
       integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65'
       crossorigin='anonymous'
     />
+	<style>
+    
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
   </head>
   <body>
     <div class='container mb-5 mt-3'>
@@ -17,11 +23,13 @@
           <p
             style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
           >Project Name : <strong>{{name}}</strong></p>
-          {{#each departments}}
+          {{#each departments}}{{#index_gt @index}}
+			<div class="page-break">
+			 {{/index_gt}}
             <p
               style='color: #000;font-size: 18px; margin-bottom: 15px;'
             >Department : {{code}} - {{name}}</p>
-
+                {{#index_gt @index}}  </div>  {{/index_gt}}
             <table class='table table-bordered'>
               <thead class='table-light'>
                 <tr>
@@ -36,7 +44,7 @@
                     <tr>
                       <td>{{code}}</td>
                       <td>{{name}}</td>
-                      <td>{{quantity}}</td>
+                      <td>{{qty}}</td>
                     </tr>
                   {{/each}}
                 {{/each}}
