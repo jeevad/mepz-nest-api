@@ -171,6 +171,28 @@ export class ReportsService {
       // );
       results = { equipments };
       // results = { equipments: ['test', 'ere', 'dfdf'] };
+    } else if (filterReportDto.reportType === 'equipment-location-listing-by-pages') {
+      type EquipmentItem = {
+        _id: string;
+        code: string;
+        name: string;
+        project_code: string;
+        project_name: string;
+        room_code: string;
+        room_name: string;
+        department_code: string;
+        department_name: string;
+        qty1: number;
+        totalequ: number;
+        total?: number;
+      };
+
+      const equipments = await this.getAllEqp(filterReportDto);
+      // results = await this.projectService.getAllEquipmentsByLocation(
+      //   filterReportDto,
+      // );
+      results = { equipments };
+      // results = { equipments: ['test', 'ere', 'dfdf'] };
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
@@ -181,7 +203,67 @@ export class ReportsService {
       );
 
       console.log(results);
-    } else {
+    } 
+	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
+         
+    const results = await this.projectService.getAllDisabledEquipments(
+      filterReportDto,
+    );
+	}
+	else if (filterReportDto.reportType === 'equipment-listing-by-department') {
+     
+    results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+   
+   //console.log(results); 
+   //console.log(results.departments[1].rooms[0]); 
+   interface Item {
+  equipmentId: string;
+  name: string;
+  code: string;
+  _id: string;
+  quantity?: number; // Make sure qty property is optional as it's not present in all objects.
+   }
+   console.log("fffffffffffff"); 
+   for(const element3 of results.departments) {
+   for(const element2 of element3.rooms) {
+    // element3.rooms.total_sum = sumQty(element2);
+	console.log(element2);
+	  let sum = 0;
+	  
+	for (const item of element2.equipments) {
+    if (item.qty !== undefined) {
+      sum += item.qty;
+    }
+	else {
+	 sum += 1;
+	}
+    }
+	
+	element2.total_sum =sum;  /**/
+	}
+	}
+	console.log(results.departments[1].rooms[0]); 
+   // console.log(results.departments); 
+    // const items: Item[] =
+	 /* 
+     results.Departments.forEach((items) => {
+     var  sum = 0;
+	// const items1 = items.room;
+   // items1.forEach((item) => {
+     //sum+ = item.quantity;
+     sum  = sum + 1;
+       console.log(items); 
+     // });
+    //items.sum_total = sum;
+     });
+     */
+    // console.log(results); 
+    
+
+     } 
+	else {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();

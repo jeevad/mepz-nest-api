@@ -39,7 +39,14 @@
                       <td>{{quantity}}</td>
                     </tr>
                   {{/each}}
+	               
                 {{/each}}
+                  <tr>
+                    <td>   </td>
+                   
+                    <td>Sub-Total:</td>
+                    <td>{{sum equipments "quantity"}}</td>
+                  </tr>
               </tbody>
             </table>
           {{/each}}

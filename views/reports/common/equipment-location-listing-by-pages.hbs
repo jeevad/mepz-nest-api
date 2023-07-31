@@ -9,6 +9,12 @@
       integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65'
       crossorigin='anonymous'
     />
+	<style>
+    
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
   </head>
   <body>
     <div class='container mb-5 mt-3'>
@@ -27,9 +33,12 @@
 
             {{!-- {{@index}}: --}}
             {{!-- {{this}} --}}
-            <p
-              style='color: #000;font-size: 18px; margin-bottom: 15px;'
+			 {{#index_gt @index}}
+			<div class="page-break">
+    <p style='color: #000;font-size: 18px; margin-bottom: 15px;'
             >Equipments : {{eqp_code}} - {{eqp_name}}</p>
+        </div>
+               {{/index_gt}}
 
             <table class='table table-bordered'>
               <thead class='table-light'>

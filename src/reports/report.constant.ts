@@ -3,6 +3,10 @@ export const REPORT_TYPE = {
     filename: 'equipment-location-listing',
     views: 'equipment-location-listing.hbs',
   },
+  'equipment-location-listing-by-pages': {
+    filename: 'equipment-location-listing-by-pages',
+    views: 'equipment-location-listing-by-pages.hbs',
+  },
   'department-list': {
     filename: 'department-list',
     views: 'department-list.hbs',
