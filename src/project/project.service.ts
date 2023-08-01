@@ -660,6 +660,7 @@ export class ProjectService {
       { $unwind: '$departments' },
       { $unwind: '$departments.rooms' },
       { $unwind: '$departments.rooms.equipments' },
+      //{ $unwind: '$equipmentAllocation' },
 
       // { $sort: { 'departments.rooms.equipments.name': -1 } },
     ];
@@ -689,7 +690,9 @@ export class ProjectService {
           _id: '$departments.rooms.equipments.equipmentId',
           code: '$departments.rooms.equipments.code',
           name: '$departments.rooms.equipments.name',
-          quantity: '$departments.rooms.equipments.quantity',
+          qty: '$qty',
+          qty4: '$departments.rooms.equipments.name',
+          qty3: '$departments.rooms.equipments.equipmentId4',
           project_code: '$code',
           project_name: '$name',
           room_code: '$departments.rooms.code',

@@ -341,7 +341,7 @@ export class ReportsService {
       filterReportDto,
     );
 
-    //console.log('results12345', results);
+   console.log('results1234544444444444444', results);
     // return results;
     const eqps = [];
     for (const element of results) {

@@ -24,8 +24,14 @@ export class ProjectRoomEquipment {
   _id: string;
 
   @Prop()
-  equipmentId: string;
-
+  equipmentId2: string;
+  
+  @Prop()
+  equipmentId4: string;
+  
+  @Prop()
+  qty: number;
+  
   @Prop()
   name: string;
 
@@ -41,8 +47,6 @@ export class ProjectRoomEquipment {
   @Prop()
   fpq: number;
 
-  @Prop()
-  qty: number;
 
   @Prop()
   cost: string;
