@@ -692,7 +692,7 @@ export class ProjectService {
           name: '$departments.rooms.equipments.name',
           qty: '$qty',
           qty4: '$departments.rooms.equipments.name',
-          qty3: '$departments.rooms.equipments.equipmentId4',
+          qty3: '$departments.rooms.equipments.equipmentId2',
           project_code: '$code',
           project_name: '$name',
           room_code: '$departments.rooms.code',
