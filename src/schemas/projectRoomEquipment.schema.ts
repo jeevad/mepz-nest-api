@@ -24,7 +24,7 @@ export class ProjectRoomEquipment {
   _id: string;
 
   @Prop()
-  equipmentId2: string;
+  equipmentId: string;
   
   @Prop()
   equipmentId4: string;
