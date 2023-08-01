@@ -42,7 +42,7 @@ export class ProjectRoomEquipment {
   fpq: number;
 
   @Prop()
-  quantity: number;
+  qty: number;
 
   @Prop()
   cost: string;
