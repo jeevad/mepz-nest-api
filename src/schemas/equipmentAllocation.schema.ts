@@ -24,6 +24,11 @@ export class EquipmentAllocation {
 
   @Prop({ required: true })
   qty: number;
+  
+  @Prop({ required: true })
+  cost: number;
+  
+  
 }
 
 export const EquipmentAllocationSchema =

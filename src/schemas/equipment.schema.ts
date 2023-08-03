@@ -30,7 +30,10 @@ export class Equipment {
 
   @Prop()
   fileThree: string;
-
+  
+  @Prop()
+  qty: number;
+  
   @Prop({ required: true })
   code: string;
 

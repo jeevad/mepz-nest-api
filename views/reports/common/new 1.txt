@@ -1,13 +1,31 @@
+Equipment Location Listing
+
 1)http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing&format=undefined
 
 
 2) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing-by-pages&format=undefined
 
+
+Department list
+
 3) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=department-list&format=undefined
+
+
+Room Listing
+
 
 4) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=room-listing&format=undefined
 
 
+Equipment Listing(BQ)
+
 5) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq&format=undefined
 
-6) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=disabled-equipment-listing-bq&format=undefined
+6) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-price&format=
+
+
+Disabled Equipment Listing(BQ)
+
+7) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=disabled-equipment-listing-bq&format=undefined
+
+8) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=disabled-equipment-listing-bq-with-price&format=undefined

@@ -194,17 +194,46 @@ export class ReportsService {
       results = { equipments };
       // results = { equipments: ['test', 'ere', 'dfdf'] };
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
-      results = await this.projectService
+        results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
+        /*
+	    results = await this.projectService.getAllEquipmentsByLocation(
+      filterReportDto,
+    );
 
       results.EquipmentItemlist = await this.getAllremove_duplicates(
         results.departments,
       );
-
+     */
+      console.log(results);
+    } 
+	else if (filterReportDto.reportType === 'equipment-listing-bq-with-price') {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+	var paginationParams=[];
+	results = await this.projectService.getAllEquipments_unique_dsply(
+      filterReportDto
+    );
+	results.EquipmentItemlist= results.results;
+	/*	
+	console.log("hhhhhhhh");
+	console.log(results);
+      results.EquipmentItemlist = await this.getAllremove_duplicates(
+        results.departments,
+      );
+     */
+	 console.log("DDDDDDDDDDDDDDD");
       console.log(results);
     } 
 	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
+         
+    const results = await this.projectService.getAllDisabledEquipments(
+      filterReportDto,
+    );
+	}
+	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price') {
          
     const results = await this.projectService.getAllDisabledEquipments(
       filterReportDto,
@@ -321,7 +350,7 @@ export class ReportsService {
 
     const items = eqps;
 
-    console.log('items', items);
+    console.log('items33333', items);
     const inputArray: EquipmentItem[] = eqps;
     //const uniqueItems: { [id: string]  } = {};
 
@@ -341,7 +370,7 @@ export class ReportsService {
       filterReportDto,
     );
 
-   console.log('results1234544444444444444', results);
+  // console.log('results1234544444444444444', results);
     // return results;
     const eqps = [];
     for (const element of results) {
@@ -357,7 +386,7 @@ export class ReportsService {
       element.qty1 = Object.values(results2).length;
 
       //console.log('ele', results2);
-      //console.log('ele', element.code);
+      console.log('eleeeeeeeeeeeeeeeeeeeeeeeee', element);
       //console.log('ele', results2.results[0].metadata[0].total);
       element.totalequ = results2.results[0].metadata[0].total;
       //const results2 = await this.projectService.getProjectEquipmentsbyroom(filterReportDto.element.room_id);
@@ -374,7 +403,7 @@ export class ReportsService {
     // console.log('eqps', typeof eqps);
     // console.log('eqps1', eqps.length);
     //console.log('vineesh');
-    // console.log('eqps2', eqps);
+    console.log('eqps22222222222222222222222', eqps);
     const lists = [];
     for (const element1 in eqps) {
       // console.log('element', element1);
