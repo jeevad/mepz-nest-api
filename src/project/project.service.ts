@@ -639,7 +639,66 @@ export class ProjectService {
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;
   }
+   async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
+    mongoose.set('debug', true);
 
+   let pipeline: any = [{
+    $match: {
+      _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+    }
+  },
+  {
+    $addFields: {
+     
+	       departments: {
+        $map: {
+          input: "$departments",
+          as: "departments",
+          in: {
+		  $mergeObjects: [
+              "$$departments",
+              {
+           
+			  rooms: {
+              $map: {
+                input: "$$departments.rooms",
+                as: "rooms",
+                in: {
+				
+                 $mergeObjects: [
+                        "$$rooms",
+                        {
+                   equipments: {
+                    $filter: {
+                      input: "$$rooms.equipments",
+                      as: "equipments",
+                      cond: {
+                        $eq: [
+                          "$$equipments.code",
+                          "EQ004"
+                        ]
+                      }
+                    }
+                  }
+                 
+                }
+				]
+              }
+            }
+			} } ]
+          
+          
+          }
+        }
+      }
+
+    }
+  }
+   ];
+   const results = await this.ProjectModel.aggregate(pipeline);
+   
+	  return  results ;
+  }
   //Get Equipments by projectID
   async getAllEquipmentsByLocation(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);

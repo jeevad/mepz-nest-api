@@ -11,6 +11,9 @@ export class FilterReportDto {
   @ApiProperty({ type: String })
   @IsOptional()
   projectId: string;
+  
+  //@IsOptional()
+  //pages: number;
 
   // @ApiPropertyOptional({ type: String })
   // @IsOptional()
@@ -37,6 +40,14 @@ export class FilterReportDto {
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   reportType?: string;
+  
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  pagewise: number;
+  
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  w_sign: number;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()

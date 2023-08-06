@@ -1,0 +1,213 @@
+
+db.projects.aggregate([{
+    $match: {
+      name: "adf"
+    }
+  },
+  {
+    $addFields: {
+     
+	       departments: {
+        $map: {
+          input: "$departments",
+          as: "departments",
+          in: {
+		  $mergeObjects: [
+              "$$departments",
+              {
+           
+			  rooms: {
+              $map: {
+                input: "$$departments.rooms",
+                as: "rooms",
+                in: {
+				
+                 $mergeObjects: [
+                        "$$rooms",
+                        {
+                   equipments: {
+                    $filter: {
+                      input: "$$rooms.equipments",
+                      as: "equipments",
+                      cond: {
+                        $eq: [
+                          "$$equipments.code",
+                          "EQ004"
+                        ]
+                      }
+                    }
+                  }
+                 
+                }
+				]
+              }
+            }
+			} } ]
+          
+          
+          }
+        }
+      }
+
+    }
+  }
+]);
+
+
+
+
+db.projects.aggregate([{
+    $match: {
+      name: "adf"
+    }
+  },
+  {
+    $addFields: {
+     
+	       departments: {
+        $map: {
+          input: "$departments",
+          as: "departments",
+          in: {
+		  $mergeObjects: [
+              "$$departments",
+              {
+           
+			  rooms: {
+              $map: {
+                input: "$$departments.rooms",
+                as: "rooms",
+                in: {
+				
+                 $mergeObjects: [
+                        "$$room",
+                        {
+                   equipments: {
+                    $filter: {
+                      input: "$$rooms.equipments",
+                      as: "equipments",
+                      cond: {
+                        $eq: [
+                          "$$equipments.code",
+                          "EQ004"
+                        ]
+                      }
+                    }
+                  }
+                 
+                }
+				}]
+              }
+            }
+			}]
+          
+          
+          }
+        }
+      }
+
+    }
+  }
+]);
+
+
+
+.aggregate([
+  {
+    $match: {
+      name: "adf"
+    }
+  },
+  {
+    $addFields: {
+      departments: {
+        $map: {
+          input: "$departments",
+          as: "departments",
+          in: {
+            $mergeObjects: [
+              "$$departments",
+              {
+                room: {
+                  $map: {
+                    input: "$$departments.room",
+                    as: "room",
+                    in: {
+                      $mergeObjects: [
+                        "$$room",
+                        {
+                          equipments: {
+                            $filter: {
+                              input: "$$room.equipments",
+                              as: "equipments",
+                              cond: {
+                                $eq: [
+                                  "$$equipments.active",
+                                  true
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+])
+
+db.projects.find({name: "adf" });
+
+
+db.projects.aggregate([
+  {
+    $match: {
+      name: "project1"
+    }
+  },
+  {
+    $project: {
+      name: 1,
+      // 1 means present.
+      // add other projects fields here
+      departments: {
+        $map: {
+          input: "$departments",
+          as: "departments",
+          in: {
+            name: "$$departments.name",
+            // add other department fields here
+            room: {
+              $map: {
+                input: "$$departments.room",
+                as: "room",
+                in: {
+                  name: "$$room.name",
+                  // add other room fields here
+                  equipments: {
+                    $filter: {
+                      input: "$$room.equipments",
+                      as: "equipments",
+                      cond: {
+                        $eq: [
+                          "$$equipments.code",
+                          "EQ004"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+])

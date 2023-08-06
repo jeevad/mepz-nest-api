@@ -20,32 +20,31 @@
     <div class='container mb-5 mt-3'>
       <div class='row d-flex align-items-baseline'>
         <div class='col-xl-12'>
-          <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name1 : <strong>{{name}}</strong></p>
-          <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Equipment Listing(BQ) By Department and Room <span>Qty : Total Quantity</span></p>
+          <p
+            style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
+          >Project Name1 : <strong>{{name}}</strong></p>
           {{#each departments as |dept|}}
             {{#each rooms}}
-			
-			
-			{{#if ../../pagewise}}
+			{{#if pagewise}}
 			{{#index_gt @index}}
 		
 			<div class="page-break">
 			 {{/index_gt}}  {{/if}}
-			 
               <p
                 style='color: #000;font-size: 18px; margin-bottom: 15px;'
               >Department : {{dept.code}} - {{dept.name}}</p>
               <p
                 style='color: #000;font-size: 18px; margin-bottom: 15px;'
               >Room : {{code}} - {{name}}</p>
-			  {{#if ../../pagewise}} {{#index_gt @index}}  </div>  {{/index_gt}} {{/if}}
-              <table class='table '>
+			    {{#if pagewise}}  {{#index_gt @index}}  </div>  {{/index_gt}} {{/if}}
+              <table class='table table-bordered'>
                 <thead class='table-light'>
                   <tr>
                     <th>Equipment Code</th>
                     <th>Equipment Name</th>
                     <th>Qty</th>
-                 
+                    <th>Price</th>
+                    <th>Total</th>
                     <th>Group</th>
                     <th>Remarks</th>
                     <th>Y N </th>
@@ -58,7 +57,8 @@
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
-                      
+                      <td>{{cost}}</td>
+					  <td>{{multiply quantity cost}} </td>
 					  <td></td>
 					  <td></td>
 					  <td></td>
@@ -69,15 +69,18 @@
                       <td colspan="2">Total Equipments for {{code}} - {{name}}</td>
                       <td> {{sum equipments  "quantity" }} </td>
                       
-					 
 					  <td></td>
+					  <td>
+					{{calculateSumOfTotal equipments }}
+		
+					</td>
 					  <td></td>
 					  <td></td>
 					  <td></td>
                     </tr>
                 </tbody>
               </table>
-			  {{#if ../../w_sign}}
+			  {{#if w_sign}}
 			    <table class='table '>
 				  <tbody>
 				   <tr>

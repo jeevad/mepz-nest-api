@@ -28,6 +28,8 @@ export class EquipmentAllocation {
   @Prop({ required: true })
   cost: number;
   
+  @Prop()
+  active: boolean;
   
 }
 

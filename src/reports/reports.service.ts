@@ -192,21 +192,14 @@ export class ReportsService {
       //   filterReportDto,
       // );
       results = { equipments };
+
+     
       // results = { equipments: ['test', 'ere', 'dfdf'] };
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
         results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-        /*
-	    results = await this.projectService.getAllEquipmentsByLocation(
-      filterReportDto,
-    );
-
-      results.EquipmentItemlist = await this.getAllremove_duplicates(
-        results.departments,
-      );
-     */
-      console.log(results);
+      
     } 
 	else if (filterReportDto.reportType === 'equipment-listing-bq-with-price') {
       results = await this.projectService
@@ -241,66 +234,160 @@ export class ReportsService {
 	}
 	else if (filterReportDto.reportType === 'equipment-listing-by-department') {
      
-    results = await this.projectService
+   results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-   
-   //console.log(results); 
-   //console.log(results.departments[1].rooms[0]); 
-   interface Item {
-  equipmentId: string;
-  name: string;
-  code: string;
-  _id: string;
-  quantity?: number; // Make sure qty property is optional as it's not present in all objects.
-   }
-   console.log("fffffffffffff"); 
-   for(const element3 of results.departments) {
-   for(const element2 of element3.rooms) {
-    // element3.rooms.total_sum = sumQty(element2);
-	console.log(element2);
-	  let sum = 0;
-	  
-	for (const item of element2.equipments) {
-    if (item.qty !== undefined) {
-      sum += item.qty;
-    }
-	else {
-	 sum += 1;
-	}
-    }
+
+	results.departments.forEach((item) => {
 	
-	element2.total_sum =sum;  /**/
-	}
-	}
-	console.log(results.departments[1].rooms[0]); 
-   // console.log(results.departments); 
-    // const items: Item[] =
-	 /* 
-     results.Departments.forEach((items) => {
-     var  sum = 0;
-	// const items1 = items.room;
-   // items1.forEach((item) => {
-     //sum+ = item.quantity;
-     sum  = sum + 1;
-       console.log(items); 
-     // });
-    //items.sum_total = sum;
-     });
-     */
-    // console.log(results); 
+	item.pagewise =filterReportDto.pagewise;
+     }
+	 )
+ 
+     } 
+	 else if (filterReportDto.reportType === 'equipment-listing-by-department-with-price') {
+     
+     results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+ 
     
 
      } 
+	else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room') {
+	    results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+		results.departments.forEach((item) => {
+		
+		item.pagewise =filterReportDto.pagewise;
+		
+		if(item.departmentId)
+		{
+		 
+	   item.rooms.forEach((item_r) => {
+	   
+	item_r.pagewise =filterReportDto.pagewise;
+	item_r.w_sign =filterReportDto.w_sign;
+	});
+	}
+     }
+	 );
+		
+      console.log(results.departments[1]);
+	  }
+	 else if (filterReportDto.reportType === ' equipment-listing-by-department-and-room-with-price') {
+	    results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+		results.departments.forEach((item) => {
+		
+		item.pagewise =filterReportDto.pagewise;
+		
+		if(item.departmentId)
+		{
+		 
+	   item.rooms.forEach((item_r) => {
+	   
+	item_r.pagewise =filterReportDto.pagewise;
+	item_r.w_sign =filterReportDto.w_sign;
+	});
+	}
+     }
+	 );
+		
+      console.log(results.departments[1]);
+	  }
+	else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled') {
+	   
+	   
+	    const results_val = await this.projectService
+        .getAllDisabledEquipmentsbyroomdepart(filterReportDto);
+		results =results_val[0];
+		console.log("Test");
+		console.log(results);
+		
+		
+		//console.log(results_val);
+	
+		/*
+		results_val.forEach((item2) => {
+		console.log("Helloooov4445555555555777777::::");
+		//console.log(item2.departments.rooms);
+		dep_arry.push(item2.departments);
+		//project_code = item2.code;
+		//project_name = item2.name;
+		});
+		//console.log("vineesh::::");
+		//console.log(dep_arry);
+		//results = { code:project_code, name: project_name, departments:dep_arry }
+		
+		console.log("Helloooov4445555555555::::");
+		console.log(results.departments[0]);
+		/*
+		 results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+		console.log("HellooooVVVVVVVVVVVVVV::::");
+		//console.log(results);
+		//console.log(results.departments[1]);
+		/*
+		
+		if(results.length)
+		{
+		results.forEach((item2) => {
+		console.log(item2);
+		console.log("Helloooo");
+		console.log(item2.departments);
+		if(item2.length)
+		{
+		item2.forEach((item) => {
+		
+		item.pagewise =filterReportDto.pagewise;
+		
+		if(item.departmentId)
+		{
+		 
+	   item.rooms.forEach((item_r) => {
+	   
+	item_r.pagewise =filterReportDto.pagewise;
+	item_r.w_sign =filterReportDto.w_sign;
+	});
+	}
+     }
+	 );
+	 }
+	 }
+	 );
+	 }
+		*/
+      
+	  }
+	  else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled-price') {
+	   
+	   
+	    const results_val = await this.projectService
+        .getAllDisabledEquipmentsbyroomdepart(filterReportDto);
+		results =results_val[0];
+		console.log("Test");
+		console.log(results);
+		
+		}
 	else {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
+		
+		
       console.log(results);
     }
     // return;
 
     const data = results;
+	data.currentDate = await this.getCurrentDate();
+	data.pagewise =filterReportDto.pagewise; 
+	data.w_sign =filterReportDto.w_sign; 
+	console.log(data);
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
@@ -324,6 +411,13 @@ export class ReportsService {
 
     return createPdf(filePath, options, data);
   }
+  async getCurrentDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
   async getAllremove_duplicates(department) {
     type EquipmentItem = {
       equipmentId: string;

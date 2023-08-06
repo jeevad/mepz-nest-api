@@ -14,34 +14,70 @@
     <div class='container mb-5 mt-3'>
       <div class='row d-flex align-items-baseline'>
         <div class='col-xl-12'>
-          <p
-            style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          >Project Name1 : <strong>{{name}}</strong></p>
-          {{#each departments as |dept|}}
-            {{#each rooms}}
-              <p
-                style='color: #000;font-size: 18px; margin-bottom: 15px;'
-              >Department : {{dept.code}} - {{dept.name}}</p>
-              <p
-                style='color: #000;font-size: 18px; margin-bottom: 15px;'
-              >Room : {{code}} - {{name}}</p>
-              <table class='table table-bordered'>
-                <thead class='table-light'>
-                  <tr>
-                    <th>Equipment Code</th>
-                    <th>Equipment Name</th>
-                  </tr>
-                </thead>
-                <tbody>
+     <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong></p>
+          {{#each departments}}
+       <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Department : {{code}} - {{name}}</p>
+	    {{#each rooms}}
+       <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Rooms : {{code}} - {{name}}</p>
+
+            <table class='table table-bordered'>
+              <thead class='table-light'>
+                <tr>
+                  <th>Equipment Code</th>
+                  <th>Equipment Name</th>
+                  <th>Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+               
                   {{#each equipments}}
                     <tr>
                       <td>{{code}}</td>
                       <td>{{name}}</td>
+                      <td>{{quantity}}</td>
                     </tr>
                   {{/each}}
-                </tbody>
+                
+              </tbody>
+            </table>
+			
+			  {{#if w_sign}}
+			    <table class='table '>
+				  <tbody>
+				   <tr>
+				     <td>Received by:</td>
+					  <td></td>
+					  <td></td>
+					  <td>MNE SOLUTIONS: </td>
+				   </tr>
+				    <tr>
+				     <td>Full Name</td>
+					  <td>Full Name</td>
+					  <td>Full Name</td>
+					 
+				   </tr>
+				    <tr>
+				     <td>Designation</td>
+					  <td>Designation</td>
+					  <td>Designation</td>
+					 
+				   </tr>
+				    <tr>
+				     <td>Stamp</td>
+					  <td>Stamp</td>
+					  <td>Stamp</td>
+					 
+				   </tr>
+				    <tr>
+				     <td>Date</td>
+					  <td>Date</td>
+					  <td>Date</td>
+					 
+				   </tr>
+				   </tbody>
               </table>
-            {{/each}}
+			  {{/if}}
+			{{/each}}
           {{/each}}
         </div>
       </div>

@@ -50,7 +50,10 @@ export class ProjectRoomEquipment {
 
   @Prop()
   cost: string;
-
+  
+  @Prop()
+  active: boolean;
+  
   @Prop()
   markUp: string;
 

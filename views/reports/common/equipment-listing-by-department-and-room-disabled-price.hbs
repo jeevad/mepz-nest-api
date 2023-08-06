@@ -45,7 +45,8 @@
                     <th>Equipment Code</th>
                     <th>Equipment Name</th>
                     <th>Qty</th>
-                 
+                    <th>Price</th>
+                    <th>Total</th>
                     <th>Group</th>
                     <th>Remarks</th>
                     <th>Y N </th>
@@ -58,7 +59,8 @@
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
-                      
+                      <td>{{cost}}</td>
+					  <td>{{multiply quantity cost}} </td>
 					  <td></td>
 					  <td></td>
 					  <td></td>
@@ -69,7 +71,11 @@
                       <td colspan="2">Total Equipments for {{code}} - {{name}}</td>
                       <td> {{sum equipments  "quantity" }} </td>
                       
-					 
+					  <td></td>
+					  <td>
+					{{calculateSumOfTotal equipments }}
+		
+					</td>
 					  <td></td>
 					  <td></td>
 					  <td></td>

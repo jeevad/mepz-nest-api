@@ -42,7 +42,10 @@ export class Equipment {
 
   @Prop({ required: true })
   cost: string;
-
+  
+  @Prop()
+  active: boolean;
+  
   @Prop({ required: true })
   markUp: string;
 
