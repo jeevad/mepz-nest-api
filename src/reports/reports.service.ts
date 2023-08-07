@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { createPdf } from '@saemhco/nestjs-html-pdf';
-import path, { join } from 'path';
+import path, { join, resolve } from 'path';
 import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
-import Excel from 'exceljs';
+import Excel, { Workbook } from 'exceljs';
+import * as tmp from 'tmp';
+import { writeFile } from 'fs/promises';
+import { rejects } from 'assert';
 
 interface WeeklySalesNumbers {
   product: string;
@@ -701,5 +704,30 @@ export class ReportsService {
     };
 
     exportCountriesFile();
+  }
+
+  async xl(res) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Report');
+
+    worksheet.columns = [
+      { header: 'Id', key: 'id', width: 5 },
+      { header: 'Title', key: 'title', width: 25 },
+      { header: 'Description', key: 'description', width: 25 },
+      { header: 'Published', key: 'published', width: 10 },
+    ];
+
+    const tutorials = [
+      { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
+    ];
+
+    // Add Array Rows
+    worksheet.addRows(tutorials);
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    return await workbook.xlsx.write(res);
   }
 }
