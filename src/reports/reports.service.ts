@@ -174,7 +174,9 @@ export class ReportsService {
       // );
       results = { equipments };
       // results = { equipments: ['test', 'ere', 'dfdf'] };
-    } else if (filterReportDto.reportType === 'equipment-location-listing-by-pages') {
+    } else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-pages'
+    ) {
       type EquipmentItem = {
         _id: string;
         code: string;
@@ -196,124 +198,110 @@ export class ReportsService {
       // );
       results = { equipments };
 
-     
       // results = { equipments: ['test', 'ere', 'dfdf'] };
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
-        results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-      
-    } 
-	else if (filterReportDto.reportType === 'equipment-listing-bq-with-price') {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-	var paginationParams=[];
-	results = await this.projectService.getAllEquipments_unique_dsply(
-      filterReportDto
-    );
-	results.EquipmentItemlist= results.results;
-	/*	
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      var paginationParams = [];
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
+      results.EquipmentItemlist = results.results;
+      /*	
 	console.log("hhhhhhhh");
 	console.log(results);
       results.EquipmentItemlist = await this.getAllremove_duplicates(
         results.departments,
       );
      */
-	 console.log("DDDDDDDDDDDDDDD");
+      console.log('DDDDDDDDDDDDDDD');
       console.log(results);
-    } 
-	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
-         
-    const results = await this.projectService.getAllDisabledEquipments(
-      filterReportDto,
-    );
-	}
-	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price') {
-         
-    const results = await this.projectService.getAllDisabledEquipments(
-      filterReportDto,
-    );
-	}
-	else if (filterReportDto.reportType === 'equipment-listing-by-department') {
-     
-   results = await this.projectService
+    } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
+    ) {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department'
+    ) {
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
 
-	results.departments.forEach((item) => {
-	
-	item.pagewise =filterReportDto.pagewise;
-     }
-	 )
- 
-     } 
-	 else if (filterReportDto.reportType === 'equipment-listing-by-department-with-price') {
-     
-     results = await this.projectService
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+      });
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-with-price'
+    ) {
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
- 
-    
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department-and-room'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
 
-     } 
-	else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room') {
-	    results = await this.projectService
+        if (item.departmentId) {
+          item.rooms.forEach((item_r) => {
+            item_r.pagewise = filterReportDto.pagewise;
+            item_r.w_sign = filterReportDto.w_sign;
+          });
+        }
+      });
+
+      console.log(results.departments[1]);
+    } else if (
+      filterReportDto.reportType ===
+      ' equipment-listing-by-department-and-room-with-price'
+    ) {
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-		results.departments.forEach((item) => {
-		
-		item.pagewise =filterReportDto.pagewise;
-		
-		if(item.departmentId)
-		{
-		 
-	   item.rooms.forEach((item_r) => {
-	   
-	item_r.pagewise =filterReportDto.pagewise;
-	item_r.w_sign =filterReportDto.w_sign;
-	});
-	}
-     }
-	 );
-		
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+
+        if (item.departmentId) {
+          item.rooms.forEach((item_r) => {
+            item_r.pagewise = filterReportDto.pagewise;
+            item_r.w_sign = filterReportDto.w_sign;
+          });
+        }
+      });
+
       console.log(results.departments[1]);
-	  }
-	 else if (filterReportDto.reportType === ' equipment-listing-by-department-and-room-with-price') {
-	    results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-		results.departments.forEach((item) => {
-		
-		item.pagewise =filterReportDto.pagewise;
-		
-		if(item.departmentId)
-		{
-		 
-	   item.rooms.forEach((item_r) => {
-	   
-	item_r.pagewise =filterReportDto.pagewise;
-	item_r.w_sign =filterReportDto.w_sign;
-	});
-	}
-     }
-	 );
-		
-      console.log(results.departments[1]);
-	  }
-	else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled') {
-	   
-	   
-	    const results_val = await this.projectService
-        .getAllDisabledEquipmentsbyroomdepart(filterReportDto);
-		results =results_val[0];
-		console.log("Test");
-		console.log(results);
-		
-		
-		//console.log(results_val);
-	
-		/*
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
+      results = results_val[0];
+      console.log('Test');
+      console.log(results);
+
+      //console.log(results_val);
+
+      /*
 		results_val.forEach((item2) => {
 		console.log("Helloooov4445555555555777777::::");
 		//console.log(item2.departments.rooms);
@@ -364,33 +352,31 @@ export class ReportsService {
 	 );
 	 }
 		*/
-      
-	  }
-	  else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled-price') {
-	   
-	   
-	    const results_val = await this.projectService
-        .getAllDisabledEquipmentsbyroomdepart(filterReportDto);
-		results =results_val[0];
-		console.log("Test");
-		console.log(results);
-		
-		}
-	else {
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled-price'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
+      results = results_val[0];
+      console.log('Test');
+      console.log(results);
+    } else {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-		
-		
+
       console.log(results);
     }
     // return;
 
     const data = results;
-	data.currentDate = await this.getCurrentDate();
-	data.pagewise =filterReportDto.pagewise; 
-	data.w_sign =filterReportDto.w_sign; 
-	console.log(data);
+    data.currentDate = await this.getCurrentDate();
+    data.pagewise = filterReportDto.pagewise;
+    data.w_sign = filterReportDto.w_sign;
+    console.log(data);
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
@@ -415,12 +401,12 @@ export class ReportsService {
     return createPdf(filePath, options, data);
   }
   async getCurrentDate() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
   async getAllremove_duplicates(department) {
     type EquipmentItem = {
       equipmentId: string;
@@ -467,7 +453,7 @@ export class ReportsService {
       filterReportDto,
     );
 
-  // console.log('results1234544444444444444', results);
+    // console.log('results1234544444444444444', results);
     // return results;
     const eqps = [];
     for (const element of results) {
