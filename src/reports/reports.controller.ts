@@ -1,8 +1,17 @@
-import { Controller, Get, Query, Res, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Res,
+  Param,
+  Head,
+  Header,
+} from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
+import Excel, { Workbook } from 'exceljs';
 
 
 
@@ -40,28 +49,24 @@ export class ReportsController {
     @Query() filterReportDto: FilterReportDto,
     @Res() res,
   ) {
-    const results: any = await this.reportsService.getEquipmentReports(
-      filterReportDto,
-    );
+    if (filterReportDto.reportFormat === 'pdf') {
+      const results: any = await this.reportsService.getEquipmentReports(
+        filterReportDto,
+      );
+      // return results;
+      // res.set(
+      //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
+      // );
+      res.end(results);
+    } else if (filterReportDto.reportFormat === 'xlsx') {
+      res.set({
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
+      });
 
-    // return results;
-    // res.set(
-    //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
-    // );
-    res.end(results);
-  }
-
-  //Get common reports
-  @Get('exportExcel')
-  @ApiOperation({ summary: 'get rooms by project id' })
-  async exportExcel(@Query() filterReportDto: FilterReportDto, @Res() res) {
-    const results: any = await this.reportsService.exportExcel();
-
-    // return results;
-    // res.set(
-    //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
-    // );
-    res.download(results);
+      await this.reportsService.xl(res, filterReportDto);
+    }
   }
 
   //Get Rooms by projectId
@@ -80,5 +85,19 @@ export class ReportsController {
     // return results;
     res.set(this.reportsService.getPdfHeader('equipment-list', results));
     res.end(results);
+  }
+
+  //Get common reports
+  @Get('xl')
+  @ApiOperation({ summary: 'get rooms by project id' })
+  async xl(@Query() filterReportDto: FilterReportDto, @Res() res) {
+    const filename = 'tutorial';
+    res.set({
+      'Content-Type':
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Disposition': `attachment; filename='${filename}.xlsx`,
+    });
+
+    await this.reportsService.xl(res, filterReportDto);
   }
 }

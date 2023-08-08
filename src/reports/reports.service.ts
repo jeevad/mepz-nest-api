@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { createPdf } from '@saemhco/nestjs-html-pdf';
-import * as Excel from 'node_modules/exceljs';
-import path, { join } from 'path';
+import path, { join, resolve } from 'path';
 import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
+import Excel, { Workbook } from 'exceljs';
+import * as tmp from 'tmp';
+import { writeFile } from 'fs/promises';
+import { rejects } from 'assert';
 
 import * as fs from 'fs';
 interface WeeklySalesNumbers {
@@ -199,7 +202,9 @@ export class ReportsService {
       // );
       results = { equipments };
       // results = { equipments: ['test', 'ere', 'dfdf'] };
-    } else if (filterReportDto.reportType === 'equipment-location-listing-by-pages') {
+    } else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-pages'
+    ) {
       type EquipmentItem = {
         _id: string;
         code: string;
@@ -221,124 +226,109 @@ export class ReportsService {
       // );
       results = { equipments };
 
-     
       // results = { equipments: ['test', 'ere', 'dfdf'] };
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
-        results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-      
-    } 
-	else if (filterReportDto.reportType === 'equipment-listing-bq-with-price') {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-	var paginationParams=[];
-	results = await this.projectService.getAllEquipments_unique_dsply(
-      filterReportDto
-    );
-	results.EquipmentItemlist= results.results;
-	/*	
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
+      results.EquipmentItemlist = results.results;
+      /*	
 	console.log("hhhhhhhh");
 	console.log(results);
       results.EquipmentItemlist = await this.getAllremove_duplicates(
         results.departments,
       );
      */
-	 console.log("DDDDDDDDDDDDDDD");
+      console.log('DDDDDDDDDDDDDDD');
       console.log(results);
-    } 
-	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
-         
-    const results = await this.projectService.getAllDisabledEquipments(
-      filterReportDto,
-    );
-	}
-	else if (filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price') {
-         
-    const results = await this.projectService.getAllDisabledEquipments(
-      filterReportDto,
-    );
-	}
-	else if (filterReportDto.reportType === 'equipment-listing-by-department') {
-     
-   results = await this.projectService
+    } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
+    ) {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department'
+    ) {
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
 
-	results.departments.forEach((item) => {
-	
-	item.pagewise =filterReportDto.pagewise;
-     }
-	 )
- 
-     } 
-	 else if (filterReportDto.reportType === 'equipment-listing-by-department-with-price') {
-     
-     results = await this.projectService
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+      });
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-with-price'
+    ) {
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
- 
-    
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department-and-room'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
 
-     } 
-	else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room') {
-	    results = await this.projectService
+        if (item.departmentId) {
+          item.rooms.forEach((item_r) => {
+            item_r.pagewise = filterReportDto.pagewise;
+            item_r.w_sign = filterReportDto.w_sign;
+          });
+        }
+      });
+
+      console.log(results.departments[1]);
+    } else if (
+      filterReportDto.reportType ===
+      ' equipment-listing-by-department-and-room-with-price'
+    ) {
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-		results.departments.forEach((item) => {
-		
-		item.pagewise =filterReportDto.pagewise;
-		
-		if(item.departmentId)
-		{
-		 
-	   item.rooms.forEach((item_r) => {
-	   
-	item_r.pagewise =filterReportDto.pagewise;
-	item_r.w_sign =filterReportDto.w_sign;
-	});
-	}
-     }
-	 );
-		
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+
+        if (item.departmentId) {
+          item.rooms.forEach((item_r) => {
+            item_r.pagewise = filterReportDto.pagewise;
+            item_r.w_sign = filterReportDto.w_sign;
+          });
+        }
+      });
+
       console.log(results.departments[1]);
-	  }
-	 else if (filterReportDto.reportType === ' equipment-listing-by-department-and-room-with-price') {
-	    results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-		results.departments.forEach((item) => {
-		
-		item.pagewise =filterReportDto.pagewise;
-		
-		if(item.departmentId)
-		{
-		 
-	   item.rooms.forEach((item_r) => {
-	   
-	item_r.pagewise =filterReportDto.pagewise;
-	item_r.w_sign =filterReportDto.w_sign;
-	});
-	}
-     }
-	 );
-		
-      console.log(results.departments[1]);
-	  }
-	else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled') {
-	   
-	   
-	    const results_val = await this.projectService
-        .getAllDisabledEquipmentsbyroomdepart(filterReportDto);
-		results =results_val[0];
-		console.log("Test");
-		console.log(results);
-		
-		
-		//console.log(results_val);
-	
-		/*
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
+      results = results_val[0];
+      console.log('Test');
+      console.log(results);
+
+      //console.log(results_val);
+
+      /*
 		results_val.forEach((item2) => {
 		console.log("Helloooov4445555555555777777::::");
 		//console.log(item2.departments.rooms);
@@ -458,8 +448,7 @@ export class ReportsService {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-		
-		
+
       console.log(results);
     }
     // return;
@@ -507,12 +496,12 @@ export class ReportsService {
 	}
   }
   async getCurrentDate() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
   async getAllremove_duplicates(department) {
     type EquipmentItem = {
       equipmentId: string;
@@ -559,7 +548,7 @@ export class ReportsService {
       filterReportDto,
     );
 
-  // console.log('results1234544444444444444', results);
+    // console.log('results1234544444444444444', results);
     // return results;
     const eqps = [];
     for (const element of results) {
@@ -690,111 +679,65 @@ export class ReportsService {
     return lists;
   }
 
-  exportExcel() {
-    const numbers: WeeklySalesNumbers[] = [
-      { product: 'Product A', week1: 5, week2: 10, week3: 27 },
-      { product: 'Product B', week1: 5, week2: 5, week3: 11 },
-      { product: 'Product C', week1: 1, week2: 2, week3: 3 },
-      { product: 'Product D', week1: 6, week2: 1, week3: 2 },
-    ];
-  }
+  async xl1(res) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Report');
 
-  async generateSalesReport(weeklySalesNumbers: WeeklySalesNumbers[]) {
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('Sales Data');
-    weeklySalesNumbers.forEach((data, index) => {
-      worksheet.addRow({
-        ...data,
-        // productTotals: generateProductTotalsCell(worksheet, index + 1),
-      });
+    worksheet.columns = [
+      { header: 'Id', key: 'id', width: 5 },
+      { header: 'Title', key: 'title', width: 25 },
+      { header: 'Description', key: 'description', width: 25 },
+      { header: 'Published', key: 'published', width: 10 },
+    ];
+
+    const tutorials = [
+      { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
+    ];
+
+    // Add Array Rows
+    worksheet.addRows(tutorials);
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
     });
+
+    return await workbook.xlsx.write(res);
   }
+  async xl(res, filterReportDto: FilterReportDto) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Report');
 
-  async expExcel() {
-    type Country = {
-      name: string;
-      countryCode: string;
-      capital: string;
-      phoneIndicator: number;
-    };
+    worksheet.mergeCells('C1', 'F1');
+    worksheet.getCell('C1').value = 'Project';
 
-    const countries: Country[] = [
-      {
-        name: 'Cameroon',
-        capital: 'Yaounde',
-        countryCode: 'CM',
-        phoneIndicator: 237,
-      },
-      {
-        name: 'France',
-        capital: 'Paris',
-        countryCode: 'FR',
-        phoneIndicator: 33,
-      },
-      {
-        name: 'United States',
-        capital: 'Washington, D.C.',
-        countryCode: 'US',
-        phoneIndicator: 1,
-      },
-      {
-        name: 'India',
-        capital: 'New Delhi',
-        countryCode: 'IN',
-        phoneIndicator: 91,
-      },
-      {
-        name: 'Brazil',
-        capital: 'Brasília',
-        countryCode: 'BR',
-        phoneIndicator: 55,
-      },
-      {
-        name: 'Japan',
-        capital: 'Tokyo',
-        countryCode: 'JP',
-        phoneIndicator: 81,
-      },
-      {
-        name: 'Australia',
-        capital: 'Canberra',
-        countryCode: 'AUS',
-        phoneIndicator: 61,
-      },
-      {
-        name: 'Nigeria',
-        capital: 'Abuja',
-        countryCode: 'NG',
-        phoneIndicator: 234,
-      },
-      {
-        name: 'Germany',
-        capital: 'Berlin',
-        countryCode: 'DE',
-        phoneIndicator: 49,
-      },
+    worksheet.columns = [
+      { header: 'Id', key: 'id', width: 5 },
+      { header: 'Title', key: 'title', width: 25 },
+      { header: 'Description', key: 'description', width: 25 },
+      { header: 'Published', key: 'published', width: 10 },
     ];
 
-    const exportCountriesFile = async () => {
-      const workbook = new Excel.Workbook();
-      const worksheet = workbook.addWorksheet('Countries List');
+    const tutorials = [
+      { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
+      { id: 1, title: 'hghhg', description: '34ffdg', published: 'hghgghhg' },
+    ];
 
-      worksheet.columns = [
-        { key: 'name', header: 'Name' },
-        { key: 'countryCode', header: 'Country Code' },
-        { key: 'capital', header: 'Capital' },
-        { key: 'phoneIndicator', header: 'International Direct Dialling' },
-      ];
+    // Add Array Rows
+    worksheet.addRows(tutorials);
 
-      countries.forEach((item) => {
-        worksheet.addRow(item);
-      });
+    // worksheet.columns = [
+    //   { header: 'Id', key: 'id', width: 5 },
+    //   { header: 'Title', key: 'title', width: 25 },
+    //   { header: 'Description', key: 'description', width: 25 },
+    // ];
 
-      const exportPath = path.resolve(__dirname, 'countries.xlsx');
+    // worksheet.addRows(tutorials);
 
-      await workbook.xlsx.writeFile(exportPath);
-    };
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
 
-    exportCountriesFile();
+    return await workbook.xlsx.write(res);
+    // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
   }
 }
