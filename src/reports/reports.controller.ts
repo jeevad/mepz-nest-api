@@ -33,7 +33,15 @@ export class ReportsController {
     @Query() filterReportDto: FilterReportDto,
     @Res() res,
   ) {
-    if (filterReportDto.reportFormat === 'pdf') {
+    if (filterReportDto.reportFormat === 'xlsx') {
+      res.set({
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
+      });
+
+      await this.reportsService.xl(res, filterReportDto);
+    } else {
       const results: any = await this.reportsService.getEquipmentReports(
         filterReportDto,
       );
@@ -42,14 +50,6 @@ export class ReportsController {
       //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
       // );
       res.end(results);
-    } else if (filterReportDto.reportFormat === 'xlsx') {
-      res.set({
-        'Content-Type':
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
-      });
-
-      await this.reportsService.xl(res, filterReportDto);
     }
   }
 

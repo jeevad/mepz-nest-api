@@ -151,227 +151,11 @@ export class ReportsService {
   }
 
   async getEquipmentReports(filterReportDto: FilterReportDto) {
-    let results: any;
-    if (filterReportDto.reportType === 'equipment-location-listing') {
-      type EquipmentItem = {
-        _id: string;
-        code: string;
-        name: string;
-        project_code: string;
-        project_name: string;
-        room_code: string;
-        room_name: string;
-        department_code: string;
-        department_name: string;
-        qty1: number;
-        totalequ: number;
-        total?: number;
-      };
-
-      const equipments = await this.getAllEqp(filterReportDto);
-      // results = await this.projectService.getAllEquipmentsByLocation(
-      //   filterReportDto,
-      // );
-      results = { equipments };
-      // results = { equipments: ['test', 'ere', 'dfdf'] };
-    } else if (
-      filterReportDto.reportType === 'equipment-location-listing-by-pages'
-    ) {
-      type EquipmentItem = {
-        _id: string;
-        code: string;
-        name: string;
-        project_code: string;
-        project_name: string;
-        room_code: string;
-        room_name: string;
-        department_code: string;
-        department_name: string;
-        qty1: number;
-        totalequ: number;
-        total?: number;
-      };
-
-      const equipments = await this.getAllEqp(filterReportDto);
-      // results = await this.projectService.getAllEquipmentsByLocation(
-      //   filterReportDto,
-      // );
-      results = { equipments };
-
-      // results = { equipments: ['test', 'ere', 'dfdf'] };
-    } else if (filterReportDto.reportType === 'equipment-listing-bq') {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-    } else if (
-      filterReportDto.reportType === 'equipment-listing-bq-with-price'
-    ) {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-      results = await this.projectService.getAllEquipments_unique_dsply(
-        filterReportDto,
-      );
-      results.EquipmentItemlist = results.results;
-      /*	
-	console.log("hhhhhhhh");
-	console.log(results);
-      results.EquipmentItemlist = await this.getAllremove_duplicates(
-        results.departments,
-      );
-     */
-      console.log('DDDDDDDDDDDDDDD');
-      console.log(results);
-    } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
-      const results = await this.projectService.getAllDisabledEquipments(
-        filterReportDto,
-      );
-    } else if (
-      filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
-    ) {
-      const results = await this.projectService.getAllDisabledEquipments(
-        filterReportDto,
-      );
-    } else if (
-      filterReportDto.reportType === 'equipment-listing-by-department'
-    ) {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-
-      results.departments.forEach((item) => {
-        item.pagewise = filterReportDto.pagewise;
-      });
-    } else if (
-      filterReportDto.reportType ===
-      'equipment-listing-by-department-with-price'
-    ) {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-    } else if (
-      filterReportDto.reportType === 'equipment-listing-by-department-and-room'
-    ) {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-      results.departments.forEach((item) => {
-        item.pagewise = filterReportDto.pagewise;
-
-        if (item.departmentId) {
-          item.rooms.forEach((item_r) => {
-            item_r.pagewise = filterReportDto.pagewise;
-            item_r.w_sign = filterReportDto.w_sign;
-          });
-        }
-      });
-
-      console.log(results.departments[1]);
-    } else if (
-      filterReportDto.reportType ===
-      ' equipment-listing-by-department-and-room-with-price'
-    ) {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-      results.departments.forEach((item) => {
-        item.pagewise = filterReportDto.pagewise;
-
-        if (item.departmentId) {
-          item.rooms.forEach((item_r) => {
-            item_r.pagewise = filterReportDto.pagewise;
-            item_r.w_sign = filterReportDto.w_sign;
-          });
-        }
-      });
-
-      console.log(results.departments[1]);
-    } else if (
-      filterReportDto.reportType ===
-      'equipment-listing-by-department-and-room-disabled'
-    ) {
-      const results_val =
-        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
-          filterReportDto,
-        );
-      results = results_val[0];
-      console.log('Test');
-      console.log(results);
-
-      //console.log(results_val);
-
-      /*
-		results_val.forEach((item2) => {
-		console.log("Helloooov4445555555555777777::::");
-		//console.log(item2.departments.rooms);
-		dep_arry.push(item2.departments);
-		//project_code = item2.code;
-		//project_name = item2.name;
-		});
-		//console.log("vineesh::::");
-		//console.log(dep_arry);
-		//results = { code:project_code, name: project_name, departments:dep_arry }
-		
-		console.log("Helloooov4445555555555::::");
-		console.log(results.departments[0]);
-		/*
-		 results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-		console.log("HellooooVVVVVVVVVVVVVV::::");
-		//console.log(results);
-		//console.log(results.departments[1]);
-		/*
-		
-		if(results.length)
-		{
-		results.forEach((item2) => {
-		console.log(item2);
-		console.log("Helloooo");
-		console.log(item2.departments);
-		if(item2.length)
-		{
-		item2.forEach((item) => {
-		
-		item.pagewise =filterReportDto.pagewise;
-		
-		if(item.departmentId)
-		{
-		 
-	   item.rooms.forEach((item_r) => {
-	   
-	item_r.pagewise =filterReportDto.pagewise;
-	item_r.w_sign =filterReportDto.w_sign;
-	});
-	}
-     }
-	 );
-	 }
-	 }
-	 );
-	 }
-		*/
-    } else if (
-      filterReportDto.reportType ===
-      'equipment-listing-by-department-and-room-disabled-price'
-    ) {
-      const results_val =
-        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
-          filterReportDto,
-        );
-      results = results_val[0];
-      console.log('Test');
-      console.log(results);
-    } else {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-
-      console.log(results);
-    }
     // return;
 
-    const data = results;
+    const results = this.getQueryData(filterReportDto);
+    const data: any = results;
+
     data.currentDate = await this.getCurrentDate();
     data.pagewise = filterReportDto.pagewise;
     data.w_sign = filterReportDto.w_sign;
@@ -495,10 +279,10 @@ export class ReportsService {
       //eqps[element1][0].qty1= Object.values(results2).length;
       //console.log('eqps555', Object.values(results2).length);
       //console.log('eqps[element1]', Object.keys(eqps[element1]));
-      var total = 0;
-      var room_info = [];
-      var rooms = [];
-      var total_equ_array = [];
+      const total = 0;
+      const room_info = [];
+      const rooms = [];
+      const total_equ_array = [];
       const items = eqps[element1];
       type EquipmentItem = {
         _id: string;
@@ -607,27 +391,124 @@ export class ReportsService {
 
     return await workbook.xlsx.write(res);
   }
+  async xlExport(res, filterReportDto: FilterReportDto) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Report', {
+      headerFooter: {
+        firstHeader: 'Hello Exceljs',
+        firstFooter: 'Hello World',
+      },
+    });
+
+    worksheet.addTable({
+      name: 'MyTable',
+      ref: 'A1',
+      headerRow: true,
+      totalsRow: true,
+      style: {
+        theme: 'TableStyleDark3',
+        showRowStripes: true,
+      },
+      columns: [
+        { name: 'name', totalsRowLabel: 'Totals:', filterButton: true },
+        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+      ],
+      rows: [
+        [new Date('2019-07-20'), 70.1],
+        [new Date('2019-07-21'), 70.6],
+        [new Date('2019-07-22'), 70.1],
+      ],
+    });
+    
+    worksheet.addTable({
+      name: 'MyTable2',
+      ref: 'A10',
+      headerRow: true,
+      totalsRow: true,
+      // style: {
+      //   theme: 'TableStyleDark3',
+      //   showRowStripes: true,
+      // },
+      columns: [
+        { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
+        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+      ],
+      rows: [
+        [new Date('2019-07-20'), 70.1],
+        [new Date('2019-07-21'), 70.6],
+        [new Date('2019-07-22'), 70.1],
+      ],
+    });
+
+    return await workbook.xlsx.write(res);
+    // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
+  }
   async xl(res, filterReportDto: FilterReportDto) {
     const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('Report');
+    const worksheet = workbook.addWorksheet('Report', {
+      headerFooter: {
+        firstHeader: 'Hello Exceljs',
+        firstFooter: 'Hello World',
+      },
+    });
 
-    worksheet.mergeCells('C1', 'F1');
-    worksheet.getCell('C1').value = 'Project';
+    worksheet.addTable({
+      name: 'MyTable',
+      ref: 'A1',
+      headerRow: true,
+      totalsRow: true,
+      style: {
+        theme: 'TableStyleDark3',
+        showRowStripes: true,
+      },
+      columns: [
+        { name: 'name', totalsRowLabel: 'Totals:', filterButton: true },
+        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+      ],
+      rows: [
+        [new Date('2019-07-20'), 70.1],
+        [new Date('2019-07-21'), 70.6],
+        [new Date('2019-07-22'), 70.1],
+      ],
+    });
+    
+    worksheet.addTable({
+      name: 'MyTable2',
+      ref: 'A10',
+      headerRow: true,
+      totalsRow: true,
+      // style: {
+      //   theme: 'TableStyleDark3',
+      //   showRowStripes: true,
+      // },
+      columns: [
+        { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
+        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+      ],
+      rows: [
+        [new Date('2019-07-20'), 70.1],
+        [new Date('2019-07-21'), 70.6],
+        [new Date('2019-07-22'), 70.1],
+      ],
+    });
 
-    worksheet.columns = [
-      { header: 'Id', key: 'id', width: 5 },
-      { header: 'Title', key: 'title', width: 25 },
-      { header: 'Description', key: 'description', width: 25 },
-      { header: 'Published', key: 'published', width: 10 },
-    ];
+    // worksheet.mergeCells('C1', 'F1');
+    // worksheet.getCell('C1').value = 'Project';
 
-    const tutorials = [
-      { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
-      { id: 1, title: 'hghhg', description: '34ffdg', published: 'hghgghhg' },
-    ];
+    // worksheet.columns = [
+    //   { header: 'Id', key: 'id', width: 5 },
+    //   { header: 'Title', key: 'title', width: 25 },
+    //   { header: 'Description', key: 'description', width: 25 },
+    //   { header: 'Published', key: 'published', width: 10 },
+    // ];
+
+    // const tutorials = [
+    //   { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
+    //   { id: 1, title: 'hghhg', description: '34ffdg', published: 'hghgghhg' },
+    // ];
 
     // Add Array Rows
-    worksheet.addRows(tutorials);
+    // worksheet.addRows(tutorials);
 
     // worksheet.columns = [
     //   { header: 'Id', key: 'id', width: 5 },
@@ -637,11 +518,163 @@ export class ReportsService {
 
     // worksheet.addRows(tutorials);
 
-    worksheet.getRow(1).eachCell((cell) => {
-      cell.font = { bold: true };
-    });
+    // worksheet.getRow(1).eachCell((cell) => {
+    //   cell.font = { bold: true };
+    // });
 
     return await workbook.xlsx.write(res);
     // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
+  }
+
+  async getQueryData(filterReportDto: FilterReportDto) {
+    let results: any;
+    type EquipmentItem = {
+      _id: string;
+      code: string;
+      name: string;
+      project_code: string;
+      project_name: string;
+      room_code: string;
+      room_name: string;
+      department_code: string;
+      department_name: string;
+      qty1: number;
+      totalequ: number;
+      total?: number;
+    };
+    if (filterReportDto.reportType === 'equipment-location-listing') {
+      const equipments = await this.getAllEqp(filterReportDto);
+      // results = await this.projectService.getAllEquipmentsByLocation(
+      //   filterReportDto,
+      // );
+      results = { equipments };
+      // results = { equipments: ['test', 'ere', 'dfdf'] };
+    } else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-pages'
+    ) {
+      const equipments = await this.getAllEqp(filterReportDto);
+      // results = await this.projectService.getAllEquipmentsByLocation(
+      //   filterReportDto,
+      // );
+      results = { equipments };
+
+      // results = { equipments: ['test', 'ere', 'dfdf'] };
+    } else if (filterReportDto.reportType === 'equipment-listing-bq') {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
+      results.EquipmentItemlist = results.results;
+      /*	
+	console.log("hhhhhhhh");
+	console.log(results);
+      results.EquipmentItemlist = await this.getAllremove_duplicates(
+        results.departments,
+      );
+     */
+      console.log('DDDDDDDDDDDDDDD');
+      console.log(results);
+    } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
+    ) {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+      });
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department-and-room'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+
+        if (item.departmentId) {
+          item.rooms.forEach((item_r) => {
+            item_r.pagewise = filterReportDto.pagewise;
+            item_r.w_sign = filterReportDto.w_sign;
+          });
+        }
+      });
+
+      console.log(results.departments[1]);
+    } else if (
+      filterReportDto.reportType ===
+      ' equipment-listing-by-department-and-room-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+      results.departments.forEach((item) => {
+        item.pagewise = filterReportDto.pagewise;
+
+        if (item.departmentId) {
+          item.rooms.forEach((item_r) => {
+            item_r.pagewise = filterReportDto.pagewise;
+            item_r.w_sign = filterReportDto.w_sign;
+          });
+        }
+      });
+
+      console.log(results.departments[1]);
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
+      results = results_val[0];
+      console.log('Test');
+      console.log(results);
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled-price'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
+      results = results_val[0];
+      console.log('Test');
+      console.log(results);
+    } else {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+
+      console.log(results);
+    }
+    return results;
   }
 }

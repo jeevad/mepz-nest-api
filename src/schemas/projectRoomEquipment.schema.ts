@@ -1,18 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Transform, Type } from 'class-transformer';
-import {
-  EquipmentLabelSchema,
-  EquipmentLabel,
-} from './equipmentLabel.schema';
+import { EquipmentLabelSchema, EquipmentLabel } from './equipmentLabel.schema';
 import {
   EquipmentPackageSchema,
   EquipmentPackage,
 } from './equipmentPackage.schema';
-import {
-  EquipmentPowerSchema,
-  EquipmentPower,
-} from './equipmentPower.schema';
+import { EquipmentPowerSchema, EquipmentPower } from './equipmentPower.schema';
 
 export type ProjectRoomEquipmentDocument = ProjectRoomEquipment & Document;
 
@@ -25,13 +19,13 @@ export class ProjectRoomEquipment {
 
   @Prop()
   equipmentId: string;
-  
+
   @Prop()
   equipmentId4: string;
-  
+
   @Prop()
   qty: number;
-  
+
   @Prop()
   name: string;
 
@@ -47,13 +41,12 @@ export class ProjectRoomEquipment {
   @Prop()
   fpq: number;
 
-
   @Prop()
   cost: string;
-  
+
   @Prop()
   active: boolean;
-  
+
   @Prop()
   markUp: string;
 
@@ -65,6 +58,9 @@ export class ProjectRoomEquipment {
 
   @Prop()
   bssPort: string;
+
+  @Prop()
+  group: string;
 
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)
