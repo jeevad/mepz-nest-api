@@ -33,28 +33,24 @@ export class ReportsController {
     @Query() filterReportDto: FilterReportDto,
     @Res() res,
   ) {
-    const results: any = await this.reportsService.getEquipmentReports(
-      filterReportDto,
-    );
+    if (filterReportDto.reportFormat === 'pdf') {
+      const results: any = await this.reportsService.getEquipmentReports(
+        filterReportDto,
+      );
+      // return results;
+      // res.set(
+      //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
+      // );
+      res.end(results);
+    } else if (filterReportDto.reportFormat === 'xlsx') {
+      res.set({
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
+      });
 
-    // return results;
-    // res.set(
-    //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
-    // );
-    res.end(results);
-  }
-
-  //Get common reports
-  @Get('exportExcel')
-  @ApiOperation({ summary: 'get rooms by project id' })
-  async exportExcel(@Query() filterReportDto: FilterReportDto, @Res() res) {
-    const results: any = await this.reportsService.exportExcel();
-
-    // return results;
-    // res.set(
-    //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
-    // );
-    res.download(results);
+      await this.reportsService.xl(res, filterReportDto);
+    }
   }
 
   //Get Rooms by projectId
@@ -79,13 +75,6 @@ export class ReportsController {
   @Get('xl')
   @ApiOperation({ summary: 'get rooms by project id' })
   async xl(@Query() filterReportDto: FilterReportDto, @Res() res) {
-    // const results: any = await this.reportsService.xl();
-
-    // return results;
-    // res.set(
-    //   this.reportsService.getPdfHeader(filterReportDto.reportType, results),
-    // );
-    // res.download(results);
     const filename = 'tutorial';
     res.set({
       'Content-Type':
@@ -93,6 +82,6 @@ export class ReportsController {
       'Content-Disposition': `attachment; filename='${filename}.xlsx`,
     });
 
-    res.download(await this.reportsService.xl(res));
+    await this.reportsService.xl(res, filterReportDto);
   }
 }

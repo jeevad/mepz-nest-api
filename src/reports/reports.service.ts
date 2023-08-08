@@ -209,7 +209,6 @@ export class ReportsService {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-      var paginationParams = [];
       results = await this.projectService.getAllEquipments_unique_dsply(
         filterReportDto,
       );
@@ -584,115 +583,7 @@ export class ReportsService {
     return lists;
   }
 
-  exportExcel() {
-    const numbers: WeeklySalesNumbers[] = [
-      { product: 'Product A', week1: 5, week2: 10, week3: 27 },
-      { product: 'Product B', week1: 5, week2: 5, week3: 11 },
-      { product: 'Product C', week1: 1, week2: 2, week3: 3 },
-      { product: 'Product D', week1: 6, week2: 1, week3: 2 },
-    ];
-  }
-
-  async generateSalesReport(weeklySalesNumbers: WeeklySalesNumbers[]) {
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('Sales Data');
-    weeklySalesNumbers.forEach((data, index) => {
-      worksheet.addRow({
-        ...data,
-        // productTotals: generateProductTotalsCell(worksheet, index + 1),
-      });
-    });
-  }
-
-  async expExcel() {
-    type Country = {
-      name: string;
-      countryCode: string;
-      capital: string;
-      phoneIndicator: number;
-    };
-
-    const countries: Country[] = [
-      {
-        name: 'Cameroon',
-        capital: 'Yaounde',
-        countryCode: 'CM',
-        phoneIndicator: 237,
-      },
-      {
-        name: 'France',
-        capital: 'Paris',
-        countryCode: 'FR',
-        phoneIndicator: 33,
-      },
-      {
-        name: 'United States',
-        capital: 'Washington, D.C.',
-        countryCode: 'US',
-        phoneIndicator: 1,
-      },
-      {
-        name: 'India',
-        capital: 'New Delhi',
-        countryCode: 'IN',
-        phoneIndicator: 91,
-      },
-      {
-        name: 'Brazil',
-        capital: 'Brasília',
-        countryCode: 'BR',
-        phoneIndicator: 55,
-      },
-      {
-        name: 'Japan',
-        capital: 'Tokyo',
-        countryCode: 'JP',
-        phoneIndicator: 81,
-      },
-      {
-        name: 'Australia',
-        capital: 'Canberra',
-        countryCode: 'AUS',
-        phoneIndicator: 61,
-      },
-      {
-        name: 'Nigeria',
-        capital: 'Abuja',
-        countryCode: 'NG',
-        phoneIndicator: 234,
-      },
-      {
-        name: 'Germany',
-        capital: 'Berlin',
-        countryCode: 'DE',
-        phoneIndicator: 49,
-      },
-    ];
-
-    const exportCountriesFile = async () => {
-      const workbook = new Excel.Workbook();
-      const worksheet = workbook.addWorksheet('Countries List');
-
-      worksheet.columns = [
-        { key: 'name', header: 'Name' },
-        { key: 'countryCode', header: 'Country Code' },
-        { key: 'capital', header: 'Capital' },
-        { key: 'phoneIndicator', header: 'International Direct Dialling' },
-      ];
-
-      countries.forEach((item) => {
-        worksheet.addRow(item);
-      });
-
-      const exportPath = path.resolve(__dirname, 'countries.xlsx');
-
-      await workbook.xlsx.writeFile(exportPath);
-    };
-
-    exportCountriesFile();
-  }
-
-  async xl(res) {
+  async xl1(res) {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Report');
 
@@ -715,5 +606,42 @@ export class ReportsService {
     });
 
     return await workbook.xlsx.write(res);
+  }
+  async xl(res, filterReportDto: FilterReportDto) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Report');
+
+    worksheet.mergeCells('C1', 'F1');
+    worksheet.getCell('C1').value = 'Project';
+
+    worksheet.columns = [
+      { header: 'Id', key: 'id', width: 5 },
+      { header: 'Title', key: 'title', width: 25 },
+      { header: 'Description', key: 'description', width: 25 },
+      { header: 'Published', key: 'published', width: 10 },
+    ];
+
+    const tutorials = [
+      { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
+      { id: 1, title: 'hghhg', description: '34ffdg', published: 'hghgghhg' },
+    ];
+
+    // Add Array Rows
+    worksheet.addRows(tutorials);
+
+    // worksheet.columns = [
+    //   { header: 'Id', key: 'id', width: 5 },
+    //   { header: 'Title', key: 'title', width: 25 },
+    //   { header: 'Description', key: 'description', width: 25 },
+    // ];
+
+    // worksheet.addRows(tutorials);
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    return await workbook.xlsx.write(res);
+    // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
   }
 }
