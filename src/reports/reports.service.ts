@@ -1,26 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { createPdf } from '@saemhco/nestjs-html-pdf';
+import * as Excel from 'node_modules/exceljs';
 import path, { join } from 'path';
 import { FilterEquipmentDto } from 'src/project/dto/filter-equipment.dto';
 import { ProjectService } from 'src/project/project.service';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
-import Excel from 'exceljs';
 
+import * as fs from 'fs';
 interface WeeklySalesNumbers {
   product: string;
   week1: number;
   week2: number;
   week3: number;
 }
-
 @Injectable()
 export class ReportsService {
   reportType = {};
 
   constructor(private projectService: ProjectService) {}
+     async createExcelFile(data: any[]): Promise<string> {
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
 
+    // Add headers
+    const headers = Object.keys(data[0]);
+    worksheet.addRow(headers);
+
+    // Add data rows
+    data.forEach(item => {
+      const row = [];
+      headers.forEach(header => {
+        row.push(item[header]);
+      });
+      worksheet.addRow(row);
+    });
+
+    // Generate a unique filename
+    const fileName = 'excel_2.xlsx';
+    //const filePath = `path_to_your_directory/${fileName}`;
+    const filePath = 'views/reports/common/excel_2.xlsx';
+	console.log('GGGGGGGGGGGG');
+	console.log(filePath);
+    // Save the workbook to a file
+    await workbook.xlsx.writeFile(filePath);
+   
+   
+    return fileName;
+  }
   getPdfHeader(filename = 'pdf', buffer) {
     return {
       // pdf
@@ -373,6 +401,59 @@ export class ReportsService {
 		console.log(results);
 		
 		}
+		else if (filterReportDto.reportType === 'equipment-location-listing-by-group') {
+	   
+	   
+	    const results_val = await this.projectService.getAllEquipmentslocationbygroup(filterReportDto);
+		
+		 results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+		//results =results_val[0];
+		////console.log("Test");
+		//console.log(results);
+		
+		}
+		else if (filterReportDto.reportType === 'equipment-listing-bq-with-utility') {
+	   
+	   
+	    //const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
+		
+		
+		 const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
+		results =results_val[0];
+		results.top_logo = filterReportDto.top_logo; 
+		results.b_logo = filterReportDto.b_logo; 
+		results.medical_logo = filterReportDto.medical_logo; 
+		results.medical_logo2 = filterReportDto.medical_logo2; 
+		results.medical_logo3 = filterReportDto.medical_logo3; 
+	
+		
+		}
+		else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-utility') {
+	   
+	   
+	    const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
+		//results =results_val[0];
+	    
+		//console.log("Helooov44");
+		//console.log(results);
+		//console.log("Helooo");
+		/**/
+		   results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+		results.pagewise = filterReportDto.pagewise; 
+		results.top_logo = filterReportDto.top_logo; 
+		results.b_logo = filterReportDto.b_logo; 
+		results.medical_logo = filterReportDto.medical_logo; 
+		results.medical_logo2 = filterReportDto.medical_logo2; 
+		results.medical_logo3 = filterReportDto.medical_logo3;
+		
+		console.log("Helooo");
+		console.log(results.departments[1].rooms[1]);
+		
+		}
 	else {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
@@ -387,7 +468,7 @@ export class ReportsService {
 	data.currentDate = await this.getCurrentDate();
 	data.pagewise =filterReportDto.pagewise; 
 	data.w_sign =filterReportDto.w_sign; 
-	console.log(data);
+	//console.log(data);
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
@@ -408,8 +489,22 @@ export class ReportsService {
       `${filterReportDto.reportType}.hbs`,
     );
     //console.log('data', data);
-
-    return createPdf(filePath, options, data);
+	
+	//console.log("fffff");
+	//console.log(filterReportDto.reportFormat);
+    if(filterReportDto.reportFormat=='excel')
+	{
+	  const data = [
+      { name: 'John Doe', age: 30, email: 'john@example.com' },
+      { name: 'Jane Smith', age: 28, email: 'jane@example.com' },
+      // Add more data here
+    ];
+    return this.createExcelFile(data);
+	}
+	else
+	{
+	 return createPdf(filePath, options, data);
+	}
   }
   async getCurrentDate() {
   const now = new Date();

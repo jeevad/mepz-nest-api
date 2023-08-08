@@ -4,11 +4,27 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
 
+
+
+
 @Controller('reports')
 @ApiTags('Reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
+  
+   @Get('create')
+  async createExcelFile(): Promise<{ fileName: string }> {
+    const data = [
+      { name: 'John Doe', age: 30, email: 'john@example.com' },
+      { name: 'Jane Smith', age: 28, email: 'jane@example.com' },
+      // Add more data here
+    ];
 
+    const fileName = await this.reportsService.createExcelFile(data);
+    return { fileName };
+  }
+  
+  
   @Get('pdf')
   @ApiOperation({ summary: 'pdf example' })
   async generatePdf2(@Res() res) {

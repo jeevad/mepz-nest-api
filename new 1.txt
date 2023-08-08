@@ -1,0 +1,13 @@
+1) Is floor choice option is added
+
+2) By Group report how we are going to work, is it their in equipments
+
+3) Revisions report logics
+
+4) Excel reports
+
+5) Please confirm is it automatically adding in  the live DB if we add any new feilds in schema and save,( Now also in result quantity are oming instead of qty )
+
+6) how is Equipment Specs reports working
+
+

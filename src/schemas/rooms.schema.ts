@@ -12,6 +12,9 @@ export class Rooms {
 
   @Prop({ required: true })
   name: string;
+  
+  @Prop({ required: true })
+  floor: string;
 
   @Prop({ required: true })
   active: boolean;

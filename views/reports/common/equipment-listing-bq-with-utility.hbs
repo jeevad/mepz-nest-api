@@ -16,7 +16,11 @@
         <div class='col-xl-12'>
           <p
             style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          >Project Name : <strong>{{name}}</strong></p>
+          >Project Name : <strong>{{name}}</strong>
+		  {{#if top_logo}}
+		  <img src="http://13.232.11.217/assets/images/logo.png">
+		  {{/if}}
+		  </p>
           {{#each departments}}
             <p
               style='color: #000;font-size: 18px; margin-bottom: 15px;'
@@ -28,6 +32,8 @@
                   <th>Equipment Code</th>
                   <th>Equipment Name</th>
                   <th>Qty</th>
+                  <th>Utility</th>
+                  <th>Remarks</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,12 +43,27 @@
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
+                      <td>{{utility}}</td>
+                      <td>{{remarks}}</td>
                     </tr>
                   {{/each}}
                 {{/each}}
+				
               </tbody>
             </table>
           {{/each}}
+		  <table ><tbody>
+		  <tr>
+                      <td></td>
+                      <td>Total Equipment:</td>
+                      <td>	{{calculateSumOfTotalAll departments }}</td>
+                    <td></td>
+                     <td></td>
+                    </tr> </tbody>
+            </table>
+			 {{#if b_logo}}
+		 <p> <img src="http://13.232.11.217/assets/images/logo.png"> </p>
+		  {{/if}}
         </div>
       </div>
     </div>

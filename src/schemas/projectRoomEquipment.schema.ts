@@ -65,6 +65,13 @@ export class ProjectRoomEquipment {
 
   @Prop()
   bssPort: string;
+  
+   
+  @Prop()
+  utility: string; 
+  
+  @Prop({ required: true })
+  floor: string;
 
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)
@@ -77,7 +84,7 @@ export class ProjectRoomEquipment {
   @Prop({ type: EquipmentLabelSchema })
   @Type(() => EquipmentLabel)
   EquipmentLabel: EquipmentLabel;
-
+ 
   // @Prop({ required: true })
   // isDeleted: boolean;
 }

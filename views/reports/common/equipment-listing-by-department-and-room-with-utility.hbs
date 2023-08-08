@@ -9,40 +9,117 @@
       integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65'
       crossorigin='anonymous'
     />
+	<style>
+    
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
   </head>
   <body>
     <div class='container mb-5 mt-3'>
       <div class='row d-flex align-items-baseline'>
         <div class='col-xl-12'>
-          <p
-            style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          >Project Name : <strong>{{name}}</strong></p>
+     <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong>   {{#if top_logo}}
+		  <img src="http://13.232.11.217/assets/images/logo.png">
+		  {{/if}} </p>
           {{#each departments}}
-            <p
-              style='color: #000;font-size: 18px; margin-bottom: 15px;'
-            >Department : {{code}} - {{name}}</p>
+       <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Department : {{code}} - {{name}}</p>
+	    {{#each rooms}}
+			{{#if ../../pagewise}}
+			{{#index_gt @index}}
+		
+			<div class="page-break">
+			 {{/index_gt}}  {{/if}}
+       <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Rooms : {{code}} - {{name}}</p>
 
             <table class='table table-bordered'>
               <thead class='table-light'>
                 <tr>
-                  <th>Equipment Code</th>
-                  <th>Equipment Name</th>
+                  <th>Item Code</th>
+                  <th>Description</th>
                   <th>Qty</th>
+                  <th>Package</th>
+                  <th>Remarks</th>
+                  <th>Y N</th>
+                  <th>Client Remarks</th>
                 </tr>
               </thead>
               <tbody>
-                {{#each rooms}}
+               
                   {{#each equipments}}
                     <tr>
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
+					   <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                     </tr>
                   {{/each}}
-                {{/each}}
+                  <tr>
+                      <td></td>
+                      <td>Total Equipments for Room {{code}} </td>
+                      <td>{{sum equipments  "quantity" }} </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
               </tbody>
             </table>
+			
+			  {{#if ../../w_sign}}
+			    <table class='table '>
+				  <tbody>
+				   <tr>
+				     <td>Received by:</td>
+					  <td></td>
+					  <td></td>
+					  <td>MNE SOLUTIONS: </td>
+				   </tr>
+				    <tr>
+				     <td>Full Name</td>
+					  <td>Full Name</td>
+					  <td>Full Name</td>
+					 
+				   </tr>
+				    <tr>
+				     <td>Designation</td>
+					  <td>Designation</td>
+					  <td>Designation</td>
+					 
+				   </tr>
+				    <tr>
+				     <td>Stamp</td>
+					  <td>Stamp</td>
+					  <td>Stamp</td>
+					 
+				   </tr>
+				    <tr>
+				     <td>Date</td>
+					  <td>Date</td>
+					  <td>Date</td>
+					 
+				   </tr>
+				   </tbody>
+              </table>
+			  {{/if}}
+			{{/each}}
           {{/each}}
+		    {{#if b_logo}}
+		  <img src="http://13.232.11.217/assets/images/logo.png">
+		  {{/if}}
+		  {{#if medical_logo}}
+		  <img src="http://13.232.11.217/assets/images/logo.png">
+		  {{/if}}
+		  {{#if medical_logo2}}
+		  <img src="http://13.232.11.217/assets/images/logo.png">
+		  {{/if}}
+		  {{#if medical_logo3}}
+		  <img src="http://13.232.11.217/assets/images/logo.png">
+		  {{/if}}
         </div>
       </div>
     </div>

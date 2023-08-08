@@ -61,3 +61,42 @@ Equipment Listing by Department and Room(Disabled)
 18) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled&format=undefineds&pagewise=1&w_sign=1
 
 19) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled-price&format=undefineds&pagewise=1
+
+
+Revisions
+
+20) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=summary-of-equipment-variation&format=undefineds&pagewise=1
+
+
+By Group
+
+21) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing-by-group&format=undefineds&pagewise=1
+
+
+
+Utility
+
+Equipment Listing(BQ)
+22 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined
+
+
+23  ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined&top_logo=1
+
+24 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined&b_logo=1
+
+25 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined&b_logo=1
+
+26 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined&medical_logo=1
+27 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined&medical_logo2=1
+
+28 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-utility&format=undefined&medical_logo3=1
+
+Equipment Listing by Department and Room
+
+29 )http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-utility&format=undefined
+
+30) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-utility&format=undefined&pagewise=1
+
+31 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-utility&format=undefined&pagewise=1
+
+32 ) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-utility&format=undefined&pagewise=1&w_sign=1

@@ -48,6 +48,26 @@ export class FilterReportDto {
   @ApiPropertyOptional({ type: Number })
   @IsOptional()
   w_sign: number;
+ 
+   @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  top_logo: number;
+  
+    @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  b_logo: number;
+  
+   @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  medical_logo: number;
+  
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  medical_logo2: number;
+  
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  medical_logo3: number;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
