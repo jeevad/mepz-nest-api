@@ -23,7 +23,11 @@ export class ReportsService {
   reportType = {};
 
   constructor(private projectService: ProjectService) {}
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> c67042c8cc001e680da8bf61397c116fdd39c692
   getPdfHeader(filename = 'pdf', buffer) {
     return {
       // pdf
@@ -37,7 +41,6 @@ export class ReportsService {
     };
   }
 
- 
   secondExample() {
     const data = {
       title: 'My PDF file',
@@ -144,19 +147,18 @@ export class ReportsService {
 
  
     const results = await this.getQueryData(filterReportDto);
-    console.log("helllov90000");
-    console.log(results);
-    
- 
-
     const data: any = results;
     if(results)
     {
     data.currentDate = await this.getCurrentDate();
     data.pagewise = filterReportDto.pagewise;
     data.w_sign = filterReportDto.w_sign;
+<<<<<<< HEAD
     }
     
+=======
+    // console.log(data);
+>>>>>>> c67042c8cc001e680da8bf61397c116fdd39c692
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
@@ -176,11 +178,11 @@ export class ReportsService {
       'views/reports/common',
       `${filterReportDto.reportType}.hbs`,
     );
-    //console.log('data', data);
+    console.log('data', data);
 
     return createPdf(filePath, options, data);
   }
-  
+
   async getCurrentDate() {
     const now = new Date();
     const year = now.getFullYear();
@@ -188,47 +190,7 @@ export class ReportsService {
     const day = String(now.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-  async getAllremove_duplicates(department) {
-    type EquipmentItem = {
-      equipmentId: string;
-      name: string;
-      code: string;
-      _id: string;
-      total?: number;
-    };
-    const eqps = [];
-    for (const element3 of department) {
-      for (const element2 of element3.rooms) {
-        for (const element of element2.equipments) {
-          if (eqps[element._id] === undefined) {
-            //eqps[element._id] = [];
-          }
-          console.log('ggggggelement' + element.code);
-          eqps.push(element);
-        }
-      }
-    }
-    console.log('EquipmentList', eqps);
-    const lists = [];
-    //for (const element1 in eqps) {
 
-    const items = eqps;
-
-    console.log('items33333', items);
-    const inputArray: EquipmentItem[] = eqps;
-    //const uniqueItems: { [id: string]  } = {};
-
-    const uniqueItems: { [id: string]: EquipmentItem } = {};
-    items.forEach((item) => {
-      if (uniqueItems[item.code]) {
-        uniqueItems[item.code].total = (uniqueItems[item.code].total || 0) + 1;
-      } else {
-        uniqueItems[item.code] = { ...item, total: 1 };
-      }
-    });
-    console.log('uniqueeitems', Object.values(uniqueItems));
-    return Object.values(uniqueItems);
-  }
   async getAllEqp(filterReportDto) {
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
@@ -390,6 +352,9 @@ export class ReportsService {
     return await workbook.xlsx.write(res);
   }
   async xlExport(res, filterReportDto: FilterReportDto) {
+    const results = await this.getQueryData(filterReportDto);
+    const data: any = results;
+
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Report', {
       headerFooter: {
@@ -397,46 +362,44 @@ export class ReportsService {
         firstFooter: 'Hello World',
       },
     });
+    if (filterReportDto.reportType === 'department-list') {
+      const depts = [];
+      data.departments.forEach((item) => {
+        depts.push([item.code, item.name]);
+      });
+      worksheet.addTable({
+        name: 'MyTable',
+        ref: 'A1',
+        headerRow: true,
+        // totalsRow: true,
+        // style: {
+        //   theme: 'TableStyleDark3',
+        //   showRowStripes: true,
+        // },
+        columns: [{ name: 'Code' }, { name: 'Name' }],
+        rows: depts,
+      });
+    }
 
-    worksheet.addTable({
-      name: 'MyTable',
-      ref: 'A1',
-      headerRow: true,
-      totalsRow: true,
-      style: {
-        theme: 'TableStyleDark3',
-        showRowStripes: true,
-      },
-      columns: [
-        { name: 'name', totalsRowLabel: 'Totals:', filterButton: true },
-        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
-      ],
-      rows: [
-        [new Date('2019-07-20'), 70.1],
-        [new Date('2019-07-21'), 70.6],
-        [new Date('2019-07-22'), 70.1],
-      ],
-    });
-    
-    worksheet.addTable({
-      name: 'MyTable2',
-      ref: 'A10',
-      headerRow: true,
-      totalsRow: true,
-      // style: {
-      //   theme: 'TableStyleDark3',
-      //   showRowStripes: true,
-      // },
-      columns: [
-        { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
-        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
-      ],
-      rows: [
-        [new Date('2019-07-20'), 70.1],
-        [new Date('2019-07-21'), 70.6],
-        [new Date('2019-07-22'), 70.1],
-      ],
-    });
+    // worksheet.addTable({
+    //   name: 'MyTable2',
+    //   ref: 'A10',
+    //   headerRow: true,
+    //   totalsRow: true,
+    //   // style: {
+    //   //   theme: 'TableStyleDark3',
+    //   //   showRowStripes: true,
+    //   // },
+    //   columns: [
+    //     { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
+    //     { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+    //   ],
+    //   rows: [
+    //     [new Date('2019-07-20'), 70.1],
+    //     [new Date('2019-07-21'), 70.6],
+    //     [new Date('2019-07-22'), 70.1],
+    //   ],
+    // });
 
     return await workbook.xlsx.write(res);
     // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
@@ -472,6 +435,7 @@ export class ReportsService {
         [new Date('2019-07-22'), 70.1],
       ],
     });
+<<<<<<< HEAD
     */
     const results = await this.getQueryData(filterReportDto);
     const rowarray = [];
@@ -509,6 +473,24 @@ export class ReportsService {
     if (typeof item2.quantity === 'number') {
     total+= item2.quantity;
     }
+=======
+
+    worksheet.addTable({
+      name: 'MyTable2',
+      ref: 'A10',
+      headerRow: true,
+      totalsRow: true,
+
+      columns: [
+        { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
+        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+      ],
+      rows: [
+        [new Date('2019-07-20'), 70.1],
+        [new Date('2019-07-21'), 70.6],
+        [new Date('2019-07-22'), 70.1],
+      ],
+>>>>>>> c67042c8cc001e680da8bf61397c116fdd39c692
     });
     sub_total+=total;
     worksheet.addRow(['', '', '','Sub-total',total]);
@@ -620,11 +602,10 @@ export class ReportsService {
     };
     if (filterReportDto.reportType === 'equipment-location-listing') {
       const equipments = await this.getAllEqp(filterReportDto);
-     
+
       results = { equipments };
 
       console.log(results);
-     
     } else if (
       filterReportDto.reportType === 'equipment-location-listing-by-pages'
     ) {
@@ -639,7 +620,7 @@ export class ReportsService {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-        results = await this.projectService
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
       results = await this.projectService.getAllEquipments_unique_dsply(
@@ -656,14 +637,7 @@ export class ReportsService {
         filterReportDto,
       );
       results.EquipmentItemlist = results.results;
-      /*	
-	console.log("hhhhhhhh");
-	console.log(results);
-      results.EquipmentItemlist = await this.getAllremove_duplicates(
-        results.departments,
-      );
-     */
-      console.log('DDDDDDDDDDDDDDD');
+
       console.log(results);
     } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
       const results = await this.projectService.getAllDisabledEquipments(
@@ -751,13 +725,15 @@ export class ReportsService {
       results = results_val[0];
       console.log('Test');
       console.log(results);
-    } 
-    else if (filterReportDto.reportType === 'equipment-location-listing-by-group') {
-	   
-	   
-	    const results_val = await this.projectService.getAllEquipmentslocationbygroup(filterReportDto);
-		
-		 results = await this.projectService
+    } else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-group'
+    ) {
+      const results_val =
+        await this.projectService.getAllEquipmentslocationbygroup(
+          filterReportDto,
+        );
+
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
 		
@@ -785,25 +761,44 @@ export class ReportsService {
 	    const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
 		
 		   results = await this.projectService
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-with-utility'
+    ) {
+      const results_val = await this.projectService.getAllEquipmentswithUtility(
+        filterReportDto,
+      );
+      results = results_val[0];
+      results.top_logo = filterReportDto.top_logo;
+      results.b_logo = filterReportDto.b_logo;
+      results.medical_logo = filterReportDto.medical_logo;
+      results.medical_logo2 = filterReportDto.medical_logo2;
+      results.medical_logo3 = filterReportDto.medical_logo3;
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-with-utility'
+    ) {
+      const results_val = await this.projectService.getAllEquipmentswithUtility(
+        filterReportDto,
+      );
+
+      results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-		results.pagewise = filterReportDto.pagewise; 
-		results.top_logo = filterReportDto.top_logo; 
-		results.b_logo = filterReportDto.b_logo; 
-		results.medical_logo = filterReportDto.medical_logo; 
-		results.medical_logo2 = filterReportDto.medical_logo2; 
-		results.medical_logo3 = filterReportDto.medical_logo3;
-		
-		console.log("Helooo");
-		console.log(results.departments[1].rooms[1]);
-		
-		}
-    else {
+      results.pagewise = filterReportDto.pagewise;
+      results.top_logo = filterReportDto.top_logo;
+      results.b_logo = filterReportDto.b_logo;
+      results.medical_logo = filterReportDto.medical_logo;
+      results.medical_logo2 = filterReportDto.medical_logo2;
+      results.medical_logo3 = filterReportDto.medical_logo3;
+
+      console.log('Helooo');
+      console.log(results.departments[1].rooms[1]);
+    } else {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
 
-      console.log(results);
+      // console.log(results);
     }
     return results;
   }
