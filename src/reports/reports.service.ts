@@ -23,7 +23,7 @@ export class ReportsService {
   reportType = {};
 
   constructor(private projectService: ProjectService) {}
- 
+  
   getPdfHeader(filename = 'pdf', buffer) {
     return {
       // pdf
@@ -141,6 +141,8 @@ export class ReportsService {
   async getEquipmentReports(filterReportDto: FilterReportDto) {
     // return;
 
+
+ 
     const results = await this.getQueryData(filterReportDto);
     console.log("helllov90000");
     console.log(results);
@@ -148,10 +150,12 @@ export class ReportsService {
  
 
     const data: any = results;
-
+    if(results)
+    {
     data.currentDate = await this.getCurrentDate();
     data.pagewise = filterReportDto.pagewise;
     data.w_sign = filterReportDto.w_sign;
+    }
     
     const options = {
       format: 'A4',
@@ -445,7 +449,8 @@ export class ReportsService {
         firstFooter: 'Hello World',
       },
     });
-
+    
+    /*
     worksheet.addTable({
       name: 'MyTable',
       ref: 'A1',
@@ -459,59 +464,139 @@ export class ReportsService {
         { name: 'name', totalsRowLabel: 'Totals:', filterButton: true },
         { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
       ],
+
+      
       rows: [
         [new Date('2019-07-20'), 70.1],
         [new Date('2019-07-21'), 70.6],
         [new Date('2019-07-22'), 70.1],
       ],
     });
-    
-    worksheet.addTable({
-      name: 'MyTable2',
-      ref: 'A10',
-      headerRow: true,
-      totalsRow: true,
+    */
+    const results = await this.getQueryData(filterReportDto);
+    const rowarray = [];
+
+    console.log("ddddddddddd");
+    console.log(results);
+  
    
-      columns: [
-        { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
-        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
-      ],
-      rows: [
-        [new Date('2019-07-20'), 70.1],
-        [new Date('2019-07-21'), 70.6],
-        [new Date('2019-07-22'), 70.1],
-      ],
+
+    const row =worksheet.addRow(['MNE SOLUTIONS']);
+    const cell = row.getCell(1); 
+    cell.font = { bold: true };
+    worksheet.addRow(['MEDICAL EQUIPMENT CONSULTANCY SERVICE']);
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+
+    
+
+    if (filterReportDto.reportType === 'equipment-location-listing') {
+
+      const row5 = worksheet.addRow(['Project Name:'+results.equipments[0].project_name]);
+      const cell5 = row5.getCell(1); 
+      cell5.font = { bold: true };
+  
+      worksheet.addRow(['Revision No: 5.001*', '', '', 'Date:'+await this.getCurrentDate()]);
+  
+    let sub_total =0;
+    results.equipments.forEach((item) => {
+    worksheet.addRow([]);
+    worksheet.addRow(['Equipment: ', item.eqp_code, item.eqp_name]);
+    worksheet.addRow(['Dept Code: ', 'Department', 'Room Code','Room Name','Quantity','Group','Remarks']);
+    let total =0;
+    item.locations.forEach((item2) => {
+    worksheet.addRow([item2.department_code, item2.department_name, item2.room_code, item2.room_name, item2.quantity]);
+    if (typeof item2.quantity === 'number') {
+    total+= item2.quantity;
+    }
     });
+    sub_total+=total;
+    worksheet.addRow(['', '', '','Sub-total',total]);
+    worksheet.addRow([]);
+    worksheet.addRow([]);
+ 
+   worksheet.addRow(['Total Equipments',sub_total]);
 
-    // worksheet.mergeCells('C1', 'F1');
-    // worksheet.getCell('C1').value = 'Project';
+   });
+    }
+    else if (filterReportDto.reportType === 'department-list') {
 
-    // worksheet.columns = [
-    //   { header: 'Id', key: 'id', width: 5 },
-    //   { header: 'Title', key: 'title', width: 25 },
-    //   { header: 'Description', key: 'description', width: 25 },
-    //   { header: 'Published', key: 'published', width: 10 },
-    // ];
+      const row5 = worksheet.addRow(['Project Name:'+results.name]);
+      const cell5 = row5.getCell(1); 
+      cell5.font = { bold: true };
+      worksheet.addRow(['Revision No: 5.001*', '', '', 'Date:'+await this.getCurrentDate()]);
+  
+      worksheet.addRow(['Department List']);
+      worksheet.addRow([]);
+      worksheet.addRow(['Dept Code: ', 'Department']);
+     
+      results.departments.forEach((item) => {
+      worksheet.addRow([]);
+      worksheet.addRow([item.code, item.name]);
 
-    // const tutorials = [
-    //   { id: 1, title: 'hghhg', description: 'hhjhjhj', published: 'hghgghhg' },
-    //   { id: 1, title: 'hghhg', description: '34ffdg', published: 'hghgghhg' },
-    // ];
+      });
+      
+  
+      }
+      else if (filterReportDto.reportType === 'room-listing') {
 
-    // Add Array Rows
-    // worksheet.addRows(tutorials);
+        const row5 = worksheet.addRow(['Project Name:'+results.name]);
+        const cell5 = row5.getCell(1); 
+        cell5.font = { bold: true };
+        worksheet.addRow(['Revision No: 5.001*', '', '', 'Date:'+await this.getCurrentDate()]);
+    
+        worksheet.addRow(['Room Listing']);
+        worksheet.addRow([]);
+        worksheet.addRow(['Dept Code: ', 'Department']);
+       
+        results.departments.forEach((item) => {
+          worksheet.addRow(['Department: ', item.code,item.name]);
+        item.rooms.forEach((item2) => {
+            worksheet.addRow([item2.code, item2.name, item2.status]);
+         
+            });
+        worksheet.addRow([]);
+        
+        //worksheet.addRow([item.code, item.name]);
+  
+        });
 
-    // worksheet.columns = [
-    //   { header: 'Id', key: 'id', width: 5 },
-    //   { header: 'Title', key: 'title', width: 25 },
-    //   { header: 'Description', key: 'description', width: 25 },
-    // ];
+      }
+      else if (filterReportDto.reportType === 'equipment-listing-bq') {
 
-    // worksheet.addRows(tutorials);
+        const row5 = worksheet.addRow(['Project Name:'+results.name]);
+        const cell5 = row5.getCell(1); 
+        cell5.font = { bold: true };
+        worksheet.addRow(['Revision No: 5.001*', '', '', 'Date:'+await this.getCurrentDate()]);
+    
+        worksheet.addRow(['Equipment Listing(BQ)']);
+        worksheet.addRow([]);
+        worksheet.addRow(['Code: ', 'Equipment','Qty','Group','Remarks']);
+        let sub_total =0;
+        results.EquipmentItemlist.forEach((item) => {
+        
+            worksheet.addRow([item.code, item.name, item.quantity, item.group, item.remarks]);
+         
+        worksheet.addRow([]);
+        if (typeof item.quantity === 'number') {
+        sub_total+=item.quantity;
+        }
+        //worksheet.addRow([item.code, item.name]);
+  
+        });
+        worksheet.addRow([]);
+ 
+        worksheet.addRow(['Total Equipments:'+sub_total]);
 
-    // worksheet.getRow(1).eachCell((cell) => {
-    //   cell.font = { bold: true };
-    // });
+      }
+      
+
+   
+  
+
+    
+
+    
 
     return await workbook.xlsx.write(res);
     // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
@@ -682,8 +767,10 @@ export class ReportsService {
 	   
 	   
 		
-		 const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
-		results =results_val[0];
+		const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
+		
+    results =results_val[0];
+    console.log(results_val);
 		results.top_logo = filterReportDto.top_logo; 
 		results.b_logo = filterReportDto.b_logo; 
 		results.medical_logo = filterReportDto.medical_logo; 
