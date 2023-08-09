@@ -46,7 +46,7 @@ export class ReportsController {
         'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
       });
 
-      await this.reportsService.xl(res, filterReportDto);
+      await this.reportsService.xlExport(res, filterReportDto);
     } else {
       
       const results: any = await this.reportsService.getEquipmentReports(
