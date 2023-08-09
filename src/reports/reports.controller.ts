@@ -48,6 +48,7 @@ export class ReportsController {
 
       await this.reportsService.xl(res, filterReportDto);
     } else {
+      
       const results: any = await this.reportsService.getEquipmentReports(
         filterReportDto,
       );
