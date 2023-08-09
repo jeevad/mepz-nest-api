@@ -254,18 +254,18 @@ export class ProjectService {
     return { results };
   }
   //Get Equipments by projectID
-  async getProjectEquipmentsbyroom(
-    projectId: string,
-    roomId: string,
-    equipmentId: string,
+  async getProjectEquipmentsbyroom(projectId: string,
+    roomId: string,equipmentId: string
+    
   ) {
-    mongoose.set('debug', true);
+        mongoose.set('debug', true);
     //let projectId = [];
-
+    
     //projectId = [new mongoose.Types.ObjectId(projectId)];
+   
 
     let pipeline: any = [
-      { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
+       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       {
         $project: {
           name: 1,
@@ -282,7 +282,9 @@ export class ProjectService {
     if (roomId) {
       pipeline.push({
         $match: {
-          'departments.rooms._id': new mongoose.Types.ObjectId(roomId),
+          'departments.rooms._id': new mongoose.Types.ObjectId(
+            roomId,
+          ),
         },
       });
     }
@@ -302,10 +304,10 @@ export class ProjectService {
     ];
 
     pipeline.push({
-      $match: {
-        'departments.rooms.equipments.code': equipmentId,
-      },
-    });
+        $match: {
+          'departments.rooms.equipments.code': equipmentId
+        },
+      });
     pipeline = [
       ...pipeline,
       {
@@ -323,12 +325,15 @@ export class ProjectService {
                 department_code: '$departments.code',
                 department_name: '$departments.name',
               },
-            },
+            }
           ], // add projection here wish you re-shape the docs
         },
       },
     ];
 
+
+
+    
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
@@ -584,8 +589,8 @@ export class ProjectService {
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
-  //Get Equipments by projectID
-  async getAllDisabledEquipments(filterReportDto: FilterReportDto) {
+     //Get Equipments by projectID
+   async getAllDisabledEquipments(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
     let pipeline: any = [
@@ -604,14 +609,14 @@ export class ProjectService {
       { $unwind: '$departments' },
       { $unwind: '$departments.rooms' },
       { $unwind: '$departments.rooms.equipments' },
-      {
-        $match: {
-          'departments.rooms.equipments.active': false,
-        },
-      },
-    ];
+      { $match: { 
+     'departments.rooms.equipments.active' : false } }, 
 
-    pipeline = [
+    ];
+    
+   
+    	
+	pipeline = [
       ...pipeline,
       {
         $project: {
@@ -629,12 +634,12 @@ export class ProjectService {
       },
     ];
 
-    //console.log(pipeline);
+     //console.log(pipeline);
 
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;
   }
-  async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
+   async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
    let pipeline: any = [{
@@ -687,7 +692,12 @@ export class ProjectService {
         }
       }
 
-    return results;
+    }
+  }
+   ];
+   const results = await this.ProjectModel.aggregate(pipeline);
+   
+	  return  results ;
   }
   
     async getAllEquipmentslocationbygroup(filterReportDto: FilterReportDto) {
@@ -829,19 +839,19 @@ export class ProjectService {
           name: 1,
           code: 1,
           departments: 1,
-          //  EquipmentAllocation: 1,
+        //  EquipmentAllocation: 1,
         },
       },
       { $unwind: '$departments' },
       { $unwind: '$departments.rooms' },
       { $unwind: '$departments.rooms.equipments' },
       //{ $unwind: '$equipmentAllocation' },
-      // { $unwind: '$departments.rooms.equipmentAllocation' },
+     // { $unwind: '$departments.rooms.equipmentAllocation' },
       //{ $unwind: '$rooms.equipmentAllocation' },
 
       // { $sort: { 'departments.rooms.equipments.name': -1 } },
     ];
-
+    
     // pipeline = [
     //   ...pipeline,
 
@@ -859,15 +869,15 @@ export class ProjectService {
     //     },
     //   },
     // ];
-
-    pipeline = [
+    	
+	pipeline = [
       ...pipeline,
       {
         $project: {
           _id: '$departments.rooms.equipments.equipmentId',
           code: '$departments.rooms.equipments.code',
           name: '$departments.rooms.equipments.name',
-          // qty: '$equipmentAllocation.qty',
+         // qty: '$equipmentAllocation.qty',
           //qty: '$departments.rooms.qty',
           quantity: '$departments.rooms.equipments.quantity',
           price: '$departments.rooms.equipments.price',
@@ -882,15 +892,18 @@ export class ProjectService {
       },
     ];
 
-    console.log(pipeline);
+     console.log(pipeline);
 
     const results = await this.ProjectModel.aggregate(pipeline);
-    console.log('gggggggggggg');
-    console.log(results);
+	console.log("gggggggggggg");
+	console.log(results);
     return results;
   }
-
-  async getAllEquipments_unique_dsply(filterReportDto) {
+  
+   async getAllEquipments_unique_dsply(
+    filterReportDto,
+   
+  ) {
     mongoose.set('debug', true);
     let projectId = [];
     if (Array.isArray(filterReportDto.projectId)) {
@@ -954,10 +967,13 @@ export class ProjectService {
       },
     ];
 
+    
+
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
-
+  
+  
   async getAllEquipments_unique(
     filterEquipmentDto: FilterEquipmentDto,
     paginationParams: PaginationParams,
@@ -1037,24 +1053,25 @@ export class ProjectService {
         },
       });
     }
-    if (paginationParams.limit) {
-      pipeline = [
-        ...pipeline,
-        {
-          $facet: {
-            metadata: [{ $count: 'total' }, { $addFields: { page: 1 } }],
-            data: [
-              { $skip: paginationParams.skip },
-              { $limit: paginationParams.limit },
-            ], // add projection here wish you re-shape the docs
-          },
+	if(paginationParams.limit) {
+    pipeline = [
+      ...pipeline,
+      {
+        $facet: {
+          metadata: [{ $count: 'total' }, { $addFields: { page: 1 } }],
+          data: [
+            { $skip: paginationParams.skip },
+            { $limit: paginationParams.limit },
+          ], // add projection here wish you re-shape the docs
         },
-      ];
+      },
+    ];
     }
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
-
+  
+  
   async getAllEquipments_bkp(
     filterEquipmentDto: FilterEquipmentDto,
     paginationParams: PaginationParams,

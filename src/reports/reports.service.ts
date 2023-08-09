@@ -23,35 +23,7 @@ export class ReportsService {
   reportType = {};
 
   constructor(private projectService: ProjectService) {}
-     async createExcelFile(data: any[]): Promise<string> {
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('Sheet 1');
-
-    // Add headers
-    const headers = Object.keys(data[0]);
-    worksheet.addRow(headers);
-
-    // Add data rows
-    data.forEach(item => {
-      const row = [];
-      headers.forEach(header => {
-        row.push(item[header]);
-      });
-      worksheet.addRow(row);
-    });
-
-    // Generate a unique filename
-    const fileName = 'excel_2.xlsx';
-    //const filePath = `path_to_your_directory/${fileName}`;
-    const filePath = 'views/reports/common/excel_2.xlsx';
-	console.log('GGGGGGGGGGGG');
-	console.log(filePath);
-    // Save the workbook to a file
-    await workbook.xlsx.writeFile(filePath);
-   
-   
-    return fileName;
-  }
+ 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
       // pdf
@@ -65,18 +37,7 @@ export class ReportsService {
     };
   }
 
-  // async getRoomList(
-  //   filterEquipmentDto: FilterEquipmentDto,
-  //   paginationParams: PaginationParams,
-  // ) {
-  //   const rooms = await this.projectService.getAllRooms(
-  //     filterEquipmentDto,
-  //     paginationParams,
-  //   );
-  //   console.log("romms >>",rooms);
-  //   return rooms;
-  // }
-
+ 
   secondExample() {
     const data = {
       title: 'My PDF file',
@@ -181,6 +142,8 @@ export class ReportsService {
   async getEquipmentReports(filterReportDto: FilterReportDto) {
     let results: any;
     if (filterReportDto.reportType === 'equipment-location-listing') {
+
+      console.log("ggg");
       type EquipmentItem = {
         _id: string;
         code: string;
@@ -326,59 +289,7 @@ export class ReportsService {
       console.log('Test');
       console.log(results);
 
-      //console.log(results_val);
-
-      /*
-		results_val.forEach((item2) => {
-		console.log("Helloooov4445555555555777777::::");
-		//console.log(item2.departments.rooms);
-		dep_arry.push(item2.departments);
-		//project_code = item2.code;
-		//project_name = item2.name;
-		});
-		//console.log("vineesh::::");
-		//console.log(dep_arry);
-		//results = { code:project_code, name: project_name, departments:dep_arry }
-		
-		console.log("Helloooov4445555555555::::");
-		console.log(results.departments[0]);
-		/*
-		 results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
-		console.log("HellooooVVVVVVVVVVVVVV::::");
-		//console.log(results);
-		//console.log(results.departments[1]);
-		/*
-		
-		if(results.length)
-		{
-		results.forEach((item2) => {
-		console.log(item2);
-		console.log("Helloooo");
-		console.log(item2.departments);
-		if(item2.length)
-		{
-		item2.forEach((item) => {
-		
-		item.pagewise =filterReportDto.pagewise;
-		
-		if(item.departmentId)
-		{
-		 
-	   item.rooms.forEach((item_r) => {
-	   
-	item_r.pagewise =filterReportDto.pagewise;
-	item_r.w_sign =filterReportDto.w_sign;
-	});
-	}
-     }
-	 );
-	 }
-	 }
-	 );
-	 }
-		*/
+     
       
 	  }
 	  else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled-price') {
@@ -407,8 +318,6 @@ export class ReportsService {
 		else if (filterReportDto.reportType === 'equipment-listing-bq-with-utility') {
 	   
 	   
-	    //const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
-		
 		
 		 const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
 		results =results_val[0];
@@ -424,12 +333,7 @@ export class ReportsService {
 	   
 	   
 	    const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto);
-		//results =results_val[0];
-	    
-		//console.log("Helooov44");
-		//console.log(results);
-		//console.log("Helooo");
-		/**/
+		
 		   results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
@@ -477,23 +381,10 @@ export class ReportsService {
       'views/reports/common',
       `${filterReportDto.reportType}.hbs`,
     );
-    //console.log('data', data);
-	
-	//console.log("fffff");
-	//console.log(filterReportDto.reportFormat);
-    if(filterReportDto.reportFormat=='excel')
-	{
-	  const data = [
-      { name: 'John Doe', age: 30, email: 'john@example.com' },
-      { name: 'Jane Smith', age: 28, email: 'jane@example.com' },
-      // Add more data here
-    ];
-    return this.createExcelFile(data);
-	}
-	else
-	{
+    
+  
 	 return createPdf(filePath, options, data);
-	}
+	
   }
   async getCurrentDate() {
     const now = new Date();
