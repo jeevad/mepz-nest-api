@@ -21,9 +21,13 @@
     <div class='container mb-5 mt-3'>
       <div class='row d-flex align-items-baseline'>
         <div class='col-xl-12'>
-          <p
-            style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          >Project Name : <strong>{{name}}</strong></p>
+ 
+          <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong> <strong>{{EquipmentItemlist.0.project_name}}</strong></p>
+		  <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
+          > Revision No: 5.001*    Date: {{currentDate}}</p>
+		   <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
+          > Equipment Location Listing  Qty : Total Quantity</p>
+          
           {{!-- {{#each departments}}  {{/each}} --}}
            		 {{#index_gt @index}}
 			<div class="page-break">
@@ -41,6 +45,8 @@
                   <th>Equipment Code</th>
                   <th>Equipment Name</th>
                   <th>Qty</th>
+                  <th>Group</th>
+                    <th>Remarks</th>
                 </tr>
               </thead>
               <tbody>
@@ -50,13 +56,16 @@
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                     </tr>
                   {{/each}}
 				  <tr>
                     <td>   </td>
                     
                     <td>Sub-Total:</td>
-                    <td>{{sum2 EquipmentItemlist "quantity"}}</td>
+                    <td>{{sum EquipmentItemlist "quantity"}}</td>
                   </tr>
                  {{!-- {{#each rooms}}{{/each}} --}}
               </tbody>

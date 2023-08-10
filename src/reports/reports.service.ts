@@ -639,9 +639,7 @@ export class ReportsService {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
-        results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
+       
       results = await this.projectService.getAllEquipments_unique_dsply(
         filterReportDto,
       );
@@ -649,9 +647,7 @@ export class ReportsService {
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq-with-price'
     ) {
-      results = await this.projectService
-        .findOne(filterReportDto.projectId)
-        .lean();
+    
       results = await this.projectService.getAllEquipments_unique_dsply(
         filterReportDto,
       );
@@ -702,7 +698,11 @@ export class ReportsService {
         item.pagewise = filterReportDto.pagewise;
 
         if (item.departmentId) {
+     
           item.rooms.forEach((item_r) => {
+
+            console.log('hello');
+            console.log(item_r);
             item_r.pagewise = filterReportDto.pagewise;
             item_r.w_sign = filterReportDto.w_sign;
           });
@@ -729,7 +729,8 @@ export class ReportsService {
       });
 
       console.log(results.departments[1]);
-    } else if (
+    }
+     else if (
       filterReportDto.reportType ===
       'equipment-listing-by-department-and-room-disabled'
     ) {
@@ -752,6 +753,15 @@ export class ReportsService {
       console.log('Test');
       console.log(results);
     } 
+    else if (filterReportDto.reportType === 'equipment-listing-bq-by-group') {
+	   
+      console.log('Test555555');
+	    const results_val = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
+		
+		
+		
+		
+		}
     else if (filterReportDto.reportType === 'equipment-location-listing-by-group') {
 	   
 	   

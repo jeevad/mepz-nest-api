@@ -639,6 +639,65 @@ export class ProjectService {
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;
   }
+
+       //Get Equipments by group
+       async getAllEquipmentsbygroup(filterReportDto: FilterReportDto) {
+        mongoose.set('debug', true);
+       
+        let pipeline: any = [
+          {
+            $match: {
+              _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+            },
+          },
+          {
+            $project: {
+              name: 1,
+              code: 1,
+              departments: 1,
+            },
+          },
+          { $unwind: '$departments' },
+          { $unwind: '$departments.rooms' },
+          { $unwind: '$departments.rooms.equipments' },
+          {
+            $match: {
+              'departments.equipments.group': {$in:[filterReportDto.group]},
+            },
+          },
+    
+        ];
+        
+       
+          
+      pipeline = [
+          ...pipeline,
+          {
+            $project: {
+              _id: '$departments.rooms.equipments.equipmentId',
+              code: '$departments.rooms.equipments.code',
+              name: '$departments.rooms.equipments.name',
+              quantity: '$departments.rooms.equipments.qty',
+              project_code: '$code',
+              project_name: '$name',
+              room_code: '$departments.rooms.code',
+              room_name: '$departments.rooms.name',
+              department_code: '$departments.code',
+              department_name: '$departments.name',
+            },
+          },
+        ];
+    
+         //console.log(pipeline);
+    
+        const results = await this.ProjectModel.aggregate(pipeline);
+
+        console.log("helloooooov4");
+        console.log(results);
+        return results;
+      }
+
+
    async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
@@ -699,6 +758,9 @@ export class ProjectService {
    
 	  return  results ;
   }
+
+  
+
   
     async getAllEquipmentslocationbygroup(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
@@ -963,6 +1025,8 @@ export class ProjectService {
           quantity: { $first: '$departments.rooms.equipments.quantity' },
           room_code: { $first: '$departments.rooms.code' },
           room_name: { $first: '$departments.rooms.name' },
+          project_name: { $first: '$name' },
+          
         },
       },
     ];
