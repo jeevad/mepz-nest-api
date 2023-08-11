@@ -13,17 +13,11 @@ import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterReportDto } from './dto/filter-report.dto';
 import Excel, { Workbook } from 'exceljs';
 
-
-
-
 @Controller('reports')
 @ApiTags('Reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
-  
- 
-  
-  
+
   @Get('pdf')
   @ApiOperation({ summary: 'pdf example' })
   async generatePdf2(@Res() res) {
@@ -46,9 +40,8 @@ export class ReportsController {
         'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
       });
 
-      await this.reportsService.xl(res, filterReportDto);
+      await this.reportsService.xlExport(res, filterReportDto);
     } else {
-      
       const results: any = await this.reportsService.getEquipmentReports(
         filterReportDto,
       );
