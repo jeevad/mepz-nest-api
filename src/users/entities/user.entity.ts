@@ -12,8 +12,6 @@ export class UserEntity {
   remarks: string;
   createdAt: Date;
   updatedAt: Date;
-  reEnterPassword: string;
-
 
   @Exclude()
   password: string;
