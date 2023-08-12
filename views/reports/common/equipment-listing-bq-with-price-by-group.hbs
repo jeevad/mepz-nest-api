@@ -1,4 +1,5 @@
 <html lang='en'>
+
 <head>
   <meta charset='utf-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -11,13 +12,17 @@
     }
   </style>
 </head>
+
 <body>
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{!-- <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{name}}</span></b></p>
-        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDate}}</span></p>
-        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing Qty <span style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
+        {{!-- <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span
+              class="text-uppercase">{{name}}</span></b></p>
+        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span
+            style="margin-left:35px;">Date: {{currentDate}}</span></p>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing Qty <span
+              style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
 
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
@@ -41,8 +46,6 @@
               {{key1}}
               {{/value_undefine}}
               {{#index_gt @index}} </div> {{/index_gt}}
-
-<<<<<<< HEAD
             {{#each EquipmentItemlist}}
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
@@ -54,44 +57,21 @@
               <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
             </tr>
             {{/each}}
-            <tr>
-              <td style="padding-top:6px;padding-bottom:6px;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;">Total
+            <tr style="border: 0;">
+              <td style="border: 0;"></td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total
                 {{#value_undefine @key1}}
                 {{key1}}
                 {{/value_undefine}}</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{sum EquipmentItemlist "quantity"}}</td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
             </tr>
             {{/each}}
           </tbody>
         </table>
-=======
-                      <td>{{group}}</td>
-                      <td>{{remarks}}</td>
-
-                    </tr>
-                  {{/each}}
-                
-					      <tr>
-                    <td>   </td>
-                    
-                    <td>Total  
-                 {{#value_undefine @key1}}
-                    {{key1}} 
-                 {{/value_undefine}}</td>
-                    <td>{{sum EquipmentItemlist "quantity"}}</td>
-                    <td>   </td>
-                    <<td> {{calculateSumOfTotal EquipmentItemlist }} </td>
-                  </tr>
-                   {{/each}}
-
-              </tbody>
-            </table>
-         
-        </div>
->>>>>>> 77e15593ea0b317a2202e70297a5df133b0a9468
       </div>
     </div>
   </div>
+  </div>
 </body>
+
 </html>
