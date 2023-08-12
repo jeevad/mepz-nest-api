@@ -28,7 +28,7 @@ export class AuthService {
 
       return {
         user: new UserEntity(user.toJSON()),
-        access_token: await this.jwtService.signAsync(payload),
+        jwtToken: await this.jwtService.signAsync(payload),
       };
     } catch (error) {
       throw new BadRequestException(error?.response?.message);

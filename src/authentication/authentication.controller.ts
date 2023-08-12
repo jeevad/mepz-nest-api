@@ -35,8 +35,8 @@ export class AuthenticationController {
   async logIn(@Req() request: RequestWithUser) {
     const { user } = request;
     console.log(user);
-    const access_token = this.authenticationService.getJwtToken(user._id);
-    return { access_token };
+    const jwtToken = this.authenticationService.getJwtToken(user._id);
+    return { jwtToken };
     // return new UserEntity(classToPlain(user));
   }
 
