@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { CompanyModule } from './master-file/company/company.module';
 import { DepartmentModule } from './master-file/department/department.module';
-import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { RoomsModule } from './master-file/rooms/rooms.module';
 import { GroupModule } from './master-file/group/group.module';
@@ -15,7 +14,6 @@ import { ClassificationModule } from './master-file/classification/classificatio
 import { CurrencyModule } from './master-file/currency/currency.module';
 import { EquipmentModule } from './master-file/equipment/equipment.module';
 import { ProjectModule } from './project/project.module';
-import { AdmingroupModule } from './admingroup/admingroup.module';
 import { EquipmentBrandModule } from './master-file/equipment-brand/equipment-brand.module';
 
 import { AuthModule } from './auth/auth.module';
@@ -24,6 +22,8 @@ import { EquipmentAllocationModule } from './project/equipment-allocation/equipm
 import { CurrentTransactionModule } from './project/current-transaction/current-transaction.module';
 import { EquipmentSummaryModule } from './project/equipment-summary/equipment-summary.module';
 import { ReportsModule } from './reports/reports.module';
+import { AdmingroupModule } from './administrator/admingroup/admingroup.module';
+import { UsersModule } from './administrator/users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),

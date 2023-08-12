@@ -6,9 +6,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/administrator/users/entities/user.entity';
+import { UsersService } from 'src/administrator/users/users.service';
 // import mongoose from 'mongoose';
 
 @Injectable()

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/administrator/users/entities/user.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
