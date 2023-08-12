@@ -91,13 +91,22 @@ export class ReportsService {
       displayHeaderFooter: true,
       margin: {
         left: '10mm',
-        top: '25mm',
+        top: '32mm',
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `
+      <div style="width: 96%; display: flex; flex-direction: column;">
+        <div style="font-size: 10px; text-align: right; color: #1cabb1;">
+          <i>Page <span class="pageNumber"></span> of <span class="totalPages"></span></i> 
+        </div>
+        <div style="color: #0d76ba; text-align: center; text-transform:uppercase;">
+          <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
+          <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
+        </div>
+      </div>`,
       footerTemplate:
-        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+        '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
     };
     const filePath = join(process.cwd(), 'views/reports', 'pdf-invoice.hbs');
@@ -123,13 +132,22 @@ export class ReportsService {
       displayHeaderFooter: true,
       margin: {
         left: '10mm',
-        top: '25mm',
+        top: '32mm',
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `
+      <div style="width: 96%; display: flex; flex-direction: column;">
+        <div style="font-size: 10px; text-align: right; color: #1cabb1;">
+          <i>Page <span class="pageNumber"></span> of <span class="totalPages"></span></i> 
+        </div>
+        <div style="color: #0d76ba; text-align: center; text-transform:uppercase;">
+          <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
+          <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
+        </div>
+      </div>`,
       footerTemplate:
-        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+        '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
     };
     const filePath = join(
@@ -162,13 +180,22 @@ export class ReportsService {
       displayHeaderFooter: true,
       margin: {
         left: '10mm',
-        top: '25mm',
+        top: '32mm',
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `<div style="width: 100%; text-align: center;"><span style="font-size: 20px; color: #0d76ba;">Hanimeds</span><br><span class="date" style="font-size:15px"><span></div>`,
+      headerTemplate: `
+      <div style="width: 96%; display: flex; flex-direction: column;">
+        <div style="font-size: 10px; text-align: right; color: #1cabb1;">
+          <i>Page <span class="pageNumber"></span> of <span class="totalPages"></span></i> 
+        </div>
+        <div style="color: #0d76ba; text-align: center; text-transform:uppercase;">
+          <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
+          <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
+        </div>
+      </div>`,
       footerTemplate:
-        '<div style="width: 100%; text-align: center; font-size: 10px;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
+        '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
     };
     const filePath = join(
@@ -186,7 +213,8 @@ export class ReportsService {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    // return `${year}-${month}-${day}`;
+    return `${day}/${month}/${year}`;
   }
   async getAllremove_duplicates(department) {
     type EquipmentItem = {

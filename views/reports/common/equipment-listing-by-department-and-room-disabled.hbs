@@ -1,122 +1,116 @@
 <html lang='en'>
-  <head>
-    <meta charset='utf-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1' />
-    <title>{{title}}</title>
-    <link
-      href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css'
-      rel='stylesheet'
-      integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65'
-      crossorigin='anonymous'
-    />
-	<style>
-    
+
+<head>
+  <meta charset='utf-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <title>{{title}}</title>
+  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' rel='stylesheet'
+    integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous' />
+  <style>
     .page-break {
       page-break-before: always;
     }
   </style>
-  </head>
-  <body>
-    <div class='container mb-5 mt-3'>
-      <div class='row d-flex align-items-baseline'>
-        <div class='col-xl-12'>
-          <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name1 : <strong>{{name}}</strong></p>
-          <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Equipment Listing(BQ) By Department and Room <span>Qty : Total Quantity</span></p>
-          {{#each departments as |dept|}}
-            {{#each rooms}}
-			
-			
-			{{#if ../../pagewise}}
-			{{#index_gt @index}}
-		
-			<div class="page-break">
-			 {{/index_gt}}  {{/if}}
-			 
-              <p
-                style='color: #000;font-size: 18px; margin-bottom: 15px;'
-              >Department : {{dept.code}} - {{dept.name}}</p>
-              <p
-                style='color: #000;font-size: 18px; margin-bottom: 15px;'
-              >Room : {{code}} - {{name}}</p>
-			  {{#if ../../pagewise}} {{#index_gt @index}}  </div>  {{/index_gt}} {{/if}}
-              <table class='table '>
-                <thead class='table-light'>
-                  <tr>
-                    <th>Equipment Code</th>
-                    <th>Equipment Name</th>
-                    <th>Qty</th>
-                 
-                    <th>Group</th>
-                    <th>Remarks</th>
-                    <th>Y N </th>
-                    <th>Client Remarks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {{#each equipments}}
-                    <tr>
-                      <td>{{code}}</td>
-                      <td>{{name}}</td>
-                      <td>{{quantity}}</td>
-                      
-					  <td></td>
-					  <td></td>
-					  <td></td>
-					  <td></td>
-                    </tr>
-                  {{/each}}
-				    <tr>
-                      <td colspan="2">Total Equipments for {{code}} - {{name}}</td>
-                      <td> {{sum equipments  "quantity" }} </td>
-                      
-					 
-					  <td></td>
-					  <td></td>
-					  <td></td>
-					  <td></td>
-                    </tr>
-                </tbody>
-              </table>
-			  {{#if ../../w_sign}}
-			    <table class='table '>
-				  <tbody>
-				   <tr>
-				     <td>Received by:</td>
-					  <td></td>
-					  <td></td>
-					  <td>MNE SOLUTIONS: </td>
-				   </tr>
-				    <tr>
-				     <td>Full Name</td>
-					  <td>Full Name</td>
-					  <td>Full Name</td>
-					 
-				   </tr>
-				    <tr>
-				     <td>Designation</td>
-					  <td>Designation</td>
-					  <td>Designation</td>
-					 
-				   </tr>
-				    <tr>
-				     <td>Stamp</td>
-					  <td>Stamp</td>
-					  <td>Stamp</td>
-					 
-				   </tr>
-				    <tr>
-				     <td>Date</td>
-					  <td>Date</td>
-					  <td>Date</td>
-					 
-				   </tr>
-				   </tbody>
-              </table>
-			  {{/if}}
+</head>
+
+<body>
+  <div class='container-fluid mb-5 mt-3'>
+    <div class='row d-flex align-items-baseline'>
+      <div class='col-xl-12'>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span
+              class="text-uppercase">{{name}}</span></b></p>
+        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span
+            style="margin-left:35px;">Date: {{currentDate}}</span></p>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Listing(BQ) By Department and Room <span
+              style="margin-left:35px;">Qty : Total Quantity</span></b></p>
+
+        {{#each departments as |dept|}}
+        {{#each rooms}}
+        {{#if ../../pagewise}}
+        {{#index_gt @index}}
+
+        <div class="page-break">
+          {{/index_gt}} {{/if}}
+          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{dept.code}}</span> <span
+            style="margin-left:30px;">{{dept.name}}</span></p>
+          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Room:</b> <span>{{code}}</span> <span
+            style="margin-left:30px;">{{name}}</span></p>
+          {{#if ../../pagewise}} {{#index_gt @index}}
+        </div> {{/index_gt}} {{/if}}
+
+        <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
+          <thead class='table-light'>
+            <tr>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Y N </th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Client Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each equipments}}
+            <tr>
+              <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;"></td>
+              <td style="padding-top:6px;padding-bottom:6px;"></td>
+              <td style="padding-top:6px;padding-bottom:6px;"></td>
+              <td style="padding-top:6px;padding-bottom:6px;"></td>
+            </tr>
             {{/each}}
-          {{/each}}
-        </div>
+            <tr>
+              <td colspan="2" style="padding-top:6px;padding-bottom:6px;">Total Equipments for {{code}} - {{name}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;">{{sum equipments "quantity" }} </td>
+              {{!-- <td></td>
+              <td></td>
+              <td></td>
+              <td></td> --}}
+            </tr>
+          </tbody>
+        </table>
+        {{#if ../../w_sign}}
+        <table class='table '>
+          <tbody>
+            <tr>
+              <td>Received by:</td>
+              <td></td>
+              <td>MNE SOLUTIONS: </td>
+            </tr>
+            <tr>
+              <td>Full Name</td>
+              <td>Full Name</td>
+              <td>Full Name</td>
+
+            </tr>
+            <tr>
+              <td>Designation</td>
+              <td>Designation</td>
+              <td>Designation</td>
+
+            </tr>
+            <tr>
+              <td>Stamp</td>
+              <td>Stamp</td>
+              <td>Stamp</td>
+
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>Date</td>
+              <td>Date</td>
+
+            </tr>
+          </tbody>
+        </table>
+        {{/if}}
+        {{/each}}
+        {{/each}}
       </div>
     </div>
-  </body>
+  </div>
+</body>
 </html>

@@ -50,10 +50,6 @@ export class User {
   @Prop({ default: now() })
   updatedAt: Date;
 
-  @Prop({ required: true })
-  @Exclude()
-  reEnterPassword: string;
-
   // @Prop({ unique: true })
   // email: string;
 

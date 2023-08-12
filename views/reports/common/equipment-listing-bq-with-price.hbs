@@ -17,58 +17,56 @@
   </style>
   </head>
   <body>
-    <div class='container mb-5 mt-3'>
+    <div class='container-fluid mb-5 mt-3'>
       <div class='row d-flex align-items-baseline'>
         <div class='col-xl-12'>
-    <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong> <strong>{{EquipmentItemlist.0.project_name}}</strong></p>
-		  <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          > Revision No: 5.001*    Date: {{currentDate}}</p>
-		   <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          > Equipment Location Listing  Qty : Total Quantity</p>
-		  
+          <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span
+              class="text-uppercase">{{name}}</span></b></p>
+        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span
+            style="margin-left:35px;">Date: {{currentDate}}</span></p>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Listing (BQ) <span
+              style="margin-left:35px;">Qty : Total Quantity</span></b></p>
           {{!-- {{#each departments}}  {{/each}} --}}
            		 {{#index_gt @index}}
 			<div class="page-break">
     
                {{/index_gt}}
-            <p style='color: #000;font-size: 18px; margin-bottom: 15px;'
-            <p style='color: #000;font-size: 18px; margin-bottom: 15px;'
-            >Equipment Listing (BQ) </p>
+           
           {{#index_gt @index}}
 			</div>  
                {{/index_gt}}
-            <table class='table table-bordered'>
+            <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
               <thead class='table-light'>
                 <tr>
-                  <th>Equipment Code</th>
-                  <th>Equipment Name</th>
-                  <th>Qty</th>
-                  <th>price</th>
-                  <th>Total</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Code</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">price</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
                 </tr>
               </thead>
               <tbody>
                
                   {{#each EquipmentItemlist}}
                     <tr>
-                      <td>{{code}}</td>
-                      <td>{{name}}</td>
-                      <td>{{quantity}}</td>
-                      <td>{{cost}}</td>
-                      <td>{{multiply quantity cost}} </td>
+                      <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
+                      <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
+                      <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
+                      <td style="padding-top:6px;padding-bottom:6px">{{cost}}</td>
+                      <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity cost}} </td>
+                      <td></td>
+                      <td></td>
                     </tr>
                   {{/each}}
-				  <tr>
-                    <td>   </td>
-                    
-                    <td>Total Equipment:</td>
-                    <td>{{sum EquipmentItemlist "quantity"}}</td>
-                    <td>Total:</td>
-                    <td>
-					{{calculateSumOfTotal EquipmentItemlist }}
-		
-					</td>
-                  </tr>
+                    {{!-- <tr>
+                        <td></td>
+                        <td>Total Equipment:</td>
+                        <td>{{sum EquipmentItemlist "quantity"}}</td>
+                        <td>Total:</td>
+                        <td>{{calculateSumOfTotal EquipmentItemlist }}</td>
+                    </tr> --}}
                  {{!-- {{#each rooms}}{{/each}} --}}
               </tbody>
             </table>
