@@ -104,12 +104,12 @@ export class ReportsService {
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
-      </div>
-      <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{equipments.0.project_name}}</span></b></p>
-      <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDateVV}}</span></p>
-      <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>
-  
-      
+        <div style="padding-left:35px;">
+          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{equipments.0.project_name}}</span></b></p>
+          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDateVV}}</span></p>
+          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+        </div>
+      </div>       
       `,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
@@ -151,10 +151,11 @@ export class ReportsService {
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
-        <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{equipments.0.project_name}}</span></b></p>
-        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDate56}}</span></p>
-        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>
-    
+        <div style="padding-left:35px;">
+          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{equipments.0.project_name}}</span></b></p>
+          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDateVV}}</span></p>
+          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+        </div>
       </div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
@@ -197,7 +198,7 @@ export class ReportsService {
       displayHeaderFooter: true,
       margin: {
         left: '10mm',
-        top: '90mm',
+        top: '52mm',
         right: '10mm',
         bottom: '15mm',
       },
@@ -208,19 +209,13 @@ export class ReportsService {
         </div>
         <div style="color: #0d76ba; text-align: center; text-transform:uppercase;">
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
-          <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
+          <p style="font-size: 10px; margin-bottom:15px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
-        
-      
-      <div class='container-fluid '>
-      <div class='row '>
-        <div class='col-x
-      <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam +`</span></b></p>
-      <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+currentDateVal +`</span></p>
-      <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>
-
-      <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam +`</span></b></p>
-      </div></div></div>
+        <div style="padding-left:35px;">
+          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam +`</span></b></p>
+          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+currentDateVal +`</span></p>
+          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+        </div>   
       </div>
       `,
       footerTemplate:
