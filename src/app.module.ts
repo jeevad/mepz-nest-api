@@ -24,6 +24,8 @@ import { EquipmentSummaryModule } from './project/equipment-summary/equipment-su
 import { ReportsModule } from './reports/reports.module';
 import { AdmingroupModule } from './administrator/admingroup/admingroup.module';
 import { UsersModule } from './administrator/users/users.module';
+import { AccessLevelModule } from './administrator/access-level/access-level.module';
+import { ActivityLogsModule } from './administrator/activity-logs/activity-logs.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -53,6 +55,8 @@ import { UsersModule } from './administrator/users/users.module';
     CurrentTransactionModule,
     PastTransactionModule,
     ReportsModule,
+    AccessLevelModule,
+    ActivityLogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
