@@ -14,35 +14,67 @@
     <div class='container mb-5 mt-3'>
       <div class='row d-flex align-items-baseline'>
         <div class='col-xl-12'>
-          <p
-            style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
-          >Project Name : <strong>{{name}}</strong></p>
-          {{#each departments}}
+<p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong></p>
+		  <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
+          > Revision No: 5.001*    Date: {{currentDate}}</p>
+		   <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'
+          > Equipment Location Listing  Qty : Total Quantity</p>
+		 
+		  
+          {{#each groupedByDepartment as |EquipmentItemlist key1|}}
+
+                   {{#index_gt @index}}
+			              <div class="page-break">
+			             {{/index_gt}}
+                  {{#value_undefine @key1}}
+                    {{key1}} 
+                 {{/value_undefine}}
+                   {{#index_gt @index}}  </div>  {{/index_gt}}
+                
+                  {{#each EquipmentItemlist}}
+            {{!--@index--}}
+
+            {{!-- {{@index}}: --}}
+            {{!-- {{this}} --}}
             <p
               style='color: #000;font-size: 18px; margin-bottom: 15px;'
-            >Department : {{code}} - {{name}}</p>
+            >Equipments : {{eqp_code}} - {{eqp_name}}</p>
 
             <table class='table table-bordered'>
               <thead class='table-light'>
                 <tr>
-                  <th>Equipment Code</th>
-                  <th>Equipment Name</th>
+                  <th>Dept Code</th>
+                  <th>Dept Name</th>
+                  <th>Room Code</th>
+                  <th>Room Name</th>
                   <th>Qty</th>
                 </tr>
               </thead>
               <tbody>
-                {{#each rooms}}
-                  {{#each equipments}}
-                    <tr>
-                      <td>{{code}}</td>
-                      <td>{{name}}</td>
-                      <td>{{quantity}}</td>
-                    </tr>
-                  {{/each}}
+                {{!-- {{#each rooms}} --}}
+				       
+                {{#each locations}}
+				
+                  <tr>
+                    <td> {{department_code}}  </td>
+                    <td>{{department_name}}</td>
+                    <td>{{room_code}}</td>
+                    <td>{{room_name}}</td>
+                    <td>{{quantity}}</td>
+                  </tr>
+                  {{!-- {{/each}} --}}
+				
                 {{/each}}
+				<tr>
+                    <td>   </td>
+                    <td></td>
+                    <td></td>
+                    <td>Sub-Total:</td>
+                    <td>{{sum locations "quantity"}}</td>
+                  </tr>
               </tbody>
             </table>
-          {{/each}}
+          {{/each}} {{/each}} 
         </div>
       </div>
     </div>

@@ -3,21 +3,18 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import exphbs from 'express-handlebars';
+import customHelpers from './helpers/customHelpers';
 import { join } from 'path';
+
+
+
 // var handlebars = require('../node_modules/handlebars/dist/cjs/handlebars')[
 //   'default'
 // ];
 
 ///// start of helper function
-function calculateSum(data, key) {
-  if (Array.isArray(data)) {
-    return data.reduce((sum, item) => sum + calculateSum(item, key), 0);
-  } else if (typeof data === 'object' && data !== null) {
-    return data[key] || 0;
-  } else {
-    return 0;
-  }
-}
+
 
 // handlebars.registerHelper('sum', function (data, key) {
 //   return calculateSum(data, key);
@@ -81,6 +78,16 @@ function calculateSum(data, key) {
 ///// end of helper function
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  var exphbs = require('express-handlebars');
+  // Configure Express to use Handlebars engine
+  app.engine('hbs',exphbs.engine({
+      extname: '.hbs',
+      handlebars: customHelpers,
+    }) );
+
+
+
+  app.set('view engine', 'hbs');
 
   // const app = await NestFactory.create(AppModule);
   app.enableCors();

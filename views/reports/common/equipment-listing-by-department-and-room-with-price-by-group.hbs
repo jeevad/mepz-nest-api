@@ -9,7 +9,6 @@
       integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65'
       crossorigin='anonymous'
     />
-    
   </head>
   <body>
     <div class='container mb-5 mt-3'>
@@ -20,11 +19,6 @@
        <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Department : {{code}} - {{name}}</p>
 	    {{#each rooms as | key1|}}
        <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Rooms : {{code}} - {{name}}</p>
-            {{#if ../../pagewise}} {{#index_gt @index}}
-		 
-			<div class="page-break">
-			 {{/index_gt}}  {{/if}} {{#if ../../pagewise}} {{#index_gt @index}}  </div>  {{/index_gt}} {{/if}}
-
 
             <table class='table table-bordered'>
               <thead class='table-light'>
@@ -32,6 +26,8 @@
                   <th>Equipment Code</th>
                   <th>Equipment Name</th>
                   <th>Qty</th>
+                  <th>Price</th>
+                  <th>Total</th>
                   <th>Group</th>
                   <th>Remarks</th>
                   <th>Yes</th>
@@ -43,14 +39,14 @@
                 {{#each group as |item key3| }}
 
                       
-          <p style='color: #000;font-size: 18px; margin-bottom: 15px;'> {{#value_undefine key3}}
-                     {{key3}} 
-                 {{/value_undefine}} </p>
+                 <p style='color: #000;font-size: 18px; margin-bottom: 15px;'> </p>
                   {{#each item  }}
                   <tr>
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
+                      <td>{{cost}}</td>
+                      <td>{{multiply quantity cost}}</td>
                       <td>{{group}}</td>
                       <td>{{remarks}}</td>
                       <td></td>
@@ -58,18 +54,21 @@
                       <td></td>
                     </tr>
                    {{/each}}
-                   <tr>
-                    <td></td>
+
+                      <td></td>
                       <td>Total Equipments for Room  {{code}}</td>
-                      <td>{{sum item "quantity"}}</td>
-                      </tr>
+                      <td>{{sum item  "quantity" }} </td>
+                      <td></td>
+                      <td> {{calculateSumOfTotal item }} </td>
+                     
+                    </tr>
                 {{/each}}
 
 
               </tbody>
             </table>
 			
-			  {{#if ../../w_sign}}
+			  {{#if w_sign}}
 			    <table class='table '>
 				  <tbody>
 				   <tr>

@@ -28,7 +28,6 @@
            {{#index_gt @index}}
 			<div class="page-break">
 			 {{/index_gt}}
-            {{!--json EquipmentItemlist--}}
             <p
               style='color: #000;font-size: 18px; margin-bottom: 15px;'
             >Department : {{key1}} - {{EquipmentItemlist.0.department_name}}</p>
@@ -40,6 +39,8 @@
                   <th>Equipment Code</th>
                   <th>Equipment Name</th>
                   <th>Qty</th>
+                  <th>Price</th>
+                  <th>Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,12 +50,16 @@
                       <td>{{code}}</td>
                       <td>{{name}}</td>
                       <td>{{quantity}}</td>
+                      <td>{{cost}}</td>
+                      <td>{{multiply quantity cost}} </td>
                     </tr>
                   {{/each}}
                   <tr>
                       <td></td>
                       <td>Total Equipments for Department  {{key1}} </td>
                       <td>{{sum EquipmentItemlist  "quantity" }} </td>
+                      <td></td>
+                      <td> {{calculateSumOfTotal EquipmentItemlist }} </td>
                      
                     </tr>
               </tbody>
