@@ -174,18 +174,15 @@ export class ReportsService {
     const results = await this.getQueryData(filterReportDto);
     console.log('helllov90000');
     const data: any = results;
-    console.log("data : ", results);
+    console.log("results : ", results);
     let project_nam;
     if (results.pname) {
       project_nam = results.pname;
-      console.log("results.pname: ", project_nam);
     } else if (results.name) {
       project_nam = results.name;
-      console.log("results.name: ", project_nam);
     }
     else if (results.results[0].name) {
       project_nam = results.results[0].name;
-      console.log("results.results[0].name: ", project_nam);
     } 
     else {
       project_nam = '';
