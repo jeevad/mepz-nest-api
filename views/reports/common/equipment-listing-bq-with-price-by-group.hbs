@@ -42,6 +42,7 @@
               {{/value_undefine}}
               {{#index_gt @index}} </div> {{/index_gt}}
 
+<<<<<<< HEAD
             {{#each EquipmentItemlist}}
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
@@ -64,6 +65,31 @@
             {{/each}}
           </tbody>
         </table>
+=======
+                      <td>{{group}}</td>
+                      <td>{{remarks}}</td>
+
+                    </tr>
+                  {{/each}}
+                
+					      <tr>
+                    <td>   </td>
+                    
+                    <td>Total  
+                 {{#value_undefine @key1}}
+                    {{key1}} 
+                 {{/value_undefine}}</td>
+                    <td>{{sum EquipmentItemlist "quantity"}}</td>
+                    <td>   </td>
+                    <<td> {{calculateSumOfTotal EquipmentItemlist }} </td>
+                  </tr>
+                   {{/each}}
+
+              </tbody>
+            </table>
+         
+        </div>
+>>>>>>> 77e15593ea0b317a2202e70297a5df133b0a9468
       </div>
     </div>
   </div>

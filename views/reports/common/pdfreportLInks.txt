@@ -1,6 +1,8 @@
 Equipment Location Listing :-
 ----------------------------------------------------------
 1. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing&reportFormat=pdf
+
+
 2. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing-by-pages&reportFormat=pdf
 
 
@@ -42,17 +44,8 @@ Equipment Listing by Department and Room:-
 15. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-price&reportFormat=pdfs&pagewise=1
 
 
-<<<<<<< HEAD
 
 12) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs&pagewise=1
-=======
-Equipment Listing by Department and Room(Disabled):-
----------------------------------------------------------
-16. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdfs
-17. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdfs&pagewise=1
-18. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdfs&pagewise=1&w_sign=1
-19. http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled-price&reportFormat=pdfs&pagewise=1
->>>>>>> 331c532a8471881113283820b822fa7a2e362ae6
 
 Equipment listing by floor:-
 http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-floor&reportFormat=pdfs
@@ -105,6 +98,8 @@ Equipment Location Listing, by Group
 Equipment Listing by Department, by Group
 
 http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-by-group&&reportFormat=pdfs
+
+
 http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-by-group&reportFormat=pdfs&pagewise=1
 
 http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&w_sign=1

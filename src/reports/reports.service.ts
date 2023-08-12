@@ -815,8 +815,8 @@ export class ReportsService {
       const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
       
       equipmentItems.forEach((item) => {
-        const group = item.group;
-      
+       
+        const group =item.group ? item.group :'no-group';
         if (!groupedByDepartment[group]) {
           groupedByDepartment[group] = [];
         }
@@ -865,8 +865,8 @@ export class ReportsService {
         const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
         
         equipmentItems.forEach((item) => {
-          const group = item.group;
-        
+         
+          const group =item.group ? item.group :'no-group';
           if (!groupedByDepartment[group]) {
             groupedByDepartment[group] = [];
           }
@@ -991,8 +991,9 @@ export class ReportsService {
 
         
       results =  results_val[0];
+      results.pname=results.name;
 
-      console.log(results.departments[1].rooms[0]);
+   
     
     }
      else if (

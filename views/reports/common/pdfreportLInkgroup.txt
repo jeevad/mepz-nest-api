@@ -1,0 +1,38 @@
+By Group
+
+http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-by-group&reportFormat=pdfs
+
+
+
+http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-price-by-group&reportFormat=pdfs
+
+
+Equipment Location Listing, by Group
+
+
+1)http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing-by-group&reportFormat=pdfs
+
+2) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing-by-group&reportFormat=pdfs&pagewise=1
+
+Equipment Listing by Department, by Group
+
+3) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-by-group&&reportFormat=pdfs
+
+
+4) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-by-group&reportFormat=pdfs&pagewise=1
+
+5)http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&w_sign=1
+
+6) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-with-price-by-group&&reportFormat=pdfs
+
+
+
+Equipment Listing by Department and room, by Group
+
+7)http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&w_sign=1
+
+8)http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1
+
+
+
+9) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-price-by-group&reportFormat=pdfs&pagewise=1&w_sign=1
