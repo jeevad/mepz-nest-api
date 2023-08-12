@@ -14,12 +14,9 @@ import { PackageModule } from './master-file/package/package.module';
 import { ClassificationModule } from './master-file/classification/classification.module';
 import { CurrencyModule } from './master-file/currency/currency.module';
 import { EquipmentModule } from './master-file/equipment/equipment.module';
-import { ProjecttemplateModule } from './projecttemplate/projecttemplate.module';
 import { ProjectModule } from './project/project.module';
 import { AdmingroupModule } from './admingroup/admingroup.module';
-import { RegistermodelModule } from './registermodel/registermodel.module';
 import { EquipmentBrandModule } from './master-file/equipment-brand/equipment-brand.module';
-
 
 import { AuthModule } from './auth/auth.module';
 import { PastTransactionModule } from './project/past-transaction/past-transaction.module';
@@ -49,16 +46,14 @@ import { ReportsModule } from './reports/reports.module';
     CurrencyModule,
     EquipmentModule,
     ProjectModule,
-    ProjecttemplateModule,
     AdmingroupModule,
-    RegistermodelModule,
     EquipmentBrandModule,
     EquipmentAllocationModule,
     EquipmentSummaryModule,
     CurrentTransactionModule,
     PastTransactionModule,
-    ReportsModule
-   ],
+    ReportsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
