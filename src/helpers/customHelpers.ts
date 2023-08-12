@@ -27,7 +27,12 @@ function calculateSum(data, key) {
     return value != 'no-group' ? value : '';
    });
    Handlebars.registerHelper('multiply', function (a, b) {
-    return a * b;
+    if (typeof a !== 'undefined' && typeof b !== 'undefined') {
+      return a * b;
+    }
+    // Return a default value or handle the case where either a or b is undefined
+    // For example, you could return an error message or null.
+    return 0;
    });
    Handlebars.registerHelper('sumQuantities', function (items) {
      let sum = 0;
@@ -72,7 +77,11 @@ function calculateSum(data, key) {
     items.forEach((item) => {
       sum += item.quantity * item.cost;
     });
-    return sum;
+    if (!isNaN(sum)) {
+
+      return sum;
+    }
+    return 0;
   });
   
   Handlebars.registerHelper('isFirstIndex', function (index, options) {

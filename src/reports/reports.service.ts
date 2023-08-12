@@ -104,7 +104,13 @@ export class ReportsService {
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
-      </div>`,
+      </div>
+      <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{equipments.0.project_name}}</span></b></p>
+      <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDateVV}}</span></p>
+      <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>
+  
+      
+      `,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -145,6 +151,10 @@ export class ReportsService {
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{equipments.0.project_name}}</span></b></p>
+        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDate56}}</span></p>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>
+    
       </div>`,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
@@ -169,18 +179,25 @@ export class ReportsService {
     
 
     const data: any = results;
+    //let project_nam;
+    const project_nam = results.pname;
     if (results) {
       data.currentDate = await this.getCurrentDate();
       data.pagewise = filterReportDto.pagewise;
       data.w_sign = filterReportDto.w_sign;
+      console.log("vin");
+      console.log(results.pname);
+      
+      const project_nam = results.pname;
     }
-
+    const currentDateVal = await this.getCurrentDate();
+    
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
       margin: {
         left: '10mm',
-        top: '32mm',
+        top: '90mm',
         right: '10mm',
         bottom: '15mm',
       },
@@ -193,7 +210,19 @@ export class ReportsService {
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:0px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
-      </div>`,
+        
+      
+      <div class='container-fluid '>
+      <div class='row '>
+        <div class='col-x
+      <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam +`</span></b></p>
+      <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+currentDateVal +`</span></p>
+      <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>
+
+      <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam +`</span></b></p>
+      </div></div></div>
+      </div>
+      `,
       footerTemplate:
         '<div style="width: 100%; text-align: center; font-size: 10px; display: none;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>',
       landscape: true,
@@ -634,18 +663,21 @@ export class ReportsService {
       const equipments = await this.getAllEqp(filterReportDto);
 
       results = { equipments };
-
-      console.log(results);
+    
+      //results.pname = equipments.0.project_name;
+      results.pname = equipments[0].project_name;
+      console.log(equipments[0].project_name);
     } else if (
       filterReportDto.reportType === 'equipment-location-listing-by-pages'
     ) {
       const equipments = await this.getAllEqp(filterReportDto);
-      // results = await this.projectService.getAllEquipmentsByLocation(
-      //   filterReportDto,
-      // );
-      results = { equipments };
 
-      // results = { equipments: ['test', 'ere', 'dfdf'] };
+     
+      
+      results = { equipments };
+      results.pname = equipments[0].project_name;
+      //results.pname = equipments.0.project_name;
+
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
@@ -798,7 +830,7 @@ export class ReportsService {
       });
       results = { groupedByDepartment }
 
-      results.name = results_val_array.EquipmentItemlist[0].project_name;
+      results.pname = results_val_array.EquipmentItemlist[0].project_name;
       
       
       
@@ -847,7 +879,7 @@ export class ReportsService {
       groupedByDepartment[group].push(item);
         });
         results = { groupedByDepartment }
-        results.name = results_val_array.EquipmentItemlist[0].project_name;
+        results.pname = results_val_array.EquipmentItemlist[0].project_name;
     
     }
     else if (
@@ -916,7 +948,7 @@ export class ReportsService {
         console.log("fffffDDDDDDDDDDDDDD");
         //console.log(results);
         console.log(JSON.stringify(results));
-        results.name = results_val_array.EquipmentItemlist[0].project_name;
+        results.pname = results_val_array.EquipmentItemlist[0].project_name;
     
     } else if (
       filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group'
