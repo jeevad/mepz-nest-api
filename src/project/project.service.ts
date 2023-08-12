@@ -726,6 +726,8 @@ export class ProjectService {
               code: '$departments.rooms.equipments.code',
               name: '$departments.rooms.equipments.name',
               quantity: '$departments.rooms.equipments.quantity',
+              quantity2: '$departments.rooms.equipments.quantity',
+              quantity4: '$equipments.group',
               cost: '$departments.rooms.equipments.cost',
               group: '$departments.rooms.equipments.group',
               remarks: '$departments.rooms.equipments.remarks',

@@ -809,7 +809,8 @@ export class ReportsService {
         department_name: string;
       }
 	    const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
-      
+      console.log("helooH1");
+      console.log(results_val_array);
       
       const equipmentItems: EquipmentItemArray[] = results_val_array.EquipmentItemlist;
       const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
@@ -824,8 +825,14 @@ export class ReportsService {
         groupedByDepartment[group].push(item);
       });
       results = { groupedByDepartment }
-
+     if(results_val_array.EquipmentItemlist[0])
+     {
       results.pname = results_val_array.EquipmentItemlist[0].project_name;
+     }
+     else
+     {
+      results.pname ='';
+     }
       
       
       
@@ -956,7 +963,7 @@ export class ReportsService {
           filterReportDto,
         );
         console.log("vineesh45690000");
-        console.log(results_val[0]);
+        console.log(results_val[0].departments[0].rooms[0]);
 
         results_val[0].departments.forEach((item) => {
           item.rooms.forEach((itemeq) => {
