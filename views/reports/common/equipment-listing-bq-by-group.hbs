@@ -21,7 +21,10 @@
             style="margin-left:35px;">Date: {{currentDate}}</span></p>
         <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing Qty <span
               style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
-
+              {{#index_gt @index}}
+            <div class="page-break">
+              {{/index_gt}}
+			  {{#index_gt @index}} </div> {{/index_gt}}
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
             <tr>
@@ -35,13 +38,13 @@
           <tbody>
             {{#each groupedByDepartment as |EquipmentItemlist key1|}}
 
-            {{#index_gt @index}}
-            <div class="page-break">
-              {{/index_gt}}
+         
               {{#value_undefine @key1}}
-              {{key1}}
+                <tr>
+			   <td colspan="4"style="padding-top:6px;padding-bottom:6px;">{{key1}}</td>
+                        </tr>
               {{/value_undefine}}
-              {{#index_gt @index}} </div> {{/index_gt}}
+
 
             {{#each EquipmentItemlist}}
             <tr>

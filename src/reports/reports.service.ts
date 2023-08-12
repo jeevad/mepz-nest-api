@@ -893,7 +893,7 @@ export class ReportsService {
         );
         console.log("gggggggggtttt");
        console.log(results_val);
-        
+       console.log("gggggggggtttt5");
 
         interface EquipmentItemArray {
           _id: string;
@@ -950,7 +950,7 @@ export class ReportsService {
         console.log("fffffDDDDDDDDDDDDDD");
         //console.log(results);
         console.log(JSON.stringify(results));
-        results.pname = results_val_array.EquipmentItemlist[0].project_name;
+        results.pname = '';
     
     } else if (
       filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group'

@@ -605,12 +605,16 @@ export class ProjectService {
       { $unwind: '$departments' },
       { $unwind: '$departments.rooms' },
       { $unwind: '$departments.rooms.equipments' },
-      {
-        $match: {
-          'departments.rooms.equipments.group': {$in:[filterReportDto.group]},
-        },
-        },
+    
     ];
+    if(filterReportDto.group)
+      {
+       pipeline = [
+        ...pipeline, 
+        { '$match': { 'departments.rooms.equipments.group': { $in: filterReportDto.group } } },
+
+       ]
+      }
 
     pipeline = [
       ...pipeline,
@@ -631,8 +635,8 @@ export class ProjectService {
         },
       },
     ];
-
-    //console.log(pipeline);
+    console.log("test4");
+    console.log(pipeline);
 
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;
@@ -708,15 +712,23 @@ export class ProjectService {
           { $unwind: '$departments' },
           { $unwind: '$departments.rooms' },
           { $unwind: '$departments.rooms.equipments' },
-          {
-            $match: {
-              'departments.rooms.equipments.group': {$in:[filterReportDto.group]},
-            },
-          },
+          
     
         ];
         
-       
+      
+      if(filterReportDto.group)
+      {
+       pipeline = [
+        ...pipeline, 
+  
+        {
+          $match: {
+            'departments.rooms.equipments.group': {$in:filterReportDto.group},
+          },
+         }
+       ]
+      }
           
       pipeline = [
           ...pipeline,
@@ -727,9 +739,10 @@ export class ProjectService {
               name: '$departments.rooms.equipments.name',
               quantity: '$departments.rooms.equipments.quantity',
               quantity2: '$departments.rooms.equipments.quantity',
-              quantity4: '$equipments.group',
-              cost: '$departments.rooms.equipments.cost',
+              quantity4: '$departments.rooms.equipments.group',
               group: '$departments.rooms.equipments.group',
+              cost: '$departments.rooms.equipments.cost',
+              group4: '$departments.rooms.equipments.group',
               remarks: '$departments.rooms.equipments.remarks',
               project_code: '$code',
               project_name: '$name',
@@ -1051,7 +1064,7 @@ export class ProjectService {
 
       {
         $match: {
-          'departments.rooms.equipments.group': {$in:[filterReportDto.group]},
+          'departments.rooms.equipments.group': {$in:filterReportDto.group},
         },
        }
      ]
