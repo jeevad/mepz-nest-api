@@ -8,6 +8,17 @@ import { Type } from 'class-transformer';
 
 export type ProjectDocument = Project & Document;
 
+// Nested Schema
+@Schema()
+export class AccessLevel extends Document {
+  @Prop()
+  group: string;
+
+  @Prop()
+  crud: string[];
+}
+export const AccessLevelSchema = SchemaFactory.createForClass(AccessLevel);
+
 @Schema({
   timestamps: true,
 })
@@ -91,6 +102,10 @@ export class Project {
   @Prop({ type: [ProjectDepartmentSchema] })
   @Type(() => ProjectDepartment)
   departments: ProjectDepartment[];
+
+  @Prop({ type: [AccessLevelSchema] })
+  @Type(() => AccessLevel)
+  accessLevel: AccessLevel[];
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

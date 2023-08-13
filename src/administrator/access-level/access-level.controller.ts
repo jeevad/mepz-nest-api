@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AccessLevelService } from './access-level.service';
 import { CreateAccessLevelDto } from './dto/create-access-level.dto';
 import { UpdateAccessLevelDto } from './dto/update-access-level.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('access-level')
+@ApiTags('Access-level')
 export class AccessLevelController {
   constructor(private readonly accessLevelService: AccessLevelService) {}
 
@@ -23,7 +33,10 @@ export class AccessLevelController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccessLevelDto: UpdateAccessLevelDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateAccessLevelDto: UpdateAccessLevelDto,
+  ) {
     return this.accessLevelService.update(+id, updateAccessLevelDto);
   }
 

@@ -15,9 +15,6 @@ import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
 import MongooseClassSerializerInterceptor from '../utils/mongooseClassSerializer.interceptor';
 import { User } from 'src/schemas/user.schema';
-import { RegisterDto } from './dto/register.dto';
-import { UserEntity } from 'src/users/entities/user.entity';
-import { classToPlain } from 'class-transformer';
 
 @Controller('authentication')
 @UseInterceptors(MongooseClassSerializerInterceptor(User))

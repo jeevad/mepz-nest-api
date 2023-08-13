@@ -4,6 +4,6 @@ import { AccessLevelController } from './access-level.controller';
 
 @Module({
   controllers: [AccessLevelController],
-  providers: [AccessLevelService]
+  providers: [AccessLevelService],
 })
 export class AccessLevelModule {}
