@@ -9,6 +9,9 @@ export type AdmingroupDocument = Admingroup & Document;
 export class Admingroup {
   @Prop({ required: true })
   name: string;
+
+  @Prop()
+  formatAccess: string[];
 }
 
 export const AdmingroupSchema = SchemaFactory.createForClass(Admingroup);
