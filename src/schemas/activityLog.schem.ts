@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, ObjectId, now } from 'mongoose';
+import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Document, Mixed, ObjectId, now } from 'mongoose';
 import { Exclude, Transform, Type } from 'class-transformer';
 
 export type ActivityLogDocument = ActivityLog & Document;
@@ -16,26 +16,42 @@ export class ActivityLog {
   @Transform(({ value }) => value.toString())
   _id: ObjectId;
 
-  @Prop({ unique: true, required: true })
-  userName: string;
-
   @Prop({ required: true })
-  staffId: number;
+  url: string;
 
-  @Prop({ required: true })
-  admin: string;
+  // @Prop({ required: true })
+  // request: Mixed;
 
-  @Prop({ required: true })
-  active: boolean;
+  // @Prop({ required: true })
+  // response: {
+  //   messageType: string;
+  //   timestamp: number;
+  //   messagestatus: string;
+  // };
 
-  @Prop({ required: true })
-  valid: string;
+  @Prop(raw({}))
+  request: Record<string, any>;
 
-  @Prop({ required: true })
-  group: string;
+  @Prop(raw({}))
+  pageName: string;
 
-  @Prop({ required: true })
-  remarks: string;
+  @Prop(raw({}))
+  method: string;
+
+  @Prop(
+    raw({
+      _id: { type: String },
+      userName: { type: String },
+    }),
+  )
+  user: Record<string, any>;
+  // @Prop(
+  //   raw({
+  //     status: { type: String },
+  //     lastName: { type: String },
+  //   }),
+  // )
+  // response: Record<string, any>;
 }
 
 const ActivityLogSchema = SchemaFactory.createForClass(ActivityLog);

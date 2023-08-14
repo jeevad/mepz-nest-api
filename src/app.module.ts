@@ -26,6 +26,8 @@ import { AdmingroupModule } from './administrator/admingroup/admingroup.module';
 import { UsersModule } from './administrator/users/users.module';
 import { AccessLevelModule } from './administrator/access-level/access-level.module';
 import { ActivityLogsModule } from './administrator/activity-logs/activity-logs.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './utils/logging.ineterceptor';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -35,6 +37,7 @@ import { ActivityLogsModule } from './administrator/activity-logs/activity-logs.
       // useCreateIndex: true,
       autoIndex: true,
     }),
+    ActivityLogsModule,
     AuthModule,
     UsersModule,
     AuthenticationModule,
@@ -56,9 +59,11 @@ import { ActivityLogsModule } from './administrator/activity-logs/activity-logs.
     PastTransactionModule,
     ReportsModule,
     AccessLevelModule,
-    ActivityLogsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+  ],
 })
 export class AppModule {}
