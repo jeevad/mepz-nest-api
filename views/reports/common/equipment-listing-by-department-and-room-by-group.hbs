@@ -19,17 +19,14 @@
         {{!-- <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">{{name}}</span></b></p>
         <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: {{currentDate}}</span></p>
         <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Listing(BQ) By Department and Room <span style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
-
+        {{!-- {{json departments}} --}}
         {{#each departments}}
-      
+        {{#if ../../pagewise}} {{#index_gt @index}} <div class="page-break"> {{/index_gt}} {{/if}} 
+        {{#if ../../pagewise}} {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
         <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{code}}</span> <span style="margin-left:30px;">{{name}}</span></p>
         {{#each rooms as | key1|}}
-
-           
-          {{#if ../../pagewise}} {{#index_gt @index}}
-
-        <div class="page-break">
-          {{/index_gt}} {{/if}} {{#if ../../pagewise}} {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
+        {{#if ../../pagewise}} {{#index_gt @index}} <div class="page-break"> {{/index_gt}} {{/if}} 
+        {{#if ../../pagewise}} {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
 
         <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Rooms:</b> <span>{{code}}</span> <span style="margin-left:30px;">{{name}}</span></p>
       
@@ -48,13 +45,12 @@
             </tr>
           </thead>
           <tbody>
-            {{#each group as |item key3| }}
-            <tr>
-              <td colspan="8"style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key3}}
-             
-              {{/value_undefine}} </td></tr>
-            {{#each item }}
-            <tr>
+             {{#each group as |item key3| }}
+              {{!-- <tr>
+                <td colspan="8"style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key3}}{{/value_undefine}} </td>
+              </tr> --}}
+              {{#each item }}
+              <tr>
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
               <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
               <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
@@ -65,10 +61,10 @@
               <td style="padding-top:6px;padding-bottom:6px;"></td>
             </tr>
             {{/each}}
-            <tr>
-              <td style="padding-top:6px;padding-bottom:6px;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;">Total Equipments for Room {{../code}}</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{sum item "quantity"}}</td>
+            <tr style="border: 0;">
+              <td style="padding-top:6px;padding-bottom:6px;border:0;"></td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total Equipments for Room {{../code}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum item "quantity"}}</td>
             </tr>
             {{/each}}
           </tbody>

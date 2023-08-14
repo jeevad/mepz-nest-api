@@ -1,5 +1,4 @@
 <html lang='en'>
-
 <head>
   <meta charset='utf-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -12,26 +11,18 @@
     }
   </style>
 </head>
-
 <body>
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{!-- <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong></p> --}}
+        {{!-- <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong>
+        </p> --}}
         {{#each groupedByDepartment as |EquipmentItemlist key1|}}
-
-       
-          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{EquipmentItemlist.0.department_code}}</span> <span
-            style="margin-left:30px;">{{EquipmentItemlist.0.department_name}}</span></p>
-            {{#if ../pagewise}}  
-              
-        {{#index_gt @index}}
-      
-        <div class="page-break"> 
-          {{/index_gt}} {{/if}} 
-
-          {{#if ../pagewise}}   
-           {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
+        {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div>{{/index_gt}} {{/if}}
+        <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b><span>{{EquipmentItemlist.0.department_code}}</span> <span style="margin-left:30px;">{{EquipmentItemlist.0.department_name}}</span></p>
+        {{!-- {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div>{{/index_gt}} {{/if}} --}}
+        {{!-- {{#if ../pagewise}}
+        {{#index_gt @index}} </div> {{/index_gt}} {{/if}} --}}
 
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
@@ -44,12 +35,11 @@
             </tr>
           </thead>
           <tbody>
-                 <tr>
-              <td colspan="5" style="padxding-top:6px;padding-bottom:6p">  {{#value_undefine @key1}} {{/value_undefine}}</td>
-              
-            </tr>
+            {{!-- <tr>
+              <td colspan="5" style="padxding-top:6px;padding-bottom:6p"> {{#value_undefine @key1}} {{/value_undefine}}
+              </td>
+            </tr> --}}
             {{#each EquipmentItemlist }}
-
             <tr>
               <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
               <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
@@ -60,10 +50,16 @@
             {{/each}}
             <tr style="border: 0;">
               <td style="border: 0;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total Equipments for Department {{key1}} </td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum EquipmentItemlist "quantity" }} </td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{calculateSumOfTotal EquipmentItemlist }} </td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                {{!-- Total Equipments for Department {{key1}} --}}
+                Total Equipments for Department
+              </td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                {{sum EquipmentItemlist "quantity" }} </td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+              </td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                {{calculateSumOfTotal EquipmentItemlist }} </td>
             </tr>
           </tbody>
         </table>
@@ -72,5 +68,4 @@
     </div>
   </div>
 </body>
-
 </html>
