@@ -36,7 +36,10 @@
           </thead>
           <tbody>
             {{#each group as |item key3| }}
-            <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'> </p>
+             <tr>
+              <td colspan="8"style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key3}}
+             
+              {{/value_undefine}} </td></tr>
             {{#each item }}
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
@@ -51,9 +54,11 @@
               <td style="padding-top:6px;padding-bottom:6px;"></td>
             </tr>
             {{/each}}
+
+          
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;">Total Equipments for Room {{code}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;">Total Equipments for Room {{../code}}</td>
               <td style="padding-top:6px;padding-bottom:6px;">{{sum item "quantity" }} </td>
               <td style="padding-top:6px;padding-bottom:6px;"></td>
               <td style="padding-top:6px;padding-bottom:6px;"> {{calculateSumOfTotal item }} </td>

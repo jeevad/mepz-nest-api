@@ -21,10 +21,11 @@
             style="margin-left:35px;">Date: {{currentDate}}</span></p>
         <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing Qty <span
               style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
-              {{#index_gt @index}}
-            <div class="page-break">
-              {{/index_gt}}
-			  {{#index_gt @index}} </div> {{/index_gt}}
+   
+            {{#each groupedByDepartment as |EquipmentItemlist key1|}}
+          
+      
+        
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
             <tr>
@@ -32,18 +33,15 @@
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks1234</th>
             </tr>
           </thead>
           <tbody>
-            {{#each groupedByDepartment as |EquipmentItemlist key1|}}
-
-         
-              {{#value_undefine @key1}}
                 <tr>
-			   <td colspan="4"style="padding-top:6px;padding-bottom:6px;">{{key1}}</td>
+			   <td colspan="5"style="padding-top:6px;padding-bottom:6px;"> 
+          {{#value_undefine @key1}} {{/value_undefine}}</td>
                         </tr>
-              {{/value_undefine}}
+              
 
 
             {{#each EquipmentItemlist}}
@@ -65,10 +63,16 @@
                 {{/value_undefine}}</td>
               <td style="padding-top:6px;padding-bottom:6px;">{{sum EquipmentItemlist "quantity"}}</td>
             </tr>
+              {{#if ../pagewise}} {{#index_gt @index}}
+      
+        <div class="page-break">
+          {{/index_gt}} {{/if}} 
+          {{#if ../pagewise}}   
+           {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
             {{/each}}
           </tbody>
         </table>
-
+       
       </div>
     </div>
   </div>

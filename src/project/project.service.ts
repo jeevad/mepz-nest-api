@@ -1045,6 +1045,7 @@ export class ProjectService {
           name: 1,
           code: 1,
           departments: 1,
+          equipments: 1,
           //  EquipmentAllocation: 1,
         },
       },
@@ -1069,6 +1070,83 @@ export class ProjectService {
        }
      ]
     }
+    // pipeline = [
+    //   ...pipeline,
+
+    //   {
+    //     $group: {
+    //       _id: '$departments.rooms.equipments.equipmentId',
+    //       // locations: '$departments',
+    //       locations: { $addToSet: '$departments' },
+    //       equipment_code: { $first: '$departments.rooms.equipments.code' },
+    //       equipment_name: { $first: '$departments.rooms.equipments.name' },
+    //       department_code: { $first: '$departments.code' },
+    //       department_name: { $first: '$departments.name' },
+    //       room_code: { $first: '$departments.rooms.code' },
+    //       room_name: { $first: '$departments.rooms.name' },
+    //     },
+    //   },
+    // ];
+
+    pipeline = [
+      ...pipeline,
+      {
+        $project: {
+          _id: '$departments.rooms.equipments.equipmentId',
+          code: '$departments.rooms.equipments.code',
+          name: '$departments.rooms.equipments.name',
+          quantity: '$departments.rooms.equipments.quantity',
+          price: '$departments.rooms.equipments.cost',
+          group: '$departments.rooms.equipments.group',
+          remarks: '$departments.rooms.equipments.remarks',
+          project_code: '$code',
+          project_name: '$name',
+          room_code: '$departments.rooms.code',
+          room_name: '$departments.rooms.name',
+          department_code: '$departments.code',
+          department_name: '$departments.name',
+        },
+      },
+    ];
+
+    console.log(pipeline);
+
+    const results = await this.ProjectModel.aggregate(pipeline);
+   
+    return results;
+  }
+  //Get Equipments by projectID
+  async getAllEquipmentsByLocation_eqID(filterReportDto: FilterReportDto,eq_code) {
+    mongoose.set('debug', true);
+
+    let pipeline: any = [
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+          equipments: 1,
+          //  EquipmentAllocation: 1,
+        },
+      },
+      { $unwind: '$departments' },
+      { $unwind: '$departments.rooms' },
+      { $unwind: '$departments.rooms.equipments' },
+      { $match: {
+        'departments.rooms.equipments.code':  eq_code,
+      }},
+      //{ $unwind: '$equipmentAllocation' },
+      // { $unwind: '$departments.rooms.equipmentAllocation' },
+      //{ $unwind: '$rooms.equipmentAllocation' },
+    
+      // { $sort: { 'departments.rooms.equipments.name': -1 } },
+    ];
+   
     // pipeline = [
     //   ...pipeline,
 

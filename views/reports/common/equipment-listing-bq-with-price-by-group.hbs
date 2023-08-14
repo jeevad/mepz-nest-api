@@ -42,10 +42,12 @@
             {{#index_gt @index}}
             <div class="page-break">
               {{/index_gt}}
-              {{#value_undefine @key1}}
-              {{key1}}
-              {{/value_undefine}}
+             
               {{#index_gt @index}} </div> {{/index_gt}}
+               <tr>
+			   <td colspan="5"style="padding-top:6px;padding-bottom:6px;"> 
+          {{#value_undefine @key1}} {{/value_undefine}}</td>
+                        </tr
             {{#each EquipmentItemlist}}
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
@@ -61,9 +63,10 @@
               <td style="border: 0;"></td>
               <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total
                 {{#value_undefine @key1}}
-                {{key1}}
                 {{/value_undefine}}</td>
               <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItemlist }}</td>
             </tr>
             {{/each}}
           </tbody>
