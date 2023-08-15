@@ -1192,7 +1192,85 @@ export class ProjectService {
    
     return results;
   }
-  
+  async getAllEquipments_unique_dsply_by_revision(filterReportDto, rev1) {
+    mongoose.set('debug', true);
+    let projectId = [];
+    if (Array.isArray(filterReportDto.projectId)) {
+      projectId = filterReportDto.projectId.map((item) => {
+        return new mongoose.Types.ObjectId(item);
+      });
+    } else {
+      projectId = [new mongoose.Types.ObjectId(filterReportDto.projectId)];
+    }
+    let pipeline: any = [
+      {
+        $match: {
+          _id: { $in: projectId },
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+
+      // { $sort: { 'departments.rooms.equipments.name': -1 } },
+    ];
+
+    if (filterReportDto.departmentId) {
+      pipeline.push({
+        $match: {
+          'departments._id': new mongoose.Types.ObjectId(
+            filterReportDto.departmentId,
+          ),
+        },
+      });
+    }
+    pipeline = [...pipeline, { $unwind: '$departments.rooms' }];
+    if (filterReportDto.roomId) {
+      pipeline.push({
+        $match: {
+          'departments.rooms._id': new mongoose.Types.ObjectId(
+            filterReportDto.roomId,
+          ),
+        },
+      });
+    }
+    pipeline = [...pipeline, { $unwind: '$departments.rooms.equipments' }];
+
+    if (rev1) {
+      pipeline.push({
+        $match: {
+          'departments.rooms.equipments.revisionid': filterReportDto.rev1,
+        },
+      });
+    }
+
+    pipeline = [
+      ...pipeline,
+      {
+        $group: {
+          _id: '$departments.rooms.equipments.equipmentId',
+          code: { $first: '$departments.rooms.equipments.code' },
+          name: { $first: '$departments.rooms.equipments.name' },
+          cost: { $first: '$departments.rooms.equipments.cost' },
+          quantity: { $first: '$departments.rooms.equipments.quantity' },
+          room_code: { $first: '$departments.rooms.code' },
+          room_name: { $first: '$departments.rooms.name' },
+          project_name: { $first: '$name' },
+          
+        },
+      },
+    ];
+
+    const results = await this.ProjectModel.aggregate(pipeline);
+    return  results ;
+  }
+
+
   async getAllEquipments_unique_dsply(filterReportDto) {
     mongoose.set('debug', true);
     let projectId = [];
