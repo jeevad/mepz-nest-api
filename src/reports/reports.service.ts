@@ -880,6 +880,13 @@ export class ReportsService {
 
         groupedByDepartment[group].push(item);
       });
+   
+      if('no-group' in groupedByDepartment) {
+     const Nogroup = groupedByDepartment['no-group'];
+     delete groupedByDepartment['no-group'];
+     groupedByDepartment['no-group'] = Nogroup;
+    }
+      
       results = { groupedByDepartment }
       if (results_val_array.EquipmentItemlist[0]) {
         results.pname = results_val_array.EquipmentItemlist[0].project_name;
@@ -901,6 +908,8 @@ export class ReportsService {
         ); */
       const equipments = await this.getAllEqp_group(filterReportDto);
       console.log("equipmentsv7");
+
+      console.log(equipments);
       
         results = { equipments };
 
@@ -1022,7 +1031,11 @@ export class ReportsService {
           });
 
 
-
+          if('no-group' in departmentArray_new) {
+            const Nogroup = departmentArray_new['no-group'];
+            delete departmentArray_new['no-group'];
+            departmentArray_new['no-group'] = Nogroup;
+           }
 
 
           itemeq.group = departmentArray_new;

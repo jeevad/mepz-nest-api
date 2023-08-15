@@ -724,7 +724,7 @@ export class ProjectService {
   
         {
           $match: {
-            'departments.rooms.equipments.group': {$in:filterReportDto.group},
+            'departments.rooms.equipments.group': { $in:filterReportDto.group },
           },
          }
        ]
@@ -1065,9 +1065,9 @@ export class ProjectService {
 
       {
         $match: {
-          'departments.rooms.equipments.group': {$in:filterReportDto.group},
-        },
-       }
+          'departments.rooms.equipments.group': { $in:filterReportDto.group }
+        }
+       },
      ]
     }
     // pipeline = [

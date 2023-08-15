@@ -21,12 +21,6 @@ Equipment Listing by Department, by Group
 5) http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-with-price-by-group&&reportFormat=pdfs
 
 
-Equipment Location Listing, by Group
-
-
-6)http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-location-listing-by-group&reportFormat=pdfs
-
-7) http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-location-listing-by-group&reportFormat=pdfs&pagewise=1
 
 
 
