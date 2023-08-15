@@ -1,5 +1,4 @@
 <html lang='en'>
-
 <head>
   <meta charset='utf-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -12,59 +11,45 @@
     }
   </style>
 </head>
-
 <body>
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{!-- <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong></p> --}}
         {{#each groupedByDepartment as |EquipmentItemlist key1|}}
-
-        
-          {{!--json EquipmentItemlist--}}
-          {{!-- <p style='color: #000;font-size: 18px; margin-bottom: 15px; margin-top; 0px;'>Department : {{key1}} -
-            {{EquipmentItemlist.0.department_name}}</p> --}}
-            <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{EquipmentItemlist.0.department_code}}</span> <span
-            style="margin-left:30px;">{{EquipmentItemlist.0.department_name}}</span></p>
-             {{#if ../pagewise}}  
-              
-        {{#index_gt @index}}
-      
-        <div class="page-break"> 
-          {{/index_gt}} {{/if}} 
-
-          {{#if ../pagewise}}   
-           {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
+        <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b><span>{{EquipmentItemlist.0.department_code}}</span> <span style="margin-left:30px;">{{EquipmentItemlist.0.department_name}}</span></p>
+        {{#if ../pagewise}}
+        {{#index_gt @index}}<div class="page-break">{{/index_gt}} 
+        {{/if}}{{#if ../pagewise}}
+        {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
 
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
             <tr>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Quantity</th>
+              {{!-- <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th> --}}
             </tr>
           </thead>
           <tbody>
-               <tr>
-              <td colspan="5" style="padxding-top:6px;padding-bottom:6p">  {{#value_undefine @key1}} {{/value_undefine}}</td>
-              
-            </tr>
             {{#each EquipmentItemlist as |item4 key2|}}
-               
             <tr>
               <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
               <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
               <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
-              <td style="padding-top:6px;padding-bottom:6px">{{group}}</td>
-              <td style="padding-top:6px;padding-bottom:6px">{{remarks}}</td>
+              {{!-- <td style="padding-top:6px;padding-bottom:6px">{{group}}</td>
+              <td style="padding-top:6px;padding-bottom:6px">{{remarks}}</td> --}}
             </tr>
             {{/each}}
             <tr style="border: 0;">
               <td style="border: 0;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total Equipments for Department {{key1}} </td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum EquipmentItemlist "quantity" }} </td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                Total {{key1}} 
+              </td>
+              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                {{sum EquipmentItemlist "quantity" }} 
+              </td>
             </tr>
           </tbody>
         </table>
@@ -74,5 +59,4 @@
   </div>
   </div>
 </body>
-
 </html>

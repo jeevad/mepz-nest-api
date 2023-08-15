@@ -168,13 +168,7 @@ export class ReportsService {
     return createPdf(filePath, options, data);
   }
   async getEquipmentReports(filterReportDto: FilterReportDto) {
-    // return;
-
     const results = await this.getQueryData(filterReportDto);
-   
-   
-    
-
     const data: any = results;
     console.log("results : ", results);
     let project_nam;
@@ -188,6 +182,13 @@ export class ReportsService {
     } 
     else {
       project_nam = '';
+    }
+
+    let reportname;
+    if(results.reportname){
+      reportname = results.reportname;
+    } else {
+      reportname = '';
     }
 
     if (results) {
@@ -218,7 +219,7 @@ export class ReportsService {
         <div style="padding-left:35px;">
           <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam + `</span></b></p>
           <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+ currentDateVal + `</span></p>
-          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>Equipment Location Listing  <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>`+ reportname +` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
         </div>   
       </div>
       `,
@@ -726,6 +727,7 @@ export class ReportsService {
     
       
       results.pname = equipments[0].project_name;
+      results.reportname = 'Equipment Location Listing'
      
     } else if (
       filterReportDto.reportType === 'equipment-location-listing-by-pages'
@@ -736,6 +738,7 @@ export class ReportsService {
 
       results = { equipments };
       results.pname = equipments[0].project_name;
+      results.reportname = 'Equipment Location Listing'
       //results.pname = equipments.0.project_name;
 
     } else if (filterReportDto.reportType === 'equipment-listing-bq') {
@@ -747,6 +750,7 @@ export class ReportsService {
         filterReportDto,
       );
       results.EquipmentItemlist = results.results;
+      results.reportname = 'Equipment Listing (BQ)'
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq-with-price'
     ) {
@@ -755,6 +759,7 @@ export class ReportsService {
         filterReportDto,
       );
       results.EquipmentItemlist = results.results;
+      results.reportname = 'Equipment Listing (BQ)'
      
       
     } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
@@ -778,6 +783,7 @@ export class ReportsService {
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
       });
+      results.reportname = 'Equipment Listing By Department'
     } else if (
       filterReportDto.reportType ===
       'equipment-listing-by-department-with-price'
@@ -785,6 +791,7 @@ export class ReportsService {
       results = await this.projectService
         .findOne(filterReportDto.projectId)
         .lean();
+        results.reportname = 'Equipment Listing By Department'
     } else if (
       filterReportDto.reportType === 'equipment-listing-by-department-and-room'
     ) {
@@ -804,8 +811,7 @@ export class ReportsService {
           });
         }
       });
-
-      
+      results.reportname = 'Equipment Listing By Department and Room'
     } else if (
       filterReportDto.reportType ===
       ' equipment-listing-by-department-and-room-with-price'
@@ -823,7 +829,7 @@ export class ReportsService {
           });
         }
       });
-
+      results.reportname = 'Equipment Listing By Department and Room'
       
     }
     else if (
@@ -835,7 +841,7 @@ export class ReportsService {
           filterReportDto,
         );
       results = results_val[0];
-    
+      results.reportname = 'Equipment Listing By Department and Room Disabled'
     } else if (
       filterReportDto.reportType ===
       'equipment-listing-by-department-and-room-disabled-price'
@@ -844,7 +850,9 @@ export class ReportsService {
         await this.projectService.getAllDisabledEquipmentsbyroomdepart(
           filterReportDto,
         );
-      const results = results_val;
+      // const results = results_val;
+      results = results_val;
+      results.reportname = 'Equipment Listing By Department and Room Disabled'
       console.log('Test');
       console.log(results);
     } 
@@ -888,6 +896,7 @@ export class ReportsService {
     }
       
       results = { groupedByDepartment }
+      results.reportname = 'Equipment Listing BQ'
       if (results_val_array.EquipmentItemlist[0]) {
         results.pname = results_val_array.EquipmentItemlist[0].project_name;
       }
@@ -947,7 +956,7 @@ export class ReportsService {
         results = { groupedByDepartment }
         
         results.pname = results_val_array.EquipmentItemlist[0].project_name?results_val_array.EquipmentItemlist[0].project_name:'';
-        
+        results.reportname = 'Equipment Location Listing BQ'
     
     }
     else if (
@@ -1002,6 +1011,7 @@ export class ReportsService {
         //console.log(results);
         console.log(JSON.stringify(results));
         results.pname = results_val_array.EquipmentItemlist[0].project_name;
+        results.reportname = 'Equipment Listing by Department'
     
     } else if (
       filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group'
@@ -1052,6 +1062,7 @@ export class ReportsService {
 
       results = results_val[0];
       results.pname = results.name;
+      results.reportname = 'Equipment Listing by Department'
 
 
 
@@ -1069,6 +1080,7 @@ export class ReportsService {
       results.medical_logo = filterReportDto.medical_logo;
       results.medical_logo2 = filterReportDto.medical_logo2;
       results.medical_logo3 = filterReportDto.medical_logo3;
+      results.reportname = 'Equipment Listing BQ';
     } else if (
       filterReportDto.reportType ===
       'equipment-listing-by-department-and-room-with-utility'
@@ -1086,7 +1098,7 @@ export class ReportsService {
       results.medical_logo = filterReportDto.medical_logo;
       results.medical_logo2 = filterReportDto.medical_logo2;
       results.medical_logo3 = filterReportDto.medical_logo3;
-
+      results.reportname = 'Equipment Listing BQ'
       
       
     } else {
@@ -1094,7 +1106,7 @@ export class ReportsService {
         .findOne(filterReportDto.projectId)
         .lean();
 
-      
+        results.reportname = 'Equipment Listing BQ'
     }
   
     return results;

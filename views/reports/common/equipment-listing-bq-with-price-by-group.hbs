@@ -23,7 +23,7 @@
             style="margin-left:35px;">Date: {{currentDate}}</span></p>
         <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing Qty <span
               style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
-
+        {{#each groupedByDepartment as |EquipmentItemlist key1|}}
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
             <tr>
@@ -37,17 +37,15 @@
             </tr>
           </thead>
           <tbody>
-            {{#each groupedByDepartment as |EquipmentItemlist key1|}}
+            
 
-            {{#index_gt @index}}
-            <div class="page-break">
-              {{/index_gt}}
-             
-              {{#index_gt @index}} </div> {{/index_gt}}
-               <tr>
-			   <td colspan="5"style="padding-top:6px;padding-bottom:6px;"> 
-          {{#value_undefine @key1}} {{/value_undefine}}</td>
-                        </tr
+            {{!-- {{#index_gt @index}}<div class="page-break">{{/index_gt}}
+            {{#index_gt @index}} </div> {{/index_gt}} --}}
+            {{#index_gt @index}}<div class="page-break"></div> {{/index_gt}}
+            {{!-- <tr>
+              <td colspan="5" style="padding-top:6px;padding-bottom:6px;">
+                {{#value_undefine @key1}} {{/value_undefine}}</td>
+            </tr> --}}
             {{#each EquipmentItemlist}}
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
@@ -61,16 +59,20 @@
             {{/each}}
             <tr style="border: 0;">
               <td style="border: 0;"></td>
-              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
+                Total
                 {{#value_undefine @key1}}
                 {{/value_undefine}}</td>
-              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
-              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
-              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItemlist }}</td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
+                {{sum EquipmentItemlist "quantity"}}</td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
+              </td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
+                {{calculateSumOfTotal EquipmentItemlist }}</td>
             </tr>
-            {{/each}}
           </tbody>
         </table>
+        {{/each}}
       </div>
     </div>
   </div>
