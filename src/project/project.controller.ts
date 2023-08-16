@@ -49,6 +49,12 @@ export class ProjectController {
     return this.projectService.findAll(paginationParams, projectType);
   }
 
+  @Patch('updateAccessLevel')
+  @ApiOperation({ summary: 'update AccessLevel' })
+  updateAccessLevel(@Body() payload: any) {
+    return this.projectService.updateAccessLevel(payload);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Update Projects' })
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {

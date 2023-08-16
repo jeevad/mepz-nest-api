@@ -37,7 +37,7 @@ export class ActivityLogsService {
 
     const findQuery = this.activityLogModel
       .find(filters)
-      .sort({ _id: 1 })
+      .sort({ _id: -1 })
       .skip(paginationParams.skip);
 
     if (paginationParams.limit) {
