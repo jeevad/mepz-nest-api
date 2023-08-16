@@ -134,6 +134,10 @@ export class ProjectService {
         arrFilter[0] = {
           'i._id': updateProjectFieldDto.departmentId,
         };
+        this.logModel.logAction(
+          `Updated department in project ID ${projectId}`,
+          updateProjectFieldDto,
+        );
         break;
       case 'room':
         match = {
@@ -148,6 +152,10 @@ export class ProjectService {
           // { 'i._id': updateProjectFieldDto.departmentId },
           { 'j._id': updateProjectFieldDto.roomId },
         ];
+        this.logModel.logAction(
+          `Updated room in project ID ${projectId}`,
+          updateProjectFieldDto,
+        );
         break;
       case 'equipment':
         update = {
@@ -158,6 +166,10 @@ export class ProjectService {
           { 'i._id': updateProjectFieldDto.departmentId },
           { 'j._id': updateProjectFieldDto.roomId },
         ];
+        this.logModel.logAction(
+          `Updated equipment in project ID ${projectId}`,
+          updateProjectFieldDto,
+        );
         break;
     }
     // console.log('update', update);
@@ -1545,6 +1557,10 @@ export class ProjectService {
     departmentId: string,
     addProjectDepartmentRoomDto: AddProjectDepartmentRoomDto,
   ): Promise<any> {
+    this.logModel.logAction(
+      `Added room to project ID ${projectId}`,
+      addProjectDepartmentRoomDto,
+    );
     return this.ProjectModel.updateOne(
       { _id: projectId, 'departments._id': departmentId },
       { $push: { 'departments.$.rooms': addProjectDepartmentRoomDto } },
@@ -1557,6 +1573,10 @@ export class ProjectService {
     roomId: string,
     addProjectRoomEquipmentDto: AddProjectRoomEquipmentDto,
   ): Promise<any> {
+    this.logModel.logAction(
+      `Added equipment to project ID ${projectId}`,
+      addProjectRoomEquipmentDto,
+    );
     return this.ProjectModel.updateOne(
       {
         _id: projectId,
