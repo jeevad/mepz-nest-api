@@ -3,7 +3,7 @@ Hanimeds :-
 Completed Reports pdf:-
 ----------------------------------------------------------------------
 Equipment location listing:-
-1. Pdf - completed - missing total equipment 
+1. Pdf - completed
    http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing&reportFormat=pdf
 2. Pdf 1 Page - completed - missing total equipment
    http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing-by-pages&reportFormat=pdf
@@ -21,6 +21,16 @@ Room listing:-
    http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=room-listing&reportFormat=pdf
 2. Pdf by floor - not completed -  there is no report
 3. Excel - pending
+
+Equipment listing by department
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department&reportFormat=pdfs
+2. Pdf 1 page with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-with-price&reportFormat=pdfs&pagewise=1
+3. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department&reportFormat=pdfs&pagewise=1
+4. Excel - pending
+5. Excel with price - pending
 
 By group:-
 --------------------------------------------
@@ -66,30 +76,31 @@ Equipment Listing by Department and Room, by Group
 
 Pending
 ----------------------------------------------------------------------
-Equipment listing (BQ):-
-1. Pdf - not completed - group and remarks columns added statically - project name is empty -  missing total equipment
-2. Pdf with price - not completed - group and remarks columns added statically - project name is empty - missing total equipment
+Equipment listing (BQ):- -------------- Not completed
+1. Pdf - not completed - group and remarks columns added statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq&reportFormat=pdf
+2. Pdf with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-bq-with-price&format=pdf
 3. Excel - pending
 4. Excel with price - pending
 
 Disabled euipment listing (BQ):-
 1. Pdf - not completed - error
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=disabled-equipment-listing-bq&reportFormat=pdf
 2. Pdf with price - not completed - error
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=disabled-equipment-listing-bq-with-price&reportFormat=pdf
 3. Excel - pending
 4. Excel with price - pending
 
-Equipment listing by department
-1. Pdf - completed - missing total equipment
-2. Pdf 1 page with price - not completed - error
-3. Pdf 1 page - completed - missing total equipment
-4. Excel - pending
-5. Excel with price - pending
-
-Equipment listing by department and room
-1. Pdf - not completed - group, remarks, yn, client remarks and total equipment for room - columns missing - check on the live site - missing total equipment
-2. Pdf 1 page - not completed - group, remarks, yn, client remarks and total equipment for room - columns missing - multiple room in single page - missing total equipment
-3. Pdf 1 page (w/sign) - not completed - group, remarks, yn, client remarks and total equipment for room - columns missing - multiple room in single page
-4. Pdf 1 page with price - not completed - group, remarks, yn, client remarks and total equipment for room - columns statically
+Equipment listing by department and room :- ----------------- Not completed
+1. Pdf - not completed - group, remarks, yn, client remarks - columns missing
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs
+2. Pdf 1 page - not completed - group, remarks, yn, client remarks - columns missing
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs&pagewise=1
+3. Pdf 1 page (w/sign) - not completed - group, remarks, yn, client remarks - columns missing 
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room&reportFormat=pdf&pagewise=1&w_sign=1
+4. Pdf 1 page with price - not completed - group, remarks, yn, client remarks - columns statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-with-price&reportFormat=pdfs&pagewise=1
 5. Excel - pending
 6. Excel with price - pending
 

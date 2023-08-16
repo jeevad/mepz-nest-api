@@ -36,6 +36,8 @@
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +47,8 @@
               <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
               <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
               <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
+              <td style="padding-top:6px;padding-bottom:6px;"></td>
+              <td style="padding-top:6px;padding-bottom:6px;"></td>
             </tr>
             {{/each}}
             <tr style="border: 0;">
@@ -55,7 +59,7 @@
             {{!-- {{#each rooms}}{{/each}} --}}
           </tbody>
         </table>
-
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQ EquipmentItemlist }}</b></p>
       </div>
     </div>
   </div>

@@ -146,6 +146,96 @@ Handlebars.registerHelper('total_price_difernce', function (items) {
   return 0;
 });
 
+Handlebars.registerHelper('calculateSumOfTotalEquipmentLocationListing', function (items) {
+  let sum = 0;
+  items.forEach((equipments) => {
+    equipments.locations.forEach((item) => {
+      if(item.quantity){
+        sum += item.quantity;
+      }
+    });
+  });
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+});
+
+Handlebars.registerHelper('calculateSumOfTotalEquipmentListingBQ', function (items) {
+  let sum = 0;
+  items.forEach((item) => {
+    if(item.quantity){
+      sum += item.quantity;
+    }
+  });
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+});
+
+Handlebars.registerHelper('calculateSumOfTotalEquipmentListingDept', function (items) {
+  let sum = 0;
+  items.forEach((rooms) => {
+    rooms.rooms.forEach((equipments) => {
+      equipments.equipments.forEach((item) => {
+        if(item.quantity){
+          sum += item.quantity;
+        }
+      });
+    });
+  });
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+});
+
+Handlebars.registerHelper('calculateSumOfTotalPriceEquipmentListingDept', function (items) {
+  let totalPrice = 0;
+  items.forEach((rooms) => {
+    rooms.rooms.forEach((equipments) => {
+      equipments.equipments.forEach((item) => {
+        if(item.cost){
+          totalPrice += item.cost;
+        }
+      });
+    });
+  });
+  if (!isNaN(totalPrice)) {
+    return totalPrice;
+  }
+  return 0;
+});
+
+Handlebars.registerHelper('calculateSumOfQty', function (items) {
+  let sum = 0;
+  items.forEach((item) => {
+    if(item.quantity){
+      sum += item.quantity;
+    }
+  });
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+});
+
+Handlebars.registerHelper('calculateSumOfTotalEquipmentListingbyFloor', function (items) {
+  let sum = 0;
+  items.forEach((item) => {
+    item.equipments.forEach((equipment)=>{
+      if(equipment.quantity){
+        sum += equipment.quantity;
+      }
+    })
+  });
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+});
+
 Handlebars.registerHelper('isFirstIndex', function (index, options) {
   return index === 0 ? options.fn(this) : options.inverse(this);
 });
