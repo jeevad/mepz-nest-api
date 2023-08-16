@@ -1,3 +1,21 @@
 http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf
 
 http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-price-with-revisions-variations&reportFormat=pdf
+
+
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-room-to-room-variation&reportFormat=pdfs
+
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-room-to-room-variation-with-price&reportFormat=pdfs
+
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group-revision&reportFormat=pdfs
+
+
+
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-with-price-by-group-revision&reportFormat=pdfs
+
+
+
+
+
+
+

@@ -693,7 +693,7 @@ export class ProjectService {
   }
 
        //Get Equipments by group
-       async getAllEquipmentsbygroup(filterReportDto: FilterReportDto) {
+       async getAllEquipmentsbygroup(filterReportDto: FilterReportDto, rev_id) {
         mongoose.set('debug', true);
        console.log(filterReportDto.group);
         let pipeline: any = [
@@ -915,7 +915,61 @@ export class ProjectService {
     
         
       }
-
+      async getAllDEquipmentsbyvariations(filterReportDto: FilterReportDto,rev_id) {
+        mongoose.set('debug', true);
+    
+        let pipeline: any = [
+          {
+            $match: {
+              _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+            },
+          },
+          {
+            $addFields: {
+              departments: {
+                $map: {
+                  input: '$departments',
+                  as: 'departments',
+                  in: {
+                    $mergeObjects: [
+                      '$$departments',
+                      {
+                        rooms: {
+                          $map: {
+                            input: '$$departments.rooms',
+                            as: 'rooms',
+                            in: {
+                              $mergeObjects: [
+                                '$$rooms',
+                                {
+                                  /*
+                                  equipments: {
+                                    $filter: {
+                                      input: '$$rooms.equipments',
+                                      as: 'equipments',
+                                      cond: {
+                                        $eq: ['$$equipments.revisionid', rev_id],
+                                      },
+                                    },
+                                  },
+                                  */
+                                },
+                              ],
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        ];
+        const results = await this.ProjectModel.aggregate(pipeline);
+    
+        return results;
+      }
   async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
