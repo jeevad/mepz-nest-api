@@ -51,8 +51,8 @@ export class ProjectController {
 
   @Patch('updateAccessLevel')
   @ApiOperation({ summary: 'update AccessLevel' })
-  updateAccessLevel(@Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.updateAccessLevel(updateProjectDto);
+  updateAccessLevel(@Body() payload: any) {
+    return this.projectService.updateAccessLevel(payload);
   }
 
   @Patch(':id')

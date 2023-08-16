@@ -27,6 +27,11 @@ export class AccessLevel extends Document {
 export const AccessLevelSchema = SchemaFactory.createForClass(AccessLevel);
 
 @Schema({
+  autoIndex: true,
+  toJSON: {
+    getters: true,
+    virtuals: true,
+  },
   timestamps: true,
 })
 export class Project {

@@ -63,14 +63,19 @@ export class ProjectService {
   }
 
   async updateAccessLevel(payload: any): Promise<any> {
-    payload.projects.forEach((project) => {
+    // mongoose.set('debug', true);
+
+    payload.projects.forEach(async (project) => {
       const accessLevel = {
         group: project.group,
         crud: project,
       };
-      this.ProjectModel.findByIdAndUpdate(project.id, payload);
+      const result = await this.ProjectModel.findByIdAndUpdate(project.id, {
+        accessLevel,
+      });
+      // console.log('result', result);
     });
-    return 'Updated';
+    return { message: `${payload.projects.length} project updated` };
   }
 
   async remove(id: string) {
