@@ -18,7 +18,7 @@ import { LoggingInterceptor } from 'src/utils/logging.ineterceptor';
   controllers: [ActivityLogsController],
   providers: [
     ActivityLogsService,
-    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    // { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
   ],
   exports: [ActivityLogsService],
 })

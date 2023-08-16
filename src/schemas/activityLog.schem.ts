@@ -16,8 +16,11 @@ export class ActivityLog {
   @Transform(({ value }) => value.toString())
   _id: ObjectId;
 
-  @Prop({ required: true })
+  @Prop()
   url: string;
+
+  @Prop()
+  action: string;
 
   // @Prop({ required: true })
   // request: Mixed;
@@ -30,7 +33,7 @@ export class ActivityLog {
   // };
 
   @Prop(raw({}))
-  request: Record<string, any>;
+  requestData: Record<string, any>;
 
   @Prop(raw({}))
   pageName: string;

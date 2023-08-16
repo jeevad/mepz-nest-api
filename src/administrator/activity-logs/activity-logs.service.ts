@@ -8,18 +8,27 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { PaginationParams } from 'src/utils/paginationParams';
+import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export class ActivityLogsService {
   constructor(
     @InjectModel(ActivityLog.name)
     private readonly activityLogModel: Model<ActivityLogDocument>,
+    private readonly cls: ClsService,
   ) {}
-  create(createActivityLogDto: CreateActivityLogDto) {
+  create(createActivityLogDto: any) {
     const activityLog = new this.activityLogModel(createActivityLogDto);
     return activityLog.save();
   }
 
+  logAction(action: string, requestData: any = '') {
+    const user = this.cls.get('user');
+    const log = { action, user, requestData };
+    console.log('log', log);
+
+    this.create(log);
+  }
   async findAll(paginationParams: PaginationParams) {
     const filters: FilterQuery<ActivityLogDocument> = paginationParams.startId
       ? {

@@ -29,9 +29,9 @@ export class AuthService {
       const payload = { userName: user.userName, id: user._id };
 
       const logInfo: any = {
-        url: 'auth/login',
-        method: 'post',
-        pageName: 'logged in',
+        // url: 'auth/login',
+        // method: 'post',
+        action: 'Logged in',
         user,
         // request,
       };

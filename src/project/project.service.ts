@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Req, Scope } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from 'src/schemas/project.schema';
@@ -11,22 +11,36 @@ import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
 import { PaginationParams } from 'src/utils/paginationParams';
 import { FilterEquipmentDto } from './dto/filter-equipment.dto';
 import { FilterReportDto } from 'src/reports/dto/filter-report.dto';
+import { ActivityLogsService } from 'src/administrator/activity-logs/activity-logs.service';
+import { ClsService } from 'nestjs-cls';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class ProjectService {
   ProjectDepartmentModel: any;
+  user: any;
   constructor(
     @InjectModel(Project.name)
     private readonly ProjectModel: Model<ProjectDocument>,
+    private logModel: ActivityLogsService, // @Inject('CurrentContext') private context: CurrentContext
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<ProjectDocument> {
+    // const logInfo: any = {
+    //   url: 'auth/login',
+    //   method: 'post',
+    //   pageName: 'logged in',
+    //   user: this.user,
+    //   // request,
+    // };
+    // console.log('log', logInfo);
+    this.logModel.logAction(`Created project`, createProjectDto);
+    // this.logModel.create(logInfo);
     const Project = new this.ProjectModel(createProjectDto);
     return Project.save();
   }
 
   async findAll(paginationParams: PaginationParams, projectType) {
-    mongoose.set('debug', true);
+    // mongoose.set('debug', true);
     const filters: FilterQuery<ProjectDocument> = paginationParams.startId
       ? { _id: { $gt: paginationParams.startId } }
       : {};
@@ -47,6 +61,8 @@ export class ProjectService {
     const results = await findQuery;
     const count = await this.ProjectModel.count(filters);
 
+    this.logModel.logAction('Viewed project list page');
+
     return { results, count };
   }
 
@@ -59,6 +75,7 @@ export class ProjectService {
     id: string,
     updateProjectDto: UpdateProjectDto,
   ): Promise<ProjectDocument> {
+    this.logModel.logAction(`Updated project ID ${id}`, updateProjectDto);
     return this.ProjectModel.findByIdAndUpdate(id, updateProjectDto);
   }
 
@@ -87,6 +104,10 @@ export class ProjectService {
     addProjectDepartmentDtos: AddProjectDepartmentDto[], // [] added
   ): Promise<any> {
     // return this.ProjectModel.findOneAndUpdate(  // Old
+    this.logModel.logAction(
+      `Added department to project ID ${projectId}`,
+      addProjectDepartmentDtos,
+    );
     return this.ProjectModel.findOneAndUpdate(
       // Line Changes
       { _id: projectId },
