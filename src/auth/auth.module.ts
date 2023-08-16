@@ -6,10 +6,12 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from 'src/administrator/users/users.module';
+import { ActivityLogsModule } from 'src/administrator/activity-logs/activity-logs.module';
 
 @Module({
   imports: [
     UsersModule,
+    ActivityLogsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,10 +26,10 @@ import { UsersModule } from 'src/administrator/users/users.module';
   ],
   providers: [
     AuthService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
   controllers: [AuthController],
   exports: [AuthService],

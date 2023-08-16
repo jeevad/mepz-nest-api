@@ -20,5 +20,6 @@ import { LoggingInterceptor } from 'src/utils/logging.ineterceptor';
     ActivityLogsService,
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
   ],
+  exports: [ActivityLogsService],
 })
 export class ActivityLogsModule {}

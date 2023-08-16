@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { ActivityLogsService } from 'src/administrator/activity-logs/activity-logs.service';
 import { UserEntity } from 'src/administrator/users/entities/user.entity';
 import { UsersService } from 'src/administrator/users/users.service';
 // import mongoose from 'mongoose';
@@ -15,8 +16,9 @@ import { UsersService } from 'src/administrator/users/users.service';
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private logModel: ActivityLogsService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async signIn(userName: string, plainTextPassword: string) {
     // mongoose.set('debug', true);
@@ -25,6 +27,15 @@ export class AuthService {
 
       await this.verifyPassword(plainTextPassword, user.password);
       const payload = { userName: user.userName, id: user._id };
+
+      const logInfo: any = {
+        url: 'auth/login',
+        method: 'post',
+        pageName: 'logged in',
+        user,
+        // request,
+      };
+      this.logModel.create(logInfo);
 
       return {
         user: new UserEntity(user.toJSON()),

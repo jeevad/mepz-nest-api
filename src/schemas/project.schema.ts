@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import {
   ProjectDepartment,
@@ -14,8 +14,15 @@ export class AccessLevel extends Document {
   @Prop()
   group: string;
 
-  @Prop()
-  crud: string[];
+  @Prop(
+    raw({
+      view: { type: Boolean },
+      edit: { type: Boolean },
+      add: { type: Boolean },
+      delete: { type: Boolean },
+    }),
+  )
+  crud: Record<string, any>;
 }
 export const AccessLevelSchema = SchemaFactory.createForClass(AccessLevel);
 
