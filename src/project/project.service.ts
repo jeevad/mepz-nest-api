@@ -67,7 +67,7 @@ export class ProjectService {
   }
 
   findOne(id: string) {
-    mongoose.set('debug', true);
+    // mongoose.set('debug', true);
     return this.ProjectModel.findById(id);
   }
 
@@ -80,17 +80,44 @@ export class ProjectService {
   }
 
   async updateAccessLevel(payload: any): Promise<any> {
-    // mongoose.set('debug', true);
+    mongoose.set('debug', true);
 
     payload.projects.forEach(async (project) => {
-      const accessLevel = {
-        group: project.group,
-        crud: project,
-      };
-      const result = await this.ProjectModel.findByIdAndUpdate(project.id, {
-        accessLevel,
-      });
-      // console.log('result', result);
+      const oldProject = await this.findOne(project.id);
+      const groupExists = oldProject.accessLevel.find(
+        (item) => item.group === project.group,
+      );
+      // console.log('groupExists', groupExists);
+
+      if (groupExists) {
+        const result = await this.ProjectModel.updateOne(
+          {
+            _id: new mongoose.Types.ObjectId(project.id),
+          },
+          { $set: { 'accessLevel.$[i].crud': project } },
+          {
+            arrayFilters: [
+              {
+                'i.group': project.group,
+              },
+            ],
+          },
+        );
+      } else {
+        const accessLevel = {
+          group: project.group,
+          crud: project,
+        };
+
+        const result = await this.ProjectModel.updateOne(
+          { _id: new mongoose.Types.ObjectId(project.id) },
+          {
+            $push: {
+              accessLevel: accessLevel,
+            },
+          },
+        );
+      }
     });
     return { message: `${payload.projects.length} project updated` };
   }
