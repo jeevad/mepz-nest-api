@@ -24,7 +24,7 @@ export class ReportsService {
   workbook: Excel.Workbook;
   worksheet: Excel.Worksheet;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService) {}
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
@@ -128,10 +128,9 @@ export class ReportsService {
       filterEquipmentDto,
       paginationParams,
     );
-    
 
     const data = results.results[0];
-   
+
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
@@ -171,22 +170,19 @@ export class ReportsService {
     const results = await this.getQueryData(filterReportDto);
     const data: any = results;
     console.log("results : ", results);
-    console.log("results name: ", results.name);
     let project_nam;
     if (results.pname) {
       project_nam = results.pname;
     } else if (results.name) {
       project_nam = results.name;
-    }
-    else if (results.results[0].name) {
+    } else if (results.results[0].name) {
       project_nam = results.results[0].name;
-    } 
-    else {
+    } else {
       project_nam = '';
     }
 
     let reportname;
-    if(results.reportname){
+    if (results.reportname) {
       reportname = results.reportname;
     } else {
       reportname = '';
@@ -208,7 +204,8 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `
+      headerTemplate:
+        `
       <div style="width: 96%; display: flex; flex-direction: column;">
         <div style="font-size: 10px; text-align: right; color: #1cabb1;">
           <i>Page <span class="pageNumber"></span> of <span class="totalPages"></span></i> 
@@ -218,9 +215,15 @@ export class ReportsService {
           <p style="font-size: 10px; margin-bottom:15px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
         <div style="padding-left:35px;">
-          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam + `</span></b></p>
-          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+ currentDateVal + `</span></p>
-          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>`+ reportname +` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">` +
+        project_nam +
+        `</span></b></p>
+          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: ` +
+        currentDateVal +
+        `</span></p>
+          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>` +
+        reportname +
+        ` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
         </div>   
       </div>
       `,
@@ -233,7 +236,6 @@ export class ReportsService {
       'views/reports/common',
       `${filterReportDto.reportType}.hbs`,
     );
-    
 
     return createPdf(filePath, options, data);
   }
@@ -261,18 +263,17 @@ export class ReportsService {
           if (eqps[element._id] === undefined) {
             //eqps[element._id] = [];
           }
-         
+
           eqps.push(element);
         }
       }
     }
-    
+
     const lists = [];
     //for (const element1 in eqps) {
 
     const items = eqps;
 
-    
     const inputArray: EquipmentItem[] = eqps;
     //const uniqueItems: { [id: string]  } = {};
 
@@ -284,31 +285,28 @@ export class ReportsService {
         uniqueItems[item.code] = { ...item, total: 1 };
       }
     });
-    
+
     return Object.values(uniqueItems);
   }
   async getAllEqp_group(filterReportDto) {
-
-    console.log("equipmentsv9");
+    console.log('equipmentsv9');
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
     );
 
     const eqps = [];
     for (const element of results) {
-
       if (eqps[element._id] === undefined) {
         eqps[element._id] = [];
       }
       eqps[element._id].push(element);
     }
-   
 
     const lists = [];
     for (const element1 in eqps) {
-      console.log("testv8");
-     // console.log(element1.code);
-      
+      console.log('testv8');
+      // console.log(element1.code);
+
       const total = 0;
       const room_info = [];
       const rooms = [];
@@ -330,7 +328,6 @@ export class ReportsService {
       };
 
       const inputArray: EquipmentItem[] = eqps[element1];
-      
 
       const uniqueItems: { [id: string]: EquipmentItem } = {};
       items.forEach((item) => {
@@ -341,9 +338,9 @@ export class ReportsService {
           uniqueItems[item.room_code] = { ...item, total: 1 };
         }
       });
-     // console.log("ffffffvin");
-       //console.log(uniqueItems);
-      
+      // console.log("ffffffvin");
+      //console.log(uniqueItems);
+
       lists.push({
         project_name: eqps[element1][0].project_name,
         project_code: eqps[element1][0].project_code,
@@ -364,8 +361,7 @@ export class ReportsService {
     return lists;
   }
   async getAllEqp(filterReportDto) {
-
-    console.log("equipmentsv9");
+    console.log('equipmentsv9');
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
     );
@@ -373,11 +369,10 @@ export class ReportsService {
     //console.log('resultsv4', results);
     const eqps = [];
     for (const element of results) {
-
       if (eqps[element._id] === undefined) {
         eqps[element._id] = [];
       }
-      console.log("equipmentsv23",element);
+      console.log('equipmentsv23', element);
 
       const results2 = await this.projectService.getProjectEquipmentsbyroom(
         filterReportDto.projectId,
@@ -386,20 +381,13 @@ export class ReportsService {
       );
       element.qty1 = Object.values(results2).length;
 
-      
-     
-      
       element.totalequ = results2.results[0].metadata[0].total;
-     
-      eqps[element._id].push(element);
 
-     
+      eqps[element._id].push(element);
     }
-   
 
     const lists = [];
     for (const element1 in eqps) {
-
       const total = 0;
       const room_info = [];
       const rooms = [];
@@ -422,7 +410,6 @@ export class ReportsService {
 
       const inputArray: EquipmentItem[] = eqps[element1];
 
-
       const uniqueItems: { [id: string]: EquipmentItem } = {};
       items.forEach((item) => {
         if (uniqueItems[item.room_code]) {
@@ -432,8 +419,7 @@ export class ReportsService {
           uniqueItems[item.room_code] = { ...item, total: 1 };
         }
       });
-     
-     
+
       //  if(Object.values(uniqueItems).length > 0)
       // {
       lists.push({
@@ -567,7 +553,6 @@ export class ReportsService {
     */
     const results = await this.getQueryData(filterReportDto);
     const rowarray = [];
-
 
     const row = worksheet.addRow(['MNE SOLUTIONS']);
     const cell = row.getCell(1);
@@ -720,22 +705,59 @@ export class ReportsService {
       qty1: number;
       totalequ: number;
       total?: number;
+      cost: string;
+      cost_rev2: string;
+      quantity: number | null;
+      quantity_rev2: number | null;
     };
+
+    interface EquipmentItemArray {
+      _id: string;
+      code: string;
+      name: string;
+      quantity: number;
+      group: string;
+      project_code: string;
+      project_name: string;
+      room_code: string;
+      room_name: string;
+      department_code: string;
+      department_name: string;
+      qunatity: number;
+      totalequ: string;
+      location: [];
+    }
+
     if (filterReportDto.reportType === 'equipment-location-listing') {
       const equipments = await this.getAllEqp(filterReportDto);
       results = { equipments };
       results.pname = equipments[0].project_name;
-      results.reportname = 'Equipment Location Listing';
-    } else if (filterReportDto.reportType === 'equipment-location-listing-by-pages') {
+      results.reportname = 'Equipment Location Listing'
+     
+    } else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-pages'
+    ) {
       const equipments = await this.getAllEqp(filterReportDto);
       results = { equipments };
       results.pname = equipments[0].project_name;
       results.reportname = 'Equipment Location Listing';
       //results.pname = equipments.0.project_name;
-    } else if (filterReportDto.reportType === 'equipment-listing-with-revisions-variations') {
-      results = await this.projectService.getAllEquipments_unique_dsply(filterReportDto,);
+
+    } 
+    else if (filterReportDto.reportType === 'equipment-listing-with-revisions-variations') {
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
       let rev_id1 = filterReportDto.rev1;
+    
       let rev_id2 = filterReportDto.rev2;
+    
+     
+      //console.log("results_rev1");
+     // console.log(results_rev1);
+     // console.log("results_rev2");
+     // console.log(results_rev2);
+
       interface EquipmentItem {
         _id: string;
         code: string;
@@ -747,26 +769,40 @@ export class ReportsService {
         room_name: string;
         project_name: string;
       }
-      const results_rev1: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(filterReportDto,rev_id1);
-      const results_rev2: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(filterReportDto,rev_id2);
+      
+      const results_rev1: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(
+        filterReportDto,rev_id1
+      );
+      
+      const results_rev2: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(
+        filterReportDto,rev_id2
+      );
+      
       // Create a map from code to EquipmentItem for results_rev2
       const mapRev2: { [code: string]: EquipmentItem } = {};
-      results_rev2.forEach(item => {
+      results_rev2.forEach((item) => {
         mapRev2[item.code] = item;
       });
       // Update results_rev1 with quantity_rev2 from results_rev2
-      results_rev1.forEach(item => {
+      results_rev1.forEach((item) => {
         const matchingItem = mapRev2[item.code];
         if (matchingItem) {
           item.quantity_rev2 = matchingItem.quantity;
         }
       });
       results.EquipmentItemlist = results_rev1;
-      results.reportname = 'Equipment Listing (BQ)';
-    } else if (filterReportDto.reportType === 'equipment-listing-with-revisions-variations' || filterReportDto.reportType === 'equipment-listing-price-with-revisions-variations') {
-      results = await this.projectService.getAllEquipments_unique_dsply(filterReportDto,);
+
+
+      results.reportname = 'Equipment Listing (BQ)'
+    }
+      else if (filterReportDto.reportType === 'equipment-listing-with-revisions-variations' || filterReportDto.reportType === 'equipment-listing-price-with-revisions-variations') {
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
       let rev_id1 = filterReportDto.rev1;
+    
       let rev_id2 = filterReportDto.rev2;
+
       interface EquipmentItem {
         _id: string;
         code: string;
@@ -779,15 +815,22 @@ export class ReportsService {
         room_name: string;
         project_name: string;
       }
-      const results_rev1: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(filterReportDto,rev_id1);
-      const results_rev2: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(filterReportDto,rev_id2);
+      
+      const results_rev1: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(
+        filterReportDto,rev_id1
+      );
+      
+      const results_rev2: EquipmentItem[] =   await this.projectService.getAllEquipments_unique_dsply_by_revision(
+        filterReportDto,rev_id2
+      );
+      
       // Create a map from code to EquipmentItem for results_rev2
       const mapRev2: { [_id: string]: EquipmentItem } = {};
-      results_rev2.forEach(item => {
+      results_rev2.forEach((item) => {
         mapRev2[item._id] = item;
       });
       // Update results_rev1 with quantity_rev2 from results_rev2
-      results_rev1.forEach(item => {
+      results_rev1.forEach((item) => {
         const matchingItem = mapRev2[item._id];
         if (matchingItem) {
           item.quantity_rev2 = matchingItem.quantity;
@@ -795,45 +838,83 @@ export class ReportsService {
         }
       });
       results.EquipmentItemlist = results_rev1;
-      results.reportname = 'Equipment Listing (BQ)';
-    }else if (filterReportDto.reportType === 'equipment-listing-bq') {
-      results = await this.projectService.getAllEquipments_unique_dsply(filterReportDto,);
+
+
+      results.reportname = 'Equipment Listing (BQ)'
+    }
+    else if (filterReportDto.reportType === 'equipment-listing-bq') {
+      
+
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
       results.EquipmentItemlist = results.results;
-      results.reportname = 'Equipment Listing (BQ)';
-      console.log("Results :---",results);
-    } else if (filterReportDto.reportType === 'equipment-listing-bq-with-price') {
-      results = await this.projectService.getAllEquipments_unique_dsply(filterReportDto,);
+      results.reportname = 'Equipment Listing (BQ)'
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-with-price'
+    ) {
+
+      results = await this.projectService.getAllEquipments_unique_dsply(
+        filterReportDto,
+      );
       results.EquipmentItemlist = results.results;
       results.reportname = 'Equipment Listing (BQ)';
     } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
-      const results = await this.projectService.getAllDisabledEquipments(filterReportDto,);
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
       console.log("disabled-equipment-listing-bq : ",results);
-    } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price') {
-      const results = await this.projectService.getAllDisabledEquipments(filterReportDto,);
-    } else if (filterReportDto.reportType === 'equipment-listing-by-department') {
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
+    } else if (
+      filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
+    ) {
+      const results = await this.projectService.getAllDisabledEquipments(
+        filterReportDto,
+      );
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
       });
       results.reportname = 'Equipment Listing By Department'
-    } else if (filterReportDto.reportType ==='equipment-listing-by-department-with-price') {
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
         results.reportname = 'Equipment Listing By Department'
-    } else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room') {
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department-and-room'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
         if (item.departmentId) {
-          item.rooms.forEach((item_r) => {          
+
+          item.rooms.forEach((item_r) => {
+
+          
             item_r.pagewise = filterReportDto.pagewise;
             item_r.w_sign = filterReportDto.w_sign;
           });
         }
       });
-      results.reportname = 'Equipment Listing By Department and Room';
-    } else if (filterReportDto.reportType === ' equipment-listing-by-department-and-room-with-price') {
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
-      results.reportname = 'Equipment Listing By Department and Room';
+      results.reportname = 'Equipment Listing By Department and Room'
+    } else if (
+      filterReportDto.reportType ===
+      ' equipment-listing-by-department-and-room-with-price'
+    ) {
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
         if (item.departmentId) {
@@ -843,15 +924,37 @@ export class ReportsService {
           });
         }
       });
-    } else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled') {
-      const results_val = await this.projectService.getAllDisabledEquipmentsbyroomdepart(filterReportDto,);
+      results.reportname = 'Equipment Listing By Department and Room'
+      
+    }
+    else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
       results = results_val[0];
-      results.reportname = 'Equipment Listing By Department and Room Disabled';
-    } else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-disabled-price') {
-      const results_val = await this.projectService.getAllDisabledEquipmentsbyroomdepart(filterReportDto,);
-      results = results_val[0];
-      results.reportname = 'Equipment Listing By Department and Room Disabled';
-    } else if (filterReportDto.reportType === 'equipment-listing-bq-by-group' || filterReportDto.reportType === 'equipment-listing-bq-with-price-by-group') {
+      results.reportname = 'Equipment Listing By Department and Room Disabled'
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled-price'
+    ) {
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepart(
+          filterReportDto,
+        );
+      // const results = results_val;
+      results = results_val;
+      results.reportname = 'Equipment Listing By Department and Room Disabled'
+      console.log('Test');
+      console.log(results);
+    } 
+    else if (filterReportDto.reportType === 'equipment-listing-bq-by-group' || filterReportDto.reportType ==='equipment-listing-bq-with-price-by-group') {
+	   
+      //console.log('Test555555');
+      //const resultsd1;
       interface EquipmentItemArray {
         _id: string;
         code: string;
@@ -866,6 +969,8 @@ export class ReportsService {
         department_name: string;
       }
 	    const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
+    
+      
       const equipmentItems: EquipmentItemArray[] = results_val_array.EquipmentItemlist;
       const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
       equipmentItems.forEach((item) => {
@@ -875,92 +980,142 @@ export class ReportsService {
         }
         groupedByDepartment[group].push(item);
       });
+   
       if('no-group' in groupedByDepartment) {
-        const Nogroup = groupedByDepartment['no-group'];
-        delete groupedByDepartment['no-group'];
-        groupedByDepartment['no-group'] = Nogroup;
-      }
+     const Nogroup = groupedByDepartment['no-group'];
+     delete groupedByDepartment['no-group'];
+     groupedByDepartment['no-group'] = Nogroup;
+    }
+      
       results = { groupedByDepartment }
-      results.reportname = 'Equipment Listing BQ';
+      results.reportname = 'Equipment Listing BQ'
       if (results_val_array.EquipmentItemlist[0]) {
         results.pname = results_val_array.EquipmentItemlist[0].project_name;
-      }
-      else {
+      } else {
         results.pname = '';
       }
+
+
+
     }
-    else if (filterReportDto.reportType === 'equipment-location-listing-by-group') {
-      /* const results_val = await this.projectService.getAllEquipmentsByLocation(filterReportDto,); */
+    else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-group'
+    ) {
+      /*
+      const results_val =
+        await this.projectService.getAllEquipmentsByLocation(
+          filterReportDto,
+        ); */
       const equipments = await this.getAllEqp_group(filterReportDto);
       console.log("equipmentsv7");
+
       console.log(equipments);
-      results = { equipments };
-      interface EquipmentItemArray {
-        _id: string;
-        code: string;
-        name: string;
-        quantity: number;
-        group: string;
-        project_code: string;
-        project_name: string;
-        room_code: string;
-        room_name: string;
-        department_code: string;
-        department_name: string;
-        qunatity: number;
-        totalequ:string;
-        location:[];
-      }
-      const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
-      const equipmentItems: EquipmentItemArray[] = results.equipments;
-      const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};  
-      equipmentItems.forEach((item) => { 
-        const group =item.group ? item.group :'no-group';
-        if (!groupedByDepartment[group]) {
-          groupedByDepartment[group] = [];
-        }  
-        groupedByDepartment[group].push(item);
-      });
-      results = { groupedByDepartment }
-      results.pname = results_val_array.EquipmentItemlist[0].project_name?results_val_array.EquipmentItemlist[0].project_name:'';
-      results.reportname = 'Equipment Location Listing BQ';
-    } else if ( filterReportDto.reportType === 'equipment-listing-by-department-by-group' || filterReportDto.reportType === 'equipment-listing-by-department-with-price-by-group') {
-      const results_val = await this.projectService.getdepartmentEquipmentsbygroups(filterReportDto,);
-      interface EquipmentItemArray {
-        _id: string;
-        code: string;
-        name: string;
-        quantity: number;
-        group: string;
-        project_code: string;
-        project_name: string;
-        room_code: string;
-        room_name: string;
-        department_code: string;
-        department_name: string;
-        qunatity: number;
-        totalequ:string;
-        location:[];
-      }
-      const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
-      const equipmentItems: EquipmentItemArray[] = results_val;
-      const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
-      const departmentArray: any[] = [];
-      const departmentArray_new: any[] = [];
-      equipmentItems.forEach((item) => {
-        const department_code =item.group ? item.group :'no-group';
-        if (!groupedByDepartment[department_code]) {
-          groupedByDepartment[department_code] = [];
+      
+        results = { equipments };
+
+        interface EquipmentItemArray {
+          _id: string;
+          code: string;
+          name: string;
+          quantity: number;
+          group: string;
+          project_code: string;
+          project_name: string;
+          room_code: string;
+          room_name: string;
+          department_code: string;
+          department_name: string;
+          qunatity: number;
+          totalequ:string;
+          location:[];
         }
-        groupedByDepartment[department_code].push(item);
-      });
-      results = { groupedByDepartment }
-      results.pname = results_val_array.EquipmentItemlist[0].project_name;
-      results.reportname = 'Equipment Listing by Department';
-    } else if ( filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price-by-group') {
+        const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
+        
+        
+        const equipmentItems: EquipmentItemArray[] = results.equipments;
+        const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
+        
+        equipmentItems.forEach((item) => {
+         
+          const group =item.group ? item.group :'no-group';
+          if (!groupedByDepartment[group]) {
+            groupedByDepartment[group] = [];
+          }
+        
+      groupedByDepartment[group].push(item);
+        });
+        results = { groupedByDepartment }
+        
+        results.pname = results_val_array.EquipmentItemlist[0].project_name?results_val_array.EquipmentItemlist[0].project_name:'';
+        results.reportname = 'Equipment Location Listing BQ'
+    
+    }
+    else if (
+      filterReportDto.reportType === 'equipment-listing-by-department-by-group'
+      || filterReportDto.reportType === 'equipment-listing-by-department-with-price-by-group') {
+      const results_val =
+        await this.projectService.getdepartmentEquipmentsbygroups(
+          filterReportDto,
+        );
+  
+
+        interface EquipmentItemArray {
+          _id: string;
+          code: string;
+          name: string;
+          quantity: number;
+          group: string;
+          project_code: string;
+          project_name: string;
+          room_code: string;
+          room_name: string;
+          department_code: string;
+          department_name: string;
+          qunatity: number;
+          totalequ:string;
+          location:[];
+        }
+        
+        const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto);
+        
+        
+        const equipmentItems: EquipmentItemArray[] = results_val;
+        const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
+        const departmentArray: any[] = [];
+        const departmentArray_new: any[] = [];
+        
+        equipmentItems.forEach((item) => {
+          
+          const department_code =item.group ? item.group :'no-group';
+          if (!groupedByDepartment[department_code]) {
+            groupedByDepartment[department_code] = [];
+          }
+        
+          groupedByDepartment[department_code].push(item);
+        });
+       
+
+        console.log("fffff");
+        //console.log(groupedByDepartment.FN3003);
+        results = { groupedByDepartment }
+        console.log("fffffDDDDDDDDDDDDDD");
+        //console.log(results);
+        console.log(JSON.stringify(results));
+        results.pname = results_val_array.EquipmentItemlist[0].project_name;
+        results.reportname = 'Equipment Listing by Department'
+    
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group'
+      || filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price-by-group') {
       const departmentArray_new: any[] = [];
       const roomsdepartmentArray_new: any[] = [];
-      const results_val = await this.projectService.getAllDisabledEquipmentsbyroomdepartbygroup(filterReportDto,);
+    
+      const results_val =
+        await this.projectService.getAllDisabledEquipmentsbyroomdepartbygroup(
+          filterReportDto,
+        );
+        
+
       results_val[0].departments.forEach((item) => {
         item.rooms.forEach((itemeq) => {
           const departmentArray_new = {};
@@ -971,19 +1126,32 @@ export class ReportsService {
             }
             departmentArray_new[group].push(itemeq3);
           });
+
+
           if('no-group' in departmentArray_new) {
             const Nogroup = departmentArray_new['no-group'];
             delete departmentArray_new['no-group'];
             departmentArray_new['no-group'] = Nogroup;
            }
+
+
           itemeq.group = departmentArray_new;
         });
       });
       results = results_val[0];
       results.pname = results.name;
-      results.reportname = 'Equipment Listing by Department';
-    } else if (filterReportDto.reportType === 'equipment-listing-bq-with-utility') {
-      const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto,);
+      results.reportname = 'Equipment Listing by Department'
+
+
+
+    }
+    else if (
+      filterReportDto.reportType === 'equipment-listing-bq-with-utility'
+    ) {
+      const results_val = await this.projectService.getAllEquipmentswithUtility(
+        filterReportDto,
+      );
+
       results = results_val[0];
       results.top_logo = filterReportDto.top_logo;
       results.b_logo = filterReportDto.b_logo;
@@ -991,31 +1159,34 @@ export class ReportsService {
       results.medical_logo2 = filterReportDto.medical_logo2;
       results.medical_logo3 = filterReportDto.medical_logo3;
       results.reportname = 'Equipment Listing BQ';
-    } else if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-utility') {
-      const results_val = await this.projectService.getAllEquipmentswithUtility(filterReportDto,);
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-with-utility'
+    ) {
+      const results_val = await this.projectService.getAllEquipmentswithUtility(
+        filterReportDto,
+      );
+
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
       results.pagewise = filterReportDto.pagewise;
       results.top_logo = filterReportDto.top_logo;
       results.b_logo = filterReportDto.b_logo;
       results.medical_logo = filterReportDto.medical_logo;
       results.medical_logo2 = filterReportDto.medical_logo2;
       results.medical_logo3 = filterReportDto.medical_logo3;
-      results.reportname = 'Equipment Listing(BQ) By Department and Room';
+      results.reportname = 'Equipment Listing BQ'
+      
+      
     } else {
-      console.log("123");
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
-      if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price'){
-        results.reportname = 'Equipment Listing By Department and Room';
-      } else if(filterReportDto.reportType === 'equipment-listing-by-floor') {
-        results.reportname = 'Equipment Listing By Floor';
-      } else if(filterReportDto.reportType === 'room-listing') {
-        results.reportname = 'Room Listing';
-      } else if(filterReportDto.reportType === 'department-list') {
-        results.reportname = 'Department Listing';
-      } else {
-        results.reportname = 'Equipment Listing BQ';
-      }
+      results = await this.projectService
+        .findOne(filterReportDto.projectId)
+        .lean();
+
+        results.reportname = 'Equipment Listing BQ'
     }
+  
     return results;
   }
 }
