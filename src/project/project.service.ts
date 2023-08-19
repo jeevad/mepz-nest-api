@@ -1370,7 +1370,7 @@ export class ProjectService {
           room_code: { $first: '$departments.rooms.code' },
           room_name: { $first: '$departments.rooms.name' },
           project_name: { $first: '$name' },
-          
+          group : {$first: '$departments.rooms.equipments.group'}
         },
       },
     ];
