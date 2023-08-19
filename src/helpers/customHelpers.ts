@@ -62,7 +62,11 @@ Handlebars.registerHelper('multiply', function (a, b) {
 });
 
 Handlebars.registerHelper('differ_cal', function (a, b) {
-  if (typeof a !== 'undefined' && typeof b !== 'undefined') {
+  
+  if (typeof a !== 'undefined' && typeof b === 'undefined') {
+    return a ;
+  }
+  else if (typeof a !== 'undefined' && typeof b !== 'undefined') {
     return a - b;
   }
   // Return a default value or handle the case where either a or b is undefined

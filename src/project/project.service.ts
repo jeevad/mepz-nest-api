@@ -716,6 +716,18 @@ export class ProjectService {
     
         ];
         
+        if(rev_id!='')
+      {
+       pipeline = [
+        ...pipeline, 
+  
+        {
+          $match: {
+            'departments.rooms.equipments.revisionid': rev_id,
+          },
+         }
+       ]
+      }
       
       if(filterReportDto.group)
       {
@@ -763,10 +775,85 @@ export class ProjectService {
       }
 
 
-     async getAllDisabledEquipmentsbyroomdepartbygroup(filterReportDto: FilterReportDto) {
+     async getAllEquipmentsbyroomdepartbygroup(filterReportDto: FilterReportDto, rev_id) {
         mongoose.set('debug', true);
        let group_array: Array<any> = [];
-        if(filterReportDto.group)
+       if(filterReportDto.group && rev_id!='')
+        {
+        group_array=filterReportDto.group; 
+        let pipeline: any = [
+          {
+            $match: {
+              _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+              
+            },
+            
+          },
+          {
+            $addFields: {
+              departments: {
+                $map: {
+                  input: "$departments",
+                  as: "dept",
+                  in: {
+                    $mergeObjects: [
+                      "$$dept",
+                      {
+                        rooms: {
+                          $map: {
+                            input: "$$dept.rooms",
+                            as: "rooms",
+                            in: {
+                              $mergeObjects: [
+                                "$$rooms",
+                                {
+                                  equipments: {
+                                    $filter: {
+                                      input: "$$rooms.equipments",
+                                      as: "equipment",
+                                      cond: {
+                                        $in: [
+                                          "$$equipment.group",
+                                          group_array
+                                        ],
+                                        $eq: ['$$equipments.revisionid', rev_id],
+                                       
+                                        
+                                      },
+                                      
+                                    },
+                                    
+                                  },
+                                  
+                                },
+                                
+                              ],
+                              
+                            },
+                            
+                          },
+                          
+                        },
+                        
+                      },
+                      
+                    ],
+                    
+                  },
+                  
+                },
+                
+              },
+              
+            },
+            
+          },
+          
+        ];
+        const results = await this.ProjectModel.aggregate(pipeline);
+        return results;
+        }
+        else if(filterReportDto.group)
         {
         group_array=filterReportDto.group; 
         let pipeline: any = [
@@ -1298,7 +1385,7 @@ export class ProjectService {
     if (rev1) {
       pipeline.push({
         $match: {
-          'departments.rooms.equipments.revisionid': filterReportDto.rev1,
+          'departments.rooms.equipments.revisionid': rev1,
         },
       });
     }
@@ -1319,7 +1406,8 @@ export class ProjectService {
         },
       },
     ];
-
+    console.log("GGGGGGGGGGGGGGGGGG222:::::");
+    console.log(JSON.stringify(pipeline));
     const results = await this.ProjectModel.aggregate(pipeline);
     return  results ;
   }
