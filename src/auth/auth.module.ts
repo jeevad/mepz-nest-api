@@ -26,10 +26,10 @@ import { ActivityLogsModule } from 'src/administrator/activity-logs/activity-log
   ],
   providers: [
     AuthService,
-    {
+    /* {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    },
+    }, */
   ],
   controllers: [AuthController],
   exports: [AuthService],
