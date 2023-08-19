@@ -56,21 +56,21 @@
                       <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
                       <td style="padding-top:6px;padding-bottom:6px">{{cost}}</td>
                       <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity cost}} </td>
-                      <td></td>
+                      <td>{{group}}</td>
                       <td></td>
                     </tr>
                   {{/each}}
-                    {{!-- <tr>
-                        <td></td>
-                        <td>Total Equipment:</td>
-                        <td>{{sum EquipmentItemlist "quantity"}}</td>
-                        <td>Total:</td>
-                        <td>{{calculateSumOfTotal EquipmentItemlist }}</td>
-                    </tr> --}}
+                    <tr style="border:0">
+                        <td style="border:0"></td>
+                        <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total Equipment:</td>
+                        <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
+                        <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total:</td>
+                        <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItemlist }}</td>
+                    </tr>
                  {{!-- {{#each rooms}}{{/each}} --}}
               </tbody>
             </table>
-         
+          
         </div>
       </div>
     </div>
