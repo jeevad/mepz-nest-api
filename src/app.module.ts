@@ -28,6 +28,7 @@ import { AccessLevelModule } from './administrator/access-level/access-level.mod
 import { ActivityLogsModule } from './administrator/activity-logs/activity-logs.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './utils/logging.ineterceptor';
+import { ClsModule, ClsService } from 'nestjs-cls';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -59,6 +60,20 @@ import { LoggingInterceptor } from './utils/logging.ineterceptor';
     PastTransactionModule,
     ReportsModule,
     AccessLevelModule,
+    // Register the ClsModule,
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        // automatically mount the
+        // ClsMiddleware for all routes
+        mount: true,
+        // and use the setup method to
+        // provide default store values.
+        // setup: (cls, req) => {
+        //   cls.set('user', req.user);
+        // },
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [

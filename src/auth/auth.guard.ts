@@ -10,6 +10,7 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './decorators/public.decorator';
 import { UsersService } from 'src/administrator/users/users.service';
 import { UserEntity } from 'src/administrator/users/entities/user.entity';
+import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -17,6 +18,7 @@ export class AuthGuard implements CanActivate {
     private jwtService: JwtService,
     private reflector: Reflector,
     private readonly usersService: UsersService,
+    private readonly cls: ClsService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -39,6 +41,7 @@ export class AuthGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       request['user'] = await this.validateUser(payload.id);
+      this.cls.set('user', request['user']);
     } catch (error) {
       console.log('error', error);
       throw new UnauthorizedException();

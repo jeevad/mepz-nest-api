@@ -24,7 +24,7 @@ export class ReportsService {
   workbook: Excel.Workbook;
   worksheet: Excel.Worksheet;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService) {}
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
@@ -129,7 +129,6 @@ export class ReportsService {
       paginationParams,
     );
 
-
     const data = results.results[0];
 
     const options = {
@@ -176,11 +175,9 @@ export class ReportsService {
       project_nam = results.pname;
     } else if (results.name) {
       project_nam = results.name;
-    }
-    else if (results.results[0].name) {
+    } else if (results.results[0].name) {
       project_nam = results.results[0].name;
-    }
-    else {
+    } else {
       project_nam = '';
     }
 
@@ -207,7 +204,8 @@ export class ReportsService {
         right: '10mm',
         bottom: '15mm',
       },
-      headerTemplate: `
+      headerTemplate:
+        `
       <div style="width: 96%; display: flex; flex-direction: column;">
         <div style="font-size: 10px; text-align: right; color: #1cabb1;">
           <i>Page <span class="pageNumber"></span> of <span class="totalPages"></span></i> 
@@ -217,9 +215,15 @@ export class ReportsService {
           <p style="font-size: 10px; margin-bottom:15px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
         </div>
         <div style="padding-left:35px;">
-          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam + `</span></b></p>
-          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+ currentDateVal + `</span></p>
-          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>`+ reportname + ` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+          <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">` +
+        project_nam +
+        `</span></b></p>
+          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: ` +
+        currentDateVal +
+        `</span></p>
+          <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>` +
+        reportname +
+        ` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
         </div>   
       </div>
       `,
@@ -232,7 +236,6 @@ export class ReportsService {
       'views/reports/common',
       `${filterReportDto.reportType}.hbs`,
     );
-
 
     return createPdf(filePath, options, data);
   }
@@ -271,7 +274,6 @@ export class ReportsService {
 
     const items = eqps;
 
-
     const inputArray: EquipmentItem[] = eqps;
     //const uniqueItems: { [id: string]  } = {};
 
@@ -287,15 +289,13 @@ export class ReportsService {
     return Object.values(uniqueItems);
   }
   async getAllEqp_group(filterReportDto) {
-
-    console.log("equipmentsv9");
+    console.log('equipmentsv9');
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
     );
 
     const eqps = [];
     for (const element of results) {
-
       if (eqps[element._id] === undefined) {
         eqps[element._id] = [];
       }
@@ -330,7 +330,6 @@ export class ReportsService {
 
       const inputArray: EquipmentItem[] = eqps[element1];
 
-
       const uniqueItems: { [id: string]: EquipmentItem } = {};
       items.forEach((item) => {
         if (uniqueItems[item.room_code]) {
@@ -363,8 +362,7 @@ export class ReportsService {
     return lists;
   }
   async getAllEqp(filterReportDto) {
-
-    console.log("equipmentsv9");
+    console.log('equipmentsv9');
     const results = await this.projectService.getAllEquipmentsByLocation(
       filterReportDto,
     );
@@ -372,11 +370,10 @@ export class ReportsService {
     //console.log('resultsv4', results);
     const eqps = [];
     for (const element of results) {
-
       if (eqps[element._id] === undefined) {
         eqps[element._id] = [];
       }
-      console.log("equipmentsv23", element);
+      console.log('equipmentsv23', element);
 
       const results2 = await this.projectService.getProjectEquipmentsbyroom(
         filterReportDto.projectId,
@@ -385,20 +382,13 @@ export class ReportsService {
       );
       element.qty1 = Object.values(results2).length;
 
-
-
-
       element.totalequ = results2.results[0].metadata[0].total;
 
       eqps[element._id].push(element);
-
-
     }
-
 
     const lists = [];
     for (const element1 in eqps) {
-
       const total = 0;
       const room_info = [];
       const rooms = [];
@@ -421,7 +411,6 @@ export class ReportsService {
 
       const inputArray: EquipmentItem[] = eqps[element1];
 
-
       const uniqueItems: { [id: string]: EquipmentItem } = {};
       items.forEach((item) => {
         if (uniqueItems[item.room_code]) {
@@ -431,7 +420,6 @@ export class ReportsService {
           uniqueItems[item.room_code] = { ...item, total: 1 };
         }
       });
-
 
       //  if(Object.values(uniqueItems).length > 0)
       // {
@@ -566,7 +554,6 @@ export class ReportsService {
     */
     const results = await this.getQueryData(filterReportDto);
     const rowarray = [];
-
 
     const row = worksheet.addRow(['MNE SOLUTIONS']);
     const cell = row.getCell(1);
@@ -719,13 +706,32 @@ export class ReportsService {
       qty1: number;
       totalequ: number;
       total?: number;
+      cost: string;
+      cost_rev2: string;
+      quantity: number | null;
+      quantity_rev2: number | null;
     };
+
+    interface EquipmentItemArray {
+      _id: string;
+      code: string;
+      name: string;
+      quantity: number;
+      group: string;
+      project_code: string;
+      project_name: string;
+      room_code: string;
+      room_name: string;
+      department_code: string;
+      department_name: string;
+      qunatity: number;
+      totalequ: string;
+      location: [];
+    }
+
     if (filterReportDto.reportType === 'equipment-location-listing') {
       const equipments = await this.getAllEqp(filterReportDto);
-
       results = { equipments };
-
-
       results.pname = equipments[0].project_name;
       results.reportname = 'Equipment Location Listing'
 
@@ -733,12 +739,9 @@ export class ReportsService {
       filterReportDto.reportType === 'equipment-location-listing-by-pages'
     ) {
       const equipments = await this.getAllEqp(filterReportDto);
-
-
-
       results = { equipments };
       results.pname = equipments[0].project_name;
-      results.reportname = 'Equipment Location Listing'
+      results.reportname = 'Equipment Location Listing';
       //results.pname = equipments.0.project_name;
 
     }
@@ -774,12 +777,11 @@ export class ReportsService {
 
       // Create a map from code to EquipmentItem for results_rev2
       const mapRev2: { [_id: string]: EquipmentItem } = {};
-      results_rev2.forEach(item => {
+      results_rev2.forEach((item) => {
         mapRev2[item._id] = item;
       });
-
       // Update results_rev1 with quantity_rev2 from results_rev2
-      results_rev1.forEach(item => {
+      results_rev1.forEach((item) => {
         const matchingItem = mapRev2[item._id];
         if (matchingItem) {
           item.quantity_rev2 = matchingItem.quantity;
@@ -809,9 +811,7 @@ export class ReportsService {
         filterReportDto,
       );
       results.EquipmentItemlist = results.results;
-      results.reportname = 'Equipment Listing (BQ)'
-
-
+      results.reportname = 'Equipment Listing (BQ)';
     } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq') {
       const results = await this.projectService.getAllDisabledEquipments(
         filterReportDto,
@@ -871,7 +871,6 @@ export class ReportsService {
 
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
-
         if (item.departmentId) {
 
           item.rooms.forEach((item_r) => {
@@ -976,7 +975,6 @@ export class ReportsService {
 
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
-
         if (item.departmentId) {
           item.rooms.forEach((item_r) => {
             item_r.pagewise = filterReportDto.pagewise;
@@ -1036,14 +1034,11 @@ export class ReportsService {
 
       const equipmentItems: EquipmentItemArray[] = results_val_array.EquipmentItemlist;
       const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
-
       equipmentItems.forEach((item) => {
-
         const group = item.group ? item.group : 'no-group';
         if (!groupedByDepartment[group]) {
           groupedByDepartment[group] = [];
         }
-
         groupedByDepartment[group].push(item);
       });
 
@@ -1057,8 +1052,7 @@ export class ReportsService {
       results.reportname = 'Equipment Listing BQ'
       if (results_val_array.EquipmentItemlist[0]) {
         results.pname = results_val_array.EquipmentItemlist[0].project_name;
-      }
-      else {
+      } else {
         results.pname = '';
       }
 
@@ -1266,14 +1260,10 @@ export class ReportsService {
         item.rooms.forEach((itemeq) => {
           const departmentArray_new = {};
           itemeq.equipments.forEach((itemeq3) => {
-
             const group = itemeq3.group ? itemeq3.group : 'no-group';
-
-
             if (!departmentArray_new[group]) {
               departmentArray_new[group] = [];
             }
-
             departmentArray_new[group].push(itemeq3);
           });
 
@@ -1433,6 +1423,4 @@ export class ReportsService {
 
     return results;
   }
-
-
 }

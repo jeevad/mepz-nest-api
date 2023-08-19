@@ -15,15 +15,9 @@
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{!-- <p style='color: #304f4f;font-size: 20px; margin-bottom: 15px;'>Project Name : <strong>{{name}}</strong>
-        </p> --}}
         {{#each groupedByDepartment as |EquipmentItemlist key1|}}
         {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div>{{/index_gt}} {{/if}}
         <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b><span>{{EquipmentItemlist.0.department_code}}</span> <span style="margin-left:30px;">{{EquipmentItemlist.0.department_name}}</span></p>
-        {{!-- {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div>{{/index_gt}} {{/if}} --}}
-        {{!-- {{#if ../pagewise}}
-        {{#index_gt @index}} </div> {{/index_gt}} {{/if}} --}}
-
         <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
           <thead class='table-light'>
             <tr>
@@ -35,10 +29,9 @@
             </tr>
           </thead>
           <tbody>
-            {{!-- <tr>
-              <td colspan="5" style="padxding-top:6px;padding-bottom:6p"> {{#value_undefine @key1}} {{/value_undefine}}
-              </td>
-            </tr> --}}
+            <tr>
+              <td colspan="5" style="padxding-top:6px;padding-bottom:6px;"> {{#value_undefine @key1}} {{/value_undefine}}</td>
+            </tr>
             {{#each EquipmentItemlist }}
             <tr>
               <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
@@ -64,6 +57,8 @@
           </tbody>
         </table>
         {{/each}}
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup groupedByDepartment }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total : {{ calculateSumOfTotalPriceEquipmentListingBQbyGroup groupedByDepartment }}</b></p>
       </div>
     </div>
   </div>
