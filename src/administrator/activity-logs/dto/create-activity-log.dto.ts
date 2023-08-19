@@ -1,12 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateActivityLogDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  @IsOptional()
+  // @IsString()
   url: string;
 
 //   @ApiProperty({
@@ -16,11 +17,12 @@ export class CreateActivityLogDto {
 //   @IsString()
 //   request: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: String,
     description: 'This is a required property',
   })
-  @IsString()
+  // @IsString()
+  @IsOptional()
   method: string;
 
   @ApiProperty({

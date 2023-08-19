@@ -15,40 +15,53 @@
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{#each departments as |dept|}}
-          {{#if (gt dept.rooms.length 0)}}
-            {{#if pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
-              <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{dept.code}}</span> <span
-                  style="margin-left:30px;">{{dept.name}}</span></p>
-            {{#if pagewise}} {{#index_gt @index}}</div> {{/index_gt}} {{/if}}
-            <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
-              <thead class='table-light'>
-                <tr>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each rooms}}
-                  {{#each equipments}}
-                    <tr>
-                      <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
-                      <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
-                      <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
-                    </tr>
-                  {{/each}}
-                {{/each}}
-                <tr style="border: 0;">
-                  <td style="border: 0;"></td>
-                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
-                    Sub-Total:</td>
-                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
-                    {{sumQuantities rooms }} </td>
-                </tr>
-              </tbody>
-            </table>
-          {{/if}}
+        {{!-- <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span
+              class="text-uppercase">{{name}}</span></b></p>
+        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span
+            style="margin-left:35px;">Date: {{currentDate}}</span></p>
+        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Listing(BQ) By Department <span
+              style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
+
+        {{#each departments}}
+
+
+
+        {{#if pagewise}}
+        {{#index_gt @index}}
+
+        <div class="page-break">
+          {{/index_gt}} {{/if}}
+          {{!-- <p style='color: #000;font-size: 18px; margin-bottom: 15px;'>Department : {{code}} - {{name}}</p> --}}
+          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{code}}</span> <span
+              style="margin-left:30px;">{{name}}</span></p>
+          {{#if pagewise}} {{#index_gt @index}}
+        </div> {{/index_gt}} {{/if}}
+        <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
+          <thead class='table-light'>
+            <tr>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each rooms}}
+            {{#each equipments}}
+            <tr>
+              <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
+              <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
+              <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
+            </tr>
+            {{/each}}
+
+            {{/each}}
+            <tr style="border: 0;">
+              <td style="border: 0;"></td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Sub-Total:</td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sumQuantities rooms }} </td>
+            </tr>
+          </tbody>
+        </table>
         {{/each}}
         <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{
             calculateSumOfTotalEquipmentListingDept departments }}</b></p>
