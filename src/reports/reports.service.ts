@@ -839,8 +839,11 @@ export class ReportsService {
         .findOne(filterReportDto.projectId)
         .lean();
    
-      const rooms_id_data = ['648972be6be3d0e6681efe07', '648972356be3d0e6681efdbc'];
-      if (rooms_id_data.length > 0) {
+      const rooms_id_data =  filterReportDto.roomIds;  //['648972be6be3d0e6681efe07', '648972356be3d0e6681efdbc'];
+      console.log("Test v89999");
+      console.log(rooms_id_data);
+     // if (rooms_id_data.length > 0) {
+      if (rooms_id_data) {
       // Create a copy of the original data
       const newData = { ...resultsData };
       // Iterate through departments and filter rooms based on rooms_id
@@ -870,7 +873,27 @@ export class ReportsService {
       });
       results.reportname = 'Equipment Listing By Department and Room';
     } else if (filterReportDto.reportType === ' equipment-listing-by-department-and-room-with-price') {
-      results = await this.projectService.findOne(filterReportDto.projectId).lean();
+      const resultsData = await this.projectService.findOne(filterReportDto.projectId).lean();
+
+
+      const rooms_id_data =  filterReportDto.roomIds;  //['648972be6be3d0e6681efe07', '648972356be3d0e6681efdbc'];
+      console.log("Test v89999");
+      console.log(rooms_id_data);
+     // if (rooms_id_data.length > 0) {
+      if (rooms_id_data) {
+      // Create a copy of the original data
+      const newData = { ...resultsData };
+      // Iterate through departments and filter rooms based on rooms_id
+      newData.departments.forEach((department) => {
+        department.rooms = department.rooms.filter(room => rooms_id_data.includes(room.roomId));
+      });
+      results = newData;
+    }
+    else
+    {
+      results = resultsData;
+    }
+
       results.reportname = 'Equipment Listing By Department and Room';
       results.departments.forEach((item) => {
         item.pagewise = filterReportDto.pagewise;
@@ -1123,7 +1146,7 @@ export class ReportsService {
           filterReportDto, rev_id
         );
 
-
+       
 
       results_val[0].departments.forEach((item) => {
         item.rooms.forEach((itemeq) => {
@@ -1271,6 +1294,8 @@ export class ReportsService {
       results.medical_logo = filterReportDto.medical_logo;
       results.medical_logo2 = filterReportDto.medical_logo2;
       results.medical_logo3 = filterReportDto.medical_logo3;
+
+
       results.reportname = 'Equipment Listing(BQ) By Department and Room';
     } else {
       console.log("123");
