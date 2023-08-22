@@ -22,23 +22,6 @@ Equipment listing bq by group revisions - Doubt
 
 6) http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-with-price-by-group-revision&reportFormat=pdfs
 
-<<<<<<< HEAD
-=======
-7) http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group-revision&reportFormat=pdfs
-
-
-
-8)http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-with-price-by-group-rev&reportFormat=pdfs
-
-
-
-
-http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs&pagewise=1&roomIds[]=648972be6be3d0e6681efe07
-
-
-
-
->>>>>>> e4f0e5331b7b9a939bf36d4764923574bee6bcb5
 
 Equipment Listing by Department and Room, by Group 
 --------------------------------------------------
