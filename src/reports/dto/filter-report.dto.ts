@@ -23,7 +23,7 @@ export class FilterReportDto {
     type: [String],
   })
   @IsOptional()
-  @IsString()
+  // @IsString()
   roomId: string[];
 
   // @ApiPropertyOptional({
