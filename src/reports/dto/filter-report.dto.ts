@@ -23,7 +23,7 @@ export class FilterReportDto {
     type: [String],
   })
   @IsOptional()
-  @IsString()
+  // @IsString()
   roomId: string[];
 
   // @ApiPropertyOptional({
@@ -36,6 +36,11 @@ export class FilterReportDto {
   @ApiProperty({ type: [String] })
   @IsOptional()
   group: string[];
+
+  @ApiProperty({ type: [String] })
+  @IsOptional()
+  roomIds: string[];
+  
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
@@ -81,6 +86,10 @@ export class FilterReportDto {
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   rev2?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  room_id?: string;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()

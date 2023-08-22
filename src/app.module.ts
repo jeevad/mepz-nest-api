@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose/dist/mongoose.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CompanyModule } from './master-file/company/company.module';
 import { DepartmentModule } from './master-file/department/department.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -29,6 +29,8 @@ import { ActivityLogsModule } from './administrator/activity-logs/activity-logs.
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './utils/logging.ineterceptor';
 import { ClsModule, ClsService } from 'nestjs-cls';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MigrationsModule } from './migrations/migrations.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -37,6 +39,26 @@ import { ClsModule, ClsService } from 'nestjs-cls';
       // useUnifiedTopology: true,
       // useCreateIndex: true,
       autoIndex: true,
+    }),
+    // SECONDARY DB CONNECTION
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      name: 'mysql',
+      useFactory: async (configService: ConfigService) => {
+        return {
+          type: 'mysql',
+          host: configService.get('SECONDARY_DB_HOST'),
+          port: parseInt(configService.get('SECONDARY_DB_PORT')),
+          database: configService.get('SECONDARY_DB_DATABASE'),
+          username: configService.get('SECONDARY_DB_USERNAME'),
+          autoLoadEntities: true,
+          password: configService.get('SECONDARY_DB_PASSWORD'),
+          // schema: configService.get('MAIN_DB_SCHEMA'),
+          // entities: [Customer],
+          synchronize: true,
+        };
+      },
     }),
     ActivityLogsModule,
     AuthModule,
@@ -74,6 +96,7 @@ import { ClsModule, ClsService } from 'nestjs-cls';
         // },
       },
     }),
+    MigrationsModule,
   ],
   controllers: [AppController],
   providers: [
