@@ -1,5 +1,4 @@
 <html lang='en'>
-
 <head>
   <meta charset='utf-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -12,87 +11,72 @@
     }
   </style>
 </head>
-
 <body>
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{!-- <p style='color: #304f4f; font-size: 16px; margin-bottom: 1px; margin-top: 0px;'><b>Project Name : <span
-              class="text-uppercase">{{name}}</span></b></p>
-        <p style='color: #304f4f; font-size: 14px; margin-bottom: 1px;'>Revision No: 5.001* <span
-            style="margin-left:35px;">Date: {{currentDate}}</span></p>
-        <p style='color: #304f4f; font-size: 16px; margin-bottom: 20px;'><b>Equipment Location Listing Qty <span
-              style="margin-left:35px;">Qty : Total Quantity</span></b></p> --}}
-
         {{#each groupedByDepartment as |EquipmentItemlist key1|}}
-        <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
-          <thead class='table-light'>
-            <tr>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Qty</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Qty</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Qty</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Price</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total Price</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Price</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total Price</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Price</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
-              
-            </tr>
-          </thead>
-          <tbody>
-            {{!-- <tr>
-              <td colspan="5" style="padding-top:6px;padding-bottom:6px;">
-                {{#value_undefine @key1}} {{/value_undefine}}
-              </td>
-            </tr> --}}
-            {{#each EquipmentItemlist as |key4 eq_item|}}
-            <tr>
-              <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{quantity_rev2}}</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{differ_cal quantity quantity_rev2 }}</td>
-                 <td style="padding-top:6px;padding-bottom:6px;">{{cost}}</td>
-               <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity cost}} </td>
-               <td style="padding-top:6px;padding-bottom:6px;">{{cost_rev2}}</td>
-
-               <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity_rev2 cost_rev2}} </td>
-              <td style="padding-top:6px;padding-bottom:6px">{{differnce_price eq_item}} </td>
-              
-              <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
-              
-            </tr>
-            {{/each}}
-            <tr style="border: 0;">
-              <td style="padding-top:6px;padding-bottom:6px; border: 0;"></td>
-              <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total
-                {{#value_undefine @key1}}
-                {{key1}}
-                {{/value_undefine}}</td>
-             <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "quantity"}}</td>
-               <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "quantity_rev2"}}</td>
-
+          <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
+            <thead class='table-light'>
+              <tr>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Qty</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Qty</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Qty</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Price</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total Price</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Price</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total Price</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Price</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{!-- <tr>
+                <td colspan="5" style="padding-top:6px;padding-bottom:6px;">
+                  {{#value_undefine @key1}} {{/value_undefine}}
+                </td>
+              </tr> --}}
+              {{#each EquipmentItemlist as |key4 eq_item|}}
+                <tr>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{quantity_rev2}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{differ_cal quantity quantity_rev2 }}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{cost}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity cost}} </td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{cost_rev2}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity_rev2 cost_rev2}} </td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{differnce_price eq_item}} </td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
+                </tr>
+              {{/each}}
+              <tr style="border: 0;">
+                <td style="padding-top:6px;padding-bottom:6px; border: 0;"></td>
+                <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total
+                  {{#value_undefine @key1}}{{key1}}{{/value_undefine}}
+                </td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "quantity"}}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "quantity_rev2"}}</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{total_difernce EquipmentItemlist "quantity" "quantity_rev2" }}</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItemlist }}</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
-                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal_rev EquipmentItemlist }}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal_rev EquipmentItemlist }}</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{total_price_difernce EquipmentItemlist }}  </td>
-            </tr>
-            {{#if ../pagewise}} {{#index_gt @index}}
-            <div class="page-break">
-              {{/index_gt}} {{/if}}
-              {{#if ../pagewise}}
-              {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
-            {{/each}}
-          </tbody>
-        </table>
+              </tr>
+              {{#if ../pagewise}} {{#index_gt @index}}<div class="page-break"> </div> {{/index_gt}} {{/if}}
+            </tbody>
+          </table>
+        {{/each}}
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Prev Qty: {{ calculateSumOfTotalEquipmentListingBQByGroupRevPrevQty groupedByDepartment }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Rev Qty: {{ calculateSumOfTotalEquipmentListingBQByGroupRevRevQty groupedByDepartment }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Diff Qty: {{ calculateSumOfTotalEquipmentListingBQByGroupRevDiffQty groupedByDepartment }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Price: {{ calculateSumOfTotalEquipmentListingBQByGroupRevTotPrice groupedByDepartment }}</b></p>
       </div>
     </div>
-  </div>
   </div>
 </body>
 </html>

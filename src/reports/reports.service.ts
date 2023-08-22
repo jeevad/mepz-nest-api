@@ -171,7 +171,6 @@ export class ReportsService {
     const results = await this.getQueryData(filterReportDto);
     const data: any = results;
     console.log("results : ", results);
-    console.log("results name: ", results.name);
     let project_nam;
     if (results.pname) {
       project_nam = results.pname;
@@ -183,6 +182,19 @@ export class ReportsService {
     } 
     else {
       project_nam = '';
+    }
+
+    let rev1;
+    let rev2
+    if (results.rev1 || results.rev2){
+      if(!results.rev1) rev1 = "";
+      else rev1 = results.rev1;
+      if(!results.rev2) rev2 = "";  
+      else rev2 = " - "+results.rev2;
+    }
+    else {
+      rev1 = "5.001*";
+      rev2 = "";
     }
 
     let reportname;
@@ -219,7 +231,7 @@ export class ReportsService {
         </div>
         <div style="padding-left:35px;">
           <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">`+ project_nam + `</span></b></p>
-          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: 5.001* <span style="margin-left:35px;">Date: `+ currentDateVal + `</span></p>
+          <p style='color: #304f4f; font-size: 10px; margin-top: 0px; margin-bottom: 5px;'>Revision No: `+ rev1 + rev2 +` <span style="margin-left:35px;">Date: `+ currentDateVal + `</span></p>
           <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>`+ reportname +` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
         </div>   
       </div>
@@ -744,7 +756,6 @@ export class ReportsService {
         filterReportDto,
       );
       let rev_id1 = filterReportDto.rev1;
-
       let rev_id2 = filterReportDto.rev2;
       interface EquipmentItem {
         _id: string;
@@ -758,15 +769,8 @@ export class ReportsService {
         room_name: string;
         project_name: string;
       }
-
-      const results_rev1: EquipmentItem[] = await this.projectService.getAllEquipments_unique_dsply_by_revision(
-        filterReportDto, rev_id1
-      );
-
-      const results_rev2: EquipmentItem[] = await this.projectService.getAllEquipments_unique_dsply_by_revision(
-        filterReportDto, rev_id2
-      );
-
+      const results_rev1: EquipmentItem[] = await this.projectService.getAllEquipments_unique_dsply_by_revision(filterReportDto, rev_id1);
+      const results_rev2: EquipmentItem[] = await this.projectService.getAllEquipments_unique_dsply_by_revision(filterReportDto, rev_id2);
       // Create a map from code to EquipmentItem for results_rev2
       const mapRev2: { [_id: string]: EquipmentItem } = {};
       results_rev2.forEach(item => {
@@ -780,12 +784,10 @@ export class ReportsService {
           item.cost_rev2 = matchingItem.cost;
         }
       });
-
-
       results.EquipmentItemlist = results_rev1;
-
-
-      results.reportname = 'Equipment Listing (BQ)'
+      results.rev1 = rev_id1;
+      results.rev2 = rev_id2;
+      results.reportname = 'Equipment Variation Listing (BQ)';
     }
     else if (filterReportDto.reportType === 'equipment-listing-bq') {
 
@@ -795,7 +797,6 @@ export class ReportsService {
       );
       results.EquipmentItemlist = results.results;
       results.reportname = 'Equipment Listing (BQ)';
-      console.log("Results :---",results);
     } else if (filterReportDto.reportType === 'equipment-listing-bq-with-price') {
       results = await this.projectService.getAllEquipments_unique_dsply(filterReportDto,);
       results.EquipmentItemlist = results.results;
@@ -804,7 +805,6 @@ export class ReportsService {
       const results = await this.projectService.getAllDisabledEquipments(
         filterReportDto,
       );
-      console.log("disabled-equipment-listing-bq : ", results);
     } else if (
       filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
     ) {
@@ -932,9 +932,6 @@ export class ReportsService {
       }
     }
     else if (filterReportDto.reportType === 'equipment-listing-bq-by-group-revision' || filterReportDto.reportType === 'equipment-listing-bq-with-price-by-group-revision') {
-
-      //console.log('Test555555');
-      //const resultsd1;
       interface EquipmentItemArray {
         _id: string;
         code: string;
@@ -955,24 +952,14 @@ export class ReportsService {
       let rev_id2 = filterReportDto.rev2;
       const results_val_array = await this.projectService.getAllEquipmentsbygroup(filterReportDto, rev_id1);
       const results_val_array2 = await this.projectService.getAllEquipmentsbygroup(filterReportDto, rev_id2);
-
-
-
       const results_val_array4 = results_val_array2.EquipmentItemlist;
-
       const mapRev2: { [_id: string]: EquipmentItemArray } = {};
-
       results_val_array4.forEach(item => {
         mapRev2[item._id] = item;
       });
-
-
       const equipmentItems: EquipmentItemArray[] = results_val_array.EquipmentItemlist;
       const groupedByDepartment: Record<string, EquipmentItemArray[]> = {};
-
-
       equipmentItems.forEach((item) => {
-
         const group = item.group ? item.group : 'no-group';
         if (!groupedByDepartment[group]) {
           groupedByDepartment[group] = [];
@@ -996,7 +983,9 @@ export class ReportsService {
       console.log("ffff");
       console.log(groupedByDepartment);
       results = { groupedByDepartment }
-      results.reportname = 'Equipment Listing BQ'
+      results.rev1 = rev_id1;
+      results.rev2 = rev_id2;
+      results.reportname = 'Equipment Listing BQ Group Revision';
       if (results_val_array.EquipmentItemlist[0]) {
         results.pname = results_val_array.EquipmentItemlist[0].project_name;
       }
@@ -1243,7 +1232,9 @@ export class ReportsService {
 
       results = results_rev1;
       results.pname = results.name;
-      results.reportname = 'Equipment Listing by Department'
+      results.rev1 = rev_id1;
+      results.rev2 = rev_id2;
+      results.reportname = 'Equipment Variation Listing(BQ) By Department and Room';
 
 
 
@@ -1273,7 +1264,6 @@ export class ReportsService {
       results.medical_logo3 = filterReportDto.medical_logo3;
       results.reportname = 'Equipment Listing(BQ) By Department and Room';
     } else {
-      console.log("123");
       results = await this.projectService.findOne(filterReportDto.projectId).lean();
       if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price'){
         results.reportname = 'Equipment Listing By Department and Room';
@@ -1283,6 +1273,8 @@ export class ReportsService {
         results.reportname = 'Room Listing';
       } else if(filterReportDto.reportType === 'department-list') {
         results.reportname = 'Department Listing';
+      } else if(filterReportDto.reportType === 'equipment-room-to-room-variation-with-price' || filterReportDto.reportType === 'equipment-room-to-room-variation') {
+        results.reportname = 'Equipment room to room variation';
       } else {
         results.reportname = 'Equipment Listing BQ';
       }

@@ -164,6 +164,14 @@ Equipment specs
    http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-specs&reportFormat=pdf
 
 
+Revisions :-
+--------------------------------------------------------------
+Equipment listing with revisions variation - completed
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf&rev1=1&rev2=2
+Equipment listing with revisions variation with price - doubt - total price and diff price
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-price-with-revisions-variations&reportFormat=pdf&rev1=1&rev2
+
+
 Excel (No pdf found in live) :-
 --------------------------------------------------------------
 Power requirement
