@@ -6,6 +6,12 @@ import { ApiOperation } from '@nestjs/swagger';
 export class MigrationsController {
   constructor(private readonly migrationsService: MigrationsService) {}
 
+  @Get('migrate-master')
+  @ApiOperation({ summary: 'migrate master' })
+  async migrateMaster() {
+    return await this.migrationsService.runMasterTable();
+  }
+
   @Get('group')
   @ApiOperation({ summary: 'migrate Group' })
   async migrateGroup() {
@@ -17,6 +23,4 @@ export class MigrationsController {
   async migrateDepartment() {
     return await this.migrationsService.migrateDepartment();
   }
-
-
 }

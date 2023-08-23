@@ -12,6 +12,9 @@ export class Group {
 
   @Prop({ required: true })
   name: string;
+
+  @Prop()
+  active: boolean;
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

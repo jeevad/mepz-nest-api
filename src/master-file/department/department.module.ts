@@ -14,6 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     ]),
   ],
   controllers: [DepartmentController],
-  providers: [DepartmentService]
+  providers: [DepartmentService],
+  exports: [DepartmentService],
 })
 export class DepartmentModule {}
