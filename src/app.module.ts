@@ -17,10 +17,6 @@ import { ProjectModule } from './project/project.module';
 import { EquipmentBrandModule } from './master-file/equipment-brand/equipment-brand.module';
 
 import { AuthModule } from './auth/auth.module';
-import { PastTransactionModule } from './project/past-transaction/past-transaction.module';
-import { EquipmentAllocationModule } from './project/equipment-allocation/equipment-allocation.module';
-import { CurrentTransactionModule } from './project/current-transaction/current-transaction.module';
-import { EquipmentSummaryModule } from './project/equipment-summary/equipment-summary.module';
 import { ReportsModule } from './reports/reports.module';
 import { AdmingroupModule } from './administrator/admingroup/admingroup.module';
 import { UsersModule } from './administrator/users/users.module';
@@ -76,10 +72,6 @@ import { MigrationsModule } from './migrations/migrations.module';
     ProjectModule,
     AdmingroupModule,
     EquipmentBrandModule,
-    EquipmentAllocationModule,
-    EquipmentSummaryModule,
-    CurrentTransactionModule,
-    PastTransactionModule,
     ReportsModule,
     AccessLevelModule,
     // Register the ClsModule,
