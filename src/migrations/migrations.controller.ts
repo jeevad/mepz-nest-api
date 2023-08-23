@@ -6,9 +6,9 @@ import { ApiOperation } from '@nestjs/swagger';
 export class MigrationsController {
   constructor(private readonly migrationsService: MigrationsService) {}
 
-  @Get('pdf')
-  @ApiOperation({ summary: 'pdf example' })
-  async generatePdf2(@Res() res) {
-    return await this.migrationsService.doSomeQuery();
+  @Get('group')
+  @ApiOperation({ summary: 'migrate Group' })
+  async migrateGroup() {
+    return await this.migrationsService.migrateGroup();
   }
 }

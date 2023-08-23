@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class MigrationsService {
-  constructor(@InjectConnection('mysql') private connection: Connection) {}
+  constructor(@InjectDataSource('mysql') private connection: DataSource) {}
 
-  async doSomeQuery() {
-    return  await this.connection.query('SELECT * FROM tb_group limit 5;');
+  async migrateGroup() {
+    const results = await this.connection.query(
+      'SELECT * FROM tb_group limit 5;',
+    );
+    console.log('result', results);
+
+    return results;
   }
-  getEntities() {}
 }
