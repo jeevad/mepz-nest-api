@@ -11,4 +11,12 @@ export class MigrationsController {
   async migrateGroup() {
     return await this.migrationsService.migrateGroup();
   }
+
+  @Get('department')
+  @ApiOperation({ summary: 'migrate Department' })
+  async migrateDepartment() {
+    return await this.migrationsService.migrateDepartment();
+  }
+
+
 }
