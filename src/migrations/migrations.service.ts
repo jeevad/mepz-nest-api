@@ -24,9 +24,7 @@ export class MigrationsService {
     private readonly utilityService: UtilityService,
     private readonly equipmentService: EquipmentService,
     private readonly packageService: PackageService,
-    private readonly classificationService: ClassificationService,
-    //private readonly equipmentBrandService: EquipmentBrandService,
-    
+    private readonly classificationService: ClassificationService, //private readonly equipmentBrandService: EquipmentBrandService,
   ) {}
 
   async migrateGroup() {
@@ -64,8 +62,7 @@ export class MigrationsService {
       },
       {
         name: 'tb_utility',
-        fields:
-          'u_code as code, u_desc as name,  date_created as created',
+        fields: 'u_code as code, u_desc as name,  date_created as created',
         service: 'utilityService',
       },
       {
@@ -80,7 +77,7 @@ export class MigrationsService {
           'hcl_code as code, hcl_desc as name, inactive as active, date_created as created, date_created as createdAt',
         service: 'classificationService',
       },
-      
+
       {
         name: 'tb_room',
         fields:
@@ -91,17 +88,15 @@ export class MigrationsService {
       {
         name: 'tb_hs_company',
         fields:
-          'com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, \'null\') AS logo1, IFNULL(pic_path, \'0\') as show1, IFNULL(pic_path2, \'null\') as logo2, IFNULL(pic_path2, \'0\') as show2,IFNULL(pic_path3, \'null\') as logo3, IFNULL(pic_path3, \'0\') as show3,IFNULL(mobile_no, \'0000000000\') as phone, IFNULL(mobile_no, \'0000000000\') as mobile, fax_no as fax, IFNULL(emailadd, \'null\') as email, IFNULL(contact, \'Admin\') as contact, date_created as created',
+          "com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, 'null') AS logo1, IFNULL(pic_path, '0') as show1, IFNULL(pic_path2, 'null') as logo2, IFNULL(pic_path2, '0') as show2,IFNULL(pic_path3, 'null') as logo3, IFNULL(pic_path3, '0') as show3,IFNULL(mobile_no, '0000000000') as phone, IFNULL(mobile_no, '0000000000') as mobile, fax_no as fax, IFNULL(emailadd, 'null') as email, IFNULL(contact, 'Admin') as contact, date_created as created",
         service: 'companyService',
       },
       {
         name: 'tb_eq_gen_desc',
         fields:
-        'gd_code as code, gd_desc as name, cost, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort, date_created as createdAt, remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne',
+          'gd_code as code, gd_desc as name, cost, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort, date_created as createdAt, remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne',
         service: 'equipmentService',
       },
-      
-  
     ];
     tables.forEach(async (table) => {
       await this.runMasterCreateQuery(table);
@@ -117,6 +112,15 @@ export class MigrationsService {
     results.forEach((element) => {
       element.active = !element.active;
       this[table.service].create(element);
+    });
+
+    return 'success';
+  }
+  async migrateProject() {
+    const projects = await this.connection.query(`SELECT * FROM 'proj`);
+    projects.forEach((element) => {
+      element.active = !element.active;
+      this['projectService'].create(element);
     });
 
     return 'success';

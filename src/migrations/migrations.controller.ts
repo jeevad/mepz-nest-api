@@ -23,4 +23,10 @@ export class MigrationsController {
   async migrateDepartment() {
     return await this.migrationsService.migrateDepartment();
   }
+
+  @Get('migrate-project')
+  @ApiOperation({ summary: 'migrate master' })
+  async migrateProject() {
+    return await this.migrationsService.migrateProject();
+  }
 }
