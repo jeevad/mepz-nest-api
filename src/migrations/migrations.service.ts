@@ -9,7 +9,7 @@ import { UtilityService } from 'src/master-file/utility/utility.service';
 import { EquipmentService } from 'src/master-file/equipment/equipment.service';
 import { PackageService } from 'src/master-file/package/package.service';
 import { ClassificationService } from 'src/master-file/classification/classification.service';
-import { EquipmentBrandService } from 'src/master-file/equipment-brand/equipment-brand.service';
+//import { EquipmentBrandService } from 'src/master-file/equipment-brand/equipment-brand.service';
 import { DataSource } from 'typeorm';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class MigrationsService {
     private readonly equipmentService: EquipmentService,
     private readonly packageService: PackageService,
     private readonly classificationService: ClassificationService,
-    private readonly equipmentBrandService: EquipmentBrandService,
+    //private readonly equipmentBrandService: EquipmentBrandService,
     
   ) {}
 
@@ -56,23 +56,11 @@ export class MigrationsService {
           'dep_code as code, dep_desc as name, inactive as active, date_created as createdAt',
         service: 'departmentService',
       },
-   /*   {
-        name: 'tb_room',
-        fields:
-          'rm_code as code, rm_desc as name, inactive as active, date_created as createdAt',
-        service: 'roomsService',
-      },*/
       {
         name: 'tb_prj_currency',
         fields:
           'h_code as code, cur_code as name, cur_code as symbol, date_created as created',
         service: 'currencyService',
-      },
-      {
-        name: 'tb_hs_company',
-        fields:
-          'com_code as code, com_name as name, cur_code as inactive, addr1 as address1, addr2 as address2, city, state, postal, country, pic_path as logo1, pic_path as show1, pic_path2 as logo2, pic_path2 as show2, pic_path3 as logo3, pic_path3 as show3, contact, tel_no as phone, mobile_no as mobile, fax_no as fax, emailadd as email, date_created as created',
-        service: 'companyService',
       },
       {
         name: 'tb_utility',
@@ -92,12 +80,27 @@ export class MigrationsService {
           'hcl_code as code, hcl_desc as name, inactive as active, date_created as created, date_created as createdAt',
         service: 'classificationService',
       },
+      
+      {
+        name: 'tb_room',
+        fields:
+          'rm_code as code, rm_desc as name, inactive as active, date_created as createdAt,0 as floor',
+        service: 'roomsService',
+      },
+      /**/
+      {
+        name: 'tb_hs_company',
+        fields:
+          'com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, \'null\') AS logo1, IFNULL(pic_path, \'0\') as show1, IFNULL(pic_path2, \'null\') as logo2, IFNULL(pic_path2, \'0\') as show2,IFNULL(pic_path3, \'null\') as logo3, IFNULL(pic_path3, \'0\') as show3,IFNULL(mobile_no, \'0000000000\') as phone, IFNULL(mobile_no, \'0000000000\') as mobile, fax_no as fax, IFNULL(emailadd, \'null\') as email, IFNULL(contact, \'Admin\') as contact, date_created as created',
+        service: 'companyService',
+      },
       {
         name: 'tb_eq_gen_desc',
         fields:
         'gd_code as code, gd_desc as name, cost, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort, date_created as createdAt, remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne',
         service: 'equipmentService',
       },
+      
   
     ];
     tables.forEach(async (table) => {

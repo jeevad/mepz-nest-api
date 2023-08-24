@@ -18,5 +18,6 @@ import {
   ],
   controllers: [EquipmentBrandController],
   providers: [EquipmentBrandService],
+  exports: [EquipmentBrandService],
 })
 export class EquipmentBrandModule {}

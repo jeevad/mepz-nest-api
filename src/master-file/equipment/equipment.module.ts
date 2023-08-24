@@ -15,5 +15,6 @@ import { Equipment, EquipmentSchema } from 'src/schemas/equipment.schema';
   ],
   controllers: [EquipmentController],
   providers: [EquipmentService],
+  exports: [EquipmentService],
 })
 export class EquipmentModule {}

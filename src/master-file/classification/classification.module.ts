@@ -18,5 +18,6 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   controllers: [ClassificationController],
   providers: [ClassificationService],
+  exports: [ClassificationService],
 })
 export class ClassificationModule {}

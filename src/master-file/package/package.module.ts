@@ -15,5 +15,6 @@ import { Package, PackageSchema } from 'src/schemas/package.schema';
   ],
   controllers: [PackageController],
   providers: [PackageService],
+  exports: [PackageService],
 })
 export class PackageModule {}
