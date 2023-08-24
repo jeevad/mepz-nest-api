@@ -41,3 +41,4 @@ bkp/
 # Ignore folders inside assets
 src/assets/companyEditPageImages
 src/assets/equipmentEditPageImages
+.env
