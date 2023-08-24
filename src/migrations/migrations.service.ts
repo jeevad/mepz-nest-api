@@ -91,7 +91,7 @@ export class MigrationsService {
       {
         name: 'tb_hs_company',
         fields:
-          'com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, \'null\') AS logo1, IFNULL(pic_path, \'0\') as show1, IFNULL(pic_path2, \'null\') as logo2, IFNULL(pic_path2, \'0\') as show2,IFNULL(pic_path3, \'null\') as logo3, IFNULL(pic_path3, \'0\') as show3,IFNULL(mobile_no, \'0000000000\') as phone, IFNULL(mobile_no, \'0000000000\') as mobile, fax_no as fax, IFNULL(emailadd, \'null\') as email, IFNULL(contact, \'Admin\') as contact, date_created as created',
+          'com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, \'null\') AS logo1, IFNULL(pic_path, \'0\') as show1, IFNULL(pic_path2, \'null\') as logo2, IFNULL(pic_path2, \'0\') as show2,IFNULL(pic_path3, \'null\') as logo3, IFNULL(pic_path3, \'0\') as show3,IFNULL(mobile_no, \'0000000000\') as phone, IFNULL(mobile_no, \'0000000000\') as mobile, fax_no as fax, IFNULL(emailadd, \'null\') as email, IFNULL(contact, \'Null\') as contact, date_created as created',
         service: 'companyService',
       },
       {
