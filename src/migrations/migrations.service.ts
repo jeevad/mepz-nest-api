@@ -91,13 +91,14 @@ export class MigrationsService {
       {
         name: 'tb_hs_company',
         fields:
-          'com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, \'null\') AS logo1, IFNULL(pic_path, \'0\') as show1, IFNULL(pic_path2, \'null\') as logo2, IFNULL(pic_path2, \'0\') as show2,IFNULL(pic_path3, \'null\') as logo3, IFNULL(pic_path3, \'0\') as show3,IFNULL(mobile_no, \'0000000000\') as phone, IFNULL(mobile_no, \'0000000000\') as mobile, fax_no as fax, IFNULL(emailadd, \'null\') as email, IFNULL(contact, \'Null\') as contact, date_created as created',
+          'com_code as code, com_name as name, inactive as inactive, addr1 as address1, addr2 as address2, city,  state as state, postal, country,IFNULL(pic_path, \'null\') AS logo1, 0 as show1, IFNULL(pic_path2, \'null\') as logo2, 0 as show2,IFNULL(pic_path3, \'null\') as logo3, 0 as show3,IFNULL(mobile_no, \'0000000000\') as phone, IFNULL(mobile_no, \'0000000000\') as mobile, fax_no as fax, IFNULL(emailadd, \'null\') as email, IFNULL(contact, \'Null\') as contact, date_created as created',
         service: 'companyService',
       },
       {
         name: 'tb_eq_gen_desc',
         fields:
-          'gd_code as code, gd_desc as name, cost, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort, date_created as createdAt, remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne',
+          'gd_code as code, gd_desc as name, cost,brands, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort,  remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne,typical_power_consumption as typicalPowerConsumption,water,drainage,ventilation,gas,typical_weight,typical_floor_loading,typical_ceiling_loading,radiation_shielding,corridor_clearance,control_room,tech_room,chiller,file2,file3',
+          //date_created as createdAt, typicalPowerConsumption
         service: 'equipmentService',
       },
     ];
@@ -113,7 +114,17 @@ export class MigrationsService {
       `SELECT ${table.fields} FROM ${table.name}`,
     );
     results.forEach((element) => {
+      if(table.name=='tb_eq_gen_desc')
+      {
+        element.equipmentPackage={"package":element.package,"packageRemarks":element.package_remarks};
+        element.equipmentPower={"heatDissipationPower":element.heat_dissipation,"data":element.heat_dissipation,"bss":element.bss_port,"typicalPowerConsumption":element.typicalPowerConsumption,"typeOfPower":element.equipmentPower,"waterInlet":element.water,"drainage":element.drainage,"ventilationExhaust":element.ventilation,"medicalGas":element.gas,"typicalWeight":element.typical_weight,"typicalFloorLoading":element.typical_floor_loading,"typicalCeilingLoading":element.typical_ceiling_loading,"radiationShielding":element.radiation_shielding,"corridorClearance":element.corridor_clearance,"controlRoom":element.control_room,"techRoom":element.tech_room,"chiller":element.chiller,"fileOne":element.fileOne,"fileTwo":element.file2,"fileThree":element.file3,"powerRemarks":element.remarks};
+        element.equipmentLabel={"label":element.equipmentLabel,"equipmentCode":element.code};
+        element.brands={"brands":element.brands};
+       
+      }
       element.active = !element.active;
+      console.log("Testing1")
+      console.log(element)
       this[table.service].create(element);
     });
 
@@ -138,15 +149,17 @@ export class MigrationsService {
             element3.equipments= equipment;
           }
 
-          this['projectService'].create(element);
+          
         }
+        this['projectService'].create(element);
     }
 
 
 
     
 
-    return projects;
+    //return projects;
+    return "success";
   }
   async get_department_by_id(h_code) {
     const department =  await this.connection.query("SELECT tb_prj_dept.h_dep_id as h_dep_id, tb_prj_dept.prj_dep_code as code, tb_prj_dept.prj_dep_desc as name, tb_prj_dept.date_created as createdAt FROM `tb_prj_dept` JOIN `tb_department` ON `tb_department`.`dep_code` = `tb_prj_dept`.`dep_code` WHERE `tb_prj_dept`.`h_code` ='"+h_code+"'");

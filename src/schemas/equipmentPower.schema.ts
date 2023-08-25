@@ -41,7 +41,7 @@ export class EquipmentPower {
   medicalGas: string;
 
   @Prop()
-  typicalWeight: number;
+  typicalWeight: string;
 
   @Prop()
   typicalFloorLoading: string;

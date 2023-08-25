@@ -13,6 +13,10 @@ import {
   EquipmentLabel,
   EquipmentLabelSchema,
 } from './equipmentLabel.schema';
+import {
+  EquipmentBrand,
+  EquipmentBrandSchema,
+} from './equipmentBrand.schema';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type EquipmentDocument = Equipment & Document;
@@ -37,7 +41,8 @@ export class Equipment {
   @Prop({ required: true })
   code: string;
 
-  @Prop({ required: true })
+  //@Prop({ required: true })
+  @Prop()
   name: string;
 
   @Prop({ required: true })
@@ -46,16 +51,20 @@ export class Equipment {
   @Prop()
   active: boolean;
   
-  @Prop({ required: true })
+  //@Prop({ required: true })
+  @Prop()
   markUp: string;
 
-  @Prop({ required: true })
+  //@Prop({ required: true })
+  @Prop()
   heatDissipation: string;
 
-  @Prop({ required: true })
+ // @Prop({ required: true })
+  @Prop()
   ictPort: string;
 
-  @Prop({ required: true })
+ // @Prop({ required: true })
+  @Prop()
   bssPort: string;
 
   @Prop()
@@ -78,6 +87,10 @@ export class Equipment {
   @Prop({ type: EquipmentLabelSchema })
   @Type(() => EquipmentLabel)
   equipmentLabel: EquipmentLabel; 
+
+  @Prop({ type: [EquipmentBrandSchema] })
+  @Type(() => EquipmentBrand)
+  brands: EquipmentBrand[];
 
 }
 
