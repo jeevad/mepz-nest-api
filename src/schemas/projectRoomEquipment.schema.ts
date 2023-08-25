@@ -63,7 +63,8 @@ export class ProjectRoomEquipment {
   @Prop()
   utility: string; 
   
-  @Prop({ required: true })
+  //@Prop({ required: true })
+  @Prop()
   floor: string;
 
   @Prop()
