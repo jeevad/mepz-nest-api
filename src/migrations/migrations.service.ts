@@ -184,11 +184,7 @@ export class MigrationsService {
         const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
         //element2.rooms = rooms;
         for (const element3 of rooms) {
-          const equipment = await this.get_equipment_by_rooms(
-            element.code,
-            element3.rm_code,
-            project_id,
-          );
+          this.get_equipment_by_rooms(element, element2, element3, project_id);
         }
       }
     }
@@ -215,19 +211,26 @@ export class MigrationsService {
 
     return rooms;
   }
-  async get_equipment_by_rooms(h_code, room_code, project_id) {
+  async get_equipment_by_rooms(element, element2, element3, project_id) {
     const equipment = await this.connection.query(
       "SELECT tb_prj_prop_line_tmp.qty as quantity, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.apq as apq, tb_eq_gen_desc.cost as cost, tb_prj_prop_line_tmp.date_created as updatedAt, tb_prj_dept.floorlevel_tx as floor FROM `tb_prj_dept` JOIN `tb_prj_dept_line` ON `tb_prj_dept_line`.`h_dep_id` = `tb_prj_dept`.`h_dep_id` LEFT JOIN `tb_prj_prop_line_tmp` ON `tb_prj_prop_line_tmp`.`h_dep_line` = `tb_prj_dept_line`.`h_dep_line` LEFT JOIN `tb_eq_gen_desc` ON `tb_eq_gen_desc`.`gd_code` = `tb_prj_prop_line_tmp`.`gd_code` WHERE `tb_prj_dept`.`h_code` = '" +
-        h_code +
+        element.h_code +
         "' AND `tb_prj_dept_line`.`disabled` =0  AND `tb_prj_dept_line`.`rm_code` ='" +
-        room_code +
+        element3.rm_code +
         "' ORDER BY `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_eq_gen_desc`.`gd_desc`",
     );
     for (const element_equ of equipment) {
-      element_equ.project_id = project_id;
-      element_equ.room_code = room_code;
-      element_equ.department_code = h_code;
-      this['projectService'].create(element_equ);
+      element_equ.projectId = project_id;
+      element_equ.projectCode = element.h_code;
+      element_equ.projectName = element.name;;
+      // element_equ.departmentId = project_id;
+      element_equ.departmentCode = element2.h_dep_id;
+      element_equ.departmentName = element2.h_dep_id;;
+      //element_equ.roomId = element3.rm_code;
+      element_equ.roomCode = element3.rm_code;
+      element_equ.roomName = element3.anme;
+     // this['projectService'].createProjectEquipment(element_equ);
+     
     }
 
     //floor
