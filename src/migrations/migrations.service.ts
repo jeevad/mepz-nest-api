@@ -168,6 +168,7 @@ export class MigrationsService {
       for (const element2 of department) {
         const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
         element2.rooms = rooms;
+        /*
         for (const element3 of rooms) {
           const equipment = await this.get_equipment_by_rooms(
             element.code,
@@ -175,8 +176,21 @@ export class MigrationsService {
           );
           element3.equipments = equipment;
         }
+        */
       }
-      this['projectService'].create(element);
+      let project_id = this['projectService'].create(element);
+
+      for (const element2 of department) {
+        const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
+        //element2.rooms = rooms;
+        for (const element3 of rooms) {
+          const equipment = await this.get_equipment_by_rooms(
+            element.code,
+            element3.rm_code,
+            project_id,
+          );
+        }
+      }
     }
 
     //return projects;
@@ -201,7 +215,7 @@ export class MigrationsService {
 
     return rooms;
   }
-  async get_equipment_by_rooms(h_code, room_code) {
+  async get_equipment_by_rooms(h_code, room_code, project_id) {
     const equipment = await this.connection.query(
       "SELECT tb_prj_prop_line_tmp.qty as quantity, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.apq as apq, tb_eq_gen_desc.cost as cost, tb_prj_prop_line_tmp.date_created as updatedAt, tb_prj_dept.floorlevel_tx as floor FROM `tb_prj_dept` JOIN `tb_prj_dept_line` ON `tb_prj_dept_line`.`h_dep_id` = `tb_prj_dept`.`h_dep_id` LEFT JOIN `tb_prj_prop_line_tmp` ON `tb_prj_prop_line_tmp`.`h_dep_line` = `tb_prj_dept_line`.`h_dep_line` LEFT JOIN `tb_eq_gen_desc` ON `tb_eq_gen_desc`.`gd_code` = `tb_prj_prop_line_tmp`.`gd_code` WHERE `tb_prj_dept`.`h_code` = '" +
         h_code +
@@ -209,6 +223,13 @@ export class MigrationsService {
         room_code +
         "' ORDER BY `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_eq_gen_desc`.`gd_desc`",
     );
+    for (const element_equ of equipment) {
+      element_equ.project_id = project_id;
+      element_equ.room_code = room_code;
+      element_equ.department_code = h_code;
+      this['projectService'].create(element_equ);
+    }
+
     //floor
     //"SELECT `tb_prj_prop_line_tmp`.`gd_code`, `tb_prj_prop_line_tmp`.`qty` as quantity, `tb_prj_prop_line_tmp`.`tmp_line_id`, `tb_prj_prop_line_tmp`.`date_created`, `tb_prj_prop_line_tmp`.`date_gd_code_replace`, `tb_prj_dept_line`.`prj_rm_code`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_prj_dept_line`.`h_dep_line`, `tb_prj_dept`.`prj_dep_code`, `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept`.`h_dep_id`, `tb_prj_dept`.`floorlevel_tx`, `tb_eq_gen_desc`.`gd_desc` FROM `tb_prj_dept` JOIN `tb_prj_dept_line` ON `tb_prj_dept_line`.`h_dep_id` = `tb_prj_dept`.`h_dep_id` LEFT JOIN `tb_prj_prop_line_tmp` ON `tb_prj_prop_line_tmp`.`h_dep_line` = `tb_prj_dept_line`.`h_dep_line` LEFT JOIN `tb_eq_gen_desc` ON `tb_eq_gen_desc`.`gd_code` = `tb_prj_prop_line_tmp`.`gd_code` WHERE `tb_prj_dept`.`h_code` = '"+h_code+"' AND `tb_prj_dept_line`.`disabled` =0  AND `tb_prj_dept_line`.`rm_code` ='"+room_code+"' ORDER BY `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_eq_gen_desc`.`gd_desc`"
     //
