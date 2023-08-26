@@ -19,8 +19,7 @@ export class ProjectEquipment {
 
   @Prop()
   equipmentId: string;
-  @Prop()
-  equipmentId: string;
+
   @Prop()
   projectId: string;
   @Prop()
