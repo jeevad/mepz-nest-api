@@ -29,4 +29,9 @@ export class MigrationsController {
   async migrateProject() {
     return await this.migrationsService.migrateProject();
   }
+  @Get('migrate-project-eqp')
+  @ApiOperation({ summary: 'migrate master' })
+  async migrateProjectEqp() {
+    // return await this.migrationsService.migrateProjectEqp();
+  }
 }

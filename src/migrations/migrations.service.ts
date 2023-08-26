@@ -158,37 +158,92 @@ export class MigrationsService {
   }
   async migrateProject() {
     const projects = await this.connection.query(
-      "SELECT false as isTemplate, h_code as code,h_short_name as name,h_full_name as fullName ,owner as clientOwner ,contract_no as contractNo ,bed_no as noOfBeds ,hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, date_created as createdAt , addr1 as address1, addr2 as address2, city , country, date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, state  FROM `tb_hosp_geninfo` WHERE `id` IN('4') ORDER BY `h_short_name`",
+      `SELECT false as isTemplate, h_code as code,h_short_name as name,h_full_name as fullName,
+      owner as clientOwner ,contract_no as contractNo ,bed_no as noOfBeds ,
+      hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, 
+      date_created as createdAt , addr1 as address1, addr2 as address2, city , country, 
+      date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, 
+      state  FROM tb_hosp_geninfo WHERE id IN('4') ORDER BY h_short_name`,
     );
     //SELECT false as isTemplate, h_code as code,h_short_name as name,h_full_name as fullName ,owner as clientOwner ,contract_no as contractNo ,bed_no as noOfBeds ,hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, date_created as createdAt , addr1 as address1, addr2 as address2, city , country, date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, state  FROM `tb_hosp_geninfo` WHERE `id` IN('4', '140', '7', '42', '8', '9', '126', '148', '130', '83', '86', '127', '55', '11', '74', '81', '82', '51', '119', '35', '6', '13', '38', '132', '15', '12', '118', '18', '19', '117', '22', '142', '124', '121', '122', '70', '80', '50', '120', '147', '128', '103', '134', '137', '153', '72', '141', '139', '138', '99', '25', '37') ORDER BY `h_short_name`
 
-    for (const element of projects) {
-      const department = await this.get_department_by_id(element.code);
-      element.departments = department;
+    for (const project of projects) {
+      const department = await this.get_department_by_id(project.code);
+      project.departments = department;
       for (const element2 of department) {
         const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
         element2.rooms = rooms;
-        /*
-        for (const element3 of rooms) {
-          const equipment = await this.get_equipment_by_rooms(
-            element.code,
-            element3.rm_code,
-          );
-          element3.equipments = equipment;
-        }
-        */
       }
-      let project_id = this['projectService'].create(element);
+      const res = await this['projectService'].create(project);
+      project.projectId = res._id;
 
-      for (const element2 of department) {
-        const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
-        //element2.rooms = rooms;
-        for (const element3 of rooms) {
-          this.get_equipment_by_rooms(element, element2, element3, project_id);
-        }
-      }
+      await this.migrateProjectEqp(project);
+      // for (const element2 of department) {
+      //   const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
+      //   //element2.rooms = rooms;
+      //   for (const element3 of rooms) {
+      //     this.get_equipment_by_rooms(element, element2, element3, project_id);
+      //   }
+      // }
     }
 
+    //return projects;
+    return 'success';
+  }
+  async migrateProjectEqp(project) {
+    console.log('project.code', project.code);
+
+    const h_code = '';
+
+    // let query = `SELECT tb_prj_prop_line_tmp.gd_code, tb_prj_prop_line_tmp.package,
+    // sum(tb_prj_prop_line_tmp.apq) as apq, sum(tb_prj_prop_line_tmp.fpq) as fpq, tb_eq_gen_desc.gd_desc,
+    // sum(tb_prj_prop_line_tmp.qty) as total_qty, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code,
+    // tb_eq_gen_desc.package as ori_package, tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs
+    // FROM tb_prj_prop_line_tmp
+    // JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
+    // JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_line = tb_prj_prop_line_tmp.h_dep_line
+    // WHERE tb_prj_prop_line_tmp.h_code = '${project.code}'
+    // AND tb_prj_dept_line.disabled =0
+    // GROUP BY tb_prj_prop_line_tmp.gd_code, tb_eq_gen_desc.gd_desc, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code, tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs
+    // ORDER BY tb_prj_prop_line_tmp.gd_code`;
+
+    // query = `SELECT
+    // tb_prj_dept.h_dep_id as h_dep_id, tb_prj_dept.prj_dep_code as departmentCode, tb_prj_dept.prj_dep_desc as departmentName,
+    // tb_prj_dept_line.prj_rm_desc as roomName ,tb_prj_dept_line.prj_rm_code as roomCode,
+    // tb_prj_prop_line_tmp.qty as quantity, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.gd_code as code,
+    // tb_prj_prop_line_tmp.apq as apq, tb_eq_gen_desc.cost as cost, tb_prj_prop_line_tmp.date_created as createdAt,
+    // tb_prj_dept.floorlevel_tx as floor
+    // FROM tb_prj_dept
+    // JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_id = tb_prj_dept.h_dep_id
+    // LEFT JOIN tb_prj_prop_line_tmp ON tb_prj_prop_line_tmp.h_dep_line = tb_prj_dept_line.h_dep_line
+    // LEFT JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
+    // WHERE tb_prj_dept.h_code = '${project.code}' AND tb_prj_dept_line.disabled =0
+    // ORDER BY tb_prj_dept.prj_dep_desc, tb_prj_dept_line.prj_rm_desc, tb_eq_gen_desc.gd_desc limit 5`;
+
+    const query = `SELECT 
+    tb_prj_dept.h_dep_id as h_dep_id, tb_prj_dept.prj_dep_code as departmentCode, tb_prj_dept.prj_dep_desc as departmentName,
+    tb_prj_dept_line.prj_rm_desc as roomName ,tb_prj_dept_line.prj_rm_code as roomCode, tb_prj_dept_line.disabled as roomActive,
+    tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.package, tb_prj_prop_line_tmp.apq as apq, 
+    tb_prj_prop_line_tmp.fpq as fpq, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.qty as qty, 
+    tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code, tb_eq_gen_desc.package, 
+    tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs
+    FROM tb_prj_prop_line_tmp
+    JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
+    JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_line = tb_prj_prop_line_tmp.h_dep_line
+    JOIN tb_prj_dept ON tb_prj_dept_line.h_dep_id = tb_prj_dept.h_dep_id
+    WHERE tb_prj_prop_line_tmp.h_code = '${project.code}'
+    ORDER BY tb_prj_prop_line_tmp.gd_code`;
+
+    const equipments = await this.connection.query(query);
+
+    for (const element_equ of equipments) {
+      element_equ.projectId = project.projectId;
+      element_equ.projectCode = project.h_code;
+      element_equ.projectName = project.name;
+      element_equ.roomActive = !element_equ.roomActive;
+      await this['projectService'].createProjectEquipment(element_equ);
+      console.log('element_equ.code', element_equ.code);
+    }
     //return projects;
     return 'success';
   }
@@ -217,19 +272,19 @@ export class MigrationsService {
         element.code +
         "' AND `tb_prj_dept_line`.`disabled` =0  AND `tb_prj_dept_line`.`rm_code` ='" +
         element3.rm_code +
-        "' ORDER BY `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_eq_gen_desc`.`gd_desc`",
+        "' ORDER BY `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_eq_gen_desc`.`gd_desc` limit 5",
     );
     for (const element_equ of equipment) {
       element_equ.projectId = project_id;
       element_equ.projectCode = element.h_code;
-      element_equ.projectName = element.name;;
+      element_equ.projectName = element.name;
       // element_equ.departmentId = project_id;
       element_equ.departmentCode = element2.h_dep_id;
-      element_equ.departmentName = element2.h_dep_id;;
+      element_equ.departmentName = element2.h_dep_id;
       //element_equ.roomId = element3.rm_code;
       element_equ.roomCode = element3.rm_code;
       element_equ.roomName = element3.anme;
-      this['projectService'].createProjectEquipment(element_equ);
+      // this['projectService'].createProjectEquipment(element_equ);
       console.log(element_equ);
     }
 

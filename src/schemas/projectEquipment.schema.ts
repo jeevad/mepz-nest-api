@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Transform, Type } from 'class-transformer';
 import { EquipmentLabelSchema, EquipmentLabel } from './equipmentLabel.schema';
@@ -36,10 +36,16 @@ export class ProjectEquipment {
 
   @Prop()
   roomId: string;
+
+  @Prop()
+  roomNo: string;
+
   @Prop()
   roomCode: string;
   @Prop()
   roomName: string;
+  @Prop()
+  roomActive: boolean;
 
   @Prop()
   equipmentId4: string;
@@ -90,17 +96,26 @@ export class ProjectEquipment {
   @Prop()
   group: string;
 
+  @Prop()
+  specs: string;
+
+  @Prop(raw({}))
+  brands: Record<string, any>;
+
+  @Prop()
+  markupPer: string; // TODO: verify the field
+
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)
-  EquipmentPackage: EquipmentPackage;
+  equipmentPackage: EquipmentPackage;
 
   @Prop({ type: EquipmentPowerSchema })
   @Type(() => EquipmentPower)
-  EquipmentPowerRequirement: EquipmentPower;
+  equipmentPowerRequirement: EquipmentPower;
 
   @Prop({ type: EquipmentLabelSchema })
   @Type(() => EquipmentLabel)
-  EquipmentLabel: EquipmentLabel;
+  equipmentLabel: EquipmentLabel;
 
   // @Prop({ required: true })
   // isDeleted: boolean;
