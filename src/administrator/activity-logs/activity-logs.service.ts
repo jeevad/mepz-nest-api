@@ -24,10 +24,10 @@ export class ActivityLogsService {
 
   logAction(action: string, requestData: any = '') {
     const user = this.cls.get('user');
-    const log = { action, user, requestData };
-    console.log('log', log);
+    // const log = { action, user, requestData };
+    // console.log('log', log);
 
-    this.create(log);
+    // this.create(log);
   }
   async findAll(paginationParams: PaginationParams) {
     const filters: FilterQuery<ActivityLogDocument> = paginationParams.startId
