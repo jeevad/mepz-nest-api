@@ -214,7 +214,7 @@ export class MigrationsService {
   async get_equipment_by_rooms(element, element2, element3, project_id) {
     const equipment = await this.connection.query(
       "SELECT tb_prj_prop_line_tmp.qty as quantity, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.apq as apq, tb_eq_gen_desc.cost as cost, tb_prj_prop_line_tmp.date_created as updatedAt, tb_prj_dept.floorlevel_tx as floor FROM `tb_prj_dept` JOIN `tb_prj_dept_line` ON `tb_prj_dept_line`.`h_dep_id` = `tb_prj_dept`.`h_dep_id` LEFT JOIN `tb_prj_prop_line_tmp` ON `tb_prj_prop_line_tmp`.`h_dep_line` = `tb_prj_dept_line`.`h_dep_line` LEFT JOIN `tb_eq_gen_desc` ON `tb_eq_gen_desc`.`gd_code` = `tb_prj_prop_line_tmp`.`gd_code` WHERE `tb_prj_dept`.`h_code` = '" +
-        element.h_code +
+        element.code +
         "' AND `tb_prj_dept_line`.`disabled` =0  AND `tb_prj_dept_line`.`rm_code` ='" +
         element3.rm_code +
         "' ORDER BY `tb_prj_dept`.`prj_dep_desc`, `tb_prj_dept_line`.`prj_rm_desc`, `tb_eq_gen_desc`.`gd_desc`",
@@ -229,8 +229,8 @@ export class MigrationsService {
       //element_equ.roomId = element3.rm_code;
       element_equ.roomCode = element3.rm_code;
       element_equ.roomName = element3.anme;
-     // this['projectService'].createProjectEquipment(element_equ);
-     
+      this['projectService'].createProjectEquipment(element_equ);
+      console.log(element_equ);
     }
 
     //floor
