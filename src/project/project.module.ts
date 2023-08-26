@@ -4,6 +4,10 @@ import { ProjectController } from './project.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Project, ProjectSchema } from 'src/schemas/project.schema';
 import { ActivityLogsModule } from 'src/administrator/activity-logs/activity-logs.module';
+import {
+  ProjectEquipment,
+  ProjectEquipmentSchema,
+} from 'src/schemas/projectEquipment.schema';
 
 @Module({
   imports: [
@@ -12,6 +16,10 @@ import { ActivityLogsModule } from 'src/administrator/activity-logs/activity-log
       {
         name: Project.name,
         schema: ProjectSchema,
+      },
+      {
+        name: ProjectEquipment.name,
+        schema: ProjectEquipmentSchema,
       },
     ]),
   ],
