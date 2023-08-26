@@ -883,7 +883,7 @@ export class ProjectService {
     let group_array: Array<any> = [];
     if (filterReportDto.group && rev_id != '') {
       group_array = filterReportDto.group;
-      let pipeline: any = [
+      const pipeline: any = [
         {
           $match: {
             _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
@@ -934,7 +934,7 @@ export class ProjectService {
       return results;
     } else if (filterReportDto.group) {
       group_array = filterReportDto.group;
-      let pipeline: any = [
+      const pipeline: any = [
         {
           $match: {
             _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
@@ -983,7 +983,7 @@ export class ProjectService {
       const results = await this.ProjectModel.aggregate(pipeline);
       return results;
     } else {
-      let pipeline: any = [
+      const pipeline: any = [
         {
           $match: {
             _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
@@ -1046,7 +1046,7 @@ export class ProjectService {
   ) {
     mongoose.set('debug', true);
 
-    let pipeline: any = [
+    const pipeline: any = [
       {
         $match: {
           _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
@@ -1101,7 +1101,7 @@ export class ProjectService {
   async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
-    let pipeline: any = [
+    const pipeline: any = [
       {
         $match: {
           _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
@@ -1155,7 +1155,7 @@ export class ProjectService {
   async getAllEquipmentswithUtility(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
-    let pipeline: any = [
+    const pipeline: any = [
       {
         $match: {
           _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
