@@ -13,6 +13,10 @@ import { FilterEquipmentDto } from './dto/filter-equipment.dto';
 import { FilterReportDto } from 'src/reports/dto/filter-report.dto';
 import { ActivityLogsService } from 'src/administrator/activity-logs/activity-logs.service';
 import { ClsService } from 'nestjs-cls';
+import {
+  ProjectEquipment,
+  ProjectEquipmentDocument,
+} from 'src/schemas/projectEquipment.schema';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProjectService {
@@ -21,6 +25,8 @@ export class ProjectService {
   constructor(
     @InjectModel(Project.name)
     private readonly ProjectModel: Model<ProjectDocument>,
+    @InjectModel(ProjectEquipment.name)
+    private readonly projectEquipmentModel: Model<ProjectEquipmentDocument>,
     private logModel: ActivityLogsService, // @Inject('CurrentContext') private context: CurrentContext
   ) {}
 
@@ -36,6 +42,22 @@ export class ProjectService {
     this.logModel.logAction(`Created project`, createProjectDto);
     // this.logModel.create(logInfo);
     const Project = new this.ProjectModel(createProjectDto);
+    return Project.save();
+  }
+  async createProjectEquipment(
+    createProjectEquipmentDto: any,
+  ): Promise<ProjectEquipment> {
+    // const logInfo: any = {
+    //   url: 'auth/login',
+    //   method: 'post',
+    //   pageName: 'logged in',
+    //   user: this.user,
+    //   // request,
+    // };
+    // console.log('log', logInfo);
+    this.logModel.logAction(`Created project`, createProjectEquipmentDto);
+    // this.logModel.create(logInfo);
+    const Project = new this.projectEquipmentModel(createProjectEquipmentDto);
     return Project.save();
   }
 
@@ -771,270 +793,221 @@ export class ProjectService {
     return results;
   }
 
-       //Get Equipments by group
-      
-       //Get Equipments by group
-       async getAllEquipmentsbygroup(filterReportDto: FilterReportDto, rev_id) {
-        mongoose.set('debug', true);
-       console.log(filterReportDto.group);
-        let pipeline: any = [
-          {
-            $match: {
-              _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
-            },
-          },
-          {
-            $project: {
-              name: 1,
-              code: 1,
-              departments: 1,
-            },
-          },
-          { $unwind: '$departments' },
-          { $unwind: '$departments.rooms' },
-          { $unwind: '$departments.rooms.equipments' },
-          
-    
-        ];
-        
-        if(rev_id!='')
+  //Get Equipments by group
+
+  //Get Equipments by group
+  async getAllEquipmentsbygroup(filterReportDto: FilterReportDto, rev_id) {
+    mongoose.set('debug', true);
+    console.log(filterReportDto.group);
+    let pipeline: any = [
       {
-       pipeline = [
-        ...pipeline, 
-  
+        $match: {
+          _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          code: 1,
+          departments: 1,
+        },
+      },
+      { $unwind: '$departments' },
+      { $unwind: '$departments.rooms' },
+      { $unwind: '$departments.rooms.equipments' },
+    ];
+
+    if (rev_id != '') {
+      pipeline = [
+        ...pipeline,
+
         {
           $match: {
             'departments.rooms.equipments.revisionid': rev_id,
-          },
-         }
-       ]
-      }
-      
-      if(filterReportDto.group)
-      {
-       pipeline = [
-        ...pipeline, 
-  
+          },
+        },
+      ];
+    }
+
+    if (filterReportDto.group) {
+      pipeline = [
+        ...pipeline,
+
         {
           $match: {
-            'departments.rooms.equipments.group': { $in:filterReportDto.group },
-          },
-         }
-       ]
-      }
-          
-      pipeline = [
-          ...pipeline,
-          {
-            $project: {
-              _id: '$departments.rooms.equipments.equipmentId',
-              code: '$departments.rooms.equipments.code',
-              name: '$departments.rooms.equipments.name',
-              quantity: '$departments.rooms.equipments.quantity',
-              quantity2: '$departments.rooms.equipments.quantity',
-              quantity4: '$departments.rooms.equipments.group',
-              group: '$departments.rooms.equipments.group',
-              cost: '$departments.rooms.equipments.cost',
-              group4: '$departments.rooms.equipments.group',
-              remarks: '$departments.rooms.equipments.remarks',
-              project_code: '$code',
-              project_name: '$name',
-              room_code: '$departments.rooms.code',
-              room_name: '$departments.rooms.name',
-              department_code: '$departments.code',
-              department_name: '$departments.name',
+            'departments.rooms.equipments.group': {
+              $in: filterReportDto.group,
             },
           },
-        ];
-    
-         //console.log(pipeline);
-    
-        const EquipmentItemlist = await this.ProjectModel.aggregate(pipeline);
+        },
+      ];
+    }
 
-     
-        return { EquipmentItemlist };
-      }
+    pipeline = [
+      ...pipeline,
+      {
+        $project: {
+          _id: '$departments.rooms.equipments.equipmentId',
+          code: '$departments.rooms.equipments.code',
+          name: '$departments.rooms.equipments.name',
+          quantity: '$departments.rooms.equipments.quantity',
+          quantity2: '$departments.rooms.equipments.quantity',
+          quantity4: '$departments.rooms.equipments.group',
+          group: '$departments.rooms.equipments.group',
+          cost: '$departments.rooms.equipments.cost',
+          group4: '$departments.rooms.equipments.group',
+          remarks: '$departments.rooms.equipments.remarks',
+          project_code: '$code',
+          project_name: '$name',
+          room_code: '$departments.rooms.code',
+          room_name: '$departments.rooms.name',
+          department_code: '$departments.code',
+          department_name: '$departments.name',
+        },
+      },
+    ];
+
     //console.log(pipeline);
 
-    async getAllEquipmentsbyroomdepartbygroup(filterReportDto: FilterReportDto, rev_id) {
-      mongoose.set('debug', true);
-     let group_array: Array<any> = [];
-     if(filterReportDto.group && rev_id!='')
-      {
-      group_array=filterReportDto.group; 
+    const EquipmentItemlist = await this.ProjectModel.aggregate(pipeline);
+
+    return { EquipmentItemlist };
+  }
+  //console.log(pipeline);
+
+  async getAllEquipmentsbyroomdepartbygroup(
+    filterReportDto: FilterReportDto,
+    rev_id,
+  ) {
+    mongoose.set('debug', true);
+    let group_array: Array<any> = [];
+    if (filterReportDto.group && rev_id != '') {
+      group_array = filterReportDto.group;
       let pipeline: any = [
         {
           $match: {
             _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
-            
           },
-          
         },
         {
           $addFields: {
             departments: {
               $map: {
-                input: "$departments",
-                as: "dept",
+                input: '$departments',
+                as: 'dept',
                 in: {
                   $mergeObjects: [
-                    "$$dept",
+                    '$$dept',
                     {
                       rooms: {
                         $map: {
-                          input: "$$dept.rooms",
-                          as: "rooms",
+                          input: '$$dept.rooms',
+                          as: 'rooms',
                           in: {
                             $mergeObjects: [
-                              "$$rooms",
+                              '$$rooms',
                               {
                                 equipments: {
                                   $filter: {
-                                    input: "$$rooms.equipments",
-                                    as: "equipment",
+                                    input: '$$rooms.equipments',
+                                    as: 'equipment',
                                     cond: {
-                                      $in: [
-                                        "$$equipment.group",
-                                        group_array
-                                      ],
+                                      $in: ['$$equipment.group', group_array],
                                       $eq: ['$$equipments.revisionid', rev_id],
-                                     
-                                      
                                     },
-                                    
                                   },
-                                  
                                 },
-                                
                               },
-                              
                             ],
-                            
                           },
-                          
                         },
-                        
                       },
-                      
                     },
-                    
                   ],
-                  
                 },
-                
               },
-              
             },
-            
           },
-          
         },
-        
       ];
       const results = await this.ProjectModel.aggregate(pipeline);
       return results;
-      }
-      else if(filterReportDto.group)
-      {
-      group_array=filterReportDto.group; 
+    } else if (filterReportDto.group) {
+      group_array = filterReportDto.group;
       let pipeline: any = [
         {
           $match: {
             _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
-            
           },
-          
         },
         {
           $addFields: {
             departments: {
               $map: {
-                input: "$departments",
-                as: "dept",
+                input: '$departments',
+                as: 'dept',
                 in: {
                   $mergeObjects: [
-                    "$$dept",
+                    '$$dept',
                     {
                       rooms: {
                         $map: {
-                          input: "$$dept.rooms",
-                          as: "rooms",
+                          input: '$$dept.rooms',
+                          as: 'rooms',
                           in: {
                             $mergeObjects: [
-                              "$$rooms",
+                              '$$rooms',
                               {
                                 equipments: {
                                   $filter: {
-                                    input: "$$rooms.equipments",
-                                    as: "equipment",
+                                    input: '$$rooms.equipments',
+                                    as: 'equipment',
                                     cond: {
-                                      $in: [
-                                        "$$equipment.group",
-                                        group_array
-                                      ],
-                                      
+                                      $in: ['$$equipment.group', group_array],
                                     },
-                                    
                                   },
-                                  
                                 },
-                                
                               },
-                              
                             ],
-                            
                           },
-                          
                         },
-                        
                       },
-                      
                     },
-                    
                   ],
-                  
                 },
-                
               },
-              
             },
-            
           },
-          
         },
-        
       ];
       const results = await this.ProjectModel.aggregate(pipeline);
       return results;
-      }
-      else
-      {
+    } else {
       let pipeline: any = [
         {
           $match: {
             _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
-            
           },
-          
         },
         {
           $addFields: {
             departments: {
               $map: {
-                input: "$departments",
-                as: "dept",
+                input: '$departments',
+                as: 'dept',
                 in: {
                   $mergeObjects: [
-                    "$$dept",
+                    '$$dept',
                     {
                       rooms: {
                         $map: {
-                          input: "$$dept.rooms",
-                          as: "rooms",
+                          input: '$$dept.rooms',
+                          as: 'rooms',
                           in: {
                             $mergeObjects: [
-                              "$$rooms",
-                              { /*
+                              '$$rooms',
+                              {
+                                /*
                                 equipments: {
                                   $filter: {
                                     input: "$$rooms.equipments",
@@ -1049,68 +1022,55 @@ export class ProjectService {
                                     
                                   }, 
                                   
-                                },*/ 
-                                
+                                },*/
                               },
-                              
                             ],
-                            
                           },
-                          
                         },
-                        
                       },
-                      
                     },
-                    
                   ],
-                  
                 },
-                
               },
-              
             },
-            
           },
-          
         },
-        
       ];
       const results = await this.ProjectModel.aggregate(pipeline);
       return results;
     }
-      
-  
-      
-    }
-      async getAllDEquipmentsbyvariations(filterReportDto: FilterReportDto,rev_id) {
-        mongoose.set('debug', true);
-    
-        let pipeline: any = [
-          {
-            $match: {
-              _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
-            },
-          },
-          {
-            $addFields: {
-              departments: {
-                $map: {
-                  input: '$departments',
-                  as: 'departments',
-                  in: {
-                    $mergeObjects: [
-                      '$$departments',
-                      {
-                        rooms: {
-                          $map: {
-                            input: '$$departments.rooms',
-                            as: 'rooms',
-                            in: {
-                              $mergeObjects: [
-                                '$$rooms',
-                                {
-                                  /*
+  }
+  async getAllDEquipmentsbyvariations(
+    filterReportDto: FilterReportDto,
+    rev_id,
+  ) {
+    mongoose.set('debug', true);
+
+    let pipeline: any = [
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(filterReportDto.projectId),
+        },
+      },
+      {
+        $addFields: {
+          departments: {
+            $map: {
+              input: '$departments',
+              as: 'departments',
+              in: {
+                $mergeObjects: [
+                  '$$departments',
+                  {
+                    rooms: {
+                      $map: {
+                        input: '$$departments.rooms',
+                        as: 'rooms',
+                        in: {
+                          $mergeObjects: [
+                            '$$rooms',
+                            {
+                              /*
                                   equipments: {
                                     $filter: {
                                       input: '$$rooms.equipments',
@@ -1121,23 +1081,23 @@ export class ProjectService {
                                     },
                                   },
                                   */
-                                },
-                              ],
                             },
-                          },
+                          ],
                         },
                       },
-                    ],
+                    },
                   },
-                },
+                ],
               },
             },
           },
-        ];
-        const results = await this.ProjectModel.aggregate(pipeline);
-    
-        return results;
-      }
+        },
+      },
+    ];
+    const results = await this.ProjectModel.aggregate(pipeline);
+
+    return results;
+  }
   async getAllDisabledEquipmentsbyroomdepart(filterReportDto: FilterReportDto) {
     mongoose.set('debug', true);
 
@@ -1490,7 +1450,7 @@ export class ProjectService {
         },
       },
     ];
-    console.log("GGGGGGGGGGGGGGGGGG222:::::");
+    console.log('GGGGGGGGGGGGGGGGGG222:::::');
     console.log(JSON.stringify(pipeline));
     const results = await this.ProjectModel.aggregate(pipeline);
     return results;
@@ -1557,7 +1517,7 @@ export class ProjectService {
           room_code: { $first: '$departments.rooms.code' },
           room_name: { $first: '$departments.rooms.name' },
           project_name: { $first: '$name' },
-          group : {$first: '$departments.rooms.equipments.group'}
+          group: { $first: '$departments.rooms.equipments.group' },
         },
       },
     ];
