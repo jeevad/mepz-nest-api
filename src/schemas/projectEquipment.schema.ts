@@ -33,6 +33,10 @@ export class ProjectEquipment {
   departmentCode: string;
   @Prop()
   departmentName: string;
+  
+  @Prop()
+  departmentActive: boolean;
+  
 
   @Prop()
   roomId: string;
@@ -102,8 +106,14 @@ export class ProjectEquipment {
   @Prop(raw({}))
   brands: Record<string, any>;
 
+  @Prop(raw({}))
+  labels: Record<string, any>;
+  
   @Prop()
   markupPer: string; // TODO: verify the field
+
+  @Prop(raw({}))
+  package: Record<string, any>;
 
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)

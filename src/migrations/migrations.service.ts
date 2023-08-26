@@ -222,12 +222,11 @@ export class MigrationsService {
 
     const query = `SELECT 
     tb_prj_dept.h_dep_id as h_dep_id, tb_prj_dept.prj_dep_code as departmentCode, tb_prj_dept.prj_dep_desc as departmentName,
-    tb_prj_dept_line.prj_rm_desc as roomName ,tb_prj_dept_line.prj_rm_code as roomCode, tb_prj_dept_line.disabled as roomActive,
+    tb_prj_dept_line.prj_rm_desc as roomName ,tb_prj_dept_line.prj_rm_code as roomCode, tb_prj_dept_line.disabled as roomActive,tb_prj_dept_line.rm_code as roomNo,
     tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.package, tb_prj_prop_line_tmp.apq as apq, 
     tb_prj_prop_line_tmp.fpq as fpq, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.qty as qty, 
-    tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code, tb_eq_gen_desc.package, 
-    tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs
-    FROM tb_prj_prop_line_tmp
+    tb_eq_gen_desc.rm_g_code, tb_eq_gen_desc.package as package, tb_eq_gen_desc.brands as brands, tb_eq_gen_desc.labels as labels,
+    tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs, tb_eq_gen_desc.inactive as active, tb_eq_gen_desc.g_code as eq_group FROM tb_prj_prop_line_tmp
     JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
     JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_line = tb_prj_prop_line_tmp.h_dep_line
     JOIN tb_prj_dept ON tb_prj_dept_line.h_dep_id = tb_prj_dept.h_dep_id
@@ -235,12 +234,21 @@ export class MigrationsService {
     ORDER BY tb_prj_prop_line_tmp.gd_code`;
 
     const equipments = await this.connection.query(query);
-
+    
     for (const element_equ of equipments) {
       element_equ.projectId = project.projectId;
       element_equ.projectCode = project.h_code;
       element_equ.projectName = project.name;
+      element_equ.departmentActive = !element_equ.departmentActive;
       element_equ.roomActive = !element_equ.roomActive;
+      element_equ.active = !element_equ.active;
+      //element_equ.eq_group = !element_equ.group1;
+
+      Object.keys(element_equ).forEach(key => {
+        if (element_equ[key] === null) {
+          delete element_equ[key];
+        }
+      });
       await this['projectService'].createProjectEquipment(element_equ);
       console.log('element_equ.code', element_equ.code);
     }
