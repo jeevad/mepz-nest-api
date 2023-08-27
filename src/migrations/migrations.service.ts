@@ -176,26 +176,17 @@ export class MigrationsService {
       //project.departments = department;
       for (const department of departments) {
         
-       
-       const AddProjectDepartmentDto1 =[department];
+        const AddProjectDepartmentDto1 =[department];
         const res_department = await this['projectService'].addDepartment_migration(
           project.projectId,
           AddProjectDepartmentDto1,
         );
   
-       // department.departmentId = res_department._id;
-        department.departmentId = res_department;
+        department.departmentId = res_department.toString();
         const rooms = await this.get_rooms_by_depart(department.h_dep_id);
-        console.log('departmentId:::::y', department.departmentId );
-        console.log('departmentId:::::y', project.projectId );
+      
         if( rooms.length > 0)
         {
-
-       
-
-       
-        //console.log('roomId::', res_room);
-        //console.log('room:', res_room);
         for (const room of rooms) {
           const res_room_id = await this['projectService'].addRoomDBMigration(
             project.projectId,
@@ -203,11 +194,11 @@ export class MigrationsService {
             room,
           );
           room.roomId = res_room_id;
-          console.log('roomId', res_room_id);
+          
           await this.migrateProjectEqp(project, department, room);
         }
       }
-        //element2.rooms = rooms;
+       
       }
     }
 

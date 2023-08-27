@@ -1765,6 +1765,7 @@ export class ProjectService {
     );
   }
   // Db migration function
+  
   async addRoomDBMigration(
     projectId: string,
     departmentId: string,
@@ -1772,6 +1773,7 @@ export class ProjectService {
   ): Promise<string | null> {
     mongoose.set('debug', true);
    
+  
     const query = {
       _id: projectId,
       'departments._id': departmentId,
@@ -1780,22 +1782,25 @@ export class ProjectService {
     const update = {
       $push: { 'departments.$.rooms': addProjectDepartmentRoomDto },
     };
-  
     const options = {
       new: true, // Return the updated document
     };
-  
     const updatedDocument = await this.ProjectModel.findOneAndUpdate(query, update, options);
-    /**/
     if (updatedDocument) {
-      const addedRoom = updatedDocument.departments.find(
-        department => department._id.toString() === departmentId
-      ).rooms.find(room => room.code === addProjectDepartmentRoomDto.code);
+      const department = updatedDocument.departments.find(
+        department => department._id=== departmentId
+      );
   
-      return addedRoom._id.toString();
+      if (department) {
+        const addedRoom = department.rooms.find(room => room.name === addProjectDepartmentRoomDto.name);
+  
+        if (addedRoom) {
+          return addedRoom._id.toString();
+        }
+        
+      }
     }
-  
-    return null; // Return null if no document was updated
+    return null; // Return null if the added room's _id couldn't be retrieved
   }
   
 
