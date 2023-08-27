@@ -8,7 +8,7 @@ export class AddProjectDepartmentRoomDto {
   })
   @IsString()
   @IsNotEmpty()
-  roomId: string;
+  masterId: string;
 
   @ApiProperty({
     type: String,
@@ -25,19 +25,4 @@ export class AddProjectDepartmentRoomDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // alias: string;
-
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
-  // @IsNotEmpty()
-  // active: boolean;
 }

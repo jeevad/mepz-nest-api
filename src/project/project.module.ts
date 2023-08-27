@@ -8,6 +8,7 @@ import {
   ProjectEquipment,
   ProjectEquipmentSchema,
 } from 'src/schemas/projectEquipment.schema';
+import { ProjectEquipmentService } from './project-equipment.service';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import {
     ]),
   ],
   controllers: [ProjectController],
-  providers: [ProjectService],
-  exports: [ProjectService],
+  providers: [ProjectService, ProjectEquipmentService],
+  exports: [ProjectService, ProjectEquipmentService],
 })
 export class ProjectModule {}

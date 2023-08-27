@@ -2,14 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class AddProjectDepartmentDto {
-  // @ApiProperty({
-  //   type: String,
-  //   description: 'This is a required property',
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // id: string;
-
   @ApiProperty({
     type: String,
     description: 'This is a required property',
@@ -32,5 +24,5 @@ export class AddProjectDepartmentDto {
   })
   // @IsString()
   @IsNotEmpty()
-  departmentId: string;
+  masterId: string;
 }
