@@ -166,36 +166,46 @@ export class MigrationsService {
       state  FROM tb_hosp_geninfo WHERE id IN('4') ORDER BY h_short_name`,
     );
     //SELECT false as isTemplate, h_code as code,h_short_name as name,h_full_name as fullName ,owner as clientOwner ,contract_no as contractNo ,bed_no as noOfBeds ,hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, date_created as createdAt , addr1 as address1, addr2 as address2, city , country, date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, state  FROM `tb_hosp_geninfo` WHERE `id` IN('4', '140', '7', '42', '8', '9', '126', '148', '130', '83', '86', '127', '55', '11', '74', '81', '82', '51', '119', '35', '6', '13', '38', '132', '15', '12', '118', '18', '19', '117', '22', '142', '124', '121', '122', '70', '80', '50', '120', '147', '128', '103', '134', '137', '153', '72', '141', '139', '138', '99', '25', '37') ORDER BY `h_short_name`
-
+   
     for (const project of projects) {
       const res = await this['projectService'].create(project);
       project.projectId = res._id;
 
       const departments = await this.get_department_by_id(project.code);
-      const res_department = await this['projectService'].addDepartment(
-        project.projectId,
-        departments,
-      );
-
+     
       //project.departments = department;
       for (const department of departments) {
+        
+       
+       const AddProjectDepartmentDto1 =[department];
+        const res_department = await this['projectService'].addDepartment_migration(
+          project.projectId,
+          AddProjectDepartmentDto1,
+        );
+  
         department.departmentId = res_department._id;
         const rooms = await this.get_rooms_by_depart(department.h_dep_id);
-        const res_room = await this['projectService'].addRoom(
-          project.projectId,
-          department.departmentId,
-          rooms,
-        );
+    
+        console.log('departmentId:::::y', res_department);
+        if( rooms.length > 0)
+        {
 
-        console.log('projectId', project.projectId);
-        console.log('departmentId', department.departmentId);
-        console.log('roomId', rooms);
+       
+
+       
+        //console.log('roomId::', res_room);
+        //console.log('room:', res_room);
         for (const room of rooms) {
+          const res_room = await this['projectService'].addRoom(
+            project.projectId,
+            department.departmentId,
+            room,
+          );
           room.roomId = res_room._id;
           console.log('roomId', room.roomId);
           await this.migrateProjectEqp(project, department, room);
         }
-
+      }
         //element2.rooms = rooms;
       }
     }

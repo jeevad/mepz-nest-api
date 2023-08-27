@@ -135,6 +135,7 @@ export class ProjectService {
       `Added department to project ID ${projectId}`,
       addProjectDepartmentDtos,
     );
+ 
     return this.ProjectModel.findOneAndUpdate(
       // Line Changes
       { _id: projectId },

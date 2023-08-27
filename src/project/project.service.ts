@@ -164,7 +164,18 @@ export class ProjectService {
       { $addToSet: { departments: { $each: addProjectDepartmentDtos } } }, //Line Changes
     );
   }
-
+  async addDepartment_migration(
+    projectId: string,
+    addProjectDepartmentDtos: AddProjectDepartmentDto[], // [] added
+  ): Promise<any> {
+    console.log();
+    return this.ProjectModel.findOneAndUpdate(
+      // Line Changes
+      { _id: projectId },
+       { $addToSet: { departments: addProjectDepartmentDtos } },  // Old
+     // { $addToSet: { departments: { $each: addProjectDepartmentDtos } } }, //Line Changes
+    );
+  }
   async updateDepartment(
     projectId: string,
     updateProjectFieldDto: UpdateProjectFieldDto,
@@ -1732,6 +1743,7 @@ export class ProjectService {
     departmentId: string,
     addProjectDepartmentRoomDto: AddProjectDepartmentRoomDto,
   ): Promise<any> {
+    mongoose.set('debug', true);
     this.logModel.logAction(
       `Added room to project ID ${projectId}`,
       addProjectDepartmentRoomDto,
