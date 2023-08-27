@@ -242,7 +242,7 @@ export class MigrationsService {
       element_equ.departmentActive = !element_equ.departmentActive;
       element_equ.roomActive = !element_equ.roomActive;
       element_equ.active = !element_equ.active;
-      //element_equ.eq_group = !element_equ.group1;
+      element_equ.group = !element_equ.eq_group;
 
       Object.keys(element_equ).forEach(key => {
         if (element_equ[key] === null) {

@@ -101,6 +101,9 @@ export class ProjectEquipment {
   group: string;
 
   @Prop()
+  eq_group: string;
+
+  @Prop()
   specs: string;
 
   @Prop(raw({}))
@@ -108,7 +111,7 @@ export class ProjectEquipment {
 
   @Prop(raw({}))
   labels: Record<string, any>;
-  
+
   @Prop()
   markupPer: string; // TODO: verify the field
 

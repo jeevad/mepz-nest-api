@@ -20,9 +20,6 @@ export class EquipmentPower {
   bss: string;
 
   @Prop()
-  eq_group: string;
-
-  @Prop()
   typicalPowerConsumption: string;
 
   @Prop()
