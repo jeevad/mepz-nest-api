@@ -172,72 +172,39 @@ export class MigrationsService {
       project.projectId = res._id;
 
       const departments = await this.get_department_by_id(project.code);
-      const res_department = await this['projectService'].addDepartment(project.projectId,departments);
-      
+      const res_department = await this['projectService'].addDepartment(
+        project.projectId,
+        departments,
+      );
+
       //project.departments = department;
       for (const department of departments) {
-        
         department.departmentId = res_department._id;
         const rooms = await this.get_rooms_by_depart(department.h_dep_id);
-        const res_room = await this['projectService'].addRoom(project.projectId,department.departmentId,rooms);
-      
+        const res_room = await this['projectService'].addRoom(
+          project.projectId,
+          department.departmentId,
+          rooms,
+        );
+
         console.log('projectId', project.projectId);
         console.log('departmentId', department.departmentId);
         console.log('roomId', rooms);
         for (const room of rooms) {
-          
           room.roomId = res_room._id;
           console.log('roomId', room.roomId);
-        await this.migrateProjectEqp(project,department,room);
-             }
+          await this.migrateProjectEqp(project, department, room);
+        }
 
         //element2.rooms = rooms;
       }
-      //const res = await this['projectService'].create(project);
-      //project.projectId = res._id;
-
-      //await this.migrateProjectEqp(project);
-      // for (const element2 of department) {
-      //   const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
-      //   //element2.rooms = rooms;
-      //   for (const element3 of rooms) {
-      //     this.get_equipment_by_rooms(element, element2, element3, project_id);
-      //   }
-      // }
     }
 
     //return projects;
     return 'success';
   }
-  async migrateProjectEqp(project,department,room) {
+  async migrateProjectEqp(project, department, room) {
     console.log('project.code', project.code);
-
-    const h_code = '';
-
-    // let query = `SELECT tb_prj_prop_line_tmp.gd_code, tb_prj_prop_line_tmp.package,
-    // sum(tb_prj_prop_line_tmp.apq) as apq, sum(tb_prj_prop_line_tmp.fpq) as fpq, tb_eq_gen_desc.gd_desc,
-    // sum(tb_prj_prop_line_tmp.qty) as total_qty, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code,
-    // tb_eq_gen_desc.package as ori_package, tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs
-    // FROM tb_prj_prop_line_tmp
-    // JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
-    // JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_line = tb_prj_prop_line_tmp.h_dep_line
-    // WHERE tb_prj_prop_line_tmp.h_code = '${project.code}'
-    // AND tb_prj_dept_line.disabled =0
-    // GROUP BY tb_prj_prop_line_tmp.gd_code, tb_eq_gen_desc.gd_desc, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code, tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per, tb_eq_gen_desc.specs
-    // ORDER BY tb_prj_prop_line_tmp.gd_code`;
-
-    // query = `SELECT
-    // tb_prj_dept.h_dep_id as h_dep_id, tb_prj_dept.prj_dep_code as departmentCode, tb_prj_dept.prj_dep_desc as departmentName,
-    // tb_prj_dept_line.prj_rm_desc as roomName ,tb_prj_dept_line.prj_rm_code as roomCode,
-    // tb_prj_prop_line_tmp.qty as quantity, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.gd_code as code,
-    // tb_prj_prop_line_tmp.apq as apq, tb_eq_gen_desc.cost as cost, tb_prj_prop_line_tmp.date_created as createdAt,
-    // tb_prj_dept.floorlevel_tx as floor
-    // FROM tb_prj_dept
-    // JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_id = tb_prj_dept.h_dep_id
-    // LEFT JOIN tb_prj_prop_line_tmp ON tb_prj_prop_line_tmp.h_dep_line = tb_prj_dept_line.h_dep_line
-    // LEFT JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
-    // WHERE tb_prj_dept.h_code = '${project.code}' AND tb_prj_dept_line.disabled =0
-    // ORDER BY tb_prj_dept.prj_dep_desc, tb_prj_dept_line.prj_rm_desc, tb_eq_gen_desc.gd_desc limit 5`;
 
     const query = `SELECT 
     tb_prj_dept.h_dep_id as h_dep_id, tb_prj_dept.prj_dep_code as departmentCode, tb_prj_dept.prj_dep_desc as departmentName,
@@ -253,7 +220,7 @@ export class MigrationsService {
     ORDER BY tb_prj_prop_line_tmp.gd_code`;
 
     const equipments = await this.connection.query(query);
-    
+
     for (const element_equ of equipments) {
       element_equ.projectId = project.projectId;
       element_equ.projectCode = project.h_code;
@@ -265,7 +232,7 @@ export class MigrationsService {
       element_equ.active = !element_equ.active;
       element_equ.group = !element_equ.eq_group;
 
-      Object.keys(element_equ).forEach(key => {
+      Object.keys(element_equ).forEach((key) => {
         if (element_equ[key] === null) {
           delete element_equ[key];
         }
