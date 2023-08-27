@@ -168,14 +168,25 @@ export class ProjectService {
     projectId: string,
     addProjectDepartmentDtos: AddProjectDepartmentDto[], // [] added
   ): Promise<any> {
-    console.log();
-    return this.ProjectModel.findOneAndUpdate(
-      // Line Changes
+   
+
+    const result = await this.ProjectModel.findOneAndUpdate(
       { _id: projectId },
-       { $addToSet: { departments: addProjectDepartmentDtos } },  // Old
-     // { $addToSet: { departments: { $each: addProjectDepartmentDtos } } }, //Line Changes
+      { $addToSet: { departments: { $each: addProjectDepartmentDtos } } },
+      { new: true } // Return the updated document
     );
+  
+    if (result) {
+      const addedDepartments = result.departments.filter(department =>
+        addProjectDepartmentDtos.some(dto => dto.code === department.code)
+      );
+      
+      if (addedDepartments.length > 0) {
+        return addedDepartments[0]._id || null;
+      }
+  
   }
+}
   async updateDepartment(
     projectId: string,
     updateProjectFieldDto: UpdateProjectFieldDto,

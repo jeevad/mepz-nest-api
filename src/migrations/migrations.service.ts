@@ -183,10 +183,11 @@ export class MigrationsService {
           AddProjectDepartmentDto1,
         );
   
-        department.departmentId = res_department._id;
+       // department.departmentId = res_department._id;
+        department.departmentId = res_department;
         const rooms = await this.get_rooms_by_depart(department.h_dep_id);
-    
-        console.log('departmentId:::::y', res_department);
+        console.log('departmentId:::::y', department.departmentId );
+        console.log('departmentId:::::y', project.projectId );
         if( rooms.length > 0)
         {
 
