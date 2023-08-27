@@ -26,11 +26,15 @@ import { AddProjectRoomEquipmentDto } from './dto/add-project-room-equipment.dto
 import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.dto';
 import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
 import { FilterEquipmentDto } from './dto/filter-equipment.dto';
+import { ProjectEquipmentService } from './project-equipment.service';
 
 @Controller('project')
 @ApiTags('Project')
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(
+    private readonly projectService: ProjectService,
+    private readonly projectEquipmentService: ProjectEquipmentService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create Project' })
@@ -137,12 +141,11 @@ export class ProjectController {
     @Param('projectId') projectId: string,
     @Query() paginationParams: PaginationParams,
   ) {
-    const deptId = '';
-    const roomId = '';
-    return this.projectService.getProjectEquipments(
-      projectId,
-      paginationParams,
-    );
+    return this.projectEquipmentService.findAll(projectId, paginationParams);
+    // return this.projectService.getProjectEquipments(
+    //   projectId,
+    //   paginationParams,
+    // );
   }
 
   @Get('getAllEquipments')
@@ -206,14 +209,16 @@ export class ProjectController {
     @Param('projectId') projectId: string,
     @Param('departmentId') departmentId: string,
     @Param('roomId') roomId: string,
-    @Body() addProjectRoomEquipmentDto: AddProjectRoomEquipmentDto,
+    // @Body() addProjectRoomEquipmentDto: AddProjectRoomEquipmentDto,
+    @Body() addProjectRoomEquipmentDto: any,
   ) {
-    return this.projectService.addRoomEquipment(
+    addProjectRoomEquipmentDto = {
+      ...addProjectRoomEquipmentDto,
       projectId,
       departmentId,
       roomId,
-      addProjectRoomEquipmentDto,
-    );
+    };
+    return this.projectEquipmentService.createt(addProjectRoomEquipmentDto);
   }
 
   @Get(':id')
