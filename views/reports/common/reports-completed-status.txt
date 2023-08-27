@@ -37,6 +37,8 @@ By group:-
 Equipment listing (BQ), by group
 1. Pdf
    http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs
+
+
 2. Pdf 1 page with price
    http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-with-price-by-group&reportFormat=pdfs
 3. Pdf 1 page

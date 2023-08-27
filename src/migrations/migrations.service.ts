@@ -168,16 +168,35 @@ export class MigrationsService {
     //SELECT false as isTemplate, h_code as code,h_short_name as name,h_full_name as fullName ,owner as clientOwner ,contract_no as contractNo ,bed_no as noOfBeds ,hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, date_created as createdAt , addr1 as address1, addr2 as address2, city , country, date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, state  FROM `tb_hosp_geninfo` WHERE `id` IN('4', '140', '7', '42', '8', '9', '126', '148', '130', '83', '86', '127', '55', '11', '74', '81', '82', '51', '119', '35', '6', '13', '38', '132', '15', '12', '118', '18', '19', '117', '22', '142', '124', '121', '122', '70', '80', '50', '120', '147', '128', '103', '134', '137', '153', '72', '141', '139', '138', '99', '25', '37') ORDER BY `h_short_name`
 
     for (const project of projects) {
-      const department = await this.get_department_by_id(project.code);
-      project.departments = department;
-      for (const element2 of department) {
-        const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
-        element2.rooms = rooms;
-      }
       const res = await this['projectService'].create(project);
       project.projectId = res._id;
 
-      await this.migrateProjectEqp(project);
+      const departments = await this.get_department_by_id(project.code);
+      const res_department = await this['projectService'].addDepartment(project.projectId,departments);
+      
+      //project.departments = department;
+      for (const department of departments) {
+        
+        department.departmentId = res_department._id;
+        const rooms = await this.get_rooms_by_depart(department.h_dep_id);
+        const res_room = await this['projectService'].addRoom(project.projectId,department.departmentId,rooms);
+      
+        console.log('projectId', project.projectId);
+        console.log('departmentId', department.departmentId);
+        console.log('roomId', rooms);
+        for (const room of rooms) {
+          
+          room.roomId = res_room._id;
+          console.log('roomId', room.roomId);
+        await this.migrateProjectEqp(project,department,room);
+             }
+
+        //element2.rooms = rooms;
+      }
+      //const res = await this['projectService'].create(project);
+      //project.projectId = res._id;
+
+      //await this.migrateProjectEqp(project);
       // for (const element2 of department) {
       //   const rooms = await this.get_rooms_by_depart(element2.h_dep_id);
       //   //element2.rooms = rooms;
@@ -190,7 +209,7 @@ export class MigrationsService {
     //return projects;
     return 'success';
   }
-  async migrateProjectEqp(project) {
+  async migrateProjectEqp(project,department,room) {
     console.log('project.code', project.code);
 
     const h_code = '';
@@ -230,7 +249,7 @@ export class MigrationsService {
     JOIN tb_eq_gen_desc ON tb_eq_gen_desc.gd_code = tb_prj_prop_line_tmp.gd_code
     JOIN tb_prj_dept_line ON tb_prj_dept_line.h_dep_line = tb_prj_prop_line_tmp.h_dep_line
     JOIN tb_prj_dept ON tb_prj_dept_line.h_dep_id = tb_prj_dept.h_dep_id
-    WHERE tb_prj_prop_line_tmp.h_code = '${project.code}'
+    WHERE tb_prj_prop_line_tmp.h_code = '${project.code}' and tb_prj_dept.h_code = '${department.h_dep_id}' and tb_prj_dept_line.rm_code = '${room.rm_code}'
     ORDER BY tb_prj_prop_line_tmp.gd_code`;
 
     const equipments = await this.connection.query(query);
@@ -239,7 +258,9 @@ export class MigrationsService {
       element_equ.projectId = project.projectId;
       element_equ.projectCode = project.h_code;
       element_equ.projectName = project.name;
+      element_equ.departmentId = department.departmentId;
       element_equ.departmentActive = !element_equ.departmentActive;
+      element_equ.roomId = room.roomId;
       element_equ.roomActive = !element_equ.roomActive;
       element_equ.active = !element_equ.active;
       element_equ.group = !element_equ.eq_group;
@@ -274,6 +295,7 @@ export class MigrationsService {
 
     return rooms;
   }
+
   async get_equipment_by_rooms(element, element2, element3, project_id) {
     const equipment = await this.connection.query(
       "SELECT tb_prj_prop_line_tmp.qty as quantity, tb_eq_gen_desc.gd_desc as name, tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.apq as apq, tb_eq_gen_desc.cost as cost, tb_prj_prop_line_tmp.date_created as updatedAt, tb_prj_dept.floorlevel_tx as floor FROM `tb_prj_dept` JOIN `tb_prj_dept_line` ON `tb_prj_dept_line`.`h_dep_id` = `tb_prj_dept`.`h_dep_id` LEFT JOIN `tb_prj_prop_line_tmp` ON `tb_prj_prop_line_tmp`.`h_dep_line` = `tb_prj_dept_line`.`h_dep_line` LEFT JOIN `tb_eq_gen_desc` ON `tb_eq_gen_desc`.`gd_code` = `tb_prj_prop_line_tmp`.`gd_code` WHERE `tb_prj_dept`.`h_code` = '" +
