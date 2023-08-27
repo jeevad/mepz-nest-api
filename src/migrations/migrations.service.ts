@@ -197,13 +197,13 @@ export class MigrationsService {
         //console.log('roomId::', res_room);
         //console.log('room:', res_room);
         for (const room of rooms) {
-          const res_room = await this['projectService'].addRoom(
+          const res_room_id = await this['projectService'].addRoomDBMigration(
             project.projectId,
             department.departmentId,
             room,
           );
-          room.roomId = res_room._id;
-          console.log('roomId', room.roomId);
+          room.roomId = res_room_id;
+          console.log('roomId', res_room_id);
           await this.migrateProjectEqp(project, department, room);
         }
       }

@@ -1764,6 +1764,40 @@ export class ProjectService {
       { $push: { 'departments.$.rooms': addProjectDepartmentRoomDto } },
     );
   }
+  // Db migration function
+  async addRoomDBMigration(
+    projectId: string,
+    departmentId: string,
+    addProjectDepartmentRoomDto: AddProjectDepartmentRoomDto,
+  ): Promise<string | null> {
+    mongoose.set('debug', true);
+   
+    const query = {
+      _id: projectId,
+      'departments._id': departmentId,
+    };
+  
+    const update = {
+      $push: { 'departments.$.rooms': addProjectDepartmentRoomDto },
+    };
+  
+    const options = {
+      new: true, // Return the updated document
+    };
+  
+    const updatedDocument = await this.ProjectModel.findOneAndUpdate(query, update, options);
+    /**/
+    if (updatedDocument) {
+      const addedRoom = updatedDocument.departments.find(
+        department => department._id.toString() === departmentId
+      ).rooms.find(room => room.code === addProjectDepartmentRoomDto.code);
+  
+      return addedRoom._id.toString();
+    }
+  
+    return null; // Return null if no document was updated
+  }
+  
 
   async addRoomEquipment(
     projectId: string,
