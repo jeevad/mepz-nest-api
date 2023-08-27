@@ -46,22 +46,34 @@ export class ProjectEquipmentService {
     return Project.save();
   }
 
-  async findAll(projectId, paginationParams: PaginationParams) {
-    // mongoose.set('debug', true);
-    const filters: FilterQuery<ProjectDocument> = { projectId };
+  async findAll(filterEquipmentDto: FilterEquipmentDto) {
+    mongoose.set('debug', true);
+    const filters: FilterQuery<ProjectEquipmentDocument> = {};
 
-    if (paginationParams.searchQuery) {
-      filters.$text = { $search: paginationParams.searchQuery };
+    if (Array.isArray(filterEquipmentDto.projectIds)) {
+      filters.projectId = { $in: filterEquipmentDto.projectIds };
+    } else {
+      filters.projectId = filterEquipmentDto.projectId;
+    }
+    if (filterEquipmentDto.departmentId) {
+      filters.departmentId = filterEquipmentDto.departmentId;
+    }
+    if (filterEquipmentDto.roomId) {
+      filters.roomId = filterEquipmentDto.roomId;
+    }
+
+    if (filterEquipmentDto.searchQuery) {
+      filters.$text = { $search: filterEquipmentDto.searchQuery };
     }
 
     const findQuery = this.projectEquipmentModel
       .find(filters)
       // .select({ departments: 0 })
       .sort({ _id: -1 })
-      .skip(paginationParams.skip);
+      .skip(filterEquipmentDto.skip);
 
-    if (paginationParams.limit) {
-      findQuery.limit(paginationParams.limit);
+    if (filterEquipmentDto.limit) {
+      findQuery.limit(filterEquipmentDto.limit);
     }
 
     const results = await findQuery;

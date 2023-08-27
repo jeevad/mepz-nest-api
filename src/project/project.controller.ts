@@ -131,7 +131,13 @@ export class ProjectController {
     @Param('deptId') deptId: string,
     @Param('roomId') roomId: string,
   ) {
-    return this.projectService.getEquipments(projectId, deptId, roomId);
+    const filterEquipmentDto: FilterEquipmentDto = { projectId, roomId };
+    return this.projectEquipmentService.findAll(filterEquipmentDto);
+    // return this.projectEquipmentService.getEquipments(
+    //   projectId,
+    //   deptId,
+    //   roomId,
+    // );
   }
 
   //Get Equipments by projectId
@@ -139,27 +145,17 @@ export class ProjectController {
   @ApiOperation({ summary: 'get equipments by project id' })
   getProjectEquipments(
     @Param('projectId') projectId: string,
-    @Query() paginationParams: PaginationParams,
+    @Query() filterEquipmentDto: FilterEquipmentDto,
   ) {
-    return this.projectEquipmentService.findAll(projectId, paginationParams);
-    // return this.projectService.getProjectEquipments(
-    //   projectId,
-    //   paginationParams,
-    // );
+    filterEquipmentDto.projectId = projectId;
+    return this.projectEquipmentService.findAll(filterEquipmentDto);
   }
 
   @Get('getAllEquipments')
   @ApiOperation({ summary: 'get all equipments' })
-  getAllEquipments(
-    @Query() paginationParams: PaginationParams,
-    @Query() filterEquipmentDto: FilterEquipmentDto,
-  ) {
+  getAllEquipments(@Query() filterEquipmentDto: FilterEquipmentDto) {
     console.log('filterEquipmentDto', filterEquipmentDto);
-    // return 'test';
-    return this.projectService.getAllEquipments(
-      filterEquipmentDto,
-      paginationParams,
-    );
+    return this.projectEquipmentService.findAll(filterEquipmentDto);
   }
 
   //Get Departments by projectId

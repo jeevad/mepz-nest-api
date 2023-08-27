@@ -18,7 +18,7 @@ export class ProjectEquipment {
   _id: string;
 
   @Prop()
-  equipmentId: string;
+  masterId: string;
 
   @Prop()
   projectId: string;
@@ -33,10 +33,9 @@ export class ProjectEquipment {
   departmentCode: string;
   @Prop()
   departmentName: string;
-  
+
   @Prop()
   departmentActive: boolean;
-  
 
   @Prop()
   roomId: string;

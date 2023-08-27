@@ -1,16 +1,23 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
+  Min,
 } from 'class-validator';
 
 export class FilterEquipmentDto {
-  @ApiProperty({ type: [String] })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
-  projectId: string[];
+  projectId?: string;
+
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  projectIds?: string[];
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
@@ -29,4 +36,30 @@ export class FilterEquipmentDto {
   @IsOptional()
   @IsString()
   searchInput?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  searchQuery?: string;
+
+  @ApiProperty({
+    minimum: 0,
+    maximum: 10000,
+    title: 'Page',
+    exclusiveMaximum: true,
+    exclusiveMinimum: true,
+    format: 'int32',
+    default: 0,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  skip?: number = 0;
+
+  @ApiProperty({ default: 10 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  limit?: number = 10;
 }
