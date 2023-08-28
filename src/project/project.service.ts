@@ -168,25 +168,22 @@ export class ProjectService {
     projectId: string,
     addProjectDepartmentDtos: AddProjectDepartmentDto[], // [] added
   ): Promise<any> {
-   
-
     const result = await this.ProjectModel.findOneAndUpdate(
       { _id: projectId },
       { $addToSet: { departments: { $each: addProjectDepartmentDtos } } },
-      { new: true } // Return the updated document
+      { new: true }, // Return the updated document
     );
-  
+
     if (result) {
-      const addedDepartments = result.departments.filter(department =>
-        addProjectDepartmentDtos.some(dto => dto.code === department.code)
+      const addedDepartments = result.departments.filter((department) =>
+        addProjectDepartmentDtos.some((dto) => dto.code === department.code),
       );
-      
+
       if (addedDepartments.length > 0) {
         return addedDepartments[0]._id || null;
       }
-  
+    }
   }
-}
   async updateDepartment(
     projectId: string,
     updateProjectFieldDto: UpdateProjectFieldDto,
@@ -1765,44 +1762,47 @@ export class ProjectService {
     );
   }
   // Db migration function
-  
+
   async addRoomDBMigration(
     projectId: string,
     departmentId: string,
     addProjectDepartmentRoomDto: AddProjectDepartmentRoomDto,
   ): Promise<string | null> {
     mongoose.set('debug', true);
-   
-  
+
     const query = {
       _id: projectId,
       'departments._id': departmentId,
     };
-  
+
     const update = {
       $push: { 'departments.$.rooms': addProjectDepartmentRoomDto },
     };
     const options = {
       new: true, // Return the updated document
     };
-    const updatedDocument = await this.ProjectModel.findOneAndUpdate(query, update, options);
+    const updatedDocument = await this.ProjectModel.findOneAndUpdate(
+      query,
+      update,
+      options,
+    );
     if (updatedDocument) {
       const department = updatedDocument.departments.find(
-        department => department._id=== departmentId
+        (department) => department._id === departmentId,
       );
-  
+
       if (department) {
-        const addedRoom = department.rooms.find(room => room.name === addProjectDepartmentRoomDto.name);
-  
+        const addedRoom = department.rooms.find(
+          (room) => room.name === addProjectDepartmentRoomDto.name,
+        );
+
         if (addedRoom) {
           return addedRoom._id.toString();
         }
-        
       }
     }
     return null; // Return null if the added room's _id couldn't be retrieved
   }
-  
 
   async addRoomEquipment(
     projectId: string,
