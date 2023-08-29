@@ -218,7 +218,7 @@ export class MigrationsService {
     const query = `SELECT tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.package, tb_prj_prop_line_tmp.apq, 
     tb_prj_prop_line_tmp.fpq, tb_eq_gen_desc.gd_desc as name, 
     tb_prj_prop_line_tmp.qty, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code,
-     tb_eq_gen_desc.package as ori_package, tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per,
+     tb_eq_gen_desc.package as ori_package, tb_eq_gen_desc.cost, tb_eq_gen_desc.markup_per as markupPer,
       tb_eq_gen_desc.specs, tb_eq_gen_desc.brands, tb_eq_gen_desc.labels as labels,
        tb_eq_gen_desc.inactive as active, tb_eq_gen_desc.g_code
     FROM tb_prj_prop_line_tmp

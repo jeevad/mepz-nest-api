@@ -32,6 +32,6 @@ export class PaginationParams {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
-  @Min(1)
+  // @Min(1)
   limit?: number = 10;
 }

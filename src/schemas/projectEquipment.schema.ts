@@ -92,6 +92,12 @@ export class ProjectEquipment {
   markup_per: string;
 
   @Prop()
+  markUp: string;
+
+  @Prop()
+  markupPer: string; // TODO: verify the field
+
+  @Prop()
   qty: number;
 
   @Prop()
@@ -114,9 +120,6 @@ export class ProjectEquipment {
 
   @Prop()
   active: boolean;
-
-  @Prop()
-  markUp: string;
 
   @Prop()
   heatDissipation: string;
@@ -150,7 +153,7 @@ export class ProjectEquipment {
   labels: Record<string, any>;
 
   @Prop()
-  markupPer: string; // TODO: verify the field
+  remarks: string; // TODO: verify the field
 
   @Prop(raw({}))
   package: Record<string, any>;
