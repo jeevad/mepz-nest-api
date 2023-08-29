@@ -4,7 +4,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class UpdateProjectEquipmentFieldDto {
   @ApiProperty({
     type: String,
-    description: A'This is a required property',
+    description: 'This is a required property',
   })
   @IsString()
   @IsNotEmpty()

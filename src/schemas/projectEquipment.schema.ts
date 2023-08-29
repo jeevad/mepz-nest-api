@@ -18,6 +18,11 @@ const commonFields = {
 };
 
 @Schema({
+  autoIndex: true,
+  toJSON: {
+    getters: true,
+    virtuals: true,
+  },
   timestamps: true,
 })
 export class ProjectEquipment {
@@ -82,6 +87,9 @@ export class ProjectEquipment {
 
   @Prop()
   equipmentId4: string;
+
+  @Prop()
+  markup_per: string;
 
   @Prop()
   qty: number;

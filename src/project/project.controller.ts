@@ -28,6 +28,7 @@ import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
 import { FilterEquipmentDto } from './dto/filter-equipment.dto';
 import { ProjectEquipmentService } from './project-equipment.service';
 import mongoose from 'mongoose';
+import { UpdateProjectEquipmentFieldDto } from './dto/update-project-equipment-field.dto';
 
 @Controller('project')
 @ApiTags('Project')
@@ -94,6 +95,19 @@ export class ProjectController {
     return this.projectService.updateDepartment(
       projectId,
       updateProjectFieldDto,
+    );
+  }
+
+  // update selected project fields
+  @Post('updateEquipmentFields/:equipmentId')
+  @ApiOperation({ summary: 'Update Project eqp Fields' })
+  updateEquipmentFields(
+    @Param('equipmentId') equipmentId: string,
+    @Body() updateProjectEquipmentFieldDto: UpdateProjectEquipmentFieldDto,
+  ) {
+    return this.projectEquipmentService.updateEquipmentFields(
+      equipmentId,
+      updateProjectEquipmentFieldDto,
     );
   }
 
