@@ -116,7 +116,7 @@ export class ProjectEquipment {
   fpq: number;
 
   @Prop()
-  cost: string;
+  cost: number;
 
   @Prop()
   active: boolean;
