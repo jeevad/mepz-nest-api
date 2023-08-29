@@ -30,7 +30,7 @@ export class ProjectEquipmentService {
     private logModel: ActivityLogsService, // @Inject('CurrentContext') private context: CurrentContext
   ) {}
 
-  async createt(createProjectEquipmentDto: any): Promise<ProjectEquipment> {
+  async create(createProjectEquipmentDto: any): Promise<ProjectEquipment> {
     // console.log('log', logInfo);
     this.logModel.logAction(`Added equipments`, createProjectEquipmentDto);
     const project = new this.projectEquipmentModel(createProjectEquipmentDto);
@@ -48,18 +48,30 @@ export class ProjectEquipmentService {
 
   async findAll(filterEquipmentDto: FilterEquipmentDto) {
     mongoose.set('debug', true);
-    const filters: FilterQuery<ProjectEquipmentDocument> = {};
+    let filters: FilterQuery<ProjectEquipmentDocument> = {};
 
     if (Array.isArray(filterEquipmentDto.projectIds)) {
-      filters.projectId = { $in: filterEquipmentDto.projectIds };
+      filters = {
+        'project.projectId': { $in: filterEquipmentDto.projectIds },
+        ...filters,
+      };
     } else {
-      filters.projectId = filterEquipmentDto.projectId;
+      filters = {
+        'project.projectId': filterEquipmentDto.projectId,
+        ...filters,
+      };
     }
     if (filterEquipmentDto.departmentId) {
-      filters.departmentId = filterEquipmentDto.departmentId;
+      filters = {
+        'department.projectDepartmentId': filterEquipmentDto.departmentId,
+        ...filters,
+      };
     }
     if (filterEquipmentDto.roomId) {
-      filters.roomId = filterEquipmentDto.roomId;
+      filters = {
+        'room.projectRoomId': filterEquipmentDto.roomId,
+        ...filters,
+      };
     }
 
     if (filterEquipmentDto.searchQuery) {
@@ -287,33 +299,38 @@ export class ProjectEquipmentService {
   }
 
   //Get Rooms by projectID
-  async getRoomDetail(projectId, roomId) {
+  async getRoomDetail(projectId, field, value) {
+    // mongoose.set('debug', true);
     const pipeline: any = [
       { $match: { _id: new mongoose.Types.ObjectId(projectId) } },
       { $unwind: '$departments' },
       { $unwind: '$departments.rooms' },
       {
         $match: {
-          'departments.rooms._id': new mongoose.Types.ObjectId(roomId),
+          // 'departments.rooms._id': new mongoose.Types.ObjectId(roomId),
+          [`departments.rooms.${field}`]: value,
         },
       },
       {
         $project: {
-          name: 1,
-          code: 1,
-          'departments.code': '$departments.code',
-          'departments.name': '$departments.name',
-          'departments._id': '$departments._id',
-          'departments.departmentId': '$departments.departmentId',
-          'departments.rooms.code': '$departments.rooms.code',
-          'departments.rooms.name': '$departments.rooms.name',
-          'departments.rooms._id': '$departments.rooms._id',
-          'departments.rooms.roomId': '$departments.rooms.roomId',
+          _id: 0,
+          'project.name': '$name',
+          'project.code': '$code',
+          'project.projectId': '$_id',
+          'department.code': '$departments.code',
+          'department.name': '$departments.name',
+          'department.projectDepartmentId': '$departments._id',
+          'department.masterId': '$departments.masterId',
+          'room.code': '$departments.rooms.code',
+          'room.name': '$departments.rooms.name',
+          'room.projectRoomId': '$departments.rooms._id',
+          'room.mysqlRoomId': '$departments.rooms.mysqlRoomId',
+          'room.masterId': '$departments.rooms.masterId',
         },
       },
     ];
     const results = await this.ProjectModel.aggregate(pipeline);
-    return results;
+    return results[0];
   }
   //Get Equipments by projectID
   async getAllEquipments(

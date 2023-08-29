@@ -152,6 +152,7 @@ export class ProjectService {
     projectId: string,
     addProjectDepartmentDtos: AddProjectDepartmentDto[], // [] added
   ): Promise<any> {
+    // mongoose.set('debug', true);
     // return this.ProjectModel.findOneAndUpdate(  // Old
     this.logModel.logAction(
       `Added department to project ID ${projectId}`,
@@ -1768,7 +1769,7 @@ export class ProjectService {
     departmentId: string,
     addProjectDepartmentRoomDto: AddProjectDepartmentRoomDto,
   ): Promise<string | null> {
-    mongoose.set('debug', true);
+    // mongoose.set('debug', true);
 
     const query = {
       _id: projectId,

@@ -16,6 +16,9 @@ export class ProjectDepartmentRoom {
   _id: string;
 
   @Prop()
+  mysqlRoomId: number;
+
+  @Prop()
   name: string;
 
   @Prop()

@@ -27,6 +27,7 @@ import { AddProjectDepartmentRoomDto } from './dto/add-project-department-room.d
 import { UpdateProjectFieldDto } from './dto/update-project-field.dto';
 import { FilterEquipmentDto } from './dto/filter-equipment.dto';
 import { ProjectEquipmentService } from './project-equipment.service';
+import mongoose from 'mongoose';
 
 @Controller('project')
 @ApiTags('Project')
@@ -201,20 +202,30 @@ export class ProjectController {
 
   @Post('addRoomEquipment/:projectId/:departmentId/:roomId')
   @ApiOperation({ summary: 'Add Room Equipment' })
-  addRoomEquipment(
+  async addRoomEquipment(
     @Param('projectId') projectId: string,
     @Param('departmentId') departmentId: string,
     @Param('roomId') roomId: string,
     // @Body() addProjectRoomEquipmentDto: AddProjectRoomEquipmentDto,
     @Body() addProjectRoomEquipmentDto: any,
   ) {
+    // addProjectRoomEquipmentDto = {
+    //   ...addProjectRoomEquipmentDto,
+    //   projectId,
+    //   departmentId,
+    //   roomId,
+    // };
+    const roomDetails = await this.projectEquipmentService.getRoomDetail(
+      projectId,
+      '_id',
+      new mongoose.Types.ObjectId(roomId),
+    );
     addProjectRoomEquipmentDto = {
       ...addProjectRoomEquipmentDto,
-      projectId,
-      departmentId,
-      roomId,
+      ...roomDetails,
     };
-    return this.projectEquipmentService.createt(addProjectRoomEquipmentDto);
+
+    return this.projectEquipmentService.create(addProjectRoomEquipmentDto);
   }
 
   @Get(':id')

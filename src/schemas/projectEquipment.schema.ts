@@ -10,6 +10,13 @@ import { EquipmentPowerSchema, EquipmentPower } from './equipmentPower.schema';
 
 export type ProjectEquipmentDocument = ProjectEquipment & Document;
 
+const commonFields = {
+  code: { type: String },
+  name: { type: String },
+  masterId: { type: String },
+  active: { type: Boolean },
+};
+
 @Schema({
   timestamps: true,
 })
@@ -20,35 +27,58 @@ export class ProjectEquipment {
   @Prop()
   masterId: string;
 
-  @Prop()
-  projectId: string;
-  @Prop()
-  projectCode: string;
-  @Prop()
-  projectName: string;
+  @Prop(raw({ ...commonFields, projectId: { type: String } }))
+  project: Record<string, any>;
 
-  @Prop()
-  departmentId: string;
-  @Prop()
-  departmentCode: string;
-  @Prop()
-  departmentName: string;
+  @Prop(raw({ ...commonFields, projectDepartmentId: { type: String } }))
+  department: Record<string, any>;
 
-  @Prop()
-  departmentActive: boolean;
+  @Prop(
+    raw({
+      ...commonFields,
+      projectRoomId: { type: String },
+      mysqlRoomId: { type: Number },
+    }),
+  )
+  room: Record<string, any>;
 
-  @Prop()
-  roomId: string;
+  @Prop(
+    raw({
+      _id: { type: String },
+      userName: { type: String },
+    }),
+  )
+  user: Record<string, any>;
 
-  @Prop()
-  roomNo: string;
+  // @Prop()
+  // projectId: string;
+  // @Prop()
+  // projectCode: string;
+  // @Prop()
+  // projectName: string;
 
-  @Prop()
-  roomCode: string;
-  @Prop()
-  roomName: string;
-  @Prop()
-  roomActive: boolean;
+  // @Prop()
+  // departmentId: string;
+  // @Prop()
+  // departmentCode: string;
+  // @Prop()
+  // departmentName: string;
+
+  // @Prop()
+  // departmentActive: boolean;
+
+  // @Prop()
+  // roomId: string;
+
+  // @Prop()
+  // roomNo: string;
+
+  // @Prop()
+  // roomCode: string;
+  // @Prop()
+  // roomName: string;
+  // @Prop()
+  // roomActive: boolean;
 
   @Prop()
   equipmentId4: string;
