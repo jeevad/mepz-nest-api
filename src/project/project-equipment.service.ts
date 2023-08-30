@@ -17,6 +17,7 @@ import {
   ProjectEquipment,
   ProjectEquipmentDocument,
 } from 'src/schemas/projectEquipment.schema';
+import { UpdateProjectEquipmentFieldDto } from './dto/update-project-equipment-field.dto';
 
 @Injectable()
 export class ProjectEquipmentService {
@@ -31,23 +32,13 @@ export class ProjectEquipmentService {
   ) {}
 
   async create(createProjectEquipmentDto: any): Promise<ProjectEquipment> {
-    // console.log('log', logInfo);
     this.logModel.logAction(`Added equipments`, createProjectEquipmentDto);
     const project = new this.projectEquipmentModel(createProjectEquipmentDto);
     return project.save();
   }
 
-  async createProjectEquipment(
-    createProjectEquipmentDto: any,
-  ): Promise<ProjectEquipment> {
-    // console.log('log', logInfo);
-    this.logModel.logAction(`Added equipments`, createProjectEquipmentDto);
-    const Project = new this.projectEquipmentModel(createProjectEquipmentDto);
-    return Project.save();
-  }
-
   async findAll(filterEquipmentDto: FilterEquipmentDto) {
-    mongoose.set('debug', true);
+    // mongoose.set('debug', true);
     let filters: FilterQuery<ProjectEquipmentDocument> = {};
 
     if (Array.isArray(filterEquipmentDto.projectIds)) {
@@ -107,6 +98,28 @@ export class ProjectEquipmentService {
   ): Promise<ProjectDocument> {
     this.logModel.logAction(`Updated project ID ${id}`, updateProjectDto);
     return this.ProjectModel.findByIdAndUpdate(id, updateProjectDto);
+  }
+
+  async updateEquipmentFields(
+    equipmentId: string,
+    updateProjectEquipmentFieldDto: UpdateProjectEquipmentFieldDto,
+  ): Promise<any> {
+    // mongoose.set('debug', true);
+
+    const res = await this.projectEquipmentModel.updateOne(
+      { _id: equipmentId },
+      {
+        $set: {
+          [`${updateProjectEquipmentFieldDto.field}`]:
+            updateProjectEquipmentFieldDto.value,
+        },
+      },
+    );
+    this.logModel.logAction(
+      `Updated equipmentID ${equipmentId}`,
+      updateProjectEquipmentFieldDto,
+    );
+    return res;
   }
 
   async remove(id: string) {

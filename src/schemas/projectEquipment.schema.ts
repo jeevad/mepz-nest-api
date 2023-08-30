@@ -18,6 +18,11 @@ const commonFields = {
 };
 
 @Schema({
+  autoIndex: true,
+  toJSON: {
+    getters: true,
+    virtuals: true,
+  },
   timestamps: true,
 })
 export class ProjectEquipment {
@@ -84,6 +89,15 @@ export class ProjectEquipment {
   equipmentId4: string;
 
   @Prop()
+  markup_per: string;
+
+  @Prop()
+  markUp: string;
+
+  @Prop()
+  markupPer: string; // TODO: verify the field
+
+  @Prop()
   qty: number;
 
   @Prop()
@@ -102,13 +116,10 @@ export class ProjectEquipment {
   fpq: number;
 
   @Prop()
-  cost: string;
+  cost: number;
 
   @Prop()
   active: boolean;
-
-  @Prop()
-  markUp: string;
 
   @Prop()
   heatDissipation: string;
@@ -142,7 +153,7 @@ export class ProjectEquipment {
   labels: Record<string, any>;
 
   @Prop()
-  markupPer: string; // TODO: verify the field
+  remarks: string; // TODO: verify the field
 
   @Prop(raw({}))
   package: Record<string, any>;
