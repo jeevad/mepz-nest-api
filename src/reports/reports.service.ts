@@ -25,7 +25,7 @@ export class ReportsService {
   workbook: Excel.Workbook;
   worksheet: Excel.Worksheet;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private ProjectEquipmentService: ProjectEquipmentService) {}
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
