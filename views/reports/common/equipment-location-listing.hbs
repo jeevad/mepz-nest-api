@@ -12,7 +12,7 @@
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>    
         {{#each equipments}}
-          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b> Equipment:</b> <span>{{eqp_code}}</span> <span style="margin-left:30px;">{{eqp_name}}</span></p>
+          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b> Equipment:</b> <span>{{code}}</span> <span style="margin-left:30px;">{{name}}</span></p>
           <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
             <thead class='table-light'>
               <tr>
@@ -24,13 +24,13 @@
               </tr>
             </thead>
             <tbody>      
-              {{#each locations}}
+              {{#each data as |data|}}
                 <tr>
-                  <td style="padding-top:6px;padding-bottom:6px">{{department_code}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{department_name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{room_code}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{room_name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{data.department.code}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{data.department.name}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{data.room.code}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{data.room.name}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{data.quantity}}</td>
                 </tr>      
               {{/each}}
                 <tr style="border: 0;">
@@ -43,7 +43,7 @@
             </tbody>
           </table>
         {{/each}}
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentLocationListing equipments }}</b></p>
+        {{!-- <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentLocationListing equipments }}</b></p> --}}
       </div>
     </div>
   </div>  

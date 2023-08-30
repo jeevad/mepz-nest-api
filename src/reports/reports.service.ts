@@ -10,8 +10,9 @@ import Excel, { Workbook } from 'exceljs';
 import * as tmp from 'tmp';
 import { writeFile } from 'fs/promises';
 import { rejects } from 'assert';
-
 import * as fs from 'fs';
+import { ProjectEquipmentService } from 'src/project/project-equipment.service';
+
 interface WeeklySalesNumbers {
   product: string;
   week1: number;
@@ -24,7 +25,7 @@ export class ReportsService {
   workbook: Excel.Workbook;
   worksheet: Excel.Worksheet;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, private projectEquipmentService: ProjectEquipmentService) { }
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
@@ -210,7 +211,6 @@ export class ReportsService {
       data.w_sign = filterReportDto.w_sign;
     }
     const currentDateVal = await this.getCurrentDate();
-
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
@@ -245,8 +245,6 @@ export class ReportsService {
       'views/reports/common',
       `${filterReportDto.reportType}.hbs`,
     );
-    
-
     return createPdf(filePath, options, data);
   }
 
@@ -377,96 +375,8 @@ export class ReportsService {
     return lists;
   }
   async getAllEqp(filterReportDto) {
-
-    console.log("equipmentsv9");
-    const results = await this.projectService.getAllEquipmentsByLocation(
-      filterReportDto,
-    );
-
-    //console.log('resultsv4', results);
-    const eqps = [];
-    for (const element of results) {
-
-      if (eqps[element._id] === undefined) {
-        eqps[element._id] = [];
-      }
-      console.log("equipmentsv23",element);
-
-      const results2 = await this.projectService.getProjectEquipmentsbyroom(
-        filterReportDto.projectId,
-        element.room_id,
-        element.code,
-      );
-      element.qty1 = Object.values(results2).length;
-
-      
-     
-      
-      element.totalequ = results2.results[0].metadata[0].total;
-     
-      eqps[element._id].push(element);
-
-     
-    }
-   
-
-    const lists = [];
-    for (const element1 in eqps) {
-
-      const total = 0;
-      const room_info = [];
-      const rooms = [];
-      const total_equ_array = [];
-      const items = eqps[element1];
-      type EquipmentItem = {
-        _id: string;
-        code: string;
-        name: string;
-        project_code: string;
-        project_name: string;
-        room_code: string;
-        room_name: string;
-        department_code: string;
-        department_name: string;
-        qty1: number;
-        totalequ: number;
-        total?: number;
-      };
-
-      const inputArray: EquipmentItem[] = eqps[element1];
-
-
-      const uniqueItems: { [id: string]: EquipmentItem } = {};
-      items.forEach((item) => {
-        if (uniqueItems[item.room_code]) {
-          uniqueItems[item.room_code].total =
-            (uniqueItems[item.room_code].total || 0) + 1;
-        } else {
-          uniqueItems[item.room_code] = { ...item, total: 1 };
-        }
-      });
-     
-     
-      //  if(Object.values(uniqueItems).length > 0)
-      // {
-      lists.push({
-        project_name: eqps[element1][0].project_name,
-        project_code: eqps[element1][0].project_code,
-        eqp_code: eqps[element1][0].code,
-        eqp_name: eqps[element1][0].name,
-        group: eqps[element1][0].group,
-        cost: eqps[element1][0].cost,
-        sum: eqps[element1][0].totalequ,
-
-        //locations: room_info,
-        locations: Object.values(uniqueItems),
-        total_equ: total_equ_array,
-        //data1:data1,
-      });
-      //}
-    }
-
-    return lists;
+    const results = await this.projectEquipmentService.findAll(filterReportDto);
+    return results;
   }
 
   async xl1(res) {
@@ -735,11 +645,35 @@ export class ReportsService {
       total?: number;
     };
     if (filterReportDto.reportType === 'equipment-location-listing') {
-      const equipments = await this.getAllEqp(filterReportDto);
-      results = { equipments };
-      results.pname = equipments[0].project_name;
-      results.reportname = 'Equipment Location Listing'
-
+      let data = await this.getAllEqp(filterReportDto);
+      results = data.results;
+      const equipmentMap = new Map();
+      results.forEach(result => {
+        const code = result.code;
+        if (equipmentMap.has(code)) {
+          const existingEquipment = equipmentMap.get(code);
+          existingEquipment.data.push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+          });
+        } else {
+          equipmentMap.set(code, {
+            name: result.name,
+            code: result.code,
+            data: [{
+              qty: result.qty,
+              department: result.department,
+              room: result.room,
+            }],
+          });
+        }
+      });
+      const equipment = Array.from(equipmentMap.values());
+      results.equipments = equipment;
+      results.pname = results[0].project.name;
+      results.reportname = 'Equipment Location Listing';
+      console.log("Results :- ",results);
     } else if (
       filterReportDto.reportType === 'equipment-location-listing-by-pages'
     ) {
