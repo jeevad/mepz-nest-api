@@ -160,8 +160,8 @@ Handlebars.registerHelper(
     let sum = 0;
     items.forEach((equipments) => {
       equipments.locations.forEach((item) => {
-        if (item.quantity) {
-          sum += item.quantity;
+        if (item.qty) {
+          sum += item.qty;
         }
       });
     });

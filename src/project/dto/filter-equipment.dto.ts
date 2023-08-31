@@ -15,6 +15,10 @@ export class FilterEquipmentDto {
   @IsOptional()
   projectId?: string;
 
+  @ApiPropertyOptional({ type: Boolean })
+  @IsOptional()
+  lean?: boolean;
+
   @ApiPropertyOptional({ type: [String] })
   @IsOptional()
   projectIds?: string[];

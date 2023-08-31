@@ -75,6 +75,10 @@ export class ProjectEquipmentService {
       .sort({ _id: -1 })
       .skip(filterEquipmentDto.skip);
 
+    if (filterEquipmentDto.lean) {
+      findQuery.lean();
+    }
+
     if (filterEquipmentDto.limit) {
       findQuery.limit(filterEquipmentDto.limit);
     }
