@@ -12,6 +12,8 @@ import { writeFile } from 'fs/promises';
 import { rejects } from 'assert';
 import * as fs from 'fs';
 import { ProjectEquipmentService } from 'src/project/project-equipment.service';
+import mongoose, { Model, FilterQuery } from 'mongoose';
+
 interface WeeklySalesNumbers {
   product: string;
   week1: number;
@@ -170,9 +172,10 @@ export class ReportsService {
     return createPdf(filePath, options, data);
   }
   async getEquipmentReports(filterReportDto: FilterReportDto) {
+    mongoose.set('debug', true);
     const results = await this.getQueryData(filterReportDto);
     const data: any = results;
-    console.log('results : ', results);
+    // console.log('results : ', results);
     let project_nam;
     if (results.pname) {
       project_nam = results.pname;
@@ -378,6 +381,7 @@ export class ReportsService {
     return lists;
   }
   async getAllEqp(filterReportDto) {
+    filterReportDto.limit = 20;
     const results = await this.projectEquipmentService.findAll(filterReportDto);
     return results;
   }
@@ -630,6 +634,46 @@ export class ReportsService {
     // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
   }
 
+  lowerCamelCase(str) {
+    return str.replace(/-([a-z])/g, function (g) {
+      return g[1].toUpperCase();
+    });
+  }
+
+  equipmentLocationListing(equipmentsRes) {
+    console.log('equipmentLocationListing------');
+
+    const results = equipmentsRes.results;
+    const equipmentMap = new Map();
+    results.forEach((result) => {
+      const code = result.code;
+      if (equipmentMap.has(code)) {
+        const existingEquipment = equipmentMap.get(code);
+        existingEquipment.locations.push({
+          qty: result.qty,
+          department: result.department,
+          room: result.room,
+        });
+      } else {
+        equipmentMap.set(code, {
+          name: result.name,
+          code: result.code,
+          locations: [
+            {
+              qty: result.qty,
+              department: result.department,
+              room: result.room,
+            },
+          ],
+        });
+      }
+    });
+    const equipment = Array.from(equipmentMap.values());
+    results.equipments = equipment;
+    results.pname = results[0].project.name;
+    results.reportname = 'Equipment Location Listing';
+    return results;
+  }
   async getQueryData(filterReportDto: FilterReportDto) {
     let results: any;
     type EquipmentItem = {
@@ -646,52 +690,20 @@ export class ReportsService {
       totalequ: number;
       total?: number;
     };
-    filterReportDto.limit = 200;
-    filterReportDto.lean = true;
+    filterReportDto.limit = 20;
+    // filterReportDto.lean = true;
     const equipmentsRes: any = await this.projectEquipmentService.findAll(
       filterReportDto,
     );
-    // equipmentsRes = equipmentsRes.lean();
-    if (filterReportDto.reportType === 'equipment-location-listing') {
-      let data = await this.getAllEqp(filterReportDto);
-      results = data.results;
-      const equipmentMap = new Map();
-      results.forEach((result) => {
-        const code = result.code;
-        if (equipmentMap.has(code)) {
-          const existingEquipment = equipmentMap.get(code);
-          existingEquipment.data.push({
-            qty: result.qty,
-            department: result.department,
-            room: result.room,
-          });
-        } else {
-          equipmentMap.set(code, {
-            name: result.name,
-            code: result.code,
-            data: [
-              {
-                qty: result.qty,
-                department: result.department,
-                room: result.room,
-              },
-            ],
-          });
-        }
-      });
-      const equipment = Array.from(equipmentMap.values());
-      results.equipments = equipment;
-      results.pname = results[0].project.name;
-      results.reportname = 'Equipment Location Listing';
-      console.log('Results :- ', results);
-    } else if (
+    // const data = await this.getAllEqp(filterReportDto);
+
+    if (
+      filterReportDto.reportType === 'equipment-location-listing' ||
       filterReportDto.reportType === 'equipment-location-listing-by-pages'
     ) {
-      const equipments = await this.getAllEqp(filterReportDto);
-      results = { equipments };
-      results.pname = equipments[0].project_name;
-      results.reportname = 'Equipment Location Listing';
-      //results.pname = equipments.0.project_name;
+      filterReportDto.reportType = 'equipment-location-listing';
+      const functionName = this.lowerCamelCase(filterReportDto.reportType);
+      return this[functionName](equipmentsRes);
     } else if (
       filterReportDto.reportType ===
         'equipment-listing-with-revisions-variations' ||

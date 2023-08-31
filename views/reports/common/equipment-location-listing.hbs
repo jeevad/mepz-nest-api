@@ -24,13 +24,13 @@
               </tr>
             </thead>
             <tbody>      
-              {{#each data as |data|}}
+              {{#each locations as |data|}}
                 <tr>
                   <td style="padding-top:6px;padding-bottom:6px">{{data.department.code}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{data.department.name}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{data.room.code}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{data.room.name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{data.quantity}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{data.qty}}</td>
                 </tr>      
               {{/each}}
                 <tr style="border: 0;">
@@ -38,12 +38,12 @@
                   <td style="border:0;"></td>
                   <td style="border:0;"></td>
                   <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Sub-Total:</td>
-                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum locations "quantity"}}</td>
+                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum locations "qty"}}</td>
                 </tr>
             </tbody>
           </table>
         {{/each}}
-        {{!-- <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentLocationListing equipments }}</b></p> --}}
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentLocationListing equipments }}</b></p>
       </div>
     </div>
   </body>
