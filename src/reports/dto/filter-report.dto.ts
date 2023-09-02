@@ -12,6 +12,10 @@ export class FilterReportDto {
   @IsOptional()
   projectId: string;
 
+  @ApiPropertyOptional({ type: Boolean })
+  @IsOptional()
+  lean?: boolean;
+
   //@IsOptional()
   //pages: number;
 
@@ -20,11 +24,11 @@ export class FilterReportDto {
   // departmentId?: string;
 
   @ApiPropertyOptional({
-    type: [String],
+    type: String,
   })
   @IsOptional()
-  // @IsString()
-  roomId: string[];
+  @IsString()
+  roomId: string;
 
   // @ApiPropertyOptional({
   //   type: String,
@@ -40,7 +44,6 @@ export class FilterReportDto {
   @ApiProperty({ type: [String] })
   @IsOptional()
   roomIds: string[];
-  
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
@@ -77,12 +80,11 @@ export class FilterReportDto {
   @ApiPropertyOptional({ type: Number })
   @IsOptional()
   medical_logo3: number;
-  
+
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   rev1?: string;
 
-  
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   rev2?: string;
@@ -94,4 +96,8 @@ export class FilterReportDto {
   @ApiPropertyOptional({ type: String })
   @IsOptional()
   reportFormat?: string;
+
+  @ApiPropertyOptional({ type: Number })
+  @IsOptional()
+  limit: number;
 }
