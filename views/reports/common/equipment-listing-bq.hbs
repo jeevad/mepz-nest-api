@@ -27,23 +27,23 @@
             </tr>
           </thead>
           <tbody>
-            {{#each EquipmentItemlist}}
+            {{#each equipments}}
               <tr>
                 <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
                 <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
-                <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
+                <td style="padding-top:6px;padding-bottom:6px;">{{qty}}</td>
                 <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
-                <td style="padding-top:6px;padding-bottom:6px;"></td>
+                <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
               </tr>
             {{/each}}
             <tr style="border: 0;">  
               <td style="border: 0;"></td>
               <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Sub-Total:</td>
-              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
+              <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "qty"}}</td>
             </tr>
           </tbody>
         </table>
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQ EquipmentItemlist }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ sum equipments "qty" }}</b></p>
       </div>
     </div>
   </div>

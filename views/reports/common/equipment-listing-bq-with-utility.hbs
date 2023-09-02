@@ -27,17 +27,17 @@
               </tr>
             </thead>
             <tbody>
-              {{#each rooms}}
+           
                 {{#each equipments}}
                   <tr>
                     <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
                     <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
-                    <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px;">{{qty}}</td>
                     <td style="padding-top:6px;padding-bottom:6px;">{{utility}}</td>
                     <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
                   </tr>
                 {{/each}}
-              {{/each}}
+             
             </tbody>
           </table>
         {{/each}}
@@ -46,7 +46,7 @@
             <tr>
               <td style="padding-top:6px;padding-bottom:6px;"></td>
               <td style="padding-top:6px;padding-bottom:6px;">Total Equipment:</td>
-              <td style="padding-top:6px;padding-bottom:6px;">{{calculateSumOfTotalAll departments }}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "qty"}}</td>
               <td style="padding-top:6px;padding-bottom:6px;"></td>
               <td style="padding-top:6px;padding-bottom:6px;"></td>
             </tr> 

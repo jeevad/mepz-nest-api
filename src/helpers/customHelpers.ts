@@ -80,16 +80,11 @@ Handlebars.registerHelper('differnce_price', function (eq_items) {
 });
 Handlebars.registerHelper('sumQuantities', function (items) {
   let sum = 0;
-
   if (items) {
     items.forEach((item) => {
-      item.equipments.forEach((quantity3) => {
-        if (quantity3.quantity) {
-          sum += quantity3.quantity;
-          //console.log("DDDDDD:::::");
-          // console.log(quantity3.quantity);
-        }
-      });
+      if (item.qty) {
+        sum += item.qty;
+      }
     });
   }
   return sum;
@@ -119,7 +114,10 @@ Handlebars.registerHelper('calculateSumOfTotalAll', function (items) {
 Handlebars.registerHelper('calculateSumOfTotal', function (items) {
   let sum = 0;
   items.forEach((item) => {
-    sum += item.quantity * item.cost;
+    if (!isNaN(item.qty * item.cost)) {
+
+    sum += item.qty * item.cost;
+    }
   });
   if (!isNaN(sum)) {
     return sum;
@@ -192,15 +190,16 @@ Handlebars.registerHelper(
   'calculateSumOfTotalEquipmentListingDept',
   function (items) {
     let sum = 0;
-    items.forEach((rooms) => {
-      rooms.rooms.forEach((equipments) => {
-        equipments.equipments.forEach((item) => {
-          if (item.quantity) {
-            sum += item.quantity;
-          }
-        });
+    if(items)
+    {
+    items.forEach((department) => {
+      department.data.forEach((item) => {
+        if (item.qty) {
+          sum += item.qty;
+        }
       });
     });
+  }
     if (!isNaN(sum)) {
       return sum;
     }
@@ -212,14 +211,12 @@ Handlebars.registerHelper(
   'calculateSumOfTotalPriceEquipmentListingDept',
   function (items) {
     let totalPrice = 0;
-    items.forEach((rooms) => {
-      rooms.rooms.forEach((equipments) => {
-        equipments.equipments.forEach((item) => {
-          const price = item.quantity * item.cost;
-          if (!isNaN(price)) {
-            totalPrice = totalPrice + price;
-          }
-        });
+    items.forEach((department) => {
+      department.data.forEach((item) => {
+        const price = item.qty * item.cost;
+        if (!isNaN(price)) {
+          totalPrice = totalPrice + price;
+        }
       });
     });
     if (!isNaN(totalPrice)) {
@@ -232,8 +229,8 @@ Handlebars.registerHelper(
 Handlebars.registerHelper('calculateSumOfQty', function (items) {
   let sum = 0;
   items.forEach((item) => {
-    if (item.quantity) {
-      sum += item.quantity;
+    if (item.qty) {
+      sum += item.qty;
     }
   });
   if (!isNaN(sum)) {
@@ -328,236 +325,272 @@ Handlebars.registerHelper(
   },
 );
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingwithRevisionsVariations', function (items) {
-  let sum = 0;
-  items.forEach((item)=>{
-    if(item.quantity){
-      sum += item.quantity;
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingwithRevisionsVariations',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      if (item.quantity) {
+        sum += item.quantity;
+      }
+    });
+    if (!isNaN(sum)) {
+      return sum;
     }
-  })
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingwithRevisionsVariationsRevQty', function (items) {
-  let sum = 0;
-  items.forEach((item)=>{
-    if(item.quantity_rev2){
-      sum += item.quantity_rev2;
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingwithRevisionsVariationsRevQty',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      if (item.quantity_rev2) {
+        sum += item.quantity_rev2;
+      }
+    });
+    if (!isNaN(sum)) {
+      return sum;
     }
-  })
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingwithRevisionsVariationsDiffQty', function (items) {
-  let sum = 0;
-  items.forEach((item)=>{
-    let diff;
-    let qty;
-    let rev;
-    if(item.quantity || item.quantity_rev2){
-      if(!item.quantity) qty = 0;
-      else qty = item.quantity
-      if(!item.quantity_rev2) rev = 0;
-      else rev = item.quantity_rev2
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingwithRevisionsVariationsDiffQty',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      let diff;
+      let qty;
+      let rev;
+      if (item.quantity || item.quantity_rev2) {
+        if (!item.quantity) qty = 0;
+        else qty = item.quantity;
+        if (!item.quantity_rev2) rev = 0;
+        else rev = item.quantity_rev2;
+      }
+      if (qty || rev) {
+        diff = qty - rev;
+      }
+      if (!isNaN(diff)) {
+        sum += diff;
+      }
+    });
+    if (!isNaN(sum)) {
+      return sum;
     }
-    if(qty || rev){
-      diff = qty - rev;
+    return 0;
+  },
+);
+
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingwithRevisionsVariationsTotPrice',
+  function (items) {
+    let totalprice = 0;
+    items.forEach((item) => {
+      let price = item.quantity * item.cost;
+      if (!isNaN(price)) {
+        totalprice = totalprice + price;
+      }
+    });
+    if (!isNaN(totalprice)) {
+      return totalprice;
     }
-    if(!isNaN(diff)){
-      sum += diff;
+    return 0;
+  },
+);
+
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentRoomVariation',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      item.rooms.forEach((room) => {
+        room.equipments.forEach((equipment) => {
+          if (equipment.quantity) {
+            sum += equipment.quantity;
+          }
+        });
+      });
+    });
+    if (!isNaN(sum)) {
+      return sum;
     }
-  })
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingwithRevisionsVariationsTotPrice', function (items) {
-  let totalprice = 0;
-  items.forEach((item)=>{
-    let price = item.quantity * item.cost;
-    if (!isNaN(price)){
-      totalprice = totalprice + price;
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentRoomVariationRevQty',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      item.rooms.forEach((room) => {
+        room.equipments.forEach((equipment) => {
+          if (equipment.quantity_rev2) {
+            sum += equipment.quantity_rev2;
+          }
+        });
+      });
+    });
+    if (!isNaN(sum)) {
+      return sum;
     }
-  })
-  if (!isNaN(totalprice)) {
-    return totalprice;
-  }
-  return 0;
-});
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentRoomVariation', function (items) {
-  let sum = 0;
-  items.forEach((item)=>{
-    item.rooms.forEach((room)=>{
-      room.equipments.forEach((equipment)=>{
-        if(equipment.quantity){
-          sum += equipment.quantity;
-        }
-      })
-    })
-  })
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentRoomVariationDiffQty',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      item.rooms.forEach((room) => {
+        room.equipments.forEach((equipment) => {
+          let diff;
+          let qty;
+          let rev;
+          if (equipment.quantity || equipment.quantity_rev2) {
+            if (!equipment.quantity) qty = 0;
+            else qty = equipment.quantity;
+            if (!equipment.quantity_rev2) rev = 0;
+            else rev = equipment.quantity_rev2;
+          }
+          if (qty || rev) {
+            diff = qty - rev;
+          }
+          if (!isNaN(diff)) {
+            sum += diff;
+          }
+        });
+      });
+    });
+    if (!isNaN(sum)) {
+      return sum;
+    }
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentRoomVariationRevQty', function (items) {
-  let sum = 0;
-  items.forEach((item)=>{
-    item.rooms.forEach((room)=>{
-      room.equipments.forEach((equipment)=>{
-        if(equipment.quantity_rev2){
-          sum += equipment.quantity_rev2;
-        }
-      })
-    })
-  })
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentRoomVariationTotPrice',
+  function (items) {
+    let totalprice = 0;
+    items.forEach((item) => {
+      item.rooms.forEach((room) => {
+        room.equipments.forEach((equipment) => {
+          let price = equipment.quantity * equipment.cost;
+          if (!isNaN(price)) {
+            totalprice = totalprice + price;
+          }
+        });
+      });
+    });
+    if (!isNaN(totalprice)) {
+      return totalprice;
+    }
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentRoomVariationDiffQty', function (items) {
-  let sum = 0;
-  items.forEach((item)=>{
-    item.rooms.forEach((room)=>{
-      room.equipments.forEach((equipment)=>{
-        let diff;
-        let qty;
-        let rev;
-        if(equipment.quantity || equipment.quantity_rev2){
-          if(!equipment.quantity) qty = 0;
-          else qty = equipment.quantity;
-          if(!equipment.quantity_rev2) rev = 0;
-          else rev = equipment.quantity_rev2;
-        }
-        if(qty || rev){
-          diff = qty - rev;
-        }
-        if(!isNaN(diff)){
-          sum += diff;
-        }
-      })
-    })
-  })
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
-
-Handlebars.registerHelper('calculateSumOfTotalEquipmentRoomVariationTotPrice', function (items) {
-  let totalprice = 0;
-  items.forEach((item)=>{
-    item.rooms.forEach((room)=>{
-      room.equipments.forEach((equipment)=>{
-        let price = equipment.quantity * equipment.cost;
-        if (!isNaN(price)){
-          totalprice = totalprice + price;
-        }
-      })
-    })
-  })
-  if (!isNaN(totalprice)) {
-    return totalprice;
-  }
-  return 0;
-});
-
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingBQByGroupRevPrevQty', function (items) {
-  let sum = 0;
-  for (const group in items) {
-    if (items.hasOwnProperty(group)) {
-      const groupItems = items[group];
-      groupItems.forEach(item => {
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingBQByGroupRevPrevQty',
+  function (items) {
+    let sum = 0;
+    for (const group in items) {
+      if (items.hasOwnProperty(group)) {
+        const groupItems = items[group];
+        groupItems.forEach((item) => {
           if (item.quantity) {
             sum += parseFloat(item.quantity);
           }
-      });
+        });
+      }
     }
-  }
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+    if (!isNaN(sum)) {
+      return sum;
+    }
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingBQByGroupRevRevQty', function (items) {
-  let sum = 0;
-  for (const group in items) {
-    if (items.hasOwnProperty(group)) {
-      const groupItems = items[group];
-      groupItems.forEach(item => {
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingBQByGroupRevRevQty',
+  function (items) {
+    let sum = 0;
+    for (const group in items) {
+      if (items.hasOwnProperty(group)) {
+        const groupItems = items[group];
+        groupItems.forEach((item) => {
           if (item.quantity_rev2) {
             sum += parseFloat(item.quantity_rev2);
           }
-      });
+        });
+      }
     }
-  }
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+    if (!isNaN(sum)) {
+      return sum;
+    }
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingBQByGroupRevDiffQty', function (items) {
-  let sum = 0;
-  for (const group in items) {
-    if (items.hasOwnProperty(group)) {
-      const groupItems = items[group];
-      groupItems.forEach(item => {
-        let diff;
-        let qty;
-        let rev;
-        if(item.quantity || item.quantity_rev2){
-          if(!item.quantity) qty = 0;
-          else qty = item.quantity;
-          if(!item.quantity_rev2) rev = 0;
-          else rev = item.quantity_rev2;
-        }
-        if(qty || rev){
-          diff = qty - rev;
-        }
-        if(!isNaN(diff)){
-          sum += diff;
-        }
-      });
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingBQByGroupRevDiffQty',
+  function (items) {
+    let sum = 0;
+    for (const group in items) {
+      if (items.hasOwnProperty(group)) {
+        const groupItems = items[group];
+        groupItems.forEach((item) => {
+          let diff;
+          let qty;
+          let rev;
+          if (item.quantity || item.quantity_rev2) {
+            if (!item.quantity) qty = 0;
+            else qty = item.quantity;
+            if (!item.quantity_rev2) rev = 0;
+            else rev = item.quantity_rev2;
+          }
+          if (qty || rev) {
+            diff = qty - rev;
+          }
+          if (!isNaN(diff)) {
+            sum += diff;
+          }
+        });
+      }
     }
-  }
-  if (!isNaN(sum)) {
-    return sum;
-  }
-  return 0;
-});
+    if (!isNaN(sum)) {
+      return sum;
+    }
+    return 0;
+  },
+);
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingBQByGroupRevTotPrice', function (items) {
-  let totalprice = 0;
-  for (const group in items) {
-    if (items.hasOwnProperty(group)) {
-      const groupItems = items[group];
-      groupItems.forEach(item => {
-        let price = item.quantity * item.cost;
-        if (!isNaN(price)){
-          totalprice = totalprice + price;
-        }
-      });
+Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentListingBQByGroupRevTotPrice',
+  function (items) {
+    let totalprice = 0;
+    for (const group in items) {
+      if (items.hasOwnProperty(group)) {
+        const groupItems = items[group];
+        groupItems.forEach((item) => {
+          let price = item.quantity * item.cost;
+          if (!isNaN(price)) {
+            totalprice = totalprice + price;
+          }
+        });
+      }
     }
-  }
-  if (!isNaN(totalprice)) {
-    return totalprice;
-  }
-  return 0;
-});
+    if (!isNaN(totalprice)) {
+      return totalprice;
+    }
+    return 0;
+  },
+);
 
 Handlebars.registerHelper('isFirstIndex', function (index, options) {
   return index === 0 ? options.fn(this) : options.inverse(this);

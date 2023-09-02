@@ -15,7 +15,7 @@
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{#each groupedByDepartment as |EquipmentItemlist key1|}}
+        {{#each equipments as |EquipmentItemlist key1|}}
           <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
             <thead class='table-light'>
               <tr>
@@ -30,30 +30,32 @@
             </thead>
             <tbody>
               {{#index_gt @index}}<div class="page-break"></div> {{/index_gt}}
-              {{#each EquipmentItemlist}}
+             {{#each EquipmentItemlist as |EquipmentItem key2|}}
+              {{#each EquipmentItem}}
                 <tr>
                   <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{quantity}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{qty}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{cost}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{multiply quantity cost}} </td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{multiply qty cost}} </td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
                 </tr>
               {{/each}}
               <tr style="border: 0;">
                 <td style="border: 0;"></td>
-                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total {{#value_undefine @key1}}{{/value_undefine}}</td>
-                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
+                <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total {{#value_undefine @key2}}{{key2}}{{/value_undefine}}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItem "qty"}}</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
                 </td>
-                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItemlist }}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItem }}</td>
               </tr>
+               {{/each}}
             </tbody>
           </table>
         {{/each}}
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup groupedByDepartment }}</b></p>
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total : {{ calculateSumOfTotalPriceEquipmentListingBQbyGroup groupedByDepartment }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup EquipmentItemlist }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total : {{ calculateSumOfTotalPriceEquipmentListingBQbyGroup EquipmentItemlist }}</b></p>
       </div>
     </div>
   </div>

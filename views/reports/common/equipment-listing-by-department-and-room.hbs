@@ -16,16 +16,16 @@
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
         {{!-- {{json departments}} --}}
-        {{#each departments as |dept|}}
+        
           {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div> {{/index_gt}}{{/if}}
-          {{#if (gt rooms.length 0)}}
+         
           {{#each rooms}}
             {{#if ../../pagewise}}{{#index_gt @index}}<div class="page-break"></div> {{/index_gt}}{{/if}}
-            {{#if (gt equipments.length 0)}}
-            <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{dept.code}}</span> <span
-              style="margin-left:30px;">{{dept.name}}</span></p>
-            <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Rooms:</b> <span>{{code}}</span> <span
-                style="margin-left:30px;">{{name}}</span></p>
+            {{#if (gt data.length 0)}}
+            <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{deapartcode}}</span> <span
+              style="margin-left:30px;">{{deapartname}}</span></p>
+            <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Rooms:</b> <span>{{roomcode}}</span> <span
+                style="margin-left:30px;">{{roomname}} </span></p>
             <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
               <thead class='table-light'>
                 <tr>
@@ -39,11 +39,11 @@
                 </tr>
               </thead>
               <tbody>
-              {{#each equipments}}
+              {{#each data}}
                 <tr>
                   <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{qty}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{group}}</td>
                   <td style="padding-top:6px;padding-bottom:6px"></td>
                   <td style="padding-top:6px;padding-bottom:6px"></td>
@@ -53,7 +53,7 @@
               <tr style="border:0;">
                 <td style="border:0;"></td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Sub Total</td>
-                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfQty equipments}}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfQty data}}</td>
                 <td style="border:0;"></td>
                 <td style="border:0;"></td>
                 <td style="border:0;"></td>
@@ -95,9 +95,9 @@
             {{/if}}
             {{/if}}
           {{/each}}
-          {{/if}}
-        {{/each}}
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingDept departments }}</b></p>
+         
+       
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingDept rooms }}</b></p>
         {{#if w_sign}}
           <table class='table' style="font-size: 15px; margin-bottom:20px;">
             <tbody>

@@ -29,13 +29,13 @@
             </tr>
           </thead>
           <tbody>
-            {{#each EquipmentItemlist}}
+            {{#each equipments}}
               <tr>
                 <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
                 <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
-                <td style="padding-top:6px;padding-bottom:6px">{{quantity}}</td>
+                <td style="padding-top:6px;padding-bottom:6px">{{qty}}</td>
                 <td style="padding-top:6px;padding-bottom:6px">{{cost}}</td>
-                <td style="padding-top:6px;padding-bottom:6px">{{multiply quantity cost}} </td>
+                <td style="padding-top:6px;padding-bottom:6px">{{multiply qty cost}} </td>
                 <td style="padding-top:6px;padding-bottom:6px">{{group}}</td>
                 <td style="padding-top:6px;padding-bottom:6px"></td>
               </tr>
@@ -43,9 +43,9 @@
             <tr style="border:0">
                 <td style="border:0"></td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total Equipment:</td>
-                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum EquipmentItemlist "quantity"}}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum equipments "qty"}}</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Total:</td>
-                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItemlist }}</td>
+                <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal equipments }}</td>
             </tr>
             {{!-- {{#each rooms}}{{/each}} --}}
           </tbody>
