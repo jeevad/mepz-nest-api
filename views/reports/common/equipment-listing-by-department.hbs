@@ -17,11 +17,11 @@
       <div class='col-xl-12'>
         {{#each departments }}
           {{#if (gt departments.data.length 0)}}  {{/if}}
-            {{#if pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
+            {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
               <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>
                 {{deapartcode}}</span> <span
                   style="margin-left:30px;">{{deapartname}}</span></p>
-            {{#if pagewise}} {{#index_gt @index}}</div> {{/index_gt}} {{/if}}
+            {{#if ../pagewise}} {{#index_gt @index}}</div> {{/index_gt}} {{/if}}
             <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
               <thead class='table-light'>
                 <tr>

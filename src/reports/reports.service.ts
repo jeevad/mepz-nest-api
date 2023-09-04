@@ -777,7 +777,12 @@ export class ReportsService {
       const equipment = Array.from(equipmentMap.values());
       results.equipments = equipment;
       results.pname = results[0].project.name;
-      results.reportname = 'Equipment Listing';
+      console.log("Results : ",results);
+      if(filterReportDto.reportType === 'equipment-listing-by-floor'){
+        results.reportname = 'Equipment Listing By Floor';
+      } else {
+        results.reportname = 'Equipment Listing (BQ)';
+      }
     } else if (filterReportDto.reportType === 'disabled-equipment-listing-bq' ||  filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price') {
         let data = await this.getAllEqp(filterReportDto);
       results = data.results;
@@ -1057,6 +1062,7 @@ export class ReportsService {
       }));
       
       results.equipments = groupedArray;
+      console.log("results :- ",results);
       results.pname = results[0].project.name;
 
       //console.log(results.equipments);
@@ -1300,7 +1306,6 @@ export class ReportsService {
       const department = Array.from(departmentMap.values());
       results.departments = department;
       results.pname = results[0].project.name;
-      //console.log("fffff:::");
      // console.log(equipmentMap);
       
 
@@ -1606,6 +1611,7 @@ export class ReportsService {
       } else if (filterReportDto.reportType === 'room-listing') {
         results.reportname = 'Room Listing';
       } else if (filterReportDto.reportType === 'department-list') {
+        results.departments.sort((a, b) => a.code.localeCompare(b.code));
         results.reportname = 'Department Listing';
       } else if (
         filterReportDto.reportType ===
