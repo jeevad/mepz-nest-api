@@ -30,11 +30,10 @@
                 <tr>
                   <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
                   <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">YN</th>
-                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Client Remarks</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Qty</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Qty</th>
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Qty</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -43,20 +42,18 @@
                   <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{qty}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{group}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{remarks}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px"></td>
-                  <td style="padding-top:6px;padding-bottom:6px"></td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{qty_rev}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px">{{differ_cal qty qty_rev }}</td>
+               
                 </tr>
               {{/each}}
               <tr style="border:0;">
                 <td style="border:0;"></td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Sub Total</td>
                 <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfQty data}}</td>
-                <td style="border:0;"></td>
-                <td style="border:0;"></td>
-                <td style="border:0;"></td>
-                <td style="border:0;"></td>
+                <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum data "qty_rev"}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{total_difernce data "qty" "qty_rev" }}</td>
+                 
               </tr>
               </tbody>
             </table>
@@ -65,7 +62,7 @@
               <table class='table' style="font-size: 15px; margin-bottom:20px;">
                 <tbody>
                   <tr>
-                    <td style="padding-top:6px;padding-bottom:6px" d>Received by:</td>
+                    <td style="padding-top:6px;padding-bottom:6px" >Received by:</td>
                     <td style="padding-top:6px;padding-bottom:6px"></td>
                     <td style="padding-top:6px;padding-bottom:6px">MNE SOLUTIONS: </td>
                   </tr>

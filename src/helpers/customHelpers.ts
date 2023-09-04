@@ -54,6 +54,7 @@ Handlebars.registerHelper('multiply', function (a, b) {
   return 0;
 });
 
+
 Handlebars.registerHelper('differ_cal', function (a, b) {
   if (typeof a !== 'undefined' && typeof b === 'undefined') {
     return a;
@@ -67,13 +68,13 @@ Handlebars.registerHelper('differ_cal', function (a, b) {
 Handlebars.registerHelper('differnce_price', function (eq_items) {
   if (
     !isNaN(
-      eq_items.quantity * eq_items.cost -
+      eq_items.qty * eq_items.cost -
         eq_items.qty_rev * eq_items.cost_rev,
     )
   ) {
     return (
-      eq_items.quantity * eq_items.cost -
-      eq_items.quantity_rev2 * eq_items.cost_rev2
+      eq_items.qty * eq_items.cost -
+      eq_items.qty_rev * eq_items.cost_rev
     );
   }
   return 0;
@@ -99,8 +100,8 @@ Handlebars.registerHelper('calculateSumOfTotalAll', function (items) {
         items1.rooms.forEach((item) => {
           if (Array.isArray(item.equipments)) {
             item.equipments.forEach((quantity3) => {
-              if (quantity3.quantity) {
-                sum += quantity3.quantity;
+              if (quantity3.qty) {
+                sum += quantity3.qty;
               }
             });
           }
@@ -127,8 +128,8 @@ Handlebars.registerHelper('calculateSumOfTotal', function (items) {
 Handlebars.registerHelper('calculateSumOfTotal_rev', function (items) {
   let sum = 0;
   items.forEach((item) => {
-    if (!isNaN(item.quantity_rev2 * item.cost_rev2)) {
-      sum += item.quantity_rev2 * item.cost_rev2;
+    if (!isNaN(item.qty_rev * item.cost_rev)) {
+      sum += item.qty_rev * item.cost_rev;
     }
   });
   if (!isNaN(sum)) {
@@ -141,10 +142,10 @@ Handlebars.registerHelper('total_price_difernce', function (items) {
   let sum = 0;
   let sum2 = 0;
   items.forEach((item) => {
-    sum += item.quantity * item.cost;
+    sum += item.qty * item.cost;
   });
   items.forEach((item) => {
-    sum2 += item.quantity_rev2 * item.cost_rev2;
+    sum2 += item.qty_rev * item.cost_rev;
   });
   if (!isNaN(sum) && !isNaN(sum2)) {
     return sum - sum2;
@@ -175,8 +176,8 @@ Handlebars.registerHelper(
   function (items) {
     let sum = 0;
     items.forEach((item) => {
-      if (item.quantity) {
-        sum += item.quantity;
+      if (item.qty) {
+        sum += item.qty;
       }
     });
     if (!isNaN(sum)) {
@@ -246,8 +247,8 @@ Handlebars.registerHelper(
     items.forEach((rooms) => {
       rooms.rooms.forEach((room) => {
         room.equipments.forEach((equipment) => {
-          if (equipment.quantity) {
-            sum += equipment.quantity;
+          if (equipment.qty) {
+            sum += equipment.qty;
           }
         });
       });
@@ -263,20 +264,26 @@ Handlebars.registerHelper(
   'calculateSumOfTotalEquipmentListingBQbyGroup',
   function (items) {
     let sum = 0;
+
     for (const group in items) {
-      if (items.hasOwnProperty(group)) {
-        const groupItems = items[group];
-        groupItems.forEach((item) => {
-          if (item.quantity) {
-            sum += parseFloat(item.quantity);
-          }
+      const groupObject = items[group];
+    
+      for (const group_item in groupObject) {
+        const groupEqu = groupObject[group_item];
+       
+        groupEqu.forEach((item) => {
+           if (item.qty) {
+            sum += parseFloat(item.qty);
+           }
         });
+      
       }
     }
-    if (!isNaN(sum)) {
+
+      if (!isNaN(sum)) {
       return sum;
     }
-    return 0;
+     return 0;
   },
 );
 
@@ -285,16 +292,24 @@ Handlebars.registerHelper(
   function (items) {
     let totalprice = 0;
     for (const group in items) {
-      if (items.hasOwnProperty(group)) {
-        const groupItems = items[group];
-        groupItems.forEach((item) => {
-          const price = item.quantity * item.cost;
+      const groupObject = items[group];
+    
+      for (const group_item in groupObject) {
+        const groupEqu = groupObject[group_item];
+       
+        groupEqu.forEach((item) => {
+           if (item.qty) {
+            const price = item.qty * item.cost;
           if (!isNaN(price)) {
             totalprice = totalprice + price;
           }
+           }
         });
+      
       }
     }
+
+   
     if (!isNaN(totalprice)) {
       return totalprice;
     }
@@ -311,8 +326,8 @@ Handlebars.registerHelper(
         const groupItems = items[group];
         groupItems.forEach((item) => {
           item.locations.forEach((location) => {
-            if (location.quantity) {
-              sum += parseFloat(location.quantity);
+            if (location.qty) {
+              sum += parseFloat(location.qty);
             }
           });
         });
@@ -330,8 +345,8 @@ Handlebars.registerHelper(
   function (items) {
     let sum = 0;
     items.forEach((item) => {
-      if (item.quantity) {
-        sum += item.quantity;
+      if (item.qty) {
+        sum += item.qty;
       }
     });
     if (!isNaN(sum)) {
@@ -346,8 +361,8 @@ Handlebars.registerHelper(
   function (items) {
     let sum = 0;
     items.forEach((item) => {
-      if (item.quantity_rev2) {
-        sum += item.quantity_rev2;
+      if (item.qty_rev) {
+        sum += item.qty_rev;
       }
     });
     if (!isNaN(sum)) {
@@ -365,11 +380,11 @@ Handlebars.registerHelper(
       let diff;
       let qty;
       let rev;
-      if (item.quantity || item.quantity_rev2) {
-        if (!item.quantity) qty = 0;
-        else qty = item.quantity;
-        if (!item.quantity_rev2) rev = 0;
-        else rev = item.quantity_rev2;
+      if (item.qty || item.qty_rev) {
+        if (!item.qty) qty = 0;
+        else qty = item.qty;
+        if (!item.qty_rev) rev = 0;
+        else rev = item.qty_rev;
       }
       if (qty || rev) {
         diff = qty - rev;
@@ -390,7 +405,7 @@ Handlebars.registerHelper(
   function (items) {
     let totalprice = 0;
     items.forEach((item) => {
-      let price = item.quantity * item.cost;
+      let price = item.qty * item.cost;
       if (!isNaN(price)) {
         totalprice = totalprice + price;
       }
@@ -409,8 +424,8 @@ Handlebars.registerHelper(
     items.forEach((item) => {
       item.rooms.forEach((room) => {
         room.equipments.forEach((equipment) => {
-          if (equipment.quantity) {
-            sum += equipment.quantity;
+          if (equipment.qty) {
+            sum += equipment.qty;
           }
         });
       });
@@ -429,8 +444,8 @@ Handlebars.registerHelper(
     items.forEach((item) => {
       item.rooms.forEach((room) => {
         room.equipments.forEach((equipment) => {
-          if (equipment.quantity_rev2) {
-            sum += equipment.quantity_rev2;
+          if (equipment.qty_rev) {
+            sum += equipment.qty_rev;
           }
         });
       });
@@ -452,11 +467,11 @@ Handlebars.registerHelper(
           let diff;
           let qty;
           let rev;
-          if (equipment.quantity || equipment.quantity_rev2) {
-            if (!equipment.quantity) qty = 0;
-            else qty = equipment.quantity;
-            if (!equipment.quantity_rev2) rev = 0;
-            else rev = equipment.quantity_rev2;
+          if (equipment.qty || equipment.qty_rev) {
+            if (!equipment.qty) qty = 0;
+            else qty = equipment.qty;
+            if (!equipment.qty_rev) rev = 0;
+            else rev = equipment.qty_rev;
           }
           if (qty || rev) {
             diff = qty - rev;
@@ -503,8 +518,8 @@ Handlebars.registerHelper(
       if (items.hasOwnProperty(group)) {
         const groupItems = items[group];
         groupItems.forEach((item) => {
-          if (item.quantity) {
-            sum += parseFloat(item.quantity);
+          if (item.qty) {
+            sum += parseFloat(item.qty);
           }
         });
       }
@@ -524,8 +539,8 @@ Handlebars.registerHelper(
       if (items.hasOwnProperty(group)) {
         const groupItems = items[group];
         groupItems.forEach((item) => {
-          if (item.quantity_rev2) {
-            sum += parseFloat(item.quantity_rev2);
+          if (item.qty_rev) {
+            sum += parseFloat(item.qty_rev);
           }
         });
       }
@@ -548,11 +563,11 @@ Handlebars.registerHelper(
           let diff;
           let qty;
           let rev;
-          if (item.quantity || item.quantity_rev2) {
-            if (!item.quantity) qty = 0;
-            else qty = item.quantity;
-            if (!item.quantity_rev2) rev = 0;
-            else rev = item.quantity_rev2;
+          if (item.qty || item.qty_rev) {
+            if (!item.qty) qty = 0;
+            else qty = item.qty;
+            if (!item.qty_rev) rev = 0;
+            else rev = item.qty_rev;
           }
           if (qty || rev) {
             diff = qty - rev;
@@ -578,7 +593,7 @@ Handlebars.registerHelper(
       if (items.hasOwnProperty(group)) {
         const groupItems = items[group];
         groupItems.forEach((item) => {
-          let price = item.quantity * item.cost;
+          let price = item.qty * item.cost;
           if (!isNaN(price)) {
             totalprice = totalprice + price;
           }

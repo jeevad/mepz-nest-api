@@ -16,10 +16,10 @@
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
        
-          {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
+         
           {{#each rooms}}
             {{!-- <p>equipments length : {{ equipments.length}}</p> --}}
-            {{#if ../../pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
+            {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
             {{#if (gt data.length 0)}}
                 <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{deapartcode}}</span> <span
                 style="margin-left:30px;">{{deapartname}}</span></p>

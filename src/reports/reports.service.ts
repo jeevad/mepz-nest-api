@@ -279,46 +279,7 @@ export class ReportsService {
     // return `${year}-${month}-${day}`;
     return `${day}/${month}/${year}`;
   }
-  async getAllremove_duplicates(department) {
-    type EquipmentItem = {
-      equipmentId: string;
-      name: string;
-      code: string;
-      _id: string;
-      total?: number;
-    };
-    const eqps = [];
-    for (const element3 of department) {
-      for (const element2 of element3.rooms) {
-        for (const element of element2.equipments) {
-          if (eqps[element._id] === undefined) {
-            //eqps[element._id] = [];
-          }
 
-          eqps.push(element);
-        }
-      }
-    }
-
-    const lists = [];
-    //for (const element1 in eqps) {
-
-    const items = eqps;
-
-    const inputArray: EquipmentItem[] = eqps;
-    //const uniqueItems: { [id: string]  } = {};
-
-    const uniqueItems: { [id: string]: EquipmentItem } = {};
-    items.forEach((item) => {
-      if (uniqueItems[item.code]) {
-        uniqueItems[item.code].total = (uniqueItems[item.code].total || 0) + 1;
-      } else {
-        uniqueItems[item.code] = { ...item, total: 1 };
-      }
-    });
-
-    return Object.values(uniqueItems);
-  }
   async getAllEqp_group(filterReportDto) {
     console.log('equipmentsv9');
     const results = await this.projectService.getAllEquipmentsByLocation(
@@ -842,6 +803,8 @@ export class ReportsService {
         name: result.name,
         code: result.code,
         cost: result.cost,
+        group: result.group,
+        remarks: result.remarks,
         utility: result.utility,
       });
     } else {
@@ -863,6 +826,8 @@ export class ReportsService {
               name: result.name,
               code: result.code,
               cost: result.cost,
+              group: result.group,
+              remarks: result.remarks,
               utility: result.utility,
             }],
           });
@@ -978,6 +943,116 @@ export class ReportsService {
     results.reportname = 'Equipment Listing By Department and Room Disabled';
     return results;
    }
+   DepartandRoomtoRoomVariation(equipmentsRes_rev1,equipmentsRes_rev2,filterReportDto) {
+
+    const rooms_id_data = filterReportDto.roomIds; //['648972be6be3d0e6681efe07', '648972356be3d0e6681efdbc'];
+    const results = equipmentsRes_rev1.results;
+    const results_rev = equipmentsRes_rev2.results;
+   
+   const results_rev_map = new Map();
+   results_rev.forEach(result_rev => {
+     const roomcode = result_rev.room.code;
+     const code = result_rev.code;
+     const room_with_code = roomcode+code;
+     results_rev_map.set(room_with_code, {
+       qty: result_rev.qty,
+       cost: result_rev.cost,
+       
+     });
+   });
+    
+    const roomMap = new Map
+    
+    results.forEach(result => {
+      const roomcode = result.room.code;
+      const code = result.code;
+
+      const room_with_code = roomcode+code;
+      let qty_rev =0;
+      let cost_rev ='0';
+      if (results_rev_map.has(room_with_code) ) {
+       
+       qty_rev = results_rev_map.get(room_with_code).qty;
+       cost_rev =results_rev_map.get(room_with_code).cost;
+      }
+
+      if (roomMap.has(roomcode)) {
+        const existingEquipment = roomMap.get(roomcode);
+        existingEquipment.data.push({
+          qty: result.qty,
+          qty_rev: qty_rev,
+          department: result.department,
+          room: result.room,
+          name: result.name,
+          code: result.code,
+          cost: result.cost,
+          cost_rev: cost_rev,
+          utility: result.utility,
+        });
+      } else {
+        // roomid sort case 
+        if (rooms_id_data) {  
+          
+         if(rooms_id_data.includes(result.room.projectRoomId))
+          {
+            roomMap.set(roomcode, {
+              deapartcode: result.department.code,
+              deapartname: result.department.name,
+              roomcode: result.room.code,
+              roomname: result.room.name,
+              projectRoomId: result.room.projectRoomId,
+              data: [{
+                qty: result.qty,
+                qty_rev: qty_rev,
+                department: result.department,
+                room: result.room,
+                name: result.name,
+                code: result.code,
+                cost: result.cost,
+                cost_rev: cost_rev,
+                utility: result.utility,
+              }],
+            });
+  
+          }
+        }
+        else
+        {
+        roomMap.set(roomcode, {
+          deapartcode: result.department.code,
+          deapartname: result.department.name,
+          roomcode: result.room.code,
+          roomname: result.room.name,
+          projectRoomId: result.room.projectRoomId,
+          data: [{
+            qty: result.qty,
+            qty_rev: qty_rev,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            cost_rev: cost_rev,
+            
+          }],
+        });
+      }
+      }
+    });
+    const room = Array.from(roomMap.values());
+    results.rooms = room;
+    results.pname = results[0].project.name;
+    
+    results.pagewise = filterReportDto.pagewise;
+    results.top_logo = filterReportDto.top_logo;
+    results.b_logo = filterReportDto.b_logo;
+    results.medical_logo = filterReportDto.medical_logo;
+    results.medical_logo2 = filterReportDto.medical_logo2;
+    results.medical_logo3 = filterReportDto.medical_logo3;
+  
+    results.reportname = 'Equipment Listing(BQ) By Department and Room';
+     return results;
+     }
    equipmentListingByGroup(equipmentsRes)
    {
     const results = equipmentsRes.results;
@@ -1266,8 +1341,8 @@ export class ReportsService {
       
     });
   });
-  console.log("checking 1234");
-  console.log(results_rev_map);
+ //console.log("Testing rev2 map:::");
+ //console.log(results_rev_map);
   results.forEach(result => {
     const roomcode = result.room.code;
    
@@ -1284,40 +1359,35 @@ export class ReportsService {
     }
   
     const existingDepartment = departmentMap.get(roomcode);
+    const code = result.code;
+    const room_with_code = roomcode+code;
+    let qty_rev =0;
+    let code_rev ='0';
+    if (results_rev_map.has(room_with_code) ) {
+     // console.log("Testing value map:::",room_with_code);
+      //console.log(results_rev_map.get(room_with_code).qty);
+     qty_rev = results_rev_map.get(room_with_code).qty;
+     code_rev =results_rev_map.get(room_with_code).cost;
+    }
+   
     if (group != 'no-group') {
     if (!existingDepartment.data[group]) {
       existingDepartment.data[group] = [];
     }
-    const roomcode = result.room.code;
-    const code = result.code;
-    const room_with_code = roomcode+code;
-
-    if (results_rev_map.has(room_with_code) ) {
+    
+    
+   
       existingDepartment.data[group].push({
         qty: result.qty,
-       // qty_rev: results_rev_map[room_with_code].qty,
+        qty_rev: qty_rev, 
         department: result.department,
         room: result.room,
         name: result.name,
         code: result.code,
-        code_rev: result.code_rev,
+        code_rev: code_rev,
         cost: result.cost,
       });
 
-    }
-    else
-    {
-    existingDepartment.data[group].push({
-      qty: result.qty,
-      qty_rev: result.qty_rev,
-      department: result.department,
-      room: result.room,
-      name: result.name,
-      code: result.code,
-      code_rev: result.code_rev,
-      cost: result.cost,
-    });
-   }
   
 
   }
@@ -1327,13 +1397,16 @@ export class ReportsService {
       if (!noGroupData.has(roomcode)) {
         noGroupData.set(roomcode, []);
       }
+      
       noGroupData.get(roomcode).push({
         qty: result.qty,
+        qty_rev: qty_rev,
+        cost: result.cost,
         department: result.department,
         room: result.room,
         name: result.name,
         code: result.code,
-        cost: result.cost,
+        code_rev: code_rev,
       });
     }
   });
@@ -1473,8 +1546,25 @@ export class ReportsService {
 
       return this.equipmentListingByDepartandRoomDisabled(equipmentsRes,filterReportDto);
     
-    } else if (
-      filterReportDto.reportType === 'equipment-listing-bq-by-group' ||
+    }  else if (
+      filterReportDto.reportType ==='equipment-room-to-room-variation' ||  filterReportDto.reportType ===
+      'equipment-room-to-room-variation-price'
+    ) {
+ // revision data is not updated
+      filterReportDto.limit = 20;
+ //should replace by filter with rev1 value
+  const equipmentsRes_rev1: any = await this.projectEquipmentService.findAll(
+  filterReportDto,
+);
+  //should replace by filter with rev2 value
+  const equipmentsRes_rev2: any = await this.projectEquipmentService.findAll(
+    filterReportDto,
+  );
+       
+
+      return this.DepartandRoomtoRoomVariation(equipmentsRes_rev1,equipmentsRes_rev2,filterReportDto);
+    
+    } else if (filterReportDto.reportType === 'equipment-listing-bq-by-group' ||
       filterReportDto.reportType === 'equipment-listing-bq-with-price-by-group'
     ) {
       return this.equipmentListingByGroup(equipmentsRes);
