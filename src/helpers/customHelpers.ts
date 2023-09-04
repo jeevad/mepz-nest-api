@@ -68,7 +68,7 @@ Handlebars.registerHelper('differnce_price', function (eq_items) {
   if (
     !isNaN(
       eq_items.quantity * eq_items.cost -
-        eq_items.quantity_rev2 * eq_items.cost_rev2,
+        eq_items.qty_rev * eq_items.cost_rev,
     )
   ) {
     return (
