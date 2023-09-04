@@ -14,7 +14,7 @@
       <div class='col-xl-12'>
     
           {{#each rooms}}
-            {{#if ../../pagewise}}{{#index_gt @index}}<div class="page-break"></div>{{/index_gt}} {{/if}}
+            {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div>{{/index_gt}} {{/if}}
            
               {{#if (gt data.length 0)}}
                 <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{deapartcode}}</span> <span
@@ -51,7 +51,7 @@
                     </tr>
                   </tbody>
                 </table>
-                {{#if ../../w_sign}}
+                {{#if ../w_sign}}
                   <table class='table table-borderless'>
                     <tbody>
                       <tr>

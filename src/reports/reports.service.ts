@@ -1651,6 +1651,7 @@ export class ReportsService {
       } else if (filterReportDto.reportType === 'room-listing') {
         results.reportname = 'Room Listing';
       } else if (filterReportDto.reportType === 'department-list') {
+        results.departments.sort((a, b) => a.code.localeCompare(b.code));
         results.reportname = 'Department Listing';
       } else if (
         filterReportDto.reportType ===

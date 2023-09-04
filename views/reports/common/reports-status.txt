@@ -1,0 +1,291 @@
+Hanimeds :-
+
+Completed Reports pdf:-
+----------------------------------------------------------------------
+Equipment location listing :-
+---------------------------------
+1. Pdf - completed
+2. Pdf 1 pages - no pdf
+
+Department list :-
+---------------------------------
+1. Pdf - completed
+2. Pdf by floor - no pdf
+
+Room listing :-
+---------------------------------
+1. Pdf - completed
+2. Pdf by floor - no pdf
+
+Equipment listing (BQ) :-
+---------------------------------
+1. Pdf - completed
+2. Pdf with price - completed
+
+Disabled Equipment Listing(BQ) :-
+---------------------------------
+1. Pdf - no data - status column static
+2. Pdf with price - no data - status column static
+
+Equipment listing by department :-
+---------------------------------
+1. Pdf - completed
+2. Pdf 1 page with price - completed
+3. Pdf 1 page - completed
+
+Equipment Listing by Department and Room :-
+---------------------------------
+1. Pdf - remarks, yn, client remarks - columns static
+2. Pdf 1 page - remarks, yn, client remarks - columns static
+3. Pdf 1 page(w/sign) - remarks, yn, client remarks - columns static
+4. Pdf 1 page with price - remarks, yn, client remarks - columns static
+
+Equipment Listing by Department and Room(Disabled) :-
+---------------------------------
+1. Pdf - no data
+2. Pdf 1 page - no data
+3. Pdf 1 page(w/sign) - no data
+4. Pdf 1 page with price - no data
+
+Equipment Room to Room variation :-
+---------------------------------
+1. Pdf - no pdf 
+2. Pdf 1 page - no pdf
+3. Pdf 1 page with price - no pdf
+
+Equipment Listing By Floor :-
+---------------------------------
+1. Pdf - completed
+2. Pdf 1 page - completed
+
+Equipment Listing(BQ), by Group :-
+---------------------------------
+1. Pdf - not working 
+2. Pdf 1 page with price - not working
+3. Pdf 1 page - not working
+
+Summary of Equipment variation :-
+---------------------------------
+1. Pdf - no pdf
+2. Pdf 1 page - no pdf
+3. Pdf 1 page with price - no pdf
+
+Equipment Location Listing, by Group :-
+---------------------------------
+1. Pdf - not working
+2. Pdf 1 page - not working
+
+Equipment Listing by Department, by Group :-
+---------------------------------
+1. Pdf - not working
+2. Pdf 1 page with price - not working
+3. Pdf 1 page - not working
+
+Equipment Listing by Department and Room, by Group :-
+---------------------------------
+1. Pdf - not working
+2. Pdf 1 page - not working
+3. Pdf 1 page (w/sign) - not working
+3. Pdf 1 page with price - not working
+
+Equipment Listing(BQ) with utility :-
+---------------------------------
+1. Pdf - completed
+
+Equipment Listing by Department and Room :-
+---------------------------------
+1. Pdf - completed
+2. Pdf 1 page - completed 
+3. Pdf 1 page (w/sign) - completed
+
+
+Links :-
+----------------------------------------------------------------------
+Equipment location listing:-
+---------------------------------
+1. Pdf - completed
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-location-listing&reportFormat=pdf
+2. Pdf 1 Page - No pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-location-listing-by-pages&reportFormat=pdf
+
+Department list:-
+---------------------------------
+1. Pdf - completed
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=department-list&reportFormat=pdf
+2. Pdf by floor - No pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=department-list&reportFormat=pdf
+
+Room listing:-
+---------------------------------
+1. Pdf - completed 
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=room-listing&reportFormat=pdf
+2. Pdf by floor - not completed -  there is no report
+
+Equipment listing (BQ):-
+---------------------------------
+1. Pdf - not completed - remarks columns added statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-bq&reportFormat=pdf
+2. Pdf with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-bq-with-price&format=pdf
+
+Disabled euipment listing (BQ):-
+---------------------------------
+1. Pdf - no data
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=disabled-equipment-listing-bq&reportFormat=pdf
+2. Pdf with price - no data
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=disabled-equipment-listing-bq-with-price&reportFormat=pdf
+
+Equipment listing by department :-
+---------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department&reportFormat=pdfs
+2. Pdf 1 page with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-with-price&reportFormat=pdfs&pagewise=1
+3. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department&reportFormat=pdfs&pagewise=1
+
+Equipment listing by department and room :-
+---------------------------------
+1. Pdf - remarks, yn, client remarks - columns static
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs
+2. Pdf 1 page - remarks, yn, client remarks - columns static
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs&pagewise=1
+3. Pdf 1 page (w/sign) - remarks, yn, client remarks - columns missing 
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room&reportFormat=pdf&pagewise=1&w_sign=1
+4. Pdf 1 page with price - remarks, yn, client remarks - columns statically
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-price&reportFormat=pdfs&pagewise=1
+
+Equipment listing by department and room (disabled) :-
+---------------------------------
+1. Pdf  - remarks, yn, client remarks - columns statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdf
+2. Pdf 1 page - remarks, yn, client remarks - columns statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdf&pagewise=1
+3. Pdf 1 page (w/sign) - remarks, yn, client remarks - columns statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdf&pagewise=1&w_sign=1
+4. Pdf 1 page with price - remarks, yn, client remarks - columns statically
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled-price&reportFormat=pdf&pagewise=1
+
+Equipment Room to Room variation :-
+---------------------------------
+1. Pdf - no pdf 
+2. Pdf 1 page - no pdf
+3. Pdf 1 page with price - no pdf
+
+Equipment listing by floor :-
+---------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-floor&reportFormat=pdfs
+2. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-floor&reportFormat=pdfs&pagewise=1
+
+Equipment listing (BQ), by group :-
+---------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs
+2. Pdf 1 page with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-with-price-by-group&reportFormat=pdfs
+3. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs&pagewise=1
+
+Summary of Equipment variation :-
+---------------------------------
+1. Pdf - no pdf
+2. Pdf 1 page - no pdf
+3. Pdf 1 page with price - no pdf
+
+Equipment Location Listing, by Group :-
+---------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-location-listing-by-group&reportFormat=pdfs
+2. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-location-listing-by-group&reportFormat=pdfs&pagewise=1
+3. Excel - pending
+
+Equipment Listing by Department, by Group :-
+---------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-by-group&reportFormat=pdfs
+2. Pdf 1 page with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-with-price-by-group&&reportFormat=pdfs&pagewise=1
+3. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-by-group&&reportFormat=pdfs&pagewise=1
+4. Excel - pending
+5. Excel with price - pending
+
+Equipment Listing by Department and Room, by Group :-
+---------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs
+2. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1
+3. Pdf 1 page (w/sign)
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1&w_sign=1
+4. Pdf 1 page with price 
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-with-price-by-group&reportFormat=pdfs&pagewise=1
+
+Equipment Listing(BQ) with utility :-
+---------------------------------
+1. Pdf
+    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-bq-with-utility&reportFormat=pdf
+
+Equipment Listing by Department and Room with utility :-
+---------------------------------
+1. Pdf - completed - package, remarks, yn, client remarks- static
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-utility&reportFormat=pdf
+2. Pdf 1 page - completed - package, remarks, yn, client remarks- static
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-utility&reportFormat=pdf&pagewise=1
+3. Pdf 1 page (w/sign) - completed - package, remarks, yn, client remarks- static
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-utility&reportFormat=pdf&pagewise=1&w_sign=1
+
+
+
+
+
+Pending
+----------------------------------------------------------------------
+Summary of Equipment variation ---- (pdf is not match with live)
+1. Pdf - not completed - Prev qty, Rev qty, Diff qty - columns missing
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=summary-of-equipment-variation&reportFormat=pdf
+2. Pdf 1 page - no report found
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=summary-of-equipment-variation&reportFormat=pdf&pagewise=1
+3. Pdf 1 page with price - no report found
+4. Excel with price - Pending
+
+Revisions
+1. Pdf - no report found
+2. Pdf 1 page - no report found
+3. Pdf 1 page with price - no report found
+4. Excel with price - pending
+
+Pdf not found in live :-
+--------------------------------------------------------------
+Equipment room to room variation
+1. Pdf - page not found on live site
+2. Pdf 1 page - page not found on live site
+3. Pdf 1 page with price - page not found on live site
+4. Excel with price - pending
+
+Equipment specs
+1. Pdf - not found in live. design changed in local.
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-specs&reportFormat=pdf
+
+
+Revisions :-
+--------------------------------------------------------------
+Equipment listing with revisions variation - completed
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf&rev1=1&rev2=2
+Equipment listing with revisions variation with price - doubt - total price and diff price
+http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-price-with-revisions-variations&reportFormat=pdf&rev1=1&rev2
+
+
+Excel (No pdf found in live) :-
+--------------------------------------------------------------
+Power requirement
+1. Excel - pending
+
+Power requirement for rds
+1. Excel - pending
+
+Equipment brands
+1. Excel - pending
