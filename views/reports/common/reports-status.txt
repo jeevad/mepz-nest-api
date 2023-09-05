@@ -47,11 +47,11 @@ Equipment Listing by Department and Room(Disabled) :-
 3. Pdf 1 page(w/sign) - no data
 4. Pdf 1 page with price - no data
 
-Equipment Room to Room variation :-
+Equipment Room to Room variation :- Report not found on live
 ---------------------------------
-1. Pdf - no pdf 
-2. Pdf 1 page - no pdf
-3. Pdf 1 page with price - no pdf
+1. Pdf - completed
+2. Pdf 1 page - completed
+3. Pdf 1 page with price - completed
 
 Equipment Listing By Floor :-
 ---------------------------------
@@ -168,9 +168,12 @@ Equipment listing by department and room (disabled) :-
 
 Equipment Room to Room variation :-
 ---------------------------------
-1. Pdf - no pdf 
-2. Pdf 1 page - no pdf
-3. Pdf 1 page with price - no pdf
+1. pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-room-to-room-variation&reportFormat=pdf
+2. Pdf 1 page
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-room-to-room-variation&reportFormat=pdf&pagewise=1
+3. Pdf 1 page with price
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-room-to-room-variation-price&reportFormat=pdf
 
 Equipment listing by floor :-
 ---------------------------------

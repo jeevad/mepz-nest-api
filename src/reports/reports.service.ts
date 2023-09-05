@@ -1050,7 +1050,7 @@ export class ReportsService {
     results.medical_logo2 = filterReportDto.medical_logo2;
     results.medical_logo3 = filterReportDto.medical_logo3;
   
-    results.reportname = 'Equipment Listing(BQ) By Department and Room';
+    results.reportname = 'Equipment Listing Room To Room Variation';
      return results;
      }
    equipmentListingByGroup(equipmentsRes)

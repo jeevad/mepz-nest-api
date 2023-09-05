@@ -15,12 +15,9 @@
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{!-- {{json departments}} --}}
-        
-         
-          {{#each rooms}}
-            {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"></div> {{/index_gt}}{{/if}}
-            {{#if (gt data.length 0)}}
+        {{#each rooms}}
+          {{#index_gt @index}}<div class="page-break"></div> {{/index_gt}}
+          {{#if (gt data.length 0)}}
             <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{deapartcode}}</span> <span
               style="margin-left:30px;">{{deapartname}}</span></p>
             <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Rooms:</b> <span>{{roomcode}}</span> <span
@@ -38,45 +35,37 @@
                   <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Price </th>
                   <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total Price </th>
                   <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Price </th>
-                  
                 </tr>
               </thead>
               <tbody>
-              {{#each data as | data_obj1| }}
-                <tr>
-                  <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{qty}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{qty_rev}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{differ_cal qty qty_rev }}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{cost}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{multiply qty_rev cost}} </td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{cost_rev}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px">{{multiply qty_rev cost_rev}} </td>
-                  
-                <td style="padding-top:6px;padding-bottom:6px">{{differnce_price data_obj1}} </td>
-               
+                {{#each data as | data_obj1| }}
+                  <tr>
+                    <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{qty}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{qty_rev}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{differ_cal qty qty_rev }}</td>
+                    <td style="padding-top:6px;padding-bottom:6px;">{{cost}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{multiply qty_rev cost}} </td>
+                    <td style="padding-top:6px;padding-bottom:6px;">{{cost_rev}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{multiply qty_rev cost_rev}} </td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{differnce_price data_obj1}} </td>
+                  </tr>
+                {{/each}}
+                <tr style="border:0;">
+                  <td style="padding-top:6px;padding-bottom:6px;border:0;"></td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">TotaEquipments for Room {{../roomcode}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum data "qty"}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum data "qty_rev"}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{total_difernce data "qty" "qty_rev" }}</td>
+                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
+                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal data }}</td>
+                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
+                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal_rev data }}</td>
+                  <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{total_price_difernce data }}  </td>
                 </tr>
-              {{/each}}
-              <tr style="border:0;">
-                   <tr style="border: 0;">
-                      <td style="padding-top:6px;padding-bottom:6px;border:0;"></td>
-                      <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total Equipments for Room {{../roomcode}}</td>
-                      <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum data "qty"}}</td>
-                     
-                      <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum data "qty_rev"}}</td>
-                    <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{total_difernce data "qty" "qty_rev" }}</td>
-                    <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
-                    <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal data }}</td>
-                    <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"></td>
-                    <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal_rev data }}</td>
-                    <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{total_price_difernce data }}  </td>
-                    </tr>
-                 
-              </tr>
               </tbody>
             </table>
-
             {{#if w_sign}}
               <table class='table' style="font-size: 15px; margin-bottom:20px;">
                 <tbody>
@@ -108,11 +97,12 @@
                 </tbody>
               </table>
             {{/if}}
-            {{/if}}
-          {{/each}}
-         
-       
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingDept rooms }}</b></p>
+          {{/if}}
+        {{/each}}
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Prev Qty: {{ calculateSumOfTotalEquipmentRoomVariation rooms }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Rev Qty: {{ calculateSumOfTotalEquipmentRoomVariationRevQty rooms }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Diff Qty: {{ calculateSumOfTotalEquipmentRoomVariationDiffQty rooms }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Price: {{ calculateSumOfTotalEquipmentRoomVariationTotPrice rooms }}</b></p>
         {{#if w_sign}}
           <table class='table' style="font-size: 15px; margin-bottom:20px;">
             <tbody>

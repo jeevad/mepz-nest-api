@@ -92,8 +92,6 @@ Handlebars.registerHelper('sumQuantities', function (items) {
 });
 Handlebars.registerHelper('calculateSumOfTotalAll', function (items) {
   let sum = 0;
-  //console.log("ffff");
-  //console.log(items);
   if (items) {
     items.forEach((items1) => {
       if (items1.rooms) {
@@ -417,17 +415,13 @@ Handlebars.registerHelper(
   },
 );
 
-Handlebars.registerHelper(
-  'calculateSumOfTotalEquipmentRoomVariation',
-  function (items) {
+Handlebars.registerHelper('calculateSumOfTotalEquipmentRoomVariation',function (items) {
     let sum = 0;
     items.forEach((item) => {
-      item.rooms.forEach((room) => {
-        room.equipments.forEach((equipment) => {
-          if (equipment.qty) {
-            sum += equipment.qty;
-          }
-        });
+      item.data.forEach((data) => {
+        if (data.qty) {
+          sum += data.qty;
+        }
       });
     });
     if (!isNaN(sum)) {
@@ -437,17 +431,13 @@ Handlebars.registerHelper(
   },
 );
 
-Handlebars.registerHelper(
-  'calculateSumOfTotalEquipmentRoomVariationRevQty',
-  function (items) {
+Handlebars.registerHelper('calculateSumOfTotalEquipmentRoomVariationRevQty',function (items) {
     let sum = 0;
     items.forEach((item) => {
-      item.rooms.forEach((room) => {
-        room.equipments.forEach((equipment) => {
-          if (equipment.qty_rev) {
-            sum += equipment.qty_rev;
-          }
-        });
+      item.data.forEach((data) => {
+        if (data.qty_rev) {
+          sum += data.qty_rev;
+        }
       });
     });
     if (!isNaN(sum)) {
@@ -462,16 +452,15 @@ Handlebars.registerHelper(
   function (items) {
     let sum = 0;
     items.forEach((item) => {
-      item.rooms.forEach((room) => {
-        room.equipments.forEach((equipment) => {
+      item.data.forEach((data) => {
           let diff;
           let qty;
           let rev;
-          if (equipment.qty || equipment.qty_rev) {
-            if (!equipment.qty) qty = 0;
-            else qty = equipment.qty;
-            if (!equipment.qty_rev) rev = 0;
-            else rev = equipment.qty_rev;
+          if (data.qty || data.qty_rev) {
+            if (!data.qty) qty = 0;
+            else qty = data.qty;
+            if (!data.qty_rev) rev = 0;
+            else rev = data.qty_rev;
           }
           if (qty || rev) {
             diff = qty - rev;
@@ -479,7 +468,6 @@ Handlebars.registerHelper(
           if (!isNaN(diff)) {
             sum += diff;
           }
-        });
       });
     });
     if (!isNaN(sum)) {
@@ -494,13 +482,11 @@ Handlebars.registerHelper(
   function (items) {
     let totalprice = 0;
     items.forEach((item) => {
-      item.rooms.forEach((room) => {
-        room.equipments.forEach((equipment) => {
-          let price = equipment.quantity * equipment.cost;
-          if (!isNaN(price)) {
-            totalprice = totalprice + price;
-          }
-        });
+      item.data.forEach((data) => {
+        let price = data.qty * data.cost;
+        if (!isNaN(price)) {
+          totalprice = totalprice + price;
+        }
       });
     });
     if (!isNaN(totalprice)) {
