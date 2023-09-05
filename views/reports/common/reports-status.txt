@@ -123,12 +123,12 @@ Room listing:-
 
 Equipment listing (BQ):-
 ---------------------------------
-1. Pdf - not completed - remarks columns added statically
+1. Pdf
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-bq&reportFormat=pdf
 2. Pdf with price
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-bq-with-price&format=pdf
 
-Disabled euipment listing (BQ):-
+Disabled equipment listing (BQ):-
 ---------------------------------
 1. Pdf - no data
     http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=disabled-equipment-listing-bq&reportFormat=pdf
