@@ -1,0 +1,137 @@
+<html lang='en'>
+<head>
+  <meta charset='utf-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1' />  
+  <title>{{title}}</title>
+  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' rel='stylesheet'
+    integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous' />
+  <style>
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+  <div class='container-fluid mb-5 mt-0'>
+    <div class='row d-flex align-items-baseline'>
+      <div class='col-xl-12'>
+       
+          {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
+          {{#each rooms}}
+            {{!-- <p>equipments length : {{ equipments.length}}</p> --}}
+            {{#if ../../pagewise}}{{#index_gt @index}}<div class="page-break">{{/index_gt}} {{/if}}
+            {{#if (gt data.length 0)}}
+                <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{deapartcode}}</span> <span
+                style="margin-left:30px;">{{deapartname}}</span></p>
+                <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Room:</b> <span>{{roomcode}}</span> <span
+                style="margin-left:30px;">{{roomname}}</span></p>
+              {{#if pagewise}} {{#index_gt @index}} </div> {{/index_gt}} {{/if}}
+              <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
+                <thead class='table-light'>
+                  <tr>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Price</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Total</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Y N </th>
+                    <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Client Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each data}}
+                  <tr>
+                    <td style="padding-top:6px;padding-bottom:6px">{{code}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{name}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{qty}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{cost}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{multiply qty cost}} </td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{group}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{remarks}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px"></td>
+                    <td style="padding-top:6px;padding-bottom:6px"></td>
+                  </tr>
+                  {{/each}}
+                  <tr>
+                    <td colspan="2" style="padding-top:6px;padding-bottom:6px">Total Equipments for Room {{roomcode}} - {{roomname}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px"> {{sum data "qty" }} </td>
+                    <td style="padding-top:6px;padding-bottom:6px"></td>
+                    <td style="padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal data }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              {{#if w_sign}}
+                <table class='table'>
+                  <tbody>
+                    <tr>
+                      <td>Received by:</td>
+                      <td></td>
+                      <td>MNE SOLUTIONS: </td>
+                    </tr>
+                    <tr>
+                      <td>Full Name</td>
+                      <td>Full Name</td>
+                      <td>Full Name</td>
+                    </tr>
+                    <tr>
+                      <td>Designation</td>
+                      <td>Designation</td>
+                      <td>Designation</td>
+                    </tr>
+                    <tr>
+                      <td>Stamp</td>
+                      <td>Stamp</td>
+                      <td>Stamp</td>
+                    </tr>
+                    <tr>
+                      <td>Date</td>
+                      <td>Date</td>
+                      <td>Date</td>
+                    </tr>
+                  </tbody>
+                </table>
+              {{/if}}
+            {{/if}}
+          {{/each}}
+       
+        <p style="text-align:right; margin-bottom:10px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingDept rooms }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total : {{ calculateSumOfTotalPriceEquipmentListingDept rooms }}</b></p>
+        
+        {{#if w_sign}}
+          <table class='table'>
+            <tbody>
+              <tr>
+                <td>Received by:</td>
+                <td></td>
+                <td>MNE SOLUTIONS: </td>
+              </tr>
+              <tr>
+                <td>Full Name</td>
+                <td>Full Name</td>
+                <td>Full Name</td>
+              </tr>
+              <tr>
+                <td>Designation</td>
+                <td>Designation</td>
+                <td>Designation</td>
+              </tr>
+              <tr>
+                <td>Stamp</td>
+                <td>Stamp</td>
+                <td>Stamp</td>
+              </tr>
+              <tr>
+                <td>Date</td>
+                <td>Date</td>
+                <td>Date</td>
+              </tr>
+            </tbody>
+          </table>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

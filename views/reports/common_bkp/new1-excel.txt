@@ -1,0 +1,10 @@
+Equipment Location Listing
+
+1) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-location-listing&reportFormat=xlsx
+
+
+Department list
+
+2) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=department-list&reportFormat=xlsx
+
+3) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=department-list&reportFormat=xlsx
