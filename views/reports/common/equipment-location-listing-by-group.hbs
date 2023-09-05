@@ -18,8 +18,8 @@
       <div class='col-xl-12'>    
         {{#each equipments }}
           {{#if ../pagewise}} {{#index_gt @index}} <div class="page-break"></div> {{/index_gt}} {{/if}}
+          <p style="margin-bottom:2px;"><strong>{{group}}</strong></p>
           <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b> Equipment:</b> <span>{{code}}</span> <span style="margin-left:30px;">{{name}}</span></p>
-          <b> </b> <span>{{group}}</span></p>
           <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
             <thead class='table-light'>
               <tr>
@@ -53,5 +53,6 @@
         <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentLocationListing equipments }}</b></p>
       </div>
     </div>
-  </body>
+  </div>
+</body>
 </html>

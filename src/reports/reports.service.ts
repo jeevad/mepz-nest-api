@@ -867,9 +867,9 @@ export class ReportsService {
   results.medical_logo3 = filterReportDto.medical_logo3;
 
   results.reportname = 'Equipment Listing(BQ) By Department and Room';
-   return results;
-   } 
-   equipmentListingByDepartandRoomDisabled(equipmentsRes,filterReportDto)
+  return results;
+  } 
+  equipmentListingByDepartandRoomDisabled(equipmentsRes,filterReportDto)
    {
    
     const results = equipmentsRes.results;
@@ -1056,7 +1056,6 @@ export class ReportsService {
    equipmentListingByGroup(equipmentsRes)
    {
     const results = equipmentsRes.results;
-    
     const equipmentMap = new Map();
     results.forEach(result => {
       const code = result.code;
@@ -1103,6 +1102,8 @@ export class ReportsService {
     
     results.equipments = groupedArray;
     results.pname = results[0].project.name;
+    results.reportname = 'Equipment Listing(BQ)';
+    console.log("Results :- ",results);
     return results;
    }
    equipmentListingByGroup_revision(equipmentsRes_rev1,equipmentsRes_rev2)
@@ -1252,6 +1253,7 @@ export class ReportsService {
     const department = Array.from(departmentMap.values());
     results.departments = department;
     results.pname = results[0].project.name;
+    results.reportname = "Equipment Listing(BQ) By Department"
     return results;
 
    }
@@ -1320,8 +1322,8 @@ export class ReportsService {
    const department = Array.from(departmentMap.values());
    results.departments = department;
    results.pname = results[0].project.name;
-  
-   results.reportname = 'Equipment Listing by Department';
+
+   results.reportname = 'Equipment Listing(BQ) By Department and Room';
    return results;
   }
   equipmentListingDepartNRoomByGroup_revision(equipmentsRes_rev1,equipmentsRes_rev2)
@@ -1568,7 +1570,6 @@ export class ReportsService {
       filterReportDto.reportType === 'equipment-listing-bq-with-price-by-group'
     ) {
       return this.equipmentListingByGroup(equipmentsRes);
-
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq-by-group-revision' ||
       filterReportDto.reportType ===

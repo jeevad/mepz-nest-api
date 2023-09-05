@@ -22,10 +22,10 @@ Equipment listing (BQ) :-
 1. Pdf - completed
 2. Pdf with price - completed
 
-Disabled Equipment Listing(BQ) :-
+Disabled Equipment Listing(BQ) :- (status column static)
 ---------------------------------
-1. Pdf - no data - status column static
-2. Pdf with price - no data - status column static
+1. Pdf - no data 
+2. Pdf with price - no data 
 
 Equipment listing by department :-
 ---------------------------------
@@ -33,12 +33,12 @@ Equipment listing by department :-
 2. Pdf 1 page with price - completed
 3. Pdf 1 page - completed
 
-Equipment Listing by Department and Room :-
+Equipment Listing by Department and Room :- (remarks, yn, client remarks - columns static)
 ---------------------------------
-1. Pdf - remarks, yn, client remarks - columns static
-2. Pdf 1 page - remarks, yn, client remarks - columns static
-3. Pdf 1 page(w/sign) - remarks, yn, client remarks - columns static
-4. Pdf 1 page with price - remarks, yn, client remarks - columns static
+1. Pdf 
+2. Pdf 1 page 
+3. Pdf 1 page(w/sign)
+4. Pdf 1 page with price
 
 Equipment Listing by Department and Room(Disabled) :-
 ---------------------------------
@@ -47,7 +47,7 @@ Equipment Listing by Department and Room(Disabled) :-
 3. Pdf 1 page(w/sign) - no data
 4. Pdf 1 page with price - no data
 
-Equipment Room to Room variation :- Report not found on live
+Equipment Room to Room variation :- (Report not found on live)
 ---------------------------------
 1. Pdf - completed
 2. Pdf 1 page - completed
@@ -60,9 +60,9 @@ Equipment Listing By Floor :-
 
 Equipment Listing(BQ), by Group :-
 ---------------------------------
-1. Pdf - not working 
-2. Pdf 1 page with price - not working
-3. Pdf 1 page - not working
+1. Pdf - completed 
+2. Pdf 1 page with price - completed
+3. Pdf 1 page - completed
 
 Summary of Equipment variation :-
 ---------------------------------
@@ -72,21 +72,21 @@ Summary of Equipment variation :-
 
 Equipment Location Listing, by Group :-
 ---------------------------------
-1. Pdf - not working
-2. Pdf 1 page - not working
+1. Pdf - completed
+2. Pdf 1 page - completed
 
 Equipment Listing by Department, by Group :-
 ---------------------------------
-1. Pdf - not working
-2. Pdf 1 page with price - not working
-3. Pdf 1 page - not working
+1. Pdf - completed
+2. Pdf 1 page with price - completed
+3. Pdf 1 page - completed
 
-Equipment Listing by Department and Room, by Group :-
+Equipment Listing by Department and Room, by Group :- (Yes, no, client remarks - static)
 ---------------------------------
-1. Pdf - not working
-2. Pdf 1 page - not working
-3. Pdf 1 page (w/sign) - not working
-3. Pdf 1 page with price - not working
+1. Pdf - completed
+2. Pdf 1 page - completed
+3. Pdf 1 page (w/sign) - completed
+3. Pdf 1 page with price - completed
 
 Equipment Listing(BQ) with utility :-
 ---------------------------------
@@ -185,11 +185,11 @@ Equipment listing by floor :-
 Equipment listing (BQ), by group :-
 ---------------------------------
 1. Pdf
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-bq-by-group&reportFormat=pdfs
 2. Pdf 1 page with price
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-with-price-by-group&reportFormat=pdfs
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-bq-with-price-by-group&reportFormat=pdfs
 3. Pdf 1 page
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs&pagewise=1
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-bq-by-group&reportFormat=pdfs&pagewise=1
 
 Summary of Equipment variation :-
 ---------------------------------
@@ -200,32 +200,29 @@ Summary of Equipment variation :-
 Equipment Location Listing, by Group :-
 ---------------------------------
 1. Pdf
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-location-listing-by-group&reportFormat=pdfs
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-location-listing-by-group&reportFormat=pdfs
 2. Pdf 1 page
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-location-listing-by-group&reportFormat=pdfs&pagewise=1
-3. Excel - pending
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-location-listing-by-group&reportFormat=pdfs&pagewise=1
 
 Equipment Listing by Department, by Group :-
 ---------------------------------
 1. Pdf
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-by-group&reportFormat=pdfs
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-by-group&reportFormat=pdfs
 2. Pdf 1 page with price
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-with-price-by-group&&reportFormat=pdfs&pagewise=1
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-with-price-by-group&&reportFormat=pdfs&pagewise=1
 3. Pdf 1 page
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-by-group&&reportFormat=pdfs&pagewise=1
-4. Excel - pending
-5. Excel with price - pending
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-by-group&&reportFormat=pdfs&pagewise=1
 
 Equipment Listing by Department and Room, by Group :-
 ---------------------------------
 1. Pdf
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs
 2. Pdf 1 page
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1
 3. Pdf 1 page (w/sign)
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1&w_sign=1
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-and-room-by-group&reportFormat=pdfs&pagewise=1&w_sign=1
 4. Pdf 1 page with price 
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-by-department-and-room-with-price-by-group&reportFormat=pdfs&pagewise=1
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-by-department-and-room-with-price-by-group&reportFormat=pdfs&pagewise=1
 
 Equipment Listing(BQ) with utility :-
 ---------------------------------
@@ -263,6 +260,6 @@ Equipment specs
 Revisions :-
 --------------------------------------------------------------
 Equipment listing with revisions variation - completed
-http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf&rev1=1&rev2=2
+http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf&rev1=1&rev2=2
 Equipment listing with revisions variation with price - doubt - total price and diff price
-http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-price-with-revisions-variations&reportFormat=pdf&rev1=1&rev2
+http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-price-with-revisions-variations&reportFormat=pdf&rev1=1&rev2
