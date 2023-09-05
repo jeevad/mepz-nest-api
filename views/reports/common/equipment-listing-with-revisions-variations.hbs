@@ -24,9 +24,8 @@
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Qty</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Qty</th>
               <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Qty</th>
-
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
-              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
+              {{!-- <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+              <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th> --}}
             </tr>
           </thead>
           <tbody>
@@ -37,8 +36,8 @@
                 <td style="padding-top:6px;padding-bottom:6px;">{{qty}}</td>
                 <td style="padding-top:6px;padding-bottom:6px;">{{qty_rev}}</td>
                 <td style="padding-top:6px;padding-bottom:6px;"> {{differ_cal qty qty_rev }} </td>
-                <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
-                <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
+                {{!-- <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
+                <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td> --}}
               </tr>
             {{/each}}
 
@@ -52,7 +51,9 @@
             </tr>
           </tbody>
         </table>
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ sum equipments "qty" }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Prev Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariations equipments }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Rev Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariationsRevQty equipments }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment Diff Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariationsDiffQty equipments }}</b></p>
       </div>
     </div>
   </div>

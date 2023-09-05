@@ -33,8 +33,7 @@
             </tr>
           </thead>
           <tbody>
-            {{!-- {{#each EquipmentItemlist as |eq_item key3| }} --}}
-            {{#each equipments}}
+            {{#each EquipmentItemlist as |eq_item key3| }}
               <tr>
                 <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
                 <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
@@ -63,10 +62,10 @@
             {{!-- {{#each rooms}}{{/each}} --}}
           </tbody>
         </table>
-        {{!-- <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Prev Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariations EquipmentItemlist }}</b></p>
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Prev Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariations EquipmentItemlist }}</b></p>
         <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Rev Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariationsRevQty EquipmentItemlist }}</b></p>
         <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Diff Qty: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariationsDiffQty EquipmentItemlist }}</b></p>
-        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Price: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariationsTotPrice EquipmentItemlist }}</b></p> --}}
+        <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Price: {{ calculateSumOfTotalEquipmentListingwithRevisionsVariationsTotPrice EquipmentItemlist }}</b></p>
       </div>
     </div>
   </div>

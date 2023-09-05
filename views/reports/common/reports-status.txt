@@ -33,7 +33,7 @@ Equipment listing by department :-
 2. Pdf 1 page with price - completed
 3. Pdf 1 page - completed
 
-Equipment Listing by Department and Room :- (remarks, yn, client remarks - columns static)
+Equipment Listing by Department and Room :- (yn, client remarks - columns static)
 ---------------------------------
 1. Pdf 
 2. Pdf 1 page 
@@ -237,6 +237,12 @@ Equipment Listing by Department and Room with utility :-
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-utility&reportFormat=pdf&pagewise=1
 3. Pdf 1 page (w/sign) - completed - package, remarks, yn, client remarks- static
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-utility&reportFormat=pdf&pagewise=1&w_sign=1
+
+Revisions :-
+----------------------------------------------------------------------
+1. Pdf
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf&rev1=1&rev2=2
+2. Pdf with price
 
 Pending
 ----------------------------------------------------------------------
