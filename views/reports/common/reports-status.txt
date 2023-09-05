@@ -1,6 +1,6 @@
 Hanimeds :-
 
-Completed Reports pdf:-
+Reports status pdf:-
 ----------------------------------------------------------------------
 Equipment location listing :-
 ---------------------------------
@@ -241,10 +241,6 @@ Equipment Listing by Department and Room with utility :-
 3. Pdf 1 page (w/sign) - completed - package, remarks, yn, client remarks- static
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-utility&reportFormat=pdf&pagewise=1&w_sign=1
 
-
-
-
-
 Pending
 ----------------------------------------------------------------------
 Summary of Equipment variation ---- (pdf is not match with live)
@@ -253,7 +249,6 @@ Summary of Equipment variation ---- (pdf is not match with live)
 2. Pdf 1 page - no report found
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=summary-of-equipment-variation&reportFormat=pdf&pagewise=1
 3. Pdf 1 page with price - no report found
-4. Excel with price - Pending
 
 Revisions
 1. Pdf - no report found
@@ -261,18 +256,9 @@ Revisions
 3. Pdf 1 page with price - no report found
 4. Excel with price - pending
 
-Pdf not found in live :-
---------------------------------------------------------------
-Equipment room to room variation
-1. Pdf - page not found on live site
-2. Pdf 1 page - page not found on live site
-3. Pdf 1 page with price - page not found on live site
-4. Excel with price - pending
-
 Equipment specs
 1. Pdf - not found in live. design changed in local.
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-specs&reportFormat=pdf
-
 
 Revisions :-
 --------------------------------------------------------------
@@ -280,15 +266,3 @@ Equipment listing with revisions variation - completed
 http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-with-revisions-variations&reportFormat=pdf&rev1=1&rev2=2
 Equipment listing with revisions variation with price - doubt - total price and diff price
 http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-price-with-revisions-variations&reportFormat=pdf&rev1=1&rev2
-
-
-Excel (No pdf found in live) :-
---------------------------------------------------------------
-Power requirement
-1. Excel - pending
-
-Power requirement for rds
-1. Excel - pending
-
-Equipment brands
-1. Excel - pending
