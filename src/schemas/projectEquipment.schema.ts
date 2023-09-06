@@ -170,6 +170,9 @@ export class ProjectEquipment {
   @Type(() => EquipmentLabel)
   equipmentLabel: EquipmentLabel;
 
+  @Prop(raw({}))
+  tac: string;
+
   // @Prop({ required: true })
   // isDeleted: boolean;
 }
