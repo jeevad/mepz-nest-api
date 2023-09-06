@@ -342,6 +342,7 @@ export class ProjectEquipmentService {
           'room.name': '$departments.rooms.name',
           'room.projectRoomId': '$departments.rooms._id',
           'room.mysqlRoomId': '$departments.rooms.mysqlRoomId',
+          'room.disabled': '$departments.rooms.disabled',
           'room.masterId': '$departments.rooms.masterId',
         },
       },

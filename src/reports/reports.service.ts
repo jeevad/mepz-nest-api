@@ -698,12 +698,14 @@ export class ReportsService {
           department: result.department,
           room: result.room,
           group: result.group,
+          group_labels: result.labels,
         });
       } else {
         equipmentMap.set(code, {
           name: result.name,
           code: result.code,
           group: result.group,
+          group_labels: result.labels,
           locations: [
             {
               qty: result.qty,
@@ -893,9 +895,10 @@ export class ReportsService {
           utility: result.utility,
         });
       } else {
-        // roomid sort case 
+       // disbaled Roomm
         if(result.room.disabled===1)
         {
+           // roomid sort case 
         if (rooms_id_data) {  
           
          if(rooms_id_data.includes(result.room.projectRoomId))
@@ -1057,26 +1060,49 @@ export class ReportsService {
     results.reportname = 'Equipment Listing Room To Room Variation';
      return results;
      }
-   equipmentListingByGroup(equipmentsRes)
+   equipmentListingByGroup(equipmentsRes,filterReportDto)
    {
     const results = equipmentsRes.results;
     const equipmentMap = new Map();
+    const group_id_data = filterReportDto.group; //['G1', 'G2'];
     results.forEach(result => {
       const code = result.code;
       if (equipmentMap.has(code)) {
        
       } else {
+        if (group_id_data) {  
+        
+      if(group_id_data.includes(result.labels)&& result.labels!='')
+         {
         equipmentMap.set(code, {
           name: result.name,
           code: result.code,
           qty: result.qty,
           cost: result.cost,
           group: result.group,
+          group_labels: result.labels,
           remarks: result.remarks,
           utility: result.utility,
         });
       }
-    });
+       }
+      else
+      {
+        equipmentMap.set(code, {
+          name: result.name,
+          code: result.code,
+          qty: result.qty,
+          cost: result.cost,
+          group: result.group,
+          group_labels: result.labels,
+          remarks: result.remarks,
+          utility: result.utility,
+        });
+      }
+    } 
+     });
+    
+   
     const equipment = Array.from(equipmentMap.values());
 
     
@@ -1085,7 +1111,8 @@ export class ReportsService {
     
     // Separate objects into groups
     equipment.forEach(item => {
-      const groupName = item.group || 'no-group';
+      //const groupName = item.group || 'no-group';
+      const groupName = item.group_labels || 'no-group';
       if (!groupedData.hasOwnProperty(groupName)) {
         groupedData[groupName] = [];
       }
@@ -1110,19 +1137,20 @@ export class ReportsService {
     console.log("Results :- ",results);
     return results;
    }
-   equipmentListingByGroup_revision(equipmentsRes_rev1,equipmentsRes_rev2)
+   equipmentListingByGroup_revision(equipmentsRes_rev1,equipmentsRes_rev2,filterReportDto)
    {
     const results = this.equipmentListingAll(equipmentsRes_rev1);
     const results_rev2 = this.equipmentListingAll(equipmentsRes_rev2);
-
-
+    const group_id_data = filterReportDto.group; //['G1', 'G2'];
+   
     const equipment= this.revisionMergeEquipment(results.equipments,results_rev2.equipments);
-
+   
     // Create an object to store objects grouped by their 'group' property
     const groupedData = {};
     
     // Separate objects into groups
     equipment.forEach(item => {
+     // const groupName = item.group || 'no-group';
       const groupName = item.group || 'no-group';
       if (!groupedData.hasOwnProperty(groupName)) {
         groupedData[groupName] = [];
@@ -1146,6 +1174,8 @@ export class ReportsService {
     results.pname = results[0].project.name;
     return results;
    }
+
+
    equipmentListingBQByGroup(equipmentsRes)
    {
     const results = equipmentsRes.results;
@@ -1162,6 +1192,7 @@ export class ReportsService {
          qty: result.qty,
          cost: result.cost,
          group: result.group,
+         group_labels: result.labels,
          remarks: result.remarks,
          utility: result.utility,
        });
@@ -1175,7 +1206,7 @@ export class ReportsService {
    
    // Separate objects into groups
    equipment.forEach(item => {
-     const groupName = item.group || 'no-group';
+     const groupName = item.group_labels || 'no-group';
      if (!groupedData.hasOwnProperty(groupName)) {
        groupedData[groupName] = [];
      }
@@ -1198,6 +1229,7 @@ export class ReportsService {
    results.pname = results[0].project.name;
    return results;
   }
+  
 
    equipmentListingDepartByGroup(equipmentsRes)
    {
@@ -1432,9 +1464,33 @@ export class ReportsService {
   results.reportname = 'Equipment Listing by Department';
   return results;
  }
+
   equipmentLocationListingByGroup(equipmentsRes) {
     const results = this.equipmentLocationListing(equipmentsRes);
-   
+    const groupedData = {};
+    results.equipments.forEach(item => {
+      const groupName = item.group_labels || 'no-group';
+
+      
+        if (!groupedData.hasOwnProperty(groupName)) {
+               groupedData[groupName] = [];
+             }
+             groupedData[groupName].push(item);
+      
+    });
+     // // Get the keys and sort them, moving 'no-group' to the end
+     const sortedKeys = Object.keys(groupedData).sort((a, b) => {
+        if (a === 'no-group') return 1;
+        if (b === 'no-group') return -1;
+         return a.localeCompare(b);
+       });
+       const groupedArray = sortedKeys.map(groupName => ({
+      [groupName]: groupedData[groupName]
+      }));
+      // // Convert the sorted keys to an array of objects with group names as keys
+      // const groupedArray = sortedKeys.map(groupName => ({
+      //   [groupName]: groupedData[groupName]
+      // }));
       // // Create an object to store objects grouped by their 'group' property
       // const groupedData = {};
       
@@ -1458,9 +1514,9 @@ export class ReportsService {
       // const groupedArray = sortedKeys.map(groupName => ({
       //   [groupName]: groupedData[groupName]
       // }));
-      
-      // results.equipments = groupedArray;
-     return results;
+      console.log(groupedArray);
+      results.equipments = groupedArray;
+      return results;
   }
   async getQueryData(filterReportDto: FilterReportDto) {
     let results: any;
@@ -1573,7 +1629,7 @@ export class ReportsService {
     } else if (filterReportDto.reportType === 'equipment-listing-bq-by-group' ||
       filterReportDto.reportType === 'equipment-listing-bq-by-group-with-price'
     ) {
-      return this.equipmentListingByGroup(equipmentsRes);
+      return this.equipmentListingByGroup(equipmentsRes,filterReportDto);
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq-by-group-revision' ||
       filterReportDto.reportType ===
@@ -1592,7 +1648,7 @@ export class ReportsService {
              );
              const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1);
              const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2);
-            return this.equipmentListingByGroup_revision(equipmentsRes_rev1,equipmentsRes_rev2);
+            return this.equipmentListingByGroup_revision(equipmentsRes_rev1,equipmentsRes_rev2,filterReportDto);
 
    
     } else if (
@@ -1600,8 +1656,10 @@ export class ReportsService {
     ) {
       
       filterReportDto.reportType = 'equipment-location-listing-by-group';
-      const functionName = this.lowerCamelCase(filterReportDto.reportType);
-      return this[functionName](equipmentsRes);
+      //const functionName = this.lowerCamelCase(filterReportDto.reportType);
+      //return this[functionName](equipmentsRes);
+
+      return this.equipmentLocationListingByGroup(equipmentsRes);
 
     } else if (
       filterReportDto.reportType ===
