@@ -50,8 +50,8 @@
                   <td style="padding-top:6px;padding-bottom:6px;">{{cost_rev}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{multiply qty_rev cost_rev}} </td>
                   <td style="padding-top:6px;padding-bottom:6px">{{differnce_price EquipmentItem}} </td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
+                  {{!-- <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td> --}}
                 </tr>
               {{/each}}
               <tr style="border: 0;">
@@ -71,9 +71,15 @@
             </tbody>
           </table>
         {{/each}}
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+          {{!-- <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
            <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total : 
-          {{ calculateSumOfTotalPriceEquipmentListingBQbyGroup equipments }}</b></p
+          {{ calculateSumOfTotalPriceEquipmentListingBQbyGroup equipments }}</b></p> --}}
+          
+          <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Prev Qty : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+          <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Rev Qty : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+          <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total Equipment Diff Qty : {{ calculateSumOfTotalDiffQty equipments }}</b></p>
+          <p style="text-align:right; margin-bottom:7px; color: #242729;"><b>Total : 
+          {{ calculateSumOfTotalPriceEquipmentListingBQbyGroup equipments }}</b></p>
       </div>
     </div>
   </div>

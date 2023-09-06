@@ -24,8 +24,8 @@
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Prev Qty</th>
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Rev Qty</th>
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Diff Qty</th>
-                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
-                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks      </th>
+                {{!-- <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th> --}}
               </tr>
             </thead>
             <tbody>
@@ -40,8 +40,8 @@
                   <td style="padding-top:6px;padding-bottom:6px;">{{qty}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{qty_rev}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;"> {{differ_cal qty qty_rev }} </td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
+                  {{!-- <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td> --}}
                 </tr>
               {{/each}}
               <tr style="border: 0;">
@@ -56,7 +56,9 @@
             </tbody>
           </table>
         {{/each}}
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment Prev Qty : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment Rev Qty : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment Diff Qty : {{ calculateSumOfTotalDiffQty equipments }}</b></p>
       </div>
     </div>
   </div>

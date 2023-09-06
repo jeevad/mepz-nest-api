@@ -20,7 +20,7 @@ Equipment listing bq by group revisions - Doubt
 --------------------------------------------------
 5) http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-bq-by-group-revision&reportFormat=pdfs
 
-6) http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-bq-with-price-by-group-revision&reportFormat=pdfs
+6) http://localhost:3001/reports/getEquipmentReports?projectId=64ed066c5e6cbc901859a465&reportType=equipment-listing-bq-by-group-revision-with-price&reportFormat=pdfs
 
 Room Filter :-
 --------------------------------------------------

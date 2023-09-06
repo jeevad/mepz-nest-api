@@ -72,7 +72,7 @@ Equipment location listing by group :-
 17) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdfs&pagewise=1
 18) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdfs&pagewise=1&w_sign=1
 
-19) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled-price&reportFormat=pdfs&pagewise=1
+19) http://localhost:3001/reports/getEquipmentReports?projectId=64be187287c2f1787daaee81&reportType=equipment-listing-by-department-and-room-disabled-with-price&reportFormat=pdfs&pagewise=1
 
 
 Revisions

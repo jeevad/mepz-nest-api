@@ -38,7 +38,7 @@ Equipment listing (BQ), by group
 1. Pdf
    http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs
 2. Pdf 1 page with price
-   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-with-price-by-group&reportFormat=pdfs
+   http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group-with-price&reportFormat=pdfs
 3. Pdf 1 page
    http://localhost:3001/reports/getEquipmentReports?projectId=648976d76be3d0e6681eff4a&reportType=equipment-listing-bq-by-group&reportFormat=pdfs&pagewise=1
 4. Excel - pending
@@ -112,7 +112,7 @@ Equipment listing by department and room (disabled)
 3. Pdf 1 page (w/sign) - not completed - remarks, yn, client remarks - columns statically
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled&reportFormat=pdf&pagewise=1&w_sign=1
 4. Pdf 1 page with price - not completed - remarks, yn, client remarks - columns statically
-   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled-price&reportFormat=pdf&pagewise=1
+   http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-disabled-with-price&reportFormat=pdf&pagewise=1
 5. Excel - pending
 6. Excel with price - pending
 

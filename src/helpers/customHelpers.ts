@@ -443,6 +443,34 @@ Handlebars.registerHelper(
 );
 
 Handlebars.registerHelper(
+  'calculateSumOfTotalDiffQty',
+  function (items) {
+    let sum = 0;
+    items.forEach((item) => {
+      let diff;
+      let qty;
+      let rev;
+      if (item.qty || item.qty_rev) {
+        if (!item.qty) qty = 0;
+        else qty = item.qty;
+        if (!item.qty_rev) rev = 0;
+        else rev = item.qty_rev;
+      }
+      if (qty || rev) {
+        diff = qty - rev;
+      }
+      if (!isNaN(diff)) {
+        sum += diff;
+      }
+    });
+    if (!isNaN(sum)) {
+      return sum;
+    }
+    return 0;
+  },
+);
+
+Handlebars.registerHelper(
   'calculateSumOfTotalEquipmentListingwithRevisionsVariationsTotPrice',
   function (items) {
     let totalprice = 0;
