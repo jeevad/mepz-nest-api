@@ -135,15 +135,18 @@ Equipment Listing by Department, by Group
 
 
 
+Packages
+http://localhost:3001/reports/getEquipmentReports?projectId=64f8ae735ae08021165fc0b0&reportType=equipment-location-listing-by-package&reportFormat=pdf&apq_filt=1&package1=h
+
+http://localhost:3001/reports/getEquipmentReports?projectId=64f8ae735ae08021165fc0b0&reportType=equipment-location-listing-by-package-with-price&reportFormat=pdf&apq_filt=1&package1=h
+
+http://localhost:3001/reports/getEquipmentReports?projectId=64f8ae735ae08021165fc0b0&reportType=equipment-location-listing-by-package&reportFormat=pdf&apq_filt=1&fpq_filt=1
 
 
+http://localhost:3001/reports/getEquipmentReports?projectId=64f8ae735ae08021165fc0b0&reportType=equipment-listing-by-department-by-package&reportFormat=pdf&apq_filt=1
 
 
-
-
-
-
-
+http://localhost:3001/reports/getEquipmentReports?projectId=64f8ae735ae08021165fc0b0&reportType=equipment-listing-by-department-and-room-by-package&reportFormat=pdf&apq_filt=1
 
 
 

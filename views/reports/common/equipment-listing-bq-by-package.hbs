@@ -21,7 +21,16 @@
               <tr>
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
+                {{#if fpq_filt}}
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">FPQ</th> {{/if}}
+                {{#if apq_filt}}
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">APQ</th> {{/if}}
+                {{#unless fpq_filt}}
+                {{#unless apq_filt}}
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
+                 {{/unless}}
+                 {{/unless}}
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Package</th>
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks      </th>
               </tr>
@@ -36,13 +45,24 @@
                 {{#each EquipmentItemlist as |EquipmentItem key2|}}
                   <tr>
 
-                  </tr><td colspan="5" style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key2}}{{/value_undefine}} </td>
+                  </tr><td colspan="6" style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key2}}{{/value_undefine}} </td>
               </tr> 
               {{#each EquipmentItem}}
                 <tr>
                   <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;">{{qty}}</td>
+                  {{#if ../../../fpq_filt}}
+                   <td style="padding-top:6px;padding-bottom:6px;">{{fpq}} </td>
+                   {{/if}}
+                  {{#if ../../../apq_filt}}
+                   <td style="padding-top:6px;padding-bottom:6px;">{{apq}} </td>
+                   {{/if}}
+                  {{#unless ../../../fpq_filt}}
+                  {{#unless ../../../apq_filt}}
+                  <td style="padding-top:6px;padding-bottom:6px;">{{qty}} </td>
+                   {{/unless}}
+                   {{/unless}}
+                  <td style="padding-top:6px;padding-bottom:6px;">{{package1}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{group}}</td>
                   <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
                 </tr>
@@ -50,7 +70,21 @@
               <tr style="border: 0;">
                 <td style="padding-top:6px;padding-bottom:6px; border: 0;"></td>
                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">Total {{#value_undefine @key2}}{{key2}}{{/value_undefine}}</td>
-                <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">{{sum EquipmentItem "qty"}}</td>
+                {{#if (and ../../fpq_filt ../../apq_filt)}}
+                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum EquipmentItem "fpq"}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum EquipmentItem "apq"}}</td>
+                {{else}}
+                <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                  {{#if ../../fpq_filt}}
+                  {{sum EquipmentItem "fpq"}} {{/if}} 
+                  {{#if ../../apq_filt}}
+                  {{sum EquipmentItem "apq"}} {{/if}}  
+                  {{#unless ../../fpq_filt}}
+                  {{#unless ../../apq_filt}}  {{sum EquipmentItem "qty"}} 
+                  {{/unless}}
+                   {{/unless}}
+                  </td>
+                  {{/if}}  
               </tr>
                 {{/each}}
               {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"> </div> {{/index_gt}} {{/if}}
@@ -59,6 +93,13 @@
           </table>
         
         <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
+
+          <div class="text-center">
+          {{#if b_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo2}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo3}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+        <div>
       </div>
     </div>
   </div>

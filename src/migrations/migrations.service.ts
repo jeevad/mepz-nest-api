@@ -165,8 +165,9 @@ export class MigrationsService {
       hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, 
       date_created as createdAt , addr1 as address1, addr2 as address2, city , country, 
       date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, 
-      state  FROM tb_hosp_geninfo WHERE id IN('6') ORDER BY h_short_name`,
+      state  FROM tb_hosp_geninfo WHERE id IN('4','6', '7','8', '9', '11','12','13', '15') ORDER BY h_short_name`,
     );
+    // 	SELECT *FROM `tb_hosp_geninfo`WHERE `id` IN('4','6', '7', , '8', '9', '11','12','13', '15', '140','42', '126', '148', '130', '83', '86', '127', '55', '74', '81', '82', '51', '119', '35',   '38', '132', '118', '18', '19', '117', '22', '142', '124', '121', '122', '70', '80', '50', '120', '147', '128', '103', '134', '137', '153', '72', '141', '139', '138', '99', '25', '37')ORDER BY `h_short_name`
     console.log('projects', projects);
 
     for (const project of projects) {

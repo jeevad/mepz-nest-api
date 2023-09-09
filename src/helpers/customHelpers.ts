@@ -152,6 +152,36 @@ Handlebars.registerHelper('total_price_difernce', function (items) {
 });
 
 Handlebars.registerHelper(
+  'calculateSumOfTotalEquipmentLocationGrpAll',
+  function (items) {
+    let sum = 0;
+    if (items) {
+
+      items.forEach((equ_group) => {
+        if (equ_group) {
+          equ_group.forEach((data) => {
+            data.forEach((equipments) => {
+              equipments.locations.forEach((item) => {
+                if (item.qty) {
+                  sum += item.qty;
+                }
+              });
+
+            });
+          });
+        }
+
+      });
+    }
+    if (!isNaN(sum)) {
+      return sum;
+    }
+    return 0;
+  },
+);
+
+
+Handlebars.registerHelper(
   'calculateSumOfTotalEquipmentLocationListing',
   function (items) {
     let sum = 0;
@@ -337,49 +367,49 @@ Handlebars.registerHelper(
   },
 );
 
-Handlebars.registerHelper('calculateSumOfTotalEquipmentListingDeptByGroup',function (items) {
-    let sum = 0;
-    items.forEach((data) => {
-      for (const key in data.data) {
-        if (data.data.hasOwnProperty(key)) {
-          const groupItems = data.data[key];
-          groupItems.forEach((item) => {
-            if (item.qty) {
-              sum += parseFloat(item.qty);
-            }
-          });
-        }
+Handlebars.registerHelper('calculateSumOfTotalEquipmentListingDeptByGroup', function (items) {
+  let sum = 0;
+  items.forEach((data) => {
+    for (const key in data.data) {
+      if (data.data.hasOwnProperty(key)) {
+        const groupItems = data.data[key];
+        groupItems.forEach((item) => {
+          if (item.qty) {
+            sum += parseFloat(item.qty);
+          }
+        });
       }
-    })
-    if (!isNaN(sum)) {
-      return sum;
     }
-    return 0;
-  },
+  })
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+},
 );
 
-Handlebars.registerHelper('calculateSumOfTotalPriceEquipmentListingDeptByGroup',function (items) {
+Handlebars.registerHelper('calculateSumOfTotalPriceEquipmentListingDeptByGroup', function (items) {
   let totalprice = 0;
-    items.forEach((data) => {
-      for (const key in data.data) {
-        if (data.data.hasOwnProperty(key)) {
-          const groupItems = data.data[key];
-          groupItems.forEach((item) => {
-            if (item.qty) {
-              const price = item.qty * item.cost;
-              if (!isNaN(price)) {
-                totalprice = totalprice + price;
-              }
+  items.forEach((data) => {
+    for (const key in data.data) {
+      if (data.data.hasOwnProperty(key)) {
+        const groupItems = data.data[key];
+        groupItems.forEach((item) => {
+          if (item.qty) {
+            const price = item.qty * item.cost;
+            if (!isNaN(price)) {
+              totalprice = totalprice + price;
             }
-          });
-        }
+          }
+        });
       }
-    })
-    if (!isNaN(totalprice)) {
-      return totalprice;
     }
-    return 0;
-  },
+  })
+  if (!isNaN(totalprice)) {
+    return totalprice;
+  }
+  return 0;
+},
 );
 
 Handlebars.registerHelper(
