@@ -693,64 +693,15 @@ export class ReportsService {
 
     return variation_equ;
   }
-  equipmentLocationListing(equipmentsRes, filterReportDto) {
-    console.log('equipmentLocationListing------');
-    const group_id_data = filterReportDto.group; //['G1', 'G2'];
-    const filter_package = filterReportDto.package1; //['G1', 'G2'];
+  equipmentLocationListing(equipmentsRes, filterReportDto, isDisabled) {
     const results = equipmentsRes.results;
     const equipmentMap = new Map();
+  
     results.forEach((result) => {
       const code = result.code;
-      if (equipmentMap.has(code)) {
-        const existingEquipment = equipmentMap.get(code);
-        existingEquipment.locations.push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          group: result.group,
-          group_labels: result.labels,
-          apq: result.apq,
-          fpq: result.fpq,
-          package1: result.package,
-        });
-      } else {
-        // package/ groupcase filter case
-        if ((!filter_package || filter_package.includes(result.package)) &&
-          (!group_id_data || group_id_data.includes(result.labels))) {
-
-          equipmentMap.set(code, {
-            name: result.name,
-            code: result.code,
-            group: result.group,
-            group_labels: result.labels,
-            locations: [
-              {
-                qty: result.qty,
-                department: result.department,
-                room: result.room,
-                apq: result.apq,
-                fpq: result.fpq,
-                package1: result.package,
-              },
-            ],
-          });
-        }
-      }
-    });
-    const equipment = Array.from(equipmentMap.values());
-    results.equipments = equipment;
-    results.pname = results[0].project.name;
-    results.reportname = 'Equipment Location Listing';
-    return results;
-  }
-  disabledEquipmentLocationListing(equipmentsRes) {
-    const results = equipmentsRes.results;
-    const equipmentMap = new Map();
-    results.forEach((result) => {
-      const code = result.code;
-      if (!equipmentMap.has(code)) {
-
-        if (result.active === false) {
+  
+      if (isDisabled) {
+        if (!equipmentMap.has(code) && result.active === false) {
           equipmentMap.set(code, {
             name: result.name,
             code: result.code,
@@ -761,15 +712,62 @@ export class ReportsService {
             utility: result.utility,
           });
         }
+      } else {
+        const group_id_data = filterReportDto.group; //['G1', 'G2'];
+        const filter_package = filterReportDto.package1; //['G1', 'G2'];
+  
+        if (
+          (!filter_package || filter_package.includes(result.package)) &&
+          (!group_id_data || group_id_data.includes(result.labels))
+        ) {
+          if (equipmentMap.has(code)) {
+            const existingEquipment = equipmentMap.get(code);
+            existingEquipment.locations.push({
+              qty: result.qty,
+              department: result.department,
+              room: result.room,
+              group: result.group,
+              group_labels: result.labels,
+              apq: result.apq,
+              fpq: result.fpq,
+              package1: result.package,
+            });
+          } else {
+            equipmentMap.set(code, {
+              name: result.name,
+              code: result.code,
+              group: result.group,
+              group_labels: result.labels,
+              locations: [
+                {
+                  qty: result.qty,
+                  department: result.department,
+                  room: result.room,
+                  apq: result.apq,
+                  fpq: result.fpq,
+                  package1: result.package,
+                },
+              ],
+            });
+          }
+        }
       }
-
     });
+  
     const equipment = Array.from(equipmentMap.values());
     results.equipments = equipment;
     results.pname = results[0].project.name;
-    results.reportname = 'Disabled Equipment Listing';
+  
+    if (isDisabled) {
+      results.reportname = 'Disabled Equipment Listing';
+    } else {
+      results.reportname = 'Equipment Location Listing';
+    }
+  
     return results;
   }
+
+
 
   equipmentListingByDepart(equipmentsRes) {
     const results = equipmentsRes.results;
@@ -1543,7 +1541,7 @@ export class ReportsService {
   }
 
   equipmentLocationListingByGroup(equipmentsRes, filterReportDto) {
-    const results = this.equipmentLocationListing(equipmentsRes, filterReportDto);
+    const results = this.equipmentLocationListing(equipmentsRes, filterReportDto, false);
     const groupedData = {};
     results.equipments.forEach((item) => {
       const groupName = item.group_labels || 'no-group';
@@ -1625,7 +1623,7 @@ export class ReportsService {
     ) {
       filterReportDto.reportType = 'equipment-location-listing';
       const functionName = this.lowerCamelCase(filterReportDto.reportType);
-      return this[functionName](equipmentsRes, filterReportDto);
+      return this[functionName](equipmentsRes, filterReportDto, false);
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq' ||
       filterReportDto.reportType === 'equipment-listing-bq-with-price' ||
@@ -1665,7 +1663,8 @@ export class ReportsService {
       filterReportDto.reportType === 'disabled-equipment-listing-bq' ||
       filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
     ) {
-      return this.disabledEquipmentLocationListing(equipmentsRes);
+      return this.equipmentLocationListing(equipmentsRes, null,
+        true);
     } else if (
       filterReportDto.reportType === 'equipment-listing-by-department' ||
       filterReportDto.reportType ===
