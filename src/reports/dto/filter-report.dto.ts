@@ -48,6 +48,10 @@ export class FilterReportDto {
   @IsOptional()
   package1?: string;
 
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  equipCode?: string;
+  
 
 
   @ApiPropertyOptional({ type: String })

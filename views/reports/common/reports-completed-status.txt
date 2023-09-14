@@ -53,6 +53,10 @@ Equipment listing by department and room :-
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room&reportFormat=pdf&pagewise=1&w_sign=1
 4. Pdf 1 page with price - not completed - remarks, yn, client remarks - columns statically
    http://localhost:3001/reports/getEquipmentReports?projectId=64ecf580f33e6e5237989fab&reportType=equipment-listing-by-department-and-room-with-price&reportFormat=pdfs&pagewise=1
+
+   Room list filter :-
+   http://localhost:3001/reports/getEquipmentReports?projectId=64f8ae735ae08021165fc0b0&reportType=equipment-listing-by-department-and-room&reportFormat=pdfs&&roomIds[]=AR103
+   
 5. Excel - pending
 6. Excel with price - pending
 

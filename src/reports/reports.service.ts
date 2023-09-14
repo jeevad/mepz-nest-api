@@ -727,40 +727,74 @@ export class ReportsService {
         }
       } else {
         const group_id_data = filterReportDto.group; //['G1', 'G2'];
+        const equipment_code = filterReportDto.equipCode; //['G1', 'G2'];
         const filter_package = filterReportDto.package1; //['G1', 'G2'];
-
-        if ((!filter_package || filter_package === result.package) &&
-          (!group_id_data || group_id_data.includes(result.labels))) {
-          if (equipmentMap.has(code)) {
-            const existingEquipment = equipmentMap.get(code);
-            existingEquipment.locations.push({
-              qty: result.qty,
-              department: result.department,
-              room: result.room,
-              group: result.group,
-              group_labels: result.labels,
-              apq: result.apq,
-              fpq: result.fpq,
-              package1: result.package,
-            });
-          } else {
-            equipmentMap.set(code, {
-              name: result.name,
-              code: result.code,
-              group: result.group,
-              group_labels: result.labels,
-              locations: [
-                {
-                  qty: result.qty,
-                  department: result.department,
-                  room: result.room,
-                  apq: result.apq,
-                  fpq: result.fpq,
-                  package1: result.package,
-                },
-              ],
-            });
-          }
+        if ((!filter_package || filter_package===result.package) &&
+        (!equipment_code || equipment_code===result.code) &&
+        (!group_id_data || group_id_data.includes(result.labels))) {
+        // if (
+        //   (!filter_package || filter_package.includes(result.package)) &&
+        //   (!group_id_data || group_id_data.includes(result.labels))
+        // ) {                    
+          if (equipmentMap.has(code)) {            
+              const existingEquipment = equipmentMap.get(code);            
+              existingEquipment.locations.push({              
+                  qty: result.qty,              
+                  department: result.department,              
+                  room: result.room,              
+                  group: result.group,              
+                  group_labels: result.labels,              
+                  apq: result.apq,              
+                  fpq: result.fpq,              
+                  package1: result.package,            
+              });          
+          } else {            
+            equipmentMap.set(code, {              
+              name: result.name,              
+              code: result.code,              
+              group: result.group,              
+              group_labels: result.labels,             
+              locations: [{                  
+                  qty: result.qty,                  
+                  department: result.department,                  
+                  room: result.room,                  
+                  apq: result.apq,                  
+                  fpq: result.fpq,                  
+                  package1: result.package,                
+              }],            
+            });         
+          } 
+          
+          // if (equipmentMap.has(code)) {
+          //   const existingEquipment = equipmentMap.get(code);
+          //   existingEquipment.locations.push({
+          //     qty: result.qty,
+          //     department: result.department,
+          //     room: result.room,
+          //     group: result.group,
+          //     group_labels: result.labels,
+          //     apq: result.apq,
+          //     fpq: result.fpq,
+          //     package1: result.package,
+          //   });
+          // } else {
+          //   equipmentMap.set(code, {
+          //     name: result.name,
+          //     code: result.code,
+          //     group: result.group,
+          //     group_labels: result.labels,
+          //     locations: [
+          //       {
+          //         qty: result.qty,
+          //         department: result.department,
+          //         room: result.room,
+          //         apq: result.apq,
+          //         fpq: result.fpq,
+          //         package1: result.package,
+          //       },
+          //     ],
+          //   });
+          // }
         }
       }
     });
