@@ -43,7 +43,7 @@
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
                  {{/unless}}
                  {{/unless}}
-                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Package</th>
+                {{! <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Package</th> }}
                 
               </tr>
             </thead>
@@ -65,11 +65,11 @@
                    <td style="padding-top:6px;padding-bottom:6px;">{{apq}} </td>
                    {{/if}}
                   {{#unless ../../../../fpq_filt}}
-                  {{#unless ../../../apq_filt}}
+                  {{#unless ../../../../apq_filt}}
                   <td style="padding-top:6px;padding-bottom:6px;">{{qty}} </td>
                    {{/unless}}
                    {{/unless}}
-                   <td style="padding-top:6px;padding-bottom:6px">{{package1}}</td>
+                   {{!-- <td style="padding-top:6px;padding-bottom:6px">{{package1}}</td> --}}
                    
                 </tr>      
                {{/each}}

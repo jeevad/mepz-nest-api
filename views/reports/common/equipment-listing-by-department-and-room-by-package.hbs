@@ -78,8 +78,8 @@
                 Total  {{#value_undefine @key4}}
                 {{/value_undefine}}:</td> --}}
               {{#if (and ../../fpq_filt ../../apq_filt)}}
-                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum locations "fpq"}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum locations "apq"}}</td>
+                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum equ "fpq"}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum equ "apq"}}</td>
                 {{else}}
                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
                   {{#if ../../fpq_filt}}
@@ -127,9 +127,23 @@
               </tbody>
             </table>
           {{/if}}
+       {{#if ../apq_filt}}
+           {{#if totalapq}}
+                 <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipments for Department APQ {{deapartcode}} :{{ totalapq}}</b></p>
+          {{/if}}{{/if}}
+          {{#if ../fpq_filt}}
+          {{#if totalQty}}
+                <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipments for Department FPQ {{deapartcode}} :{{ totalfpq}}</b></p>
+        {{/if}}{{/if}}  
+            
+        {{#if totalQty}}
+                <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipments for Department {{deapartcode}} :{{ totalQty}}</b></p>
+
+               
+         {{/if}}
         {{/each}}
 
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingDeptByGroup departments }}</b></p>
+       
         {{#if w_sign}}
           <table class='table '>
             <tbody>

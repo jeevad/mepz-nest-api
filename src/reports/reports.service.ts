@@ -231,6 +231,14 @@ export class ReportsService {
       data.pagewise = filterReportDto.pagewise;
       data.w_sign = filterReportDto.w_sign;
     }
+    let b_log_img = '';
+    let medical_logo = '';
+    if (filterReportDto.b_logo) {
+      b_log_img = ' <img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png"> ';
+    }
+    if (filterReportDto.medical_logo) {
+      medical_logo = ' <img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png"> ';
+    }
     const currentDateVal = await this.getCurrentDate();
     const options = {
       format: 'A4',
@@ -250,6 +258,11 @@ export class ReportsService {
         <div style="color: #0d76ba; text-align: center; text-transform:uppercase;">
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:15px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
+          
+        </div>
+        <div style="text-align: right; ">
+        <p> `+ b_log_img + `</p> 
+        <p> `+ medical_logo + `</p> 
         </div>
         <div style="padding-left:35px;">
           <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">` +
@@ -266,7 +279,7 @@ export class ReportsService {
         ` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p> 
         <p style='color: #304f4f; font-size: 12px; margin-top: 10px; margin-bottom: 0px;'><b> ` +
         package_name +
-        ` </b></p>   
+        ` </b></p>
         </div>   
       </div>
       `,
@@ -696,10 +709,10 @@ export class ReportsService {
   equipmentLocationListing(equipmentsRes, filterReportDto, isDisabled) {
     const results = equipmentsRes.results;
     const equipmentMap = new Map();
-  
+
     results.forEach((result) => {
       const code = result.code;
-  
+
       if (isDisabled) {
         if (!equipmentMap.has(code) && result.active === false) {
           equipmentMap.set(code, {
@@ -715,11 +728,9 @@ export class ReportsService {
       } else {
         const group_id_data = filterReportDto.group; //['G1', 'G2'];
         const filter_package = filterReportDto.package1; //['G1', 'G2'];
-  
-        if (
-          (!filter_package || filter_package.includes(result.package)) &&
-          (!group_id_data || group_id_data.includes(result.labels))
-        ) {
+
+        if ((!filter_package || filter_package === result.package) &&
+          (!group_id_data || group_id_data.includes(result.labels))) {
           if (equipmentMap.has(code)) {
             const existingEquipment = equipmentMap.get(code);
             existingEquipment.locations.push({
@@ -753,17 +764,17 @@ export class ReportsService {
         }
       }
     });
-  
+
     const equipment = Array.from(equipmentMap.values());
     results.equipments = equipment;
     results.pname = results[0].project.name;
-  
+
     if (isDisabled) {
       results.reportname = 'Disabled Equipment Listing';
     } else {
       results.reportname = 'Equipment Location Listing';
     }
-  
+
     return results;
   }
 
@@ -810,16 +821,16 @@ export class ReportsService {
     return results;
   }
 
-   equipmentListingByDepartandRoom(equipmentsRes, filterReportDto, isDisabled) {
+  equipmentListingByDepartandRoom(equipmentsRes, filterReportDto, isDisabled) {
     const results = equipmentsRes.results;
     const roomMap = new Map();
     const roomIds = filterReportDto.roomIds;
-  
+
     results.forEach((result) => {
       const roomcode = result.room.code;
       // isRoomDisabled be true if the room is disabled (result.room.disabled is equal to 1), and false if the room is not disabled.
       const isRoomDisabled = result.room.disabled === 1;
-  
+
       if ((!isDisabled || (isDisabled && isRoomDisabled)) && (!roomIds || roomIds.includes(result.room.projectRoomId))) {
         if (roomMap.has(roomcode)) {
           roomMap.get(roomcode).data.push({
@@ -857,23 +868,23 @@ export class ReportsService {
         }
       }
     });
-  
+
     const rooms = Array.from(roomMap.values());
     results.rooms = rooms;
     results.pname = results[0].project.name;
-  
+
     const filterReportDtoKeys = ['pagewise', 'top_logo', 'b_logo', 'medical_logo', 'medical_logo2', 'medical_logo3'];
     filterReportDtoKeys.forEach((key) => {
       if (filterReportDto[key] !== undefined) {
         results[key] = filterReportDto[key];
       }
     });
-  
+
     results.reportname = isDisabled ? 'Equipment Listing By Department and Room Disabled' : 'Equipment Listing(BQ) By Department and Room';
-  
+
     return results;
   }
-  
+
   DepartandRoomtoRoomVariation(
     equipmentsRes_rev1,
     equipmentsRes_rev2,
@@ -1035,7 +1046,7 @@ export class ReportsService {
       const code = result.code;
       //console.log('Results :- ', result.labels);
       if (!equipmentMap.has(code)) {
-        if ((!filter_package || filter_package.includes(result.package)) &&
+        if ((!filter_package || filter_package === result.package) &&
           (!group_id_data || group_id_data.includes(result.labels))) {
           equipmentMap.set(code, {
             name: result.name,
@@ -1098,6 +1109,12 @@ export class ReportsService {
     results.package1 = filterReportDto.package1;
     results.apq_filt = filterReportDto.apq_filt;
     results.fpq_filt = filterReportDto.fpq_filt;
+    const filterReportDtoKeys = ['pagewise', 'top_logo', 'b_logo', 'medical_logo', 'medical_logo2', 'medical_logo3'];
+    filterReportDtoKeys.forEach((key) => {
+      if (filterReportDto[key] !== undefined) {
+        results[key] = filterReportDto[key];
+      }
+    });
     // console.log('Results :- ', results.equipments);
     return results;
   }
@@ -1199,6 +1216,7 @@ export class ReportsService {
   equipmentListingDepartByGroup(equipmentsRes, filterReportDto) {
     const results = equipmentsRes.results;
     const group_id_data = filterReportDto.group; //['G1', 'G2'];
+
     const filter_package = filterReportDto.package1; //['G1', 'G2'];
 
     const departmentMap = new Map();
@@ -1206,23 +1224,25 @@ export class ReportsService {
 
     results.forEach((result) => {
       const deapartcode = result.department.code;
-      const group = result.group || 'no-group';
+      const group = result.labels || 'no-group';
 
-      if (!departmentMap.has(deapartcode)) {
-        departmentMap.set(deapartcode, {
-          deapartcode: result.department.code,
-          deapartname: result.department.name,
-          data: {},
-        });
-      }
+      if ((!filter_package || filter_package === result.package) &&
+        (!group_id_data || group_id_data.includes(result.labels))) {
+        if (!departmentMap.has(deapartcode)) {
 
-      const existingDepartment = departmentMap.get(deapartcode);
-      if (group != 'no-group') {
-        if (!existingDepartment.data[group]) {
-          existingDepartment.data[group] = [];
+          departmentMap.set(deapartcode, {
+            deapartcode: result.department.code,
+            deapartname: result.department.name,
+            data: {},
+          });
         }
-        if ((!filter_package || filter_package.includes(result.package)) &&
-          (!group_id_data || group_id_data.includes(result.labels))) {
+
+        const existingDepartment = departmentMap.get(deapartcode);
+        if (group != 'no-group') {
+          if (!existingDepartment.data[group]) {
+            existingDepartment.data[group] = [];
+          }
+
           existingDepartment.data[group].push({
             qty: result.qty,
             department: result.department,
@@ -1233,18 +1253,18 @@ export class ReportsService {
             utility: result.utility,
             apq: result.apq,
             fpq: result.fpq,
-            package1: result.package,
+            package1: result.package
           });
-        }
-      }
 
-      // Collect 'no-group' data
-      if (group === 'no-group') {
-        if (!noGroupData.has(deapartcode)) {
-          noGroupData.set(deapartcode, []);
         }
-        if ((!filter_package || filter_package.includes(result.package)) &&
-          (!group_id_data || group_id_data.includes(result.labels))) {
+
+        // Collect 'no-group' data
+        if (group === 'no-group') {
+          if (!noGroupData.has(deapartcode)) {
+            noGroupData.set(deapartcode, []);
+          }
+          // if ((!filter_package || filter_package.includes(result.package)) &&(!group_id_data || group_id_data.includes(result.labels))) {
+
           noGroupData.get(deapartcode).push({
             qty: result.qty,
             department: result.department,
@@ -1255,10 +1275,13 @@ export class ReportsService {
             apq: result.apq,
             fpq: result.fpq,
             package1: result.package,
+            // package1: result.package
           });
+          // }
         }
-      }
 
+        // console.log(result.package+'::222')
+      }
     });
 
     // Append 'no-group' data to the departmentMap
@@ -1275,81 +1298,133 @@ export class ReportsService {
     return results;
   }
 
-  equipmentListingDepartNRoomByGroup(equipmentsRes,filterReportDto) {
+  equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto) {
     const results = equipmentsRes.results;
     const group_id_data = filterReportDto.group; //['G1', 'G2'];
     const filter_package = filterReportDto.package1; //['G1', 'G2'];
-    const departmentMap = new Map();
+    const roomMap = new Map();
     const noGroupData = new Map();
-
-    results.forEach((result) => {
+    const departmentLastOccurrenceMap = new Map(); // To track the last occurrence of each department
+    let totalqty = 0;
+    let lastDepartmentCode = 0;
+    results.forEach((result, index) => {
       const roomcode = result.room.code;
-      const group = result.group || 'no-group';
-
-      if (!departmentMap.has(roomcode)) {
-        departmentMap.set(roomcode, {
-          deapartcode: result.department.code,
-          deapartname: result.department.name,
-          roomcode: result.room.code,
-          roomname: result.room.name,
-          data: {},
-        });
-      }
-
-      const existingDepartment = departmentMap.get(roomcode);
-
-        // package/ groupcase filter case
-        if ((!filter_package || filter_package.includes(result.package)) &&
-          (!group_id_data || group_id_data.includes(result.labels))) {
-      if (group != 'no-group') {
-        if (!existingDepartment.data[group]) {
-          existingDepartment.data[group] = [];
+      const departmentCode = result.department.code;
+      const group = result.labels || 'no-group';
+      // package/ groupcase filter case
+      if ((!filter_package || filter_package === result.package) &&
+        (!group_id_data || group_id_data.includes(result.labels))) {
+        if (!roomMap.has(roomcode)) {
+          roomMap.set(roomcode, {
+            deapartcode: result.department.code,
+            deapartname: result.department.name,
+            roomcode: result.room.code,
+            roomname: result.room.name,
+            data: {},
+            totalQty: null,  // Initialize department total quantity
+            totalapq: null,
+            totalfpq: null,
+          });
         }
-        
-        existingDepartment.data[group].push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-          apq: result.apq,
-          fpq: result.fpq,
-          package1: result.package,
-        });
-      }
-      }
 
-      // Collect 'no-group' data  need to display at the end of the each room pdf list
-      if (group === 'no-group') {
-        if (!noGroupData.has(roomcode)) {
-          noGroupData.set(roomcode, []);
+        const existingDepartment = roomMap.get(roomcode);
+
+
+        if (group != 'no-group') {
+          if (!existingDepartment.data[group]) {
+            existingDepartment.data[group] = [];
+          }
+
+          existingDepartment.data[group].push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package,
+          });
+          // Update department totals
+          //existingDepartment.totalQty += result.qty;
+
+
         }
-         // package/ groupcase filter case
-         if ((!filter_package || filter_package.includes(result.package)) &&
-         (!group_id_data || group_id_data.includes(result.labels))) {
-        noGroupData.get(roomcode).push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-          apq: result.apq,
-          fpq: result.fpq,
-          package1: result.package,
-        });
-      }
+
+
+        // Collect 'no-group' data  need to display at the end of the each room pdf list
+        if (group === 'no-group') {
+          if (!noGroupData.has(roomcode)) {
+            noGroupData.set(roomcode, []);
+          }
+          // package/ groupcase filter case
+          // if ((!filter_package || filter_package.includes(result.package)) &&(!group_id_data || group_id_data.includes(result.labels))) {
+          noGroupData.get(roomcode).push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package,
+          });
+          // Update department totals
+          //existingDepartment.totalQty += result.qty;
+        }
+
+
       }
     });
 
     // Append 'no-group' data to the departmentMap
     noGroupData.forEach((items, roomcode) => {
-      departmentMap.get(roomcode).data['no-group'] = items;
+      roomMap.get(roomcode).data['no-group'] = items;
     });
 
-    const department = Array.from(departmentMap.values());
+    const department = Array.from(roomMap.values());
+    // start Total Department QTy, APA FPA  etc Via Department 
+    let totalQty = 0;
+    let lastDepartmentIdex = {};
+    let lastDepartmentTot = {};
+    for (let i = 0; i < department.length; i++) {
+      const departmentId = department[i].deapartcode;
+      lastDepartmentIdex[departmentId] = i;
+      if (!(departmentId in lastDepartmentTot)) {
+
+        lastDepartmentTot[departmentId] = {}; // Initialize the department if it doesn't exist
+
+        lastDepartmentTot[departmentId]['qty'] = 0;
+        lastDepartmentTot[departmentId]['apq'] = 0;
+        lastDepartmentTot[departmentId]['fpq'] = 0;
+      }
+      if ('data' in department[i]) {
+        for (let groupname in department[i].data) {
+          const groupdata = department[i].data[groupname];
+          groupdata.forEach((groupdataitems) => {
+            lastDepartmentTot[departmentId]['qty'] += groupdataitems.qty;
+            lastDepartmentTot[departmentId]['apq'] += groupdataitems.apq;
+            lastDepartmentTot[departmentId]['fpq'] += groupdataitems.fpq;
+          });
+        }
+      }
+    }
+    for (let groupname in lastDepartmentIdex) {
+      let index = lastDepartmentIdex[groupname];
+
+      department[index].totalQty = lastDepartmentTot[groupname]['qty'];
+      department[index].totalapq = lastDepartmentTot[groupname]['apq'];
+      department[index].totalfpq = lastDepartmentTot[groupname]['fpq'];
+
+
+    }
+    // end Total Department QTy, APA FPA  etc Via Department 
+
     results.departments = department;
+    const department_ = {};
+
     results.pname = results[0].project.name;
 
     results.reportname = 'Equipment Listing(BQ) By Department and Room';
@@ -1381,7 +1456,7 @@ export class ReportsService {
     results.forEach((result) => {
       const roomcode = result.room.code;
 
-      const group = result.group || 'no-group';
+      const group = result.labels || 'no-group';
 
       if (!departmentMap.has(roomcode)) {
         departmentMap.set(roomcode, {
@@ -1448,6 +1523,7 @@ export class ReportsService {
 
     const department = Array.from(departmentMap.values());
     results.departments = department;
+    //console.log(department);
     results.pname = results[0].project.name;
 
     results.reportname = 'Equipment Listing by Department';
@@ -1524,7 +1600,7 @@ export class ReportsService {
       totalequ: number;
       total?: number;
     };
-    filterReportDto.limit = 20;
+    filterReportDto.limit = 1000;
     // filterReportDto.lean = true;
     const equipmentsRes: any = await this.projectEquipmentService.findAll(
       filterReportDto,
@@ -1595,7 +1671,7 @@ export class ReportsService {
     ) {
       return this.equipmentListingByDepartandRoom(
         equipmentsRes,
-        filterReportDto,false
+        filterReportDto, false
       );
     } else if (
       filterReportDto.reportType ===
@@ -1607,7 +1683,7 @@ export class ReportsService {
 
       return this.equipmentListingByDepartandRoom(
         equipmentsRes,
-        filterReportDto,true
+        filterReportDto, true
       );
     } else if (
       filterReportDto.reportType === 'equipment-room-to-room-variation' ||
@@ -1695,14 +1771,14 @@ export class ReportsService {
       filterReportDto.reportType ===
       'equipment-listing-by-department-and-room-by-group-with-price'
     ) {
-      return this.equipmentListingDepartNRoomByGroup(equipmentsRes,filterReportDto);
+      return this.equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto);
     } else if (
       filterReportDto.reportType ===
       'equipment-listing-by-department-and-room-by-package' ||
       filterReportDto.reportType ===
-      'equipment-listing-by-department-and-room-by-package-with-price' || filterReportDto.reportType ==='equipment-listing-by-department-and-room-by-package-with-utility'
+      'equipment-listing-by-department-and-room-by-package-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-utility'
     ) {
-      return this.equipmentListingDepartNRoomByGroup(equipmentsRes,filterReportDto);
+      return this.equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto);
     } else if (
       filterReportDto.reportType ===
       'equipment-listing-by-department-and-room-by-group-revision' ||

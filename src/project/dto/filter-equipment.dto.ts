@@ -34,6 +34,10 @@ export class FilterEquipmentDto {
   @IsString()
   roomId?: string;
 
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  eqCode?: string;
+
   @ApiPropertyOptional({
     type: String,
   })

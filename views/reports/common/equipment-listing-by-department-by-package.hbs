@@ -55,7 +55,7 @@
                    <td style="padding-top:6px;padding-bottom:6px;">{{fpq}} </td>
                    {{/if}}
                   {{#if ../../../apq_filt}}
-                   <td style="padding-top:6px;padding-bottom:6px;">{{apq}} </td>
+                   <td style="padding-top:6px;padding-bottom:6px;">{{apq}}  </td>
                    {{/if}}
                   {{#unless ../../../fpq_filt}}
                   {{#unless ../../../apq_filt}}
@@ -71,16 +71,16 @@
                 Total  {{#value_undefine @key4}}
                 {{/value_undefine}}:</td>
               {{#if (and ../../fpq_filt ../../apq_filt)}}
-                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum locations "fpq"}}</td>
-                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum locations "apq"}}</td>
+                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum equ "fpq"}}   </td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum equ "apq"}}   </td>
                 {{else}}
                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
                   {{#if ../../fpq_filt}}
-                  {{sum equ "fpq"}}  {{/if}} 
+                  {{sum equ "fpq"}}   {{/if}} 
                   {{#if ../../apq_filt}}
                   {{sum equ "apq"}}   {{/if}}  
                   {{#unless ../../fpq_filt}}
-                  {{#unless ../../apq_filt}}  {{sum equ "qty"}}  
+                  {{#unless ../../apq_filt}}  {{sum equ "qty"}}   
                   {{/unless}}
                    {{/unless}}
                   </td>
@@ -95,7 +95,21 @@
         </table>
       
         {{/each}}
+        
+        {{#if (and fpq_filt apq_filt)}}
+            <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total FPQ : {{ calculateSumOfTotalEquipmentListingDeptByGroupFpq departments }}</b></p>  
+             <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total APQ: {{ calculateSumOfTotalEquipmentListingDeptByGroupApq departments }}</b></p>      
+                {{else}}
+         {{#if fpq_filt}}
+                  <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total FPQ : {{ calculateSumOfTotalEquipmentListingDeptByGroupFpq departments }}</b></p>   {{/if}}  
+        {{#if apq_filt}}
+            <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total APQ : {{ calculateSumOfTotalEquipmentListingDeptByGroupApq departments }}</b></p>        {{/if}}  
+             {{/if}}  
+        {{#unless fpq_filt}}
+            {{#unless apq_filt}}
         <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingDeptByGroup departments }}</b></p>
+         {{/unless}}
+          {{/unless}}
           <div class="text-center">
           {{#if b_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
           {{#if medical_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}

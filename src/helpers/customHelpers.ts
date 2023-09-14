@@ -376,6 +376,101 @@ Handlebars.registerHelper('calculateSumOfTotalEquipmentListingDeptByGroup', func
         groupItems.forEach((item) => {
           if (item.qty) {
             sum += parseFloat(item.qty);
+            // console.log(':::',item.qty)
+            //sum = sum.concat(item.qty+':::');
+          }
+        });
+      }
+    }
+  })
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+},
+);
+
+Handlebars.registerHelper('calculateSumOfTotalEquipmentListingDeptByGroupFpq', function (items) {
+  let sum = 0;
+  items.forEach((data) => {
+    for (const key in data.data) {
+      if (data.data.hasOwnProperty(key)) {
+        const groupItems = data.data[key];
+        groupItems.forEach((item) => {
+          if (item.fpq) {
+            sum += parseFloat(item.fpq);
+            //console.log(':::',item.qty)
+            //sum = sum.concat(item.qty+':::');
+          }
+        });
+      }
+    }
+  })
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+},
+);
+
+Handlebars.registerHelper('calculateSumOfTotalDeptByGroup', function (items,deapartcode, key_feild) {
+  let sum = 0;
+  if (items) {
+    
+      for (const key in items) {
+       
+        if (items.hasOwnProperty(key)) {
+        
+          const groupItems = items[key];
+          for (const key_data in groupItems) {
+           // return "kkkkkkkkkkVVVV::::"+groupItems[key_data].qty;
+           //return key_feild+"kkkkkkkkkkVVVV::::"+groupItems[key_data].apq;
+            if (groupItems[key_data][key_feild]) {
+             // return "kkkkkkkkkkVVVV::::"+groupItems[key_data][key_feild];
+              if(groupItems[key_data].department.code===deapartcode)
+              {
+              sum += parseFloat(groupItems[key_data][key_feild]);
+              }
+              //console.log(':::',item.qty)
+              //sum = sum.concat(item.qty+':::');
+            }
+
+          }
+          //return "kkkkkkkkkkVVVV"+groupItems;
+          //return "kkkkkkkkkkVVVV"+groupItems;
+          groupItems.forEach((item) => {
+            return "kkkkkkkkkkVVVV";
+            if (item.key_feild) {
+              
+              if(item.department.code===deapartcode)
+              {
+              sum += parseFloat(item.key_feild);
+              }
+              //console.log(':::',item.qty)
+              //sum = sum.concat(item.qty+':::');
+            }
+          });
+        }
+      }
+    
+  }
+  if (!isNaN(sum)) {
+    return sum;
+  }
+  return 0;
+},
+);
+Handlebars.registerHelper('calculateSumOfTotalEquipmentListingDeptByGroupApq', function (items) {
+  let sum = 0;
+  items.forEach((data) => {
+    for (const key in data.data) {
+      if (data.data.hasOwnProperty(key)) {
+        const groupItems = data.data[key];
+        groupItems.forEach((item) => {
+          if (item.apq) {
+            sum += parseFloat(item.apq);
+            //console.log(':::',item.qty)
+            //sum = sum.concat(item.qty+':::');
           }
         });
       }
@@ -698,5 +793,19 @@ Handlebars.registerHelper(
 Handlebars.registerHelper('isFirstIndex', function (index, options) {
   return index === 0 ? options.fn(this) : options.inverse(this);
 });
+
+// Register a Handlebars helper function to keep track of displayed departments
+Handlebars.registerHelper('shouldDisplayTotal', function (deapartcode, options) {
+  if (!this.displayedDepartments) {
+    this.displayedDepartments = new Set();
+  }
+
+  if (!this.displayedDepartments.has(deapartcode)) {
+    this.displayedDepartments.add(deapartcode);
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
 ///// end of helper function
 export default Handlebars;

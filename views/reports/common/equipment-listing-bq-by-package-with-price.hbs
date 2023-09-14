@@ -12,6 +12,14 @@
   </style>
 </head>
 <body>
+
+     <div  style="float:left;">
+          
+          {{#if b_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo2}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo3}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+        <div>
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
@@ -88,7 +96,7 @@
                   {{/unless}}
                    {{/unless}}
                   </td>
-                  {{/if}}
+                  {{/if}} <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px"> </td>
                   <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{calculateSumOfTotal EquipmentItem }}</td>  
               </tr>
                 {{/each}}
@@ -99,6 +107,7 @@
         
         <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
         <div class="text-center">
+          
           {{#if b_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
           {{#if medical_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
           {{#if medical_logo2}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
