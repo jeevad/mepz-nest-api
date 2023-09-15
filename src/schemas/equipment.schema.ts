@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import {
   EquipmentPackage,
@@ -34,10 +34,10 @@ export class Equipment {
 
   @Prop()
   fileThree: string;
-  
+
   @Prop()
   qty: number;
-  
+
   @Prop({ required: true })
   code: string;
 
@@ -47,10 +47,10 @@ export class Equipment {
 
   @Prop({ required: true })
   cost: string;
-  
+
   @Prop()
   active: boolean;
-  
+
   //@Prop({ required: true })
   @Prop()
   markUp: string;
@@ -59,38 +59,41 @@ export class Equipment {
   @Prop()
   heatDissipation: string;
 
- // @Prop({ required: true })
+  // @Prop({ required: true })
   @Prop()
   ictPort: string;
 
- // @Prop({ required: true })
+  // @Prop({ required: true })
   @Prop()
   bssPort: string;
 
   @Prop()
   remarks: string;
-  
+
   @Prop()
-  utility: string; 
-  
+  utility: string;
+
   @Prop()
   labels: string;
-  
+
   @Prop({ type: EquipmentPackageSchema })
   @Type(() => EquipmentPackage)
-  equipmentPackage: EquipmentPackage; 
+  equipmentPackage: EquipmentPackage;
 
   @Prop({ type: EquipmentPowerSchema })
   @Type(() => EquipmentPower)
-  equipmentPower: EquipmentPower; 
+  equipmentPower: EquipmentPower;
 
   @Prop({ type: EquipmentLabelSchema })
   @Type(() => EquipmentLabel)
-  equipmentLabel: EquipmentLabel; 
+  equipmentLabel: EquipmentLabel;
 
-  @Prop({ type: [EquipmentBrandSchema] })
-  @Type(() => EquipmentBrand)
-  brands: EquipmentBrand[];
+  // @Prop({ type: [EquipmentBrandSchema] })
+  // @Type(() => EquipmentBrand)
+  // brands: EquipmentBrand[];
+
+  @Prop(raw({}))
+  brands: Record<string, any>;
 
 }
 
