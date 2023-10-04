@@ -206,7 +206,7 @@ export class ReportsService {
       if (!results.rev2) rev2 = '';
       else rev2 = ' - ' + results.rev2;
     } else {
-      rev1 = '5.001*';
+      rev1 = results.rev_number? results.rev_number:'--';
       rev2 = '';
     }
 
@@ -1648,6 +1648,10 @@ export class ReportsService {
       filterReportDto.reportType = 'equipment-location-listing';
       const functionName = this.lowerCamelCase(filterReportDto.reportType);
       return this[functionName](equipmentsRes, filterReportDto, false);
+    } else if (filterReportDto.reportType === 'equipment-specs') {
+      filterReportDto.reportType = 'equipment-location-listing';
+      const functionName = this.lowerCamelCase(filterReportDto.reportType);
+      return this.equipmentLocationListing(equipmentsRes, filterReportDto, false);
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq' ||
       filterReportDto.reportType === 'equipment-listing-bq-with-price' ||
