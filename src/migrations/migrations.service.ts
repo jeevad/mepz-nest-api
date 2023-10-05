@@ -99,7 +99,7 @@ export class MigrationsService {
       {
         name: 'tb_eq_gen_desc',
         fields:
-          'gd_code as code, gd_desc as name, cost,brands, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort,  remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne,typical_power_consumption as typicalPowerConsumption,water,drainage,ventilation,gas,typical_weight,typical_floor_loading,typical_ceiling_loading,radiation_shielding,corridor_clearance,control_room,tech_room,chiller,file2,file3',
+          'gd_code as code, gd_desc as name, cost,brands, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort,  remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne,file2 as fileTwo,file3 as fileThree,file1_storage,file2_storage,file3_storage,typical_power_consumption as typicalPowerConsumption,water,drainage,ventilation,gas,typical_weight,typical_floor_loading,typical_ceiling_loading,radiation_shielding,corridor_clearance,control_room,tech_room,chiller',
         //date_created as createdAt, typicalPowerConsumption
         service: 'equipmentService',
       },

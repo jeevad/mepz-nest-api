@@ -36,6 +36,15 @@ export class Equipment {
   fileThree: string;
 
   @Prop()
+  file1_storage: string;
+
+  @Prop()
+  file2_storage: string;
+
+  @Prop()
+  file3_storage: string;
+
+  @Prop()
   qty: number;
 
   @Prop({ required: true })
