@@ -37,7 +37,7 @@ export class ReportsController {
       res.set({
         'Content-Type':
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'Content-Disposition': `attachment; filename='${filterReportDto.reportType}.xlsx`,
+        'Content-Disposition': `attachment; filename=${filterReportDto.reportType}.xlsx`,
       });
 
       await this.reportsService.xlExport(res, filterReportDto);

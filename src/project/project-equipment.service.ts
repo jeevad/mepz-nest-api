@@ -95,8 +95,79 @@ export class ProjectEquipmentService {
     // mongoose.set('debug', true);
     return this.ProjectModel.findById(id);
   }
-
-  async update(
+  async combineEquipmentWithProject(filterEquipmentDto: FilterEquipmentDto) {
+   
+    const projectId = filterEquipmentDto.projectId;
+  
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'equipment',
+          localField: 'code',
+          foreignField: 'code',
+          as: 'equipmentData',
+        },
+      },
+      {
+        $lookup: {
+          from: 'projectequipments',
+          localField: 'code',
+          foreignField: 'code',
+          as: 'projectData',
+        },
+      },
+      {
+        $unwind: {
+          path: '$equipmentData',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$projectData',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $match: {
+          $or: [
+            { 'equipmentData': { $exists: true } },
+            { 'projectData.projectId': projectId },
+          ],
+        },
+      },
+      {
+        $project: {
+          code: 1,
+          name: 1,
+         'project.name': "$projectData.projectId",
+          projectId: '$projectData.projectId',
+          equipmentName: '$equipmentData.name',
+          package: '$equipmentData.equipmentPackage.package',
+          utility: '$equipmentData.utility',
+          brands:'$equipmentData.brands',
+        },
+      },
+      {
+        $group: {
+          _id: '$code',
+          code: { $first: '$code' },
+          
+         
+        },
+      },
+      // Add a $limit stage to limit the result to 100 documents
+      {
+        $limit: 10
+      }
+    ];
+  
+    const results = await this.projectEquipmentModel.aggregate(pipeline).exec();
+   
+    //console.log(result);
+    return { results };
+  }
+ async update(
     id: string,
     updateProjectDto: UpdateProjectDto,
   ): Promise<ProjectDocument> {
@@ -152,6 +223,7 @@ export class ProjectEquipmentService {
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
+
   //Get Equipments by projectID
   async getProjectEquipmentsbyroom(
     projectId: string,

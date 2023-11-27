@@ -216,6 +216,7 @@ export class MigrationsService {
     return 'success';
   }
   async migrateProjectEqp(roomDetails) {
+    
     const query = `SELECT tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.package, tb_prj_prop_line_tmp.apq, 
     tb_prj_prop_line_tmp.fpq, tb_eq_gen_desc.gd_desc as name, 
     tb_prj_prop_line_tmp.qty, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code,
