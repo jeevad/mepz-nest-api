@@ -27,6 +27,18 @@ export class FilterEquipmentDto {
   @IsOptional()
   departmentId?: string;
 
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  departmentQuery?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  roomQuery?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  equipmentQuery?: string;
+
   @ApiPropertyOptional({
     type: String,
   })

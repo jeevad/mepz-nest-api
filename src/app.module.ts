@@ -37,25 +37,25 @@ import { MigrationsModule } from './migrations/migrations.module';
       autoIndex: true,
     }),
     // SECONDARY DB CONNECTION
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      name: 'mysql',
-      useFactory: async (configService: ConfigService) => {
-        return {
-          type: 'mysql',
-          host: configService.get('SECONDARY_DB_HOST'),
-          port: parseInt(configService.get('SECONDARY_DB_PORT')),
-          database: configService.get('SECONDARY_DB_DATABASE'),
-          username: configService.get('SECONDARY_DB_USERNAME'),
-          autoLoadEntities: true,
-          password: configService.get('SECONDARY_DB_PASSWORD'),
-          // schema: configService.get('MAIN_DB_SCHEMA'),
-          // entities: [Customer],
-          synchronize: true,
-        };
-      },
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   name: 'mysql',
+    //   useFactory: async (configService: ConfigService) => {
+    //     return {
+    //       type: 'mysql',
+    //       host: configService.get('SECONDARY_DB_HOST'),
+    //       port: parseInt(configService.get('SECONDARY_DB_PORT')),
+    //       database: configService.get('SECONDARY_DB_DATABASE'),
+    //       username: configService.get('SECONDARY_DB_USERNAME'),
+    //       autoLoadEntities: true,
+    //       password: configService.get('SECONDARY_DB_PASSWORD'),
+    //       // schema: configService.get('MAIN_DB_SCHEMA'),
+    //       // entities: [Customer],
+    //       synchronize: true,
+    //     };
+    //   },
+    // }),
     ActivityLogsModule,
     AuthModule,
     UsersModule,
@@ -88,7 +88,7 @@ import { MigrationsModule } from './migrations/migrations.module';
         // },
       },
     }),
-    MigrationsModule,
+    // MigrationsModule,
   ],
   controllers: [AppController],
   providers: [
