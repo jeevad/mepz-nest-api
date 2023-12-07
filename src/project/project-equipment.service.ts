@@ -32,10 +32,32 @@ export class ProjectEquipmentService {
   ) {}
 
   async create(createProjectEquipmentDto: any): Promise<ProjectEquipment> {
+    mongoose.set('debug', true);
     this.logModel.logAction(`Added equipments`, createProjectEquipmentDto);
-    createProjectEquipmentDto.qty = 1;
-    const project = new this.projectEquipmentModel(createProjectEquipmentDto);
-    return project.save();
+    const projectEqp: any = await this.projectEquipmentModel
+      .findOne({
+        'project.projectId': createProjectEquipmentDto.project.projectId,
+        'department.projectDepartmentId':
+          createProjectEquipmentDto.department.projectDepartmentId,
+        'room.projectRoomId': createProjectEquipmentDto.room.projectRoomId,
+        masterId: createProjectEquipmentDto.masterId,
+      })
+      .lean();
+    console.log('projectEqp', projectEqp);
+
+    if (projectEqp) {
+      const res = await this.projectEquipmentModel.findByIdAndUpdate(
+        projectEqp._id,
+        {
+          $inc: { qty: 1 },
+        },
+      );
+      return res;
+    } else {
+      createProjectEquipmentDto.qty = 1;
+      const project = new this.projectEquipmentModel(createProjectEquipmentDto);
+      return project.save();
+    }
   }
 
   setRegxfilter(fields, query) {
@@ -49,7 +71,7 @@ export class ProjectEquipmentService {
   }
   async findAll(filterEquipmentDto: FilterEquipmentDto) {
     mongoose.set('debug', true);
-    let filters: FilterQuery<ProjectEquipmentDocument> = {};
+    const filters: FilterQuery<ProjectEquipmentDocument> = {};
 
     if (Array.isArray(filterEquipmentDto.projectIds)) {
       filters['project.projectId'] = { $in: filterEquipmentDto.projectIds };
