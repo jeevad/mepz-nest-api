@@ -1,0 +1,189 @@
+<html lang='en'>
+<head>
+  <meta charset='utf-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <title>{{title}}</title>
+  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' rel='stylesheet'
+    integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous' />
+  <style>
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+  <div class='container-fluid mb-5 mt-0'>
+    <div class='row d-flex align-items-baseline'>
+      <div class='col-xl-12'>
+        {{#each departments }}
+          {{#if ../pagewise}} {{#index_gt @index}} <div class="page-break"></div> {{/index_gt}} {{/if}}
+          {{#if (gt data.length 0)}} {{/if}}
+          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Department:</b> <span>{{deapartcode}}</span> <span style="margin-left:30px;">{{deapartname}}</span></p>
+          <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b>Rooms:</b> <span>{{roomcode}}</span> <span style="margin-left:30px;">{{roomname}}</span></p>
+          <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
+            <thead class='table-light'>
+              <tr>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Code</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Equipment Name</th>
+                 {{#if ../fpq_filt}}
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">FPQ</th> {{/if}}
+                {{#if ../apq_filt}}
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">APQ</th> {{/if}}
+                {{#unless ../fpq_filt}}
+                {{#unless ../apq_filt}}
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Qty</th>
+                 {{/unless}}
+                 {{/unless}}
+                  <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Group</th>
+                
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Remarks</th>
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Y N</th>
+               
+                <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Client Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each data as |equ key4| }}
+                {{!-- <tr>
+                  <td colspan="5" style="padxding-top:6px;padding-bottom:6px;"> {{#value_undefine @key4}}
+                    {{/value_undefine}}</td>
+                </tr> --}}
+                {{#each equ }}
+                  <tr>
+                    <td style="padding-top:6px;padding-bottom:6px;">{{code}} </td>
+                    <td style="padding-top:6px;padding-bottom:6px;">{{name}}</td>
+                               {{#if ../../../fpq_filt}}
+                   <td style="padding-top:6px;padding-bottom:6px;">{{fpq}} </td>
+                   {{/if}}
+                  {{#if ../../../apq_filt}}
+                   <td style="padding-top:6px;padding-bottom:6px;">{{apq}} </td>
+                   {{/if}}
+                  {{#unless ../../../fpq_filt}}
+                  {{#unless ../../../apq_filt}}
+                  <td style="padding-top:6px;padding-bottom:6px;">{{qty}} </td>
+                   {{/unless}}
+                   {{/unless}}
+                    
+                    <td style="padding-top:6px;padding-bottom:6px;">{{Group}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px;">{{remarks}}</td>
+                    <td style="padding-top:6px;padding-bottom:6px;"></td>
+                    <td style="padding-top:6px;padding-bottom:6px;"></td>
+                  </tr>
+                {{/each}}
+                <tr style="border: 0;">
+                  <td style="padding-top:6px;padding-bottom:6px;border:0;"></td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                    Total Equipments for Room {{../roomcode}}</td>
+                 {{!-- <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">
+                Total  {{#value_undefine @key4}}
+                {{/value_undefine}}:</td> --}}
+              {{#if (and ../../fpq_filt ../../apq_filt)}}
+                 <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum equ "fpq"}}</td>
+                  <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;"> {{sum equ "apq"}}</td>
+                {{else}}
+                <td style="padding-top:6px;padding-bottom:6px;border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1;">
+                  {{#if ../../fpq_filt}}
+                  {{sum equ "fpq"}}  {{/if}} 
+                  {{#if ../../apq_filt}}
+                  {{sum equ "apq"}}   {{/if}}  
+                  {{#unless ../../fpq_filt}}
+                  {{#unless ../../apq_filt}}  {{sum equ "qty"}}  
+                  {{/unless}}
+                   {{/unless}}
+                  </td>
+                  {{/if}}
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          {{#if ../w_sign}}
+            <table class='table '>
+              <tbody>
+                <tr>
+                  <td>Received by:</td>
+                  <td></td>
+                  <td>MNE SOLUTIONS: </td>
+                </tr>
+                <tr>
+                  <td>Full Name</td>
+                  <td>Full Name</td>
+                  <td>Full Name</td>
+                </tr>
+                <tr>
+                  <td>Designation</td>
+                  <td>Designation</td>
+                  <td>Designation</td>
+                </tr>
+                <tr>
+                  <td>Stamp</td>
+                  <td>Stamp</td>
+                  <td>Stamp</td>
+                </tr>
+                <tr>
+                  <td>Date</td>
+                  <td>Date</td>
+                  <td>Date</td>
+                </tr>
+              </tbody>
+            </table>
+          {{/if}}
+       {{#if ../apq_filt}}
+           {{#if totalapq}}
+                 <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipments for Department APQ {{deapartcode}} :{{ totalapq}}</b></p>
+          {{/if}}{{/if}}
+          {{#if ../fpq_filt}}
+          {{#if totalQty}}
+                <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipments for Department FPQ {{deapartcode}} :{{ totalfpq}}</b></p>
+        {{/if}}{{/if}}  
+            
+        {{#if totalQty}}
+                <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipments for Department {{deapartcode}} :{{ totalQty}}</b></p>
+
+               
+         {{/if}}
+        {{/each}}
+
+       
+        {{#if w_sign}}
+          <table class='table '>
+            <tbody>
+              <tr>
+                <td>Received by:</td>
+                <td></td>
+                <td>MNE SOLUTIONS: </td>
+              </tr>
+              <tr>
+                <td>Full Name</td>
+                <td>Full Name</td>
+                <td>Full Name</td>
+              </tr>
+              <tr>
+                <td>Designation</td>
+                <td>Designation</td>
+                <td>Designation</td>
+              </tr>
+              <tr>
+                <td>Stamp</td>
+                <td>Stamp</td>
+                <td>Stamp</td>
+              </tr>
+              <tr>
+                <td>Date</td>
+                <td>Date</td>
+                <td>Date</td>
+              </tr>
+            </tbody>
+          </table>
+        {{/if}}
+          <div class="text-center">
+          {{#if b_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo2}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+          {{#if medical_logo3}}<img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png">{{/if}}
+        <div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
