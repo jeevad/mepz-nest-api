@@ -15,7 +15,7 @@
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>
-        {{#each equipments as |EquipmentItemlist key1|}}
+       
           <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
             <thead class='table-light'>
               <tr>
@@ -30,7 +30,14 @@
               {{!-- <tr>
                 <td colspan="6"style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key1}}{{/value_undefine}} </td>
               </tr> --}}
+              
+               {{#each equipments as |EquipmentItemlist key1|}}
+              
                 {{#each EquipmentItemlist as |EquipmentItem key2|}}
+                  <tr>
+
+                  </tr><td colspan="5" style="padding-top:6px;padding-bottom:6px;"> {{#value_undefine key2}}{{/value_undefine}} </td>
+              </tr> 
               {{#each EquipmentItem}}
                 <tr>
                   <td style="padding-top:6px;padding-bottom:6px;">{{code}}</td>
@@ -47,9 +54,10 @@
               </tr>
                 {{/each}}
               {{#if ../pagewise}}{{#index_gt @index}}<div class="page-break"> </div> {{/index_gt}} {{/if}}
+              {{/each}}
             </tbody>
           </table>
-        {{/each}}
+        
         <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentListingBQbyGroup equipments }}</b></p>
       </div>
     </div>

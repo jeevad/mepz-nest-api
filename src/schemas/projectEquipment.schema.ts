@@ -170,8 +170,95 @@ export class ProjectEquipment {
   @Type(() => EquipmentLabel)
   equipmentLabel: EquipmentLabel;
 
+  // @Prop(raw({}))
+  // tac: string;
+
   @Prop(raw({}))
-  tac: string;
+  tender_qty: number;
+
+  @Prop(raw({}))
+  room_data_interaction: Record<string, any>;
+
+  @Prop(raw({}))
+  four_wall_interaction: Record<string, any>;
+
+  @Prop(raw({}))
+  model: Record<string, any>;
+
+  @Prop(raw({}))
+  country_of_origin: Record<string, any>;
+
+  @Prop(raw({}))
+  equipment_planning_procure_planning_remarks: Record<string, any>;
+
+  @Prop(raw({}))
+  manufacturer: Record<string, any>;
+
+  @Prop(raw({}))
+  supplier_firm: Record<string, any>;
+
+  @Prop(raw({}))
+  contact_person: Record<string, any>;
+
+  @Prop(raw({}))
+  tel_email: Record<string, any>;
+
+  @Prop(raw({}))
+  site_facility_visit: Record<string, any>;
+
+  @Prop(raw({}))
+  site_facility_confirm: Record<string, any>;
+
+  @Prop(raw({}))
+  est_delivery: Date;
+
+  @Prop(raw({}))
+  delivery_actual: Date;
+
+  @Prop(raw({}))
+  returns: Record<string, any>;
+
+  @Prop(raw({}))
+  payment: Record<string, any>;
+
+  @Prop(raw({}))
+  location_store: Record<string, any>;
+
+  @Prop(raw({}))
+  internal_testing_est: Date;
+
+  @Prop(raw({}))
+  internal_testing_actual: Date;
+
+  @Prop(raw({}))
+  thirdparty_testing_est: Date;
+
+  @Prop(raw({}))
+  validation_remarks: Record<string, any>;
+
+  @Prop(raw({}))
+  final_testing_client_est: Date;
+
+  @Prop(raw({}))
+  final_testing_client_actual: Date;
+
+  @Prop(raw({}))
+  room_ins_1_est: Date;
+
+  @Prop(raw({}))
+  room_ins_1_actual: Date;
+
+  @Prop(raw({}))
+  room_ins_2_est: Date;
+
+  @Prop(raw({}))
+  room_ins_2_actual: Date;
+
+  @Prop(raw({}))
+  handover_est: Date;
+
+  @Prop(raw({}))
+  handover_actual: Date;
 
   // @Prop({ required: true })
   // isDeleted: boolean;

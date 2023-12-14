@@ -40,7 +40,7 @@ export class ReportsService {
   constructor(
     private projectService: ProjectService,
     private projectEquipmentService: ProjectEquipmentService,
-  ) {}
+  ) { }
 
   getPdfHeader(filename = 'pdf', buffer) {
     return {
@@ -206,15 +206,24 @@ export class ReportsService {
       if (!results.rev2) rev2 = '';
       else rev2 = ' - ' + results.rev2;
     } else {
-      rev1 = '5.001*';
+      rev1 = results.rev_number? results.rev_number:'--';
       rev2 = '';
     }
 
-    let reportname;
+    let reportname, package_name;
     if (results.reportname) {
       reportname = results.reportname;
+
     } else {
-      reportname = '';
+      reportname = package_name = '';
+
+    }
+    if (results.package1) {
+
+      package_name = "Package : " + results.package1;
+    } else {
+      package_name = '';
+
     }
 
     if (results) {
@@ -222,13 +231,21 @@ export class ReportsService {
       data.pagewise = filterReportDto.pagewise;
       data.w_sign = filterReportDto.w_sign;
     }
+    let b_log_img = '';
+    let medical_logo = '';
+    if (filterReportDto.b_logo) {
+      b_log_img = ' <img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png"> ';
+    }
+    if (filterReportDto.medical_logo) {
+      medical_logo = ' <img style="height: 30px; width: auto;" src="http://13.232.11.217/assets/images/logo.png"> ';
+    }
     const currentDateVal = await this.getCurrentDate();
     const options = {
       format: 'A4',
       displayHeaderFooter: true,
       margin: {
         left: '10mm',
-        top: '52mm',
+        top: '60mm',
         right: '10mm',
         bottom: '15mm',
       },
@@ -241,6 +258,11 @@ export class ReportsService {
         <div style="color: #0d76ba; text-align: center; text-transform:uppercase;">
           <p style="font-size: 13px; font-weight:600; margin-bottom:5px;">Mne Solutions</p>
           <p style="font-size: 10px; margin-bottom:15px; margin-top: 0px;">Medical Equipment Consultancy Service</p>
+          
+        </div>
+        <div style="text-align: right; ">
+        <p> `+ b_log_img + `</p> 
+        <p> `+ medical_logo + `</p> 
         </div>
         <div style="padding-left:35px;">
           <p style='color: #304f4f; font-size: 12px; margin-bottom: 5px; margin-top: 0px;'><b>Project Name : <span class="text-uppercase">` +
@@ -254,7 +276,10 @@ export class ReportsService {
         `</span></p>
           <p style='color: #304f4f; font-size: 12px; margin-top: 0px; margin-bottom: 0px;'><b>` +
         reportname +
-        ` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p>   
+        ` <span style="margin-left:35px;">Qty : Total Quantity</span></b></p> 
+        <p style='color: #304f4f; font-size: 12px; margin-top: 10px; margin-bottom: 0px;'><b> ` +
+        package_name +
+        ` </b></p>
         </div>   
       </div>
       `,
@@ -385,7 +410,25 @@ export class ReportsService {
   async xlExport(res, filterReportDto: FilterReportDto) {
     const results = await this.getQueryData(filterReportDto);
     const data: any = results;
+    let project_nam;
+    if (results.pname) {
+      project_nam = results.pname;
+    } else if (results.name) {
+      project_nam = results.name;
+    } else if (results.results[0].name) {
+      project_nam = results.results[0].name;
+    } else {
+      project_nam = '';
+    }
 
+    const headerText1 = 'MNE SOLUTIONS';
+    const headerText2 = 'MEDICAL EQUIPMENT CONSULTANCY SERVICE,';
+    const headerText3 = '';
+    const headerText4 = '';
+    const headerText5 = 'Project Name: '+ project_nam;
+    const headerText6 = 'Revision No: 5.001*  Date: '+ (await this.getCurrentDate());
+    const headerText7 = '';
+    
     this.workbook = new Workbook();
     this.worksheet = this.workbook.addWorksheet('Report', {
       headerFooter: {
@@ -393,109 +436,25 @@ export class ReportsService {
         firstFooter: 'Hello World',
       },
     });
-    if (filterReportDto.reportType === 'department-list') {
-      const depts = [];
-      data.departments.forEach((item) => {
-        depts.push([item.code, item.name]);
-      });
-      this.worksheet.addTable({
-        name: 'MyTable',
-        ref: 'A1',
-        headerRow: true,
-        // totalsRow: true,
-        // style: {
-        //   theme: 'TableStyleDark3',
-        //   showRowStripes: true,
-        // },
-        columns: [{ name: 'Code' }, { name: 'Name' }],
-        rows: depts,
-      });
-    }
-
-    // worksheet.addTable({
-    //   name: 'MyTable2',
-    //   ref: 'A10',
-    //   headerRow: true,
-    //   totalsRow: true,
-    //   // style: {
-    //   //   theme: 'TableStyleDark3',
-    //   //   showRowStripes: true,
-    //   // },
-    //   columns: [
-    //     { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
-    //     { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
-    //   ],
-    //   rows: [
-    //     [new Date('2019-07-20'), 70.1],
-    //     [new Date('2019-07-21'), 70.6],
-    //     [new Date('2019-07-22'), 70.1],
-    //   ],
-    // });
-
-    return await this.workbook.xlsx.write(res);
-    // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
-  }
-  async xl(res, filterReportDto: FilterReportDto) {
-    const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('Report', {
-      headerFooter: {
-        firstHeader: 'Hello Exceljs',
-        firstFooter: 'Hello World',
-      },
-    });
-
-    /*
-    worksheet.addTable({
-      name: 'MyTable',
-      ref: 'A1',
-      headerRow: true,
-      totalsRow: true,
-      style: {
-        theme: 'TableStyleDark3',
-        showRowStripes: true,
-      },
-      columns: [
-        { name: 'name', totalsRowLabel: 'Totals:', filterButton: true },
-        { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
-      ],
-
-      
-      rows: [
-        [new Date('2019-07-20'), 70.1],
-        [new Date('2019-07-21'), 70.6],
-        [new Date('2019-07-22'), 70.1],
-      ],
-    });
-    */
-    const results = await this.getQueryData(filterReportDto);
-    const rowarray = [];
-
-    const row = worksheet.addRow(['MNE SOLUTIONS']);
+    const row = this.worksheet.addRow([headerText1]);
     const cell = row.getCell(1);
     cell.font = { bold: true };
-    worksheet.addRow(['MEDICAL EQUIPMENT CONSULTANCY SERVICE']);
-    worksheet.addRow([]);
-    worksheet.addRow([]);
-
+    this.worksheet.addRow([headerText2]);
+    this.worksheet.addRow([headerText3]);
+    this.worksheet.addRow([headerText4]);
+    this.worksheet.addRow([headerText5]);
+    this.worksheet.addRow([headerText6]);
+    this.worksheet.addRow([headerText7]);
     if (filterReportDto.reportType === 'equipment-location-listing') {
-      const row5 = worksheet.addRow([
-        'Project Name:' + results.equipments[0].project_name,
-      ]);
-      const cell5 = row5.getCell(1);
-      cell5.font = { bold: true };
-
-      worksheet.addRow([
-        'Revision No: 5.001*',
-        '',
-        '',
-        'Date:' + (await this.getCurrentDate()),
-      ]);
+    
+  
+     
 
       let sub_total = 0;
       results.equipments.forEach((item) => {
-        worksheet.addRow([]);
-        worksheet.addRow(['Equipment: ', item.eqp_code, item.eqp_name]);
-        worksheet.addRow([
+       this.worksheet.addRow([]);
+       this.worksheet.addRow(['Equipment: ', item.code, item.name]);
+       this.worksheet.addRow([
           'Dept Code: ',
           'Department',
           'Room Code',
@@ -505,118 +464,1654 @@ export class ReportsService {
           'Remarks',
         ]);
         let total = 0;
+
+      
         item.locations.forEach((item2) => {
-          worksheet.addRow([
-            item2.department_code,
-            item2.department_name,
-            item2.room_code,
-            item2.room_name,
-            item2.quantity,
+          this.worksheet.addRow([
+            item2.department.code,
+            item2.department.name,
+            item2.room.code,
+            item2.room.name,
+            item2.qty,
+            item2.group,
+            item2.remarks,
           ]);
-          if (typeof item2.quantity === 'number') {
-            total += item2.quantity;
+          if (typeof item2.qty === 'number') {
+            total += item2.qty;
           }
         });
+
+
         sub_total += total;
-        worksheet.addRow(['', '', '', 'Sub-total', total]);
-        worksheet.addRow([]);
-        worksheet.addRow([]);
+        this.worksheet.addRow(['', '', '', 'Sub-total', total]);
+        this.worksheet.addRow([]);
+        this.worksheet.addRow([]);
 
-        worksheet.addRow(['Total Equipments', sub_total]);
+        
       });
+
+      this.worksheet.addRow(['Total Equipments', sub_total]);
+
     } else if (filterReportDto.reportType === 'department-list') {
-      const row5 = worksheet.addRow(['Project Name:' + results.name]);
-      const cell5 = row5.getCell(1);
-      cell5.font = { bold: true };
-      worksheet.addRow([
-        'Revision No: 5.001*',
-        '',
-        '',
-        'Date:' + (await this.getCurrentDate()),
-      ]);
-
-      worksheet.addRow(['Department List']);
-      worksheet.addRow([]);
-      worksheet.addRow(['Dept Code: ', 'Department']);
-
-      results.departments.forEach((item) => {
-        worksheet.addRow([]);
-        worksheet.addRow([item.code, item.name]);
+      const depts = [];
+      //depts.push(['Code', 'Department']); // Column headings
+      data.departments.forEach((item) => {
+        depts.push([item.code, item.name]);
       });
-    } else if (filterReportDto.reportType === 'room-listing') {
-      const row5 = worksheet.addRow(['Project Name:' + results.name]);
-      const cell5 = row5.getCell(1);
-      cell5.font = { bold: true };
-      worksheet.addRow([
-        'Revision No: 5.001*',
-        '',
-        '',
-        'Date:' + (await this.getCurrentDate()),
-      ]);
-
-      worksheet.addRow(['Room Listing']);
-      worksheet.addRow([]);
-      worksheet.addRow(['Dept Code: ', 'Department']);
-
+      this.worksheet.addTable({
+        name: 'MyTable',
+        ref: 'A8', // Start of the table
+        headerRow: true,
+        columns: [{ name: 'Code' }, { name: 'Department' }], // Column headings
+        rows: depts, // Rows of data
+      });
+    }
+    else if (filterReportDto.reportType === 'room-listing') {
+    
+      this.worksheet.addRow(['Room Listing']);
+      this.worksheet.addRow([]);
       results.departments.forEach((item) => {
-        worksheet.addRow(['Department: ', item.code, item.name]);
+        this.worksheet.addRow(['Department: ', item.code, item.name]);
+        this.worksheet.addRow(['Room Code: ', 'Room Name', 'status']);
         item.rooms.forEach((item2) => {
-          worksheet.addRow([item2.code, item2.name, item2.status]);
+          this.worksheet.addRow([item2.code, item2.name, item2.status]);
         });
-        worksheet.addRow([]);
+        this.worksheet.addRow([]);
 
-        //worksheet.addRow([item.code, item.name]);
-      });
-    } else if (filterReportDto.reportType === 'equipment-listing-bq') {
-      const row5 = worksheet.addRow(['Project Name:' + results.name]);
-      const cell5 = row5.getCell(1);
-      cell5.font = { bold: true };
-      worksheet.addRow([
-        'Revision No: 5.001*',
-        '',
-        '',
-        'Date:' + (await this.getCurrentDate()),
+    });
+  } else if (filterReportDto.reportType === 'equipment-listing-bq' || filterReportDto.reportType === 'equipment-listing-bq-with-price' ||  filterReportDto.reportType === 'disabled-equipment-listing-bq' ||
+  filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price' ||
+  filterReportDto.reportType === 'equipment-listing-bq-with-utility') {
+   
+    this.worksheet.addRow(['Equipment Listing(BQ)']);
+    this.worksheet.addRow([]);
+    if(filterReportDto.reportType === 'equipment-listing-bq-with-price' ||
+    filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price')
+    {
+      this.worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Price', 'Total', 'Group', 'Remarks']);
+    }
+    else if(filterReportDto.reportType === 'equipment-listing-bq-with-utility')
+    {
+      
+      this.worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Utility', 'Remarks']); 
+    }
+    else
+    {
+      this.worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Group', 'Remarks']);  
+    }
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.equipments.forEach((item) => {
+
+      if(filterReportDto.reportType === 'equipment-listing-bq-with-price' ||
+      filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price')
+      {
+
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.cost,
+        item.qty * item.cost,
+        item.group,
+        item.remarks,
       ]);
+     }
+     else if(filterReportDto.reportType === 'equipment-listing-bq-with-utility')
+     {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.utility,
+        item.remarks,
+      ]);
+     }
+     else
+     {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.group,
+        item.remarks,
+      ]);
+     }
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    this.worksheet.addRow([]);
 
-      worksheet.addRow(['Equipment Listing(BQ)']);
-      worksheet.addRow([]);
-      worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Group', 'Remarks']);
-      let sub_total = 0;
-      results.EquipmentItemlist.forEach((item) => {
-        worksheet.addRow([
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+ }
+ else if (filterReportDto.reportType === 'equipment-listing-price-with-revisions-variations') {
+    
+  this.worksheet.addRow(['Equipment Listing(BQ) price revisions']);
+  this.worksheet.addRow([]);
+  
+    this.worksheet.addRow(['Code: ', 'Equipment', 'Prev Qty', 'Rev Qty', 'Diff Qty', 'Prev Price', 'Total Price', 'Rev Price', 'Total Price','Diff Price']);
+  
+  let sub_total = 0;
+  let sub_total_rev_qty = 0;
+  let sub_total_price = 0;
+  let sub_total_rev_price = 0;
+  this.worksheet.addRow([]);
+  results.equipments.forEach((item) => {
+
+    this.worksheet.addRow([
+      item.code,
+      item.name,
+      item.qty,
+      item.qty_rev,
+      item.qty_rev - item.qty,
+      item.cost,
+      item.qty * item.cost,
+      item.cost_rev,
+      item.qty_rev * item.cost_rev,
+      item.qty_rev * item.cost_rev - item.qty * item.cost,
+     
+    ]);
+
+    if (typeof item.qty === 'number') {
+      sub_total += item.qty;
+    }
+    if (typeof item.qty_rev === 'number') {
+      sub_total_rev_qty += item.qty_rev;
+    }
+    if (typeof item.qty === 'number') {
+      sub_total_price += item.qty * item.cost;
+    }
+    if (typeof item.qty_rev === 'number') {
+      sub_total_rev_price += item.qty_rev * item.cost_rev;
+    }
+    //worksheet.addRow([item.code, item.name]);
+  });
+  this.worksheet.addRow([]);
+
+  this.worksheet.addRow(['Total Equipments:','', sub_total,sub_total_rev_qty,'','',sub_total_price,'','',sub_total_rev_price-sub_total_price]);
+  } else if (
+    filterReportDto.reportType === 'equipment-listing-by-department' ||
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-with-price'
+  ) {
+    this.worksheet.addRow(['Equipment Listing(BQ)']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.departments.forEach((items) => {
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+      console.log("items:",items)
+      if(filterReportDto.reportType === 'equipment-listing-by-department-with-price' )
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity', 'Price', 'Total']);
+      }
+      else
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity']);  
+      }
+      items.data.forEach((item) => {
+      if(filterReportDto.reportType === 'equipment-listing-by-department-with-price' )
+      {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.cost,
+        item.qty * item.cost,
+     
+      ]);
+     }
+     else
+     {
+      
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+    
+      ]);
+     }
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+  } else if (
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room' ||
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-with-price' || filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-disabled' || filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-disabled-with-price'
+  ) {
+    this.worksheet.addRow(['Equipment Listing(BQ)']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    let sub_total_price = 0;
+    this.worksheet.addRow([]);
+    results.rooms.forEach((items) => {
+      let sub_total_room=0;
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+      this.worksheet.addRow(['Room: ', items.roomcode, items.roomname]);
+      console.log("items:",items)
+      if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price' || filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled-with-price' )
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity', 'Price', 'Total']);
+      }
+      else
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity']);  
+      }
+
+      items.data.forEach((item) => {
+      if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price' || filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-disabled-with-price' )
+      {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.cost,
+        item.qty * item.cost,
+     
+      ]);
+     }
+     else
+     {
+      
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+    
+      ]);
+     }
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+        sub_total_price += item.qty * item.cost;
+        sub_total_room += item.qty;
+      }
+      
+    });
+     if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-price' || filterReportDto.reportType ===
+     'equipment-listing-by-department-and-room-disabled-with-price' )
+      {
+    this.worksheet.addRow(['','Total Equipments for Room'+items.roomcode,sub_total_room,'Total',sub_total_price]);
+      }
+      else
+      {
+        this.worksheet.addRow(['','Total Equipments for Room'+items.roomcode,sub_total_room]);
+      }
+
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+  } else if (filterReportDto.reportType === 'equipment-room-to-room-variation-with-price'
+  ) {
+      
+
+
+
+
+    this.worksheet.addRow(['Equipment Listing(BQ)']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    let sub_total_price = 0;
+    let sub_total_price_rev = 0;
+    this.worksheet.addRow([]);
+    results.rooms.forEach((items) => {
+      let sub_total_room=0;
+      let sub_total_rev_room=0;
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+      this.worksheet.addRow(['Room: ', items.roomcode, items.roomname]);
+   
+        this.worksheet.addRow(['Item Code','Description','Pre Qty', 'Rev Qty', 'Diff Qty', 'Prev price', 'Total price', 'Rev price', 'Total price', 'Diff price']);
+    
+
+      items.data.forEach((item) => {
+     
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.qty_rev,
+        item.qty_rev- item.qty,
+        item.cost,
+        item.qty * item.cost,
+        item.cost_rev,
+        item.qty_rev * item.cost_rev,
+        (item.qty_rev * item.cost_rev) - (item.qty * item.cost),
+     
+      ]);
+  
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+        sub_total_price += item.qty * item.cost;
+        sub_total_room += item.qty;
+      }
+      if (typeof item.qty_rev === 'number') {
+        sub_total_rev_room += item.qty_rev;
+        sub_total_price_rev += item.qty_rev * item.cost_rev;
+        sub_total_room += item.qty;
+      }
+      
+    });
+   
+    this.worksheet.addRow(['','Total Equipments for Room'+items.roomcode,sub_total_room,sub_total_rev_room,'',sub_total_price,' ',' ',sub_total_price_rev,sub_total_price_rev-sub_total_price]);
+    
+
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+     
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-by-group' ||
+      filterReportDto.reportType === 'equipment-listing-bq-by-group-with-price'
+    ) 
+    {
+      
+    this.worksheet.addRow(['Equipment Listing(BQ)']);
+    this.worksheet.addRow([]);
+    if(filterReportDto.reportType === 'equipment-listing-bq-by-group-with-price' )
+    {
+      this.worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Price', 'Total', 'Group', 'Remarks']);
+    }
+    else
+    {
+      this.worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Group', 'Remarks']);  
+    }
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.equipments.forEach((items) => {
+      
+     
+      for(const key in items) { 
+      if (Array.isArray(items[key])) {
+      if(key!='no-group')
+      {
+      this.worksheet.addRow([key]);
+      }
+      else
+      {
+        this.worksheet.addRow(['']);  
+      }
+      let sub_total_group =0;
+      items[key].forEach((item) => {
+      if(filterReportDto.reportType === 'equipment-listing-bq-by-group-with-price' )
+      {
+
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.cost,
+        item.qty * item.cost,
+        item.group,
+        item.remarks,
+      ]);
+     }
+     else
+     {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.group,
+        item.remarks,
+      ]);
+     }
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+        sub_total_group += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    this.worksheet.addRow(['Total Equipments '+key+':' + sub_total_group]);
+    }
+  }
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+     }
+     else if (
+      filterReportDto.reportType ===
+      'equipment-listing-bq-by-group-revision-with-price'
+    ) {
+
+
+      
+    this.worksheet.addRow(['Equipment Listing(BQ) ']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    let sub_total_price = 0;
+    let sub_total_price_rev = 0;
+    this.worksheet.addRow([]);
+
+    results.equipments.forEach((items) => {
+      
+     
+      for(const key in items) { 
+      if (Array.isArray(items[key])) {
+        let sub_total_room=0;
+        let sub_total_rev_room=0;
+        if(key!='no-group')
+        {
+        this.worksheet.addRow([key]);
+        }
+        else
+        {
+          this.worksheet.addRow(['']);  
+        }
+ 
+     
+          this.worksheet.addRow(['Item Code','Description','Pre Qty', 'Rev Qty', 'Diff Qty', 'Prev price', 'Total price', 'Rev price', 'Total price', 'Diff price']);
+      
+  
+        items[key].forEach((item) => {
+       
+        this.worksheet.addRow([
           item.code,
           item.name,
-          item.quantity,
-          item.group,
-          item.remarks,
+          item.qty,
+          item.qty_rev,
+          item.qty_rev- item.qty,
+          item.cost,
+          item.qty * item.cost,
+          item.cost_rev,
+          item.qty_rev * item.cost_rev,
+          (item.qty_rev * item.cost_rev) - (item.qty * item.cost),
+       
         ]);
-
-        worksheet.addRow([]);
-        if (typeof item.quantity === 'number') {
-          sub_total += item.quantity;
+    
+        
+        if (typeof item.qty === 'number') {
+          sub_total += item.qty;
+          sub_total_price += item.qty * item.cost;
+          sub_total_room += item.qty;
         }
-        //worksheet.addRow([item.code, item.name]);
+        if (typeof item.qty_rev === 'number') {
+          sub_total_rev_room += item.qty_rev;
+          sub_total_price_rev += item.qty_rev * item.cost_rev;
+          sub_total_room += item.qty;
+        }
       });
-      worksheet.addRow([]);
+      this.worksheet.addRow(['','Total Equipments for Room'+items.roomcode,sub_total_room,sub_total_rev_room,'',sub_total_price,' ',' ',sub_total_price_rev,sub_total_price_rev-sub_total_price]);
+    
 
-      worksheet.addRow(['Total Equipments:' + sub_total]);
     }
+  }
+});
+    
+   
+   // this.worksheet.addRow(['','Total Equipments for Room'+items.roomcode,sub_total_room,sub_total_rev_room,'',sub_total_price,' ',' ',sub_total_price_rev,sub_total_price_rev-sub_total_price]);
+    
 
-    return await workbook.xlsx.write(res);
+    
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+ 
+  } else if (
+    filterReportDto.reportType === 'equipment-location-listing-by-group'
+  ) {
+
+    let sub_total = 0;
+      results.equipments.forEach((items) => {
+     
+        let total = 0;
+       
+        for(const key in items) { 
+          //console.log('item::',items[key]);
+          if (Array.isArray(items[key])) {
+            let sub_total_room=0;
+            let sub_total_rev_room=0;
+            if(key!='no-group')
+            {
+            this.worksheet.addRow([key]);
+            }
+            else
+            {
+              this.worksheet.addRow(['']);  
+            }
+      
+            items[key].forEach((item) => {
+              this.worksheet.addRow([]);
+              this.worksheet.addRow(['Equipment: ', item.code, item.name]);
+              this.worksheet.addRow([
+                 'Dept Code: ',
+                 'Department',
+                 'Room Code',
+                 'Room Name',
+                 'Quantity',
+                 'Group',
+                 'Remarks',
+               ]);
+              item.locations.forEach((item2) => {
+          
+          this.worksheet.addRow([
+            item2.department.code,
+           item2.department.name,
+           item2.room.code,
+            item2.name,
+            item2.code,
+            item2.qty,
+            item2.group,
+            item2.remarks,
+          ]);
+          if (typeof item2.qty === 'number') {
+            total += item2.qty;
+          }
+        });
+          });
+
+     
+        sub_total += total;
+        this.worksheet.addRow(['', '', '', 'Sub-total', total]);
+        this.worksheet.addRow([]);
+        this.worksheet.addRow([]);
+      }
+      }
+        
+      });
+
+      this.worksheet.addRow(['Total Equipments', sub_total]);
+  
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-by-group' ||
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-by-group-with-price'
+    ) {
+
+
+
+      this.worksheet.addRow(['Equipment Listing(BQ)']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.departments.forEach((items) => {
+       for(const key in items.data) { 
+          console.log('item:::::',items.data[key]);
+          console.log('item:::::end1');
+          if (Array.isArray(items.data[key])) {
+            console.log('item:::::one');
+            let sub_total_room=0;
+            let sub_total_rev_room=0;
+            if(key!='no-group')
+            {
+            this.worksheet.addRow([key]);
+            }
+            else
+            {
+              this.worksheet.addRow(['']);  
+            }
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+     // console.log("items:::",items[key])
+      if(filterReportDto.reportType === 'equipment-listing-by-department-by-group-with-price' )
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity', 'Price', 'Total']);
+      }
+      else
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity']);  
+      }
+      items.data[key].forEach((item) => {
+      if(filterReportDto.reportType === 'equipment-listing-by-department-by-group-with-price' )
+      {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.cost,
+        item.qty * item.cost,
+     
+      ]);
+     }
+     else
+     {
+      
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+    
+      ]);
+     }
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    }
+    }
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+
+
+
+
+  } else if (
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-by-group' ||
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-by-group-with-price' ||  filterReportDto.reportType ==='equipment-listing-by-department-and-room-by-group-with-disabled' ||  filterReportDto.reportType ==='equipment-listing-by-department-and-room-by-group-with-price_disabled'
+  ) {
+
+   
+    this.worksheet.addRow(['Equipment Listing(BQ) By Department and Room']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.departments.forEach((items) => {
+       for(const key in items.data) { 
+        let sub_total_room=0;
+        let sub_total_room_price=0;
+          if (Array.isArray(items.data[key])) {
+            
+           
+            let sub_total_rev_room=0;
+            if(key!='no-group')
+            {
+            this.worksheet.addRow([key]);
+            }
+            else
+            {
+              this.worksheet.addRow(['']);  
+            }
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+      this.worksheet.addRow(['Room: ', items.roomcode, items.roomname]);
+     // console.log("items:::",items[key])
+      if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group-with-price_disabled' )
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity', 'Price', 'Total','Group','Remarks','Y N','Client Remarks']);
+      }
+      else
+      {
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity']);  
+      }
+  
+      items.data[key].forEach((item) => {
+        if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group-with-price_disabled' )
+      {
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.cost,
+        item.qty * item.cost,
+     
+      ]);
+     }
+     else
+     {
+      
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+    
+      ]);
+     }
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+        sub_total_room += item.qty;
+        sub_total_room_price += item.qty*item.cost;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    if(filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-group-with-price_disabled' )
+    {
+       this.worksheet.addRow(['','Total Equipments for Room '+items.roomcode ,sub_total_room,'Total',sub_total_room_price]);
+      }
+      else
+      {
+        this.worksheet.addRow(['','Total Equipments for Room '+items.roomcode ,sub_total_room]);  
+      }
+    this.worksheet.addRow([]);
+    this.worksheet.addRow([]);
+    this.worksheet.addRow([]);
+    this.worksheet.addRow([]);
+    }
+    }
+    });
+   
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+  } else if (
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-with-price-by-group-rev'
+  ) {
+
+     
+    this.worksheet.addRow(['Equipment Listing(BQ) By Department and Room']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.departments.forEach((items) => {
+       for(const key in items.data) { 
+        let sub_total_room=0;
+        let sub_total_room_rev=0;
+        let sub_total_room_price=0;
+        let sub_total_room_price_rev=0;
+          if (Array.isArray(items.data[key])) {
+            
+           
+            let sub_total_rev_room=0;
+            if(key!='no-group')
+            {
+            this.worksheet.addRow([key]);
+            }
+            else
+            {
+              this.worksheet.addRow(['']);  
+            }
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+      this.worksheet.addRow(['Room: ', items.roomcode, items.roomname]);
+     // console.log("items:::",items[key])
+    
+        this.worksheet.addRow(['Item Code', 'Description', 'Pre Qty', 'Rev Qty', 'Diff Qty','Prev price','Total price','Rev price','Total price','Diff price']);
+      
+  
+      items.data[key].forEach((item) => {
+      
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.qty_rev,
+        item.qty_rev-item.qty,
+        item.cost,
+        item.cost * item.qty,
+        item.cost_rev,
+        item.qty_rev * item.cost_rev,
+        (item.qty_rev * item.cost_rev) - (item.cost * item.qty),
+     
+      ]);
+    
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+        sub_total_room += item.qty;
+        sub_total_room_rev += item.qty_rev;
+        sub_total_room_price += item.qty*item.cost;
+        sub_total_room_price_rev += item.qty_rev*item.cost_rev;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+   
+       this.worksheet.addRow(['','Total Equipments for Room '+items.roomcode ,sub_total_room,sub_total_room_rev,'','',sub_total_room_price,'',sub_total_room_price_rev,sub_total_room_price_rev-sub_total_room_price_rev]);
+    
+    this.worksheet.addRow([]);
+    this.worksheet.addRow([]);
+    this.worksheet.addRow([]);
+    this.worksheet.addRow([]);
+    }
+    }
+    });
+   
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+  
+  } else if ( filterReportDto.reportType === 'equipment-listing-by-department-and-room-with-utility'
+  ) {
+    this.worksheet.addRow(['Equipment Listing(BQ) By Department and Room']);
+    this.worksheet.addRow([]);
+
+    let sub_total = 0;
+    let sub_total_price = 0;
+    this.worksheet.addRow([]);
+    results.rooms.forEach((items) => {
+      let sub_total_room=0;
+      this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+      this.worksheet.addRow(['Room: ', items.roomcode, items.roomname]);
+    
+    
+        this.worksheet.addRow(['Item Code', 'Description', 'Quantity','Package','Remarks','Y N','Client Remarks']);  
+      
+
+      items.data.forEach((item) => {
+  
+      
+      this.worksheet.addRow([
+        item.code,
+        item.name,
+        item.qty,
+        item.package,
+        item.remarks,
+        '',
+        '',
+    
+      ]);
+    
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+        sub_total_price += item.qty * item.cost;
+        sub_total_room += item.qty;
+      }
+      
+    });
+    
+        this.worksheet.addRow(['','Total Equipments for Room'+items.roomcode,sub_total_room]);
+      
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+
+  } else if (filterReportDto.reportType === 'power_requirement' ) {
+   
+    this.worksheet.addRow(['Additional data for equipment']);
+    this.worksheet.addRow([]);
+   
+    
+      this.worksheet.addRow(['Equipment Name ', 'Equipment Code', 'Qty', 'Equipment Group', 'Typical Power Consumption','Total Power Consumption','Type of Power (1-phase/3-phase)','Water Inlet(Hot/Cold)','Drainage', 'Ventilation','Gas','Typical Weight (KG)','Typical Floor Loading','Typical Ceiling Loading','Radiation Shielding','Corridor clearance','Control room','Tech. room','Chiller','Attach Image 1','Attach Image 2','Attach Image 3','Remarks']);  
+    
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.equipments.forEach((item) => {
+
+      this.worksheet.addRow([
+        item.name,
+        item.code,
+        item.qty,
+        item.group,
+        item.typicalPowerConsumption,
+        item.typicalPowerConsumption,
+        item.typeOfPower,
+        item.waterInlet,
+        item.drainage,
+        item.ventilationExhaust,
+        item.medicalGas,
+        item.typicalWeight,
+        item.typicalFloorLoading,
+        item.typicalCeilingLoading,
+        item.radiationShielding,
+        item.corridorClearance,
+        item.controlRoom,
+        item.techRoom,
+        item.chiller,
+        item.fileOne,
+        item.fileTwo,
+        item.fileThree,
+        item.remarks,
+      ]);
+     
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+    
+  } else if (filterReportDto.reportType === 'power_requirement_for_rds' ) {
+   
+    this.worksheet.addRow(['Additional data for equipment']);
+    this.worksheet.addRow([]);
+   
+    
+      this.worksheet.addRow(['LEVEL', 'DEPT_CD', 'DEPT_NAME', 'RMCODE', 'RMNAME','GP Rv1','ItemCode','Item Description','Qty', 'Power Consumption (KW)','Total Power Consumption','Type of Power (1-phase/3-phase)','Cold Water (per machine - aprox. 2 to 5 bar)','Hot Water (per machine - aprox. 2 to 5 bar)','Hot Water (per machine - aprox. 2 to 5 bar)','Normal Drain','Cast Iron Pipe Drain','Exhaust/Ventilation/Medical Air','Weight (KG)','HEAT DISSIPATION (kw)(each)','Medical Gas Points(each)','ICT Port','BSS Port','Typical Floor Loading','Typical Ceiling Loading','Radiation Shielding','Corridor clearance','Control room','Tech. room','Tech. room','Chiller','Attach Image 1','Attach Image 2','Attach Image 3','Dimension','Remarks']);  
+    
+    let sub_total = 0;
+    this.worksheet.addRow([]);
+    results.equipments.forEach((item) => {
+
+      this.worksheet.addRow([
+        item.department.floorlevel_tx,
+        item.department.code,
+        item.department.name,
+        item.room.code,
+        item.room.name,
+        item.label,
+        item.code,
+        item.name,
+        item.qty,
+        item.typicalPowerConsumption,
+        item.typicalPowerConsumption,
+        item.typeOfPower,
+
+  
+        item.waterInlet,
+        item.drainage,
+        item.ventilationExhaust,
+        item.medicalGas,
+        item.typicalWeight,
+        item.typicalFloorLoading,
+        item.typicalCeilingLoading,
+        item.radiationShielding,
+        item.corridorClearance,
+        item.controlRoom,
+        item.techRoom,
+        item.chiller,
+        item.fileOne,
+        item.fileTwo,
+        item.fileThree,
+        item.remarks,
+      ]);
+     
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+    } else if (filterReportDto.reportType === 'equipment_brands' ) {
+    
+      
+    this.worksheet.addRow(['Medical Brands']);
+    this.worksheet.addRow([]);
+   
+    this.worksheet.addRow(['', '', '', '', '','','','','']);  
+
+    this.worksheet.addRow(['No', 'CODE', 'Equipments', 'QTY', 'PACKAGE','BUDGET PRICE','TOTAL PRICE','BRAND','MODEL', 'ORIGIN','UNIT PRICE','SUPPLIER','BRAND','ORIGIN','UNIT PRICE','SUPPLIER','BRAND','MODEL','ORIGIN','UNIT PRICE','SUPPLIER','BRAND','MODEL','ORIGIN','UNIT PRICE','SUPPLIER','BRAND','MODEL','ORIGIN','UNIT PRICE','SUPPLIER']);  
+    
+    let sub_total = 0;
+    let k = 1;
+    this.worksheet.addRow([]);
+    results.equipments.forEach((item) => {
+      
+     // let brandObj = JSON.parse(item.brands);
+     // let c_origin = brandObj.country_origin && brandObj.country_origin[0] || '';
+     // let unit_price = brandObj.unit_price && brandObj.unit_price[0] || '';
+     // let supplier = brandObj.supplier && brandObj.supplier[0] || '';
+      this.worksheet.addRow([
+        k++,
+        item.code,
+        item.name,
+        item.qty,
+        item.package,
+        item.cost,
+        item.qty * item.cost,
+       // brandObj.brand[0],
+       // brandObj.model[0],
+        //c_origin,
+       // unit_price,
+       // supplier,
+       // brandObj.brand[1],
+       // brandObj.model[1],
+       // c_origin,
+       // unit_price,
+       // supplier,
+       // brandObj.brand[2],
+       // brandObj.model[2],
+        //c_origin,
+       // unit_price,
+       // supplier,
+       // brandObj.brand[3],
+       // brandObj.model[3],
+       // c_origin,
+       // unit_price,
+       // supplier,
+       // item.remarks,
+      ]);
+     
+      
+      if (typeof item.qty === 'number') {
+        sub_total += item.qty;
+      }
+      //worksheet.addRow([item.code, item.name]);
+    });
+    this.worksheet.addRow([]);
+
+    this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+  } else if (
+    filterReportDto.reportType === 'equipment-listing-bq-by-package' ||
+    filterReportDto.reportType === 'equipment-listing-bq-by-package-with-price'
+  ) 
+{
+  this.worksheet.addRow(['Equipment Listing(BQ)']);
+  this.worksheet.addRow([]);
+  const baseHeader = ['Code:', 'Equipment', 'Qty'];
+  
+  if (results.apq_filt) {
+    baseHeader.push('APQ');
+  }
+  
+  if (results.fpq_filt) {
+    baseHeader.push('FPQ');
+  }
+  
+  if (filterReportDto.reportType === 'equipment-listing-bq-by-package-with-price') {
+    baseHeader.push('Package','Price', 'Total');
+  }
+  
+  baseHeader.push('Package','Group', 'Remarks');
+  
+  this.worksheet.addRow(baseHeader);
+  
+  let columnOffset = 0;
+  
+  let sub_total = 0;
+  this.worksheet.addRow([]);
+  results.equipments.forEach((items) => {
+    for (const key in items) {
+      if (Array.isArray(items[key])) {
+        if (key !== 'no-group') {
+          this.worksheet.addRow([key]);
+        } else {
+          this.worksheet.addRow(['']);
+        }
+        let sub_total_group = 0;
+        items[key].forEach((item) => {
+          const row = [
+            item.code,
+            item.name,
+            item.qty,
+          ];
+  
+          if (results.apq_filt) {
+            row.push(item.apq);
+          }
+  
+          if (results.fpq_filt) {
+            row.push(item.fpq);
+          }
+  
+          if (filterReportDto.reportType === 'equipment-listing-bq-by-package-with-price') {
+            row.push(item.package1,item.cost, item.qty * item.cost);
+          } else {
+            row.push(item.package1);
+          }
+  
+          row.push(item.group, item.remarks);
+  
+          this.worksheet.addRow(row);
+  
+          if (typeof item.qty === 'number') {
+            sub_total += item.qty;
+            sub_total_group += item.qty;
+          }
+        });
+        this.worksheet.addRow(['Total Equipments ' + key + ':' + sub_total_group]);
+      }
+    }
+  });
+  
+  this.worksheet.addRow([]);
+  
+  this.worksheet.addRow(['Total Equipments:' + sub_total]);
+  
+  
+} else if (
+  filterReportDto.reportType === 'equipment-location-listing-by-package' 
+) 
+ {
+  
+  let sub_total = 0;
+  results.equipments.forEach((items) => {
+    
+    for (const key in items) {
+      if(Array.isArray(items[key])) {
+        let total = 0;
+        let sub_total_room = 0;
+        let sub_total_rev_room = 0;
+        if (key !== 'no-group') {
+          this.worksheet.addRow([key]);
+        } else {
+          this.worksheet.addRow(['']);
+        }
+  
+        items[key].forEach((item) => {
+          this.worksheet.addRow([]);
+          const equipmentHeader = [
+            'Dept Code',
+            'Department',
+            'Room Code',
+            'Room Name',
+            'Quantity',
+          ];
+  
+          if (results.apq_filt) {
+            equipmentHeader.push('APQ');
+          }
+  
+          if (results.fpq_filt) {
+            equipmentHeader.push('FPQ');
+          }
+  
+          equipmentHeader.push('Package', 'Group', 'Remarks');
+  
+          this.worksheet.addRow(['Equipment: ', item.code, item.name]);
+          this.worksheet.addRow(equipmentHeader);
+  
+          item.locations.forEach((item2) => {
+            const equipmentRow = [
+              item2.department.code,
+              item2.department.name,
+              item2.room.code,
+              item2.name,
+              item2.qty,
+            ];
+  
+            if (results.apq_filt) {
+              equipmentRow.push(item2.apq); // Add APQ value here
+            }
+  
+            if (results.fpq_filt) {
+              equipmentRow.push(item2.fpq); // Add FPQ value here
+            }
+  
+            equipmentRow.push(item2.package1, item2.group, item2.remarks);
+  
+            this.worksheet.addRow(equipmentRow);
+  
+            if (typeof item2.qty === 'number') {
+              total += item2.qty;
+            }
+            
+            
+            
+            
+            
+          });
+  
+          sub_total += total;
+          this.worksheet.addRow(['', '', '', 'Sub-total', total]);
+          this.worksheet.addRow([]);
+          this.worksheet.addRow([]);
+        });
+      }
+    }
+  });
+  
+  this.worksheet.addRow(['Total Equipments', sub_total]);
+  
+
+} else if (
+  filterReportDto.reportType ===
+  'equipment-listing-by-department-by-package' ||
+  filterReportDto.reportType ===
+  'equipment-listing-by-department-by-package-with-price'
+) {
+  this.worksheet.addRow(['Equipment Listing(BQ)']);
+  this.worksheet.addRow([]);
+  
+  let sub_total = 0;
+  this.worksheet.addRow([]);
+  results.departments.forEach((items) => {
+    for (const key in items.data) {
+      if (Array.isArray(items.data[key])) {
+        let sub_total_room = 0;
+        let sub_total_rev_room = 0;
+        if (key !== 'no-group') {
+          this.worksheet.addRow([key]);
+        } else {
+          this.worksheet.addRow(['']);
+        }
+        this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+  
+        const departmentHeader = ['Item Code', 'Description', 'Quantity'];
+  
+        if (results.apq_filt) {
+          departmentHeader.push('APQ');
+        }
+  
+        if (results.fpq_filt) {
+          departmentHeader.push('FPQ');
+        }
+  
+        if (filterReportDto.reportType === 'equipment-listing-by-department-by-package-with-price') {
+          departmentHeader.push('Price', 'Total');
+        }
+  
+        this.worksheet.addRow(departmentHeader);
+  
+        items.data[key].forEach((item) => {
+          const departmentRow = [
+            item.code,
+            item.name,
+            item.qty,
+          ];
+  
+          if (results.apq_filt) {
+            departmentRow.push(item.apq); // Add APQ value here
+          }
+  
+          if (results.fpq_filt) {
+            departmentRow.push(item.fpq); // Add FPQ value here
+          }
+  
+          if (filterReportDto.reportType === 'equipment-listing-by-department-by-package-with-price') {
+            departmentRow.push(item.cost, item.qty * item.cost);
+          }
+  
+          this.worksheet.addRow(departmentRow);
+  
+          if (typeof item.qty === 'number') {
+            sub_total += item.qty;
+          }
+        });
+      }
+    }
+  });
+  
+  this.worksheet.addRow([]);
+  
+  this.worksheet.addRow(['Total Equipments:' + sub_total]);
+
+} else if (
+  filterReportDto.reportType ===
+  'equipment-listing-by-department-and-room-by-package' ||
+  filterReportDto.reportType ===
+  'equipment-listing-by-department-and-room-by-package-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-utility'
+) {  
+  this.worksheet.addRow(['Equipment Listing(BQ)']);
+  this.worksheet.addRow([]);
+  
+  let sub_total = 0;
+  this.worksheet.addRow([]);
+  results.departments.forEach((items) => {
+    for (const key in items.data) {
+      if (Array.isArray(items.data[key])) {
+        let sub_total_room = 0;
+        let sub_total_rev_room = 0;
+        if (key !== 'no-group') {
+          this.worksheet.addRow([key]);
+        } else {
+          this.worksheet.addRow(['']);
+        }
+        this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+  
+        const departmentHeader = ['Item Code', 'Description', 'Quantity'];
+  
+        if (results.apq_filt) {
+          departmentHeader.push('APQ');
+        }
+  
+        if (results.fpq_filt) {
+          departmentHeader.push('FPQ');
+        }
+  
+        if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-price') {
+          departmentHeader.push('Price', 'Total');
+        }
+        departmentHeader.push('Package', 'Remarks', 'Y N', 'Client Remarks');
+        this.worksheet.addRow(departmentHeader);
+  
+        items.data[key].forEach((item) => {
+          const departmentRow = [
+            item.code,
+            item.name,
+            item.qty,
+          ];
+  
+          if (results.apq_filt) {
+            departmentRow.push(item.apq); // Add APQ value here
+          }
+  
+          if (results.fpq_filt) {
+            departmentRow.push(item.fpq); // Add FPQ value here
+          }
+  
+          if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-price') {
+            departmentRow.push(item.cost, item.qty * item.cost);
+          }
+          departmentRow.push(item.package1,item.remarks,'',''); // Add FPQ value here
+          this.worksheet.addRow(departmentRow);
+  
+          if (typeof item.qty === 'number') {
+            sub_total += item.qty;
+          }
+        });
+      }
+    }
+  });
+  
+  this.worksheet.addRow([]);
+  
+  this.worksheet.addRow(['Total Equipments:' + sub_total]);
+ 
+} else if (
+  filterReportDto.reportType ===
+  'equipment-listing-by-department-and-room-by-package' ||
+  filterReportDto.reportType ===
+  'equipment-listing-by-department-and-room-by-package-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-utility'
+) {  
+  this.worksheet.addRow(['Equipment Listing(BQ)']);
+  this.worksheet.addRow([]);
+  
+  let sub_total = 0;
+  this.worksheet.addRow([]);
+  results.departments.forEach((items) => {
+    for (const key in items.data) {
+      if (Array.isArray(items.data[key])) {
+        let sub_total_room = 0;
+        let sub_total_rev_room = 0;
+        if (key !== 'no-group') {
+          this.worksheet.addRow([key]);
+        } else {
+          this.worksheet.addRow(['']);
+        }
+        this.worksheet.addRow(['Department: ', items.deapartname, items.deapartcode]);
+  
+        const departmentHeader = ['Item Code', 'Description', 'Quantity'];
+  
+        if (results.apq_filt) {
+          departmentHeader.push('APQ');
+        }
+  
+        if (results.fpq_filt) {
+          departmentHeader.push('FPQ');
+        }
+  
+        if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-price') {
+          departmentHeader.push('Price', 'Total');
+        }
+        departmentHeader.push('Package', 'Remarks', 'Y N', 'Client Remarks');
+        this.worksheet.addRow(departmentHeader);
+  
+        items.data[key].forEach((item) => {
+          const departmentRow = [
+            item.code,
+            item.name,
+            item.qty,
+          ];
+  
+          if (results.apq_filt) {
+            departmentRow.push(item.apq); // Add APQ value here
+          }
+  
+          if (results.fpq_filt) {
+            departmentRow.push(item.fpq); // Add FPQ value here
+          }
+  
+          if (filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-price') {
+            departmentRow.push(item.cost, item.qty * item.cost);
+          }
+          departmentRow.push(item.package1,item.remarks,'',''); // Add FPQ value here
+          this.worksheet.addRow(departmentRow);
+  
+          if (typeof item.qty === 'number') {
+            sub_total += item.qty;
+          }
+        });
+      }
+    }
+  });
+  
+  this.worksheet.addRow([]);
+  
+  this.worksheet.addRow(['Total Equipments:' + sub_total]);
+ }
+
+    return await this.workbook.xlsx.write(res);
     // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
   }
+   async xl(res, filterReportDto: FilterReportDto) {
+  //   const workbook = new Workbook();
+  //   const worksheet = workbook.addWorksheet('Report', {
+  //     headerFooter: {
+  //       firstHeader: 'Hello Exceljs',
+  //       firstFooter: 'Hello World',
+  //     },
+  //   });
+
+  //   /*
+  //   worksheet.addTable({
+  //     name: 'MyTable',
+  //     ref: 'A1',
+  //     headerRow: true,
+  //     totalsRow: true,
+  //     style: {
+  //       theme: 'TableStyleDark3',
+  //       showRowStripes: true,
+  //     },
+  //     columns: [
+  //       { name: 'name', totalsRowLabel: 'Totals:', filterButton: true },
+  //       { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+  //     ],
+
+      
+  //     rows: [
+  //       [new Date('2019-07-20'), 70.1],
+  //       [new Date('2019-07-21'), 70.6],
+  //       [new Date('2019-07-22'), 70.1],
+  //     ],
+  //   });
+  //   */
+  //   const results = await this.getQueryData(filterReportDto);
+  //   const rowarray = [];
+
+  //   const row = worksheet.addRow(['MNE SOLUTIONS']);
+  //   const cell = row.getCell(1);
+  //   cell.font = { bold: true };
+  //   worksheet.addRow(['MEDICAL EQUIPMENT CONSULTANCY SERVICE']);
+  //   worksheet.addRow([]);
+  //   worksheet.addRow([]);
+
+  //   if (filterReportDto.reportType === 'equipment-location-listing') {
+  //     const row5 = worksheet.addRow([
+  //       'Project Name:' + results.equipments[0].project_name,
+  //     ]);
+  //     const cell5 = row5.getCell(1);
+  //     cell5.font = { bold: true };
+
+  //     worksheet.addRow([
+  //       'Revision No: 5.001*',
+  //       '',
+  //       '',
+  //       'Date:' + (await this.getCurrentDate()),
+  //     ]);
+
+  //     let sub_total = 0;
+  //     results.equipments.forEach((item) => {
+  //       worksheet.addRow([]);
+  //       worksheet.addRow(['Equipment: ', item.eqp_code, item.eqp_name]);
+  //       worksheet.addRow([
+  //         'Dept Code: ',
+  //         'Department',
+  //         'Room Code',
+  //         'Room Name',
+  //         'Quantity',
+  //         'Group',
+  //         'Remarks',
+  //       ]);
+  //       let total = 0;
+  //       item.locations.forEach((item2) => {
+  //         worksheet.addRow([
+  //           item2.department_code,
+  //           item2.department_name,
+  //           item2.room_code,
+  //           item2.room_name,
+  //           item2.quantity,
+  //         ]);
+  //         if (typeof item2.quantity === 'number') {
+  //           total += item2.quantity;
+  //         }
+  //       });
+  //       sub_total += total;
+  //       worksheet.addRow(['', '', '', 'Sub-total', total]);
+  //       worksheet.addRow([]);
+  //       worksheet.addRow([]);
+
+  //       worksheet.addRow(['Total Equipments', sub_total]);
+  //     });
+  //   } else if (filterReportDto.reportType === 'department-list') {
+  //     const row5 = worksheet.addRow(['Project Name:' + results.name]);
+  //     const cell5 = row5.getCell(1);
+  //     cell5.font = { bold: true };
+  //     worksheet.addRow([
+  //       'Revision No: 5.001*',
+  //       '',
+  //       '',
+  //       'Date:' + (await this.getCurrentDate()),
+  //     ]);
+
+  //     worksheet.addRow(['Department List']);
+  //     worksheet.addRow([]);
+  //     worksheet.addRow(['Dept Code: ', 'Department']);
+
+  //     results.departments.forEach((item) => {
+  //       worksheet.addRow([]);
+  //       worksheet.addRow([item.code, item.name]);
+  //     });
+  //   } else if (filterReportDto.reportType === 'room-listing') {
+  //     const row5 = worksheet.addRow(['Project Name:' + results.name]);
+  //     const cell5 = row5.getCell(1);
+  //     cell5.font = { bold: true };
+  //     worksheet.addRow([
+  //       'Revision No: 5.001*',
+  //       '',
+  //       '',
+  //       'Date:' + (await this.getCurrentDate()),
+  //     ]);
+
+  //     worksheet.addRow(['Room Listing']);
+  //     worksheet.addRow([]);
+  //     worksheet.addRow(['Dept Code: ', 'Department']);
+
+  //     results.departments.forEach((item) => {
+  //       worksheet.addRow(['Department: ', item.code, item.name]);
+  //       item.rooms.forEach((item2) => {
+  //         worksheet.addRow([item2.code, item2.name, item2.status]);
+  //       });
+  //       worksheet.addRow([]);
+
+  //       //worksheet.addRow([item.code, item.name]);
+  //     });
+  //     return await workbook.xlsx.write(res);
+  //   } else if (filterReportDto.reportType === 'equipment-listing-bq' || filterReportDto.reportType === 'equipment-listing-bq-with-price') {
+  //     const row5 = worksheet.addRow(['Project Name:' + results.name]);
+  //     const cell5 = row5.getCell(1);
+  //     cell5.font = { bold: true };
+  //     worksheet.addRow([
+  //       'Revision Noxxxxxxxxxxxxxxxxxxxxx: 5.0018888888888888*',
+  //       '',
+  //       '',
+  //       'Date:' + (await this.getCurrentDate()),
+  //     ]);
+
+  //     worksheet.addRow(['Equipment Listing(BQ)']);
+  //     worksheet.addRow([]);
+  //     if(filterReportDto.reportType === 'equipment-listing-bq-with-price')
+  //     {
+  //     worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Price', 'Total', 'Group', 'Remarks']);
+  //     }
+  //     else
+  //     {
+  //       worksheet.addRow(['Code: ', 'Equipment', 'Qty', 'Group', 'Remarks']);  
+  //     }
+  //     let sub_total = 0;
+  //     results.EquipmentItemlist.forEach((item) => {
+  //       if(filterReportDto.reportType === 'equipment-listing-bq-with-price')
+  //     {
+  //       worksheet.addRow([
+  //         item.code,
+  //         item.name,
+  //         item.qty,
+  //         item.price,
+  //         item.qty ,
+  //         item.group,
+  //         item.remarks,
+  //       ]);
+  //     }
+  //     else
+  //     {
+  //       worksheet.addRow([
+  //         item.code,
+  //         item.name,
+  //         item.qty,
+  //         item.group,
+  //         item.remarks,
+  //       ]);
+  //     }
+  //       worksheet.addRow([]);
+  //       if (typeof item.quantity === 'number') {
+  //         sub_total += item.quantity;
+  //       }
+  //       //worksheet.addRow([item.code, item.name]);
+  //     });
+  //     worksheet.addRow([]);
+
+  //     worksheet.addRow(['Total Equipments:' + sub_total]);
+  //   }
+
+  //   return await workbook.xlsx.write(res);
+  //   // return await workbook.xlsx.writeFile('newSaveeee.xlsx');
+   }
 
   lowerCamelCase(str) {
     return str.replace(/-([a-z])/g, function (g) {
       return g[1].toUpperCase();
     });
   }
-  equipmentListingAll(equipmentsRes) {
+  equipmentListingAll(equipmentsRes,isDisabled) {
     let results = equipmentsRes.results;
+   
+    console.log(equipmentsRes);
     results.reportType = equipmentsRes.reportType;
+
+    
     const equipmentMap = new Map();
+    if (isDisabled) {
+     
     results.forEach((result) => {
       const code = result.code;
+      if (!equipmentMap.has(code) && result.active === false) {
+
+        equipmentMap.set(code, {
+          name: result.name,
+          code: result.code,
+          qty: result.qty,
+          cost: result.cost,
+          group: result.group,
+          remarks: result.remarks,
+          utility: result.utility,
+        });
+
+      }
+    
+    });
+  }
+  else
+  {
+       
+    results.forEach((result) => {
+      const code = result.code;
+     
+     
       if (equipmentMap.has(code)) {
       } else {
         equipmentMap.set(code, {
@@ -629,7 +2124,9 @@ export class ReportsService {
           utility: result.utility,
         });
       }
-    });
+    }); 
+  }
+  
     const equipment = Array.from(equipmentMap.values());
     results.equipments = equipment;
 
@@ -641,6 +2138,8 @@ export class ReportsService {
     }
     return results;
   }
+
+
   revisionMergeEquipment(rev1_equ, rev2_equ) {
     const rev1: Item[] = rev1_equ;
 
@@ -681,52 +2180,15 @@ export class ReportsService {
 
     return variation_equ;
   }
-  equipmentLocationListing(equipmentsRes) {
-    console.log('equipmentLocationListing------');
+  equipmentLocationListing(equipmentsRes, filterReportDto, isDisabled) {
+    const results = equipmentsRes.results;
+    const equipmentMap = new Map();
 
-    const results = equipmentsRes.results;
-    const equipmentMap = new Map();
     results.forEach((result) => {
       const code = result.code;
-      if (equipmentMap.has(code)) {
-        const existingEquipment = equipmentMap.get(code);
-        existingEquipment.locations.push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          group: result.group,
-          group_labels: result.labels,
-        });
-      } else {
-        equipmentMap.set(code, {
-          name: result.name,
-          code: result.code,
-          group: result.group,
-          group_labels: result.labels,
-          locations: [
-            {
-              qty: result.qty,
-              department: result.department,
-              room: result.room,
-            },
-          ],
-        });
-      }
-    });
-    const equipment = Array.from(equipmentMap.values());
-    results.equipments = equipment;
-    results.pname = results[0].project.name;
-    results.reportname = 'Equipment Location Listing';
-    return results;
-  }
-  disabledEquipmentLocationListing(equipmentsRes) {
-    const results = equipmentsRes.results;
-    const equipmentMap = new Map();
-    results.forEach((result) => {
-      const code = result.code;
-      if (equipmentMap.has(code)) {
-      } else {
-        if (result === false) {
+
+      if (isDisabled) {
+        if (!equipmentMap.has(code) && result.active === false) {
           equipmentMap.set(code, {
             name: result.name,
             code: result.code,
@@ -737,14 +2199,98 @@ export class ReportsService {
             utility: result.utility,
           });
         }
+      } else {
+        const group_id_data = filterReportDto.group; //['G1', 'G2'];
+        const equipment_code = filterReportDto.equipCode; //['G1', 'G2'];
+        const filter_package = filterReportDto.package1; //['G1', 'G2'];
+        if ((!filter_package || filter_package===result.package) &&
+        (!equipment_code || equipment_code===result.code) &&
+        (!group_id_data || group_id_data.includes(result.labels))) {
+        // if (
+        //   (!filter_package || filter_package.includes(result.package)) &&
+        //   (!group_id_data || group_id_data.includes(result.labels))
+        // ) {                    
+          if (equipmentMap.has(code)) {            
+              const existingEquipment = equipmentMap.get(code);            
+              existingEquipment.locations.push({              
+                  qty: result.qty,              
+                  department: result.department,              
+                  room: result.room,              
+                  group: result.group,              
+                  group_labels: result.labels,              
+                  apq: result.apq,              
+                  fpq: result.fpq,              
+                  package1: result.package,            
+              });          
+          } else {            
+            equipmentMap.set(code, {              
+              name: result.name,              
+              code: result.code,              
+              group: result.group,              
+              group_labels: result.labels,             
+              locations: [{                  
+                  qty: result.qty,                  
+                  department: result.department,                  
+                  room: result.room,                  
+                  apq: result.apq,                  
+                  fpq: result.fpq,                  
+                  package1: result.package,                
+              }],            
+            });         
+          } 
+          
+          // if (equipmentMap.has(code)) {
+          //   const existingEquipment = equipmentMap.get(code);
+          //   existingEquipment.locations.push({
+          //     qty: result.qty,
+          //     department: result.department,
+          //     room: result.room,
+          //     group: result.group,
+          //     group_labels: result.labels,
+          //     apq: result.apq,
+          //     fpq: result.fpq,
+          //     package1: result.package,
+          //   });
+          // } else {
+          //   equipmentMap.set(code, {
+          //     name: result.name,
+          //     code: result.code,
+          //     group: result.group,
+          //     group_labels: result.labels,
+          //     locations: [
+          //       {
+          //         qty: result.qty,
+          //         department: result.department,
+          //         room: result.room,
+          //         apq: result.apq,
+          //         fpq: result.fpq,
+          //         package1: result.package,
+          //       },
+          //     ],
+          //   });
+          // }
+        }
       }
     });
+
     const equipment = Array.from(equipmentMap.values());
     results.equipments = equipment;
+    
+   if (results[0] && results[0].project && results[0].project.name) 
+    {
     results.pname = results[0].project.name;
-    results.reportname = 'Disabled Equipment Listing';
+    }
+
+    if (isDisabled) {
+      results.reportname = 'Disabled Equipment Listing';
+    } else {
+      results.reportname = 'Equipment Location Listing';
+    }
+
     return results;
   }
+
+
 
   equipmentListingByDepart(equipmentsRes) {
     const results = equipmentsRes.results;
@@ -786,52 +2332,30 @@ export class ReportsService {
     results.reportname = 'Equipment Listing By Department';
     return results;
   }
-  equipmentListingByDepartandRoom(equipmentsRes, filterReportDto) {
-    const rooms_id_data = filterReportDto.roomIds; //['648972be6be3d0e6681efe07', '648972356be3d0e6681efdbc'];
-    const results = equipmentsRes.results;
 
+  equipmentListingByDepartandRoom(equipmentsRes, filterReportDto, isDisabled) {
+    const results = equipmentsRes.results;
     const roomMap = new Map();
+    const roomIds = filterReportDto.roomIds;
 
     results.forEach((result) => {
       const roomcode = result.room.code;
-      if (roomMap.has(roomcode)) {
-        const existingEquipment = roomMap.get(roomcode);
-        existingEquipment.data.push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-          group: result.group,
-          remarks: result.remarks,
-          utility: result.utility,
-        });
-      } else {
-        // roomid sort case
-        if (rooms_id_data) {
-          if (rooms_id_data.includes(result.room.projectRoomId)) {
-            roomMap.set(roomcode, {
-              deapartcode: result.department.code,
-              deapartname: result.department.name,
-              roomcode: result.room.code,
-              roomname: result.room.name,
-              projectRoomId: result.room.projectRoomId,
-              data: [
-                {
-                  qty: result.qty,
-                  department: result.department,
-                  room: result.room,
-                  name: result.name,
-                  code: result.code,
-                  cost: result.cost,
-                  group: result.group,
-                  remarks: result.remarks,
-                  utility: result.utility,
-                },
-              ],
-            });
-          }
+      // isRoomDisabled be true if the room is disabled (result.room.disabled is equal to 1), and false if the room is not disabled.
+      const isRoomDisabled = result.room.disabled === 1;
+
+      if ((!isDisabled || (isDisabled && isRoomDisabled)) && (!roomIds || roomIds.includes(result.room.projectRoomId))) {
+        if (roomMap.has(roomcode)) {
+          roomMap.get(roomcode).data.push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            group: result.group,
+            remarks: result.remarks,
+            utility: result.utility,
+          });
         } else {
           roomMap.set(roomcode, {
             deapartcode: result.department.code,
@@ -847,96 +2371,32 @@ export class ReportsService {
                 name: result.name,
                 code: result.code,
                 cost: result.cost,
+                group: result.group,
+                remarks: result.remarks,
+                utility: result.utility,
               },
             ],
           });
         }
       }
     });
-    const room = Array.from(roomMap.values());
-    results.rooms = room;
+
+    const rooms = Array.from(roomMap.values());
+    results.rooms = rooms;
     results.pname = results[0].project.name;
 
-    results.pagewise = filterReportDto.pagewise;
-    results.top_logo = filterReportDto.top_logo;
-    results.b_logo = filterReportDto.b_logo;
-    results.medical_logo = filterReportDto.medical_logo;
-    results.medical_logo2 = filterReportDto.medical_logo2;
-    results.medical_logo3 = filterReportDto.medical_logo3;
-
-    results.reportname = 'Equipment Listing(BQ) By Department and Room';
-    return results;
-  }
-  equipmentListingByDepartandRoomDisabled(equipmentsRes, filterReportDto) {
-    const results = equipmentsRes.results;
-    const roomMap = new Map();
-    const rooms_id_data = filterReportDto.roomIds; //['648972be6be3d0e6681efe07', '648972356be3d0e6681efdbc'];
-    results.forEach((result) => {
-      const roomcode = result.room.code;
-      if (roomMap.has(roomcode)) {
-        const existingEquipment = roomMap.get(roomcode);
-        existingEquipment.data.push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-          utility: result.utility,
-        });
-      } else {
-        // disbaled Roomm
-        if (result.room.disabled === 1) {
-          // roomid sort case
-          if (rooms_id_data) {
-            if (rooms_id_data.includes(result.room.projectRoomId)) {
-              roomMap.set(roomcode, {
-                deapartcode: result.department.code,
-                deapartname: result.department.name,
-                roomcode: result.room.code,
-                roomname: result.room.name,
-                projectRoomId: result.room.projectRoomId,
-                data: [
-                  {
-                    qty: result.qty,
-                    department: result.department,
-                    room: result.room,
-                    name: result.name,
-                    code: result.code,
-                    cost: result.cost,
-                    utility: result.utility,
-                  },
-                ],
-              });
-            }
-          } else {
-            roomMap.set(roomcode, {
-              deapartcode: result.department.code,
-              deapartname: result.department.name,
-              roomcode: result.room.code,
-              roomname: result.room.name,
-              projectRoomId: result.room.projectRoomId,
-              data: [
-                {
-                  qty: result.qty,
-                  department: result.department,
-                  room: result.room,
-                  name: result.name,
-                  code: result.code,
-                  cost: result.cost,
-                },
-              ],
-            });
-          }
-        }
+    const filterReportDtoKeys = ['pagewise', 'top_logo', 'b_logo', 'medical_logo', 'medical_logo2', 'medical_logo3'];
+    filterReportDtoKeys.forEach((key) => {
+      if (filterReportDto[key] !== undefined) {
+        results[key] = filterReportDto[key];
       }
     });
-    const room = Array.from(roomMap.values());
-    results.rooms = room;
-    results.pname = results[0].project.name;
-    results.reportname = 'Equipment Listing By Department and Room Disabled';
+
+    results.reportname = isDisabled ? 'Equipment Listing By Department and Room Disabled' : 'Equipment Listing(BQ) By Department and Room';
+
     return results;
   }
+
   DepartandRoomtoRoomVariation(
     equipmentsRes_rev1,
     equipmentsRes_rev2,
@@ -958,17 +2418,31 @@ export class ReportsService {
     });
 
     const roomMap = new Map();
-
     results.forEach((result) => {
       const roomcode = result.room.code;
       const code = result.code;
-
       const room_with_code = roomcode + code;
+
       let qty_rev = 0;
       let cost_rev = '0';
+
       if (results_rev_map.has(room_with_code)) {
-        qty_rev = results_rev_map.get(room_with_code).qty;
-        cost_rev = results_rev_map.get(room_with_code).cost;
+        const existingRevData = results_rev_map.get(room_with_code);
+        qty_rev = existingRevData.qty;
+        cost_rev = existingRevData.cost;
+      }
+
+      if (!roomMap.has(roomcode)) {
+        if (!rooms_id_data || rooms_id_data.includes(result.room.projectRoomId)) {
+          roomMap.set(roomcode, {
+            deapartcode: result.department.code,
+            deapartname: result.department.name,
+            roomcode: roomcode,
+            roomname: result.room.name,
+            projectRoomId: result.room.projectRoomId,
+            data: [],
+          });
+        }
       }
 
       if (roomMap.has(roomcode)) {
@@ -984,54 +2458,83 @@ export class ReportsService {
           cost_rev: cost_rev,
           utility: result.utility,
         });
-      } else {
-        // roomid sort case
-        if (rooms_id_data) {
-          if (rooms_id_data.includes(result.room.projectRoomId)) {
-            roomMap.set(roomcode, {
-              deapartcode: result.department.code,
-              deapartname: result.department.name,
-              roomcode: result.room.code,
-              roomname: result.room.name,
-              projectRoomId: result.room.projectRoomId,
-              data: [
-                {
-                  qty: result.qty,
-                  qty_rev: qty_rev,
-                  department: result.department,
-                  room: result.room,
-                  name: result.name,
-                  code: result.code,
-                  cost: result.cost,
-                  cost_rev: cost_rev,
-                  utility: result.utility,
-                },
-              ],
-            });
-          }
-        } else {
-          roomMap.set(roomcode, {
-            deapartcode: result.department.code,
-            deapartname: result.department.name,
-            roomcode: result.room.code,
-            roomname: result.room.name,
-            projectRoomId: result.room.projectRoomId,
-            data: [
-              {
-                qty: result.qty,
-                qty_rev: qty_rev,
-                department: result.department,
-                room: result.room,
-                name: result.name,
-                code: result.code,
-                cost: result.cost,
-                cost_rev: cost_rev,
-              },
-            ],
-          });
-        }
       }
     });
+
+
+    // results.forEach((result) => {
+    //   const roomcode = result.room.code;
+    //   const code = result.code;
+
+    //   const room_with_code = roomcode + code;
+    //   let qty_rev = 0;
+    //   let cost_rev = '0';
+    //   if (results_rev_map.has(room_with_code)) {
+    //     qty_rev = results_rev_map.get(room_with_code).qty;
+    //     cost_rev = results_rev_map.get(room_with_code).cost;
+    //   }
+
+    //   if (roomMap.has(roomcode)) {
+    //     const existingEquipment = roomMap.get(roomcode);
+    //     existingEquipment.data.push({
+    //       qty: result.qty,
+    //       qty_rev: qty_rev,
+    //       department: result.department,
+    //       room: result.room,
+    //       name: result.name,
+    //       code: result.code,
+    //       cost: result.cost,
+    //       cost_rev: cost_rev,
+    //       utility: result.utility,
+    //     });
+    //   } else {
+    //     // roomid sort case
+    //     if (rooms_id_data) {
+    //       if (rooms_id_data.includes(result.room.projectRoomId)) {
+    //         roomMap.set(roomcode, {
+    //           deapartcode: result.department.code,
+    //           deapartname: result.department.name,
+    //           roomcode: result.room.code,
+    //           roomname: result.room.name,
+    //           projectRoomId: result.room.projectRoomId,
+    //           data: [
+    //             {
+    //               qty: result.qty,
+    //               qty_rev: qty_rev,
+    //               department: result.department,
+    //               room: result.room,
+    //               name: result.name,
+    //               code: result.code,
+    //               cost: result.cost,
+    //               cost_rev: cost_rev,
+    //               utility: result.utility,
+    //             },
+    //           ],
+    //         });
+    //       }
+    //     } else {
+    //       roomMap.set(roomcode, {
+    //         deapartcode: result.department.code,
+    //         deapartname: result.department.name,
+    //         roomcode: result.room.code,
+    //         roomname: result.room.name,
+    //         projectRoomId: result.room.projectRoomId,
+    //         data: [
+    //           {
+    //             qty: result.qty,
+    //             qty_rev: qty_rev,
+    //             department: result.department,
+    //             room: result.room,
+    //             name: result.name,
+    //             code: result.code,
+    //             cost: result.cost,
+    //             cost_rev: cost_rev,
+    //           },
+    //         ],
+    //       });
+    //     }
+    //   }
+    // });
     const room = Array.from(roomMap.values());
     results.rooms = room;
     results.pname = results[0].project.name;
@@ -1050,24 +2553,13 @@ export class ReportsService {
     const results = equipmentsRes.results;
     const equipmentMap = new Map();
     const group_id_data = filterReportDto.group; //['G1', 'G2'];
+    const filter_package = filterReportDto.package1; //['G1', 'G2'];
     results.forEach((result) => {
       const code = result.code;
-      if (equipmentMap.has(code)) {
-      } else {
-        if (group_id_data) {
-          if (group_id_data.includes(result.labels) && result.labels != '') {
-            equipmentMap.set(code, {
-              name: result.name,
-              code: result.code,
-              qty: result.qty,
-              cost: result.cost,
-              group: result.group,
-              group_labels: result.labels,
-              remarks: result.remarks,
-              utility: result.utility,
-            });
-          }
-        } else {
+      //console.log('Results :- ', result.labels);
+      if (!equipmentMap.has(code)) {
+        if ((!filter_package || filter_package === result.package) &&
+          (!group_id_data || group_id_data.includes(result.labels))) {
           equipmentMap.set(code, {
             name: result.name,
             code: result.code,
@@ -1077,8 +2569,21 @@ export class ReportsService {
             group_labels: result.labels,
             remarks: result.remarks,
             utility: result.utility,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package,
           });
         }
+      }
+      else {
+        // Entry already exists, update the qty value
+        const existingEquipment = equipmentMap.get(code);
+        existingEquipment.qty += result.qty;
+        existingEquipment.apq += result.apq;
+        existingEquipment.fpq += result.fpq;
+        equipmentMap.set(code, existingEquipment);
+
+
       }
     });
 
@@ -1092,6 +2597,7 @@ export class ReportsService {
       //const groupName = item.group || 'no-group';
       const groupName = item.group_labels || 'no-group';
       if (!groupedData.hasOwnProperty(groupName)) {
+        //console.log('Results :- ', groupName);
         groupedData[groupName] = [];
       }
       groupedData[groupName].push(item);
@@ -1108,11 +2614,20 @@ export class ReportsService {
     const groupedArray = sortedKeys.map((groupName) => ({
       [groupName]: groupedData[groupName],
     }));
-
+    //console.log('Results :- ', results.equipments);
     results.equipments = groupedArray;
     results.pname = results[0].project.name;
     results.reportname = 'Equipment Listing(BQ)';
-    console.log('Results :- ', results);
+    results.package1 = filterReportDto.package1;
+    results.apq_filt = filterReportDto.apq_filt;
+    results.fpq_filt = filterReportDto.fpq_filt;
+    const filterReportDtoKeys = ['pagewise', 'top_logo', 'b_logo', 'medical_logo', 'medical_logo2', 'medical_logo3'];
+    filterReportDtoKeys.forEach((key) => {
+      if (filterReportDto[key] !== undefined) {
+        results[key] = filterReportDto[key];
+      }
+    });
+    // console.log('Results :- ', results.equipments);
     return results;
   }
   equipmentListingByGroup_revision(
@@ -1120,8 +2635,8 @@ export class ReportsService {
     equipmentsRes_rev2,
     filterReportDto,
   ) {
-    const results = this.equipmentListingAll(equipmentsRes_rev1);
-    const results_rev2 = this.equipmentListingAll(equipmentsRes_rev2);
+    const results = this.equipmentListingAll(equipmentsRes_rev1,false);
+    const results_rev2 = this.equipmentListingAll(equipmentsRes_rev2,false);
     const group_id_data = filterReportDto.group; //['G1', 'G2'];
 
     const equipment = this.revisionMergeEquipment(
@@ -1210,53 +2725,74 @@ export class ReportsService {
     return results;
   }
 
-  equipmentListingDepartByGroup(equipmentsRes) {
+  equipmentListingDepartByGroup(equipmentsRes, filterReportDto) {
     const results = equipmentsRes.results;
+    const group_id_data = filterReportDto.group; //['G1', 'G2'];
+
+    const filter_package = filterReportDto.package1; //['G1', 'G2'];
 
     const departmentMap = new Map();
     const noGroupData = new Map();
 
     results.forEach((result) => {
       const deapartcode = result.department.code;
-      const group = result.group || 'no-group';
+      const group = result.labels || 'no-group';
 
-      if (!departmentMap.has(deapartcode)) {
-        departmentMap.set(deapartcode, {
-          deapartcode: result.department.code,
-          deapartname: result.department.name,
-          data: {},
-        });
-      }
+      if ((!filter_package || filter_package === result.package) &&
+        (!group_id_data || group_id_data.includes(result.labels))) {
+        if (!departmentMap.has(deapartcode)) {
 
-      const existingDepartment = departmentMap.get(deapartcode);
-      if (group != 'no-group') {
-        if (!existingDepartment.data[group]) {
-          existingDepartment.data[group] = [];
+          departmentMap.set(deapartcode, {
+            deapartcode: result.department.code,
+            deapartname: result.department.name,
+            data: {},
+          });
         }
 
-        existingDepartment.data[group].push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-        });
-      }
+        const existingDepartment = departmentMap.get(deapartcode);
+        if (group != 'no-group') {
+          if (!existingDepartment.data[group]) {
+            existingDepartment.data[group] = [];
+          }
 
-      // Collect 'no-group' data
-      if (group === 'no-group') {
-        if (!noGroupData.has(deapartcode)) {
-          noGroupData.set(deapartcode, []);
+          existingDepartment.data[group].push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            utility: result.utility,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package
+          });
+
         }
-        noGroupData.get(deapartcode).push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-        });
+
+        // Collect 'no-group' data
+        if (group === 'no-group') {
+          if (!noGroupData.has(deapartcode)) {
+            noGroupData.set(deapartcode, []);
+          }
+          // if ((!filter_package || filter_package.includes(result.package)) &&(!group_id_data || group_id_data.includes(result.labels))) {
+
+          noGroupData.get(deapartcode).push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package,
+            // package1: result.package
+          });
+          // }
+        }
+
+        // console.log(result.package+'::222')
       }
     });
 
@@ -1268,71 +2804,154 @@ export class ReportsService {
     results.departments = department;
     results.pname = results[0].project.name;
     results.reportname = 'Equipment Listing(BQ) By Department';
+    results.package1 = filterReportDto.package1;
+    results.apq_filt = filterReportDto.apq_filt;
+    results.fpq_filt = filterReportDto.fpq_filt;
     return results;
   }
 
-  equipmentListingDepartNRoomByGroup(equipmentsRes) {
+  equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto,isDisabled) {
     const results = equipmentsRes.results;
-
-    const departmentMap = new Map();
+    const group_id_data = filterReportDto.group; //['G1', 'G2'];
+    const filter_package = filterReportDto.package1; //['G1', 'G2'];
+    const roomMap = new Map();
     const noGroupData = new Map();
-
-    results.forEach((result) => {
+    const departmentLastOccurrenceMap = new Map(); // To track the last occurrence of each department
+    let totalqty = 0;
+    let lastDepartmentCode = 0;
+    
+    results.forEach((result, index) => {
       const roomcode = result.room.code;
-      const group = result.group || 'no-group';
+      const departmentCode = result.department.code;
+      const group = result.labels || 'no-group';
+      const isRoomDisabled = result.room.disabled === 1;
 
-      if (!departmentMap.has(roomcode)) {
-        departmentMap.set(roomcode, {
-          deapartcode: result.department.code,
-          deapartname: result.department.name,
-          roomcode: result.room.code,
-          roomname: result.room.name,
-          data: {},
-        });
-      }
+     
+      // package/ groupcase filter case
+      if ((!filter_package || filter_package === result.package) &&
+        (!group_id_data || group_id_data.includes(result.labels))) {
+         // added at the end 
+         if (!isDisabled || (isDisabled && isRoomDisabled)) 
+         {
+          if (!roomMap.has(roomcode)) {
+         
+          roomMap.set(roomcode, {
+            deapartcode: result.department.code,
+            deapartname: result.department.name,
+            roomcode: result.room.code,
+            roomname: result.room.name,
+            data: {},
+            totalQty: null,  // Initialize department total quantity
+            totalapq: null,
+            totalfpq: null,
+          });
+        }
+        
 
-      const existingDepartment = departmentMap.get(roomcode);
-      if (group != 'no-group') {
-        if (!existingDepartment.data[group]) {
-          existingDepartment.data[group] = [];
+        const existingDepartment = roomMap.get(roomcode);
+       
+
+        if (group != 'no-group') {
+          if (!existingDepartment.data[group]) {
+            existingDepartment.data[group] = [];
+          }
+
+          existingDepartment.data[group].push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package,
+          });
+          // Update department totals
+          //existingDepartment.totalQty += result.qty;
+
+
         }
 
-        existingDepartment.data[group].push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-        });
+
+        // Collect 'no-group' data  need to display at the end of the each room pdf list
+        if (group === 'no-group') {
+          if (!noGroupData.has(roomcode)) {
+            noGroupData.set(roomcode, []);
+          }
+          // package/ groupcase filter case
+          // if ((!filter_package || filter_package.includes(result.package)) &&(!group_id_data || group_id_data.includes(result.labels))) {
+          noGroupData.get(roomcode).push({
+            qty: result.qty,
+            department: result.department,
+            room: result.room,
+            name: result.name,
+            code: result.code,
+            cost: result.cost,
+            apq: result.apq,
+            fpq: result.fpq,
+            package1: result.package,
+          });
+          // Update department totals
+          //existingDepartment.totalQty += result.qty;
+        }
       }
 
-      // Collect 'no-group' data  need to display at the end of the each room pdf list
-      if (group === 'no-group') {
-        if (!noGroupData.has(roomcode)) {
-          noGroupData.set(roomcode, []);
-        }
-        noGroupData.get(roomcode).push({
-          qty: result.qty,
-          department: result.department,
-          room: result.room,
-          name: result.name,
-          code: result.code,
-          cost: result.cost,
-        });
       }
     });
 
     // Append 'no-group' data to the departmentMap
     noGroupData.forEach((items, roomcode) => {
-      departmentMap.get(roomcode).data['no-group'] = items;
+      roomMap.get(roomcode).data['no-group'] = items;
     });
 
-    const department = Array.from(departmentMap.values());
+    const department = Array.from(roomMap.values());
+    // start Total Department QTy, APA FPA  etc Via Department 
+    let totalQty = 0;
+    let lastDepartmentIdex = {};
+    let lastDepartmentTot = {};
+    for (let i = 0; i < department.length; i++) {
+      const departmentId = department[i].deapartcode;
+      lastDepartmentIdex[departmentId] = i;
+      if (!(departmentId in lastDepartmentTot)) {
+
+        lastDepartmentTot[departmentId] = {}; // Initialize the department if it doesn't exist
+
+        lastDepartmentTot[departmentId]['qty'] = 0;
+        lastDepartmentTot[departmentId]['apq'] = 0;
+        lastDepartmentTot[departmentId]['fpq'] = 0;
+      }
+      if ('data' in department[i]) {
+        for (let groupname in department[i].data) {
+          const groupdata = department[i].data[groupname];
+          groupdata.forEach((groupdataitems) => {
+            lastDepartmentTot[departmentId]['qty'] += groupdataitems.qty;
+            lastDepartmentTot[departmentId]['apq'] += groupdataitems.apq;
+            lastDepartmentTot[departmentId]['fpq'] += groupdataitems.fpq;
+          });
+        }
+      }
+    }
+    for (let groupname in lastDepartmentIdex) {
+      let index = lastDepartmentIdex[groupname];
+
+      department[index].totalQty = lastDepartmentTot[groupname]['qty'];
+      department[index].totalapq = lastDepartmentTot[groupname]['apq'];
+      department[index].totalfpq = lastDepartmentTot[groupname]['fpq'];
+
+
+    }
+    // end Total Department QTy, APA FPA  etc Via Department 
+
     results.departments = department;
+    const department_ = {};
+
     results.pname = results[0].project.name;
 
     results.reportname = 'Equipment Listing(BQ) By Department and Room';
+    results.package1 = filterReportDto.package1;
+    results.apq_filt = filterReportDto.apq_filt;
+    results.fpq_filt = filterReportDto.fpq_filt;
     return results;
   }
   equipmentListingDepartNRoomByGroup_revision(
@@ -1358,7 +2977,7 @@ export class ReportsService {
     results.forEach((result) => {
       const roomcode = result.room.code;
 
-      const group = result.group || 'no-group';
+      const group = result.labels || 'no-group';
 
       if (!departmentMap.has(roomcode)) {
         departmentMap.set(roomcode, {
@@ -1394,7 +3013,7 @@ export class ReportsService {
           room: result.room,
           name: result.name,
           code: result.code,
-          code_rev: code_rev,
+          cost_rev: code_rev,
           cost: result.cost,
         });
       }
@@ -1413,7 +3032,7 @@ export class ReportsService {
           room: result.room,
           name: result.name,
           code: result.code,
-          code_rev: code_rev,
+          cost_rev: code_rev,
         });
       }
     });
@@ -1425,14 +3044,15 @@ export class ReportsService {
 
     const department = Array.from(departmentMap.values());
     results.departments = department;
+    //console.log(department);
     results.pname = results[0].project.name;
 
     results.reportname = 'Equipment Listing by Department';
     return results;
   }
 
-  equipmentLocationListingByGroup(equipmentsRes) {
-    const results = this.equipmentLocationListing(equipmentsRes);
+  equipmentLocationListingByGroup(equipmentsRes, filterReportDto) {
+    const results = this.equipmentLocationListing(equipmentsRes, filterReportDto, false);
     const groupedData = {};
     results.equipments.forEach((item) => {
       const groupName = item.group_labels || 'no-group';
@@ -1480,6 +3100,9 @@ export class ReportsService {
     // }));
     console.log(groupedArray);
     results.equipments = groupedArray;
+    results.package1 = filterReportDto.package1;
+    results.apq_filt = filterReportDto.apq_filt;
+    results.fpq_filt = filterReportDto.fpq_filt;
     return results;
   }
   async getQueryData(filterReportDto: FilterReportDto) {
@@ -1498,7 +3121,7 @@ export class ReportsService {
       totalequ: number;
       total?: number;
     };
-    filterReportDto.limit = 20;
+    filterReportDto.limit = 100;
     // filterReportDto.lean = true;
     const equipmentsRes: any = await this.projectEquipmentService.findAll(
       filterReportDto,
@@ -1511,7 +3134,11 @@ export class ReportsService {
     ) {
       filterReportDto.reportType = 'equipment-location-listing';
       const functionName = this.lowerCamelCase(filterReportDto.reportType);
-      return this[functionName](equipmentsRes);
+      return this[functionName](equipmentsRes, filterReportDto, false);
+    } else if (filterReportDto.reportType === 'equipment-specs') {
+      filterReportDto.reportType = 'equipment-location-listing';
+      const functionName = this.lowerCamelCase(filterReportDto.reportType);
+      return this.equipmentLocationListing(equipmentsRes, filterReportDto, false);
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq' ||
       filterReportDto.reportType === 'equipment-listing-bq-with-price' ||
@@ -1519,12 +3146,45 @@ export class ReportsService {
       filterReportDto.reportType === 'equipment-listing-by-floor'
     ) {
       equipmentsRes.reportType = filterReportDto.reportType;
-      return this.equipmentListingAll(equipmentsRes);
+      return this.equipmentListingAll(equipmentsRes,false);
+    } else if (filterReportDto.reportType === 'power_requirement' ) {
+      equipmentsRes.reportType = filterReportDto.reportType;
+      return this.equipmentListingAll(equipmentsRes,false);
+    } else if (filterReportDto.reportType === 'power_requirement_for_rds' ) {
+
+      equipmentsRes.reportType = filterReportDto.reportType;
+      return this.equipmentListingAll(equipmentsRes,false);
+
+
+    } else if (filterReportDto.reportType === 'equipment-listing_for_rds' ) {
+
+      equipmentsRes.reportType = filterReportDto.reportType;
+      return this.equipmentListingAll(equipmentsRes,false);
+
+
+    } else if (filterReportDto.reportType === 'equipment_brands' ) {
+      
+      
+      const equipmentsRes: any = await this.projectEquipmentService.combineEquipmentWithProject(
+        filterReportDto,
+      );
+      equipmentsRes.reportType = filterReportDto.reportType;
+      equipmentsRes.results.reportType = filterReportDto.reportType;
+      equipmentsRes.results.pname = 'bull';
+      equipmentsRes.results.name = 'bull';
+      //equipmentsRes.results.project.name = filterReportDto.reportType;
+      console.log('equipmentsRes:::');
+      console.log(equipmentsRes);
+      
+      //return equipmentsRes;
+      
+     return this.equipmentListingAll(equipmentsRes,false);
+    
     } else if (
       filterReportDto.reportType ===
-        'equipment-listing-with-revisions-variations' ||
+      'equipment-listing-with-revisions-variations' ||
       filterReportDto.reportType ===
-        'equipment-listing-price-with-revisions-variations'
+      'equipment-listing-price-with-revisions-variations'
     ) {
       // revision data is not updated
       filterReportDto.limit = 20;
@@ -1534,8 +3194,8 @@ export class ReportsService {
       //should replace by filter with rev2 value
       const equipmentsRes_rev2: any =
         await this.projectEquipmentService.findAll(filterReportDto);
-      const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1);
-      const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2);
+      const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1,false);
+      const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2,false);
 
       result_rev1.equipments = this.revisionMergeEquipment(
         result_rev1.equipments,
@@ -1547,45 +3207,49 @@ export class ReportsService {
       result_rev1.rev1 = rev_id1;
       result_rev1.rev2 = rev_id2;
       return result_rev1;
+
     } else if (
       filterReportDto.reportType === 'disabled-equipment-listing-bq' ||
       filterReportDto.reportType === 'disabled-equipment-listing-bq-with-price'
     ) {
-      return this.disabledEquipmentLocationListing(equipmentsRes);
+
+      equipmentsRes.reportType = filterReportDto.reportType;
+      return this.equipmentListingAll(equipmentsRes,true);
+      //return this.equipmentLocationListing(equipmentsRes, null,true);
     } else if (
       filterReportDto.reportType === 'equipment-listing-by-department' ||
       filterReportDto.reportType ===
-        'equipment-listing-by-department-with-price'
+      'equipment-listing-by-department-with-price'
     ) {
       return this.equipmentListingByDepart(equipmentsRes);
     } else if (
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room' ||
+      'equipment-listing-by-department-and-room' ||
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-with-price' ||
+      'equipment-listing-by-department-and-room-with-price' ||
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-with-utility'
+      'equipment-listing-by-department-and-room-with-utility'
     ) {
       return this.equipmentListingByDepartandRoom(
         equipmentsRes,
-        filterReportDto,
+        filterReportDto, false
       );
     } else if (
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-disabled' ||
+      'equipment-listing-by-department-and-room-disabled' ||
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-disabled-with-price'
+      'equipment-listing-by-department-and-room-disabled-with-price'
     ) {
       // Plz note Room diabled feid/data is not updated
 
-      return this.equipmentListingByDepartandRoomDisabled(
+      return this.equipmentListingByDepartandRoom(
         equipmentsRes,
-        filterReportDto,
+        filterReportDto, true
       );
     } else if (
       filterReportDto.reportType === 'equipment-room-to-room-variation' ||
       filterReportDto.reportType ===
-        'equipment-room-to-room-variation-with-price'
+      'equipment-room-to-room-variation-with-price'
     ) {
       // revision data is not updated
       filterReportDto.limit = 20;
@@ -1609,7 +3273,7 @@ export class ReportsService {
     } else if (
       filterReportDto.reportType === 'equipment-listing-bq-by-group-revision' ||
       filterReportDto.reportType ===
-        'equipment-listing-bq-by-group-revision-with-price'
+      'equipment-listing-bq-by-group-revision-with-price'
     ) {
       // revision data is not updated
       filterReportDto.limit = 20;
@@ -1619,13 +3283,18 @@ export class ReportsService {
       //should replace by filter with rev2 value
       const equipmentsRes_rev2: any =
         await this.projectEquipmentService.findAll(filterReportDto);
-      const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1);
-      const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2);
+      const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1,false);
+      const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2,false);
       return this.equipmentListingByGroup_revision(
         equipmentsRes_rev1,
         equipmentsRes_rev2,
         filterReportDto,
       );
+    } else if (
+      filterReportDto.reportType === 'equipment-listing-bq-by-package' ||
+      filterReportDto.reportType === 'equipment-listing-bq-by-package-with-price'
+    ) {
+      return this.equipmentListingByGroup(equipmentsRes, filterReportDto);
     } else if (
       filterReportDto.reportType === 'equipment-location-listing-by-group'
     ) {
@@ -1633,26 +3302,58 @@ export class ReportsService {
       //const functionName = this.lowerCamelCase(filterReportDto.reportType);
       //return this[functionName](equipmentsRes);
 
-      return this.equipmentLocationListingByGroup(equipmentsRes);
-    } else if (
-      filterReportDto.reportType ===
-        'equipment-listing-by-department-by-group' ||
-      filterReportDto.reportType ===
-        'equipment-listing-by-department-by-group-with-price'
+      return this.equipmentLocationListingByGroup(equipmentsRes, filterReportDto);
+    }
+    else if (
+      filterReportDto.reportType === 'equipment-location-listing-by-package'
     ) {
-      return this.equipmentListingDepartByGroup(equipmentsRes);
+      filterReportDto.reportType = 'equipment-location-listing-by-package';
+      //const functionName = this.lowerCamelCase(filterReportDto.reportType);
+      //return this[functionName](equipmentsRes);
+
+      return this.equipmentLocationListingByGroup(equipmentsRes, filterReportDto);
     } else if (
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-by-group' ||
+      'equipment-listing-by-department-by-group' ||
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-by-group-with-price'
+      'equipment-listing-by-department-by-group-with-price'
     ) {
-      return this.equipmentListingDepartNRoomByGroup(equipmentsRes);
+      return this.equipmentListingDepartByGroup(equipmentsRes, filterReportDto);
     } else if (
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-by-group-revision' ||
+      'equipment-listing-by-department-by-package' ||
       filterReportDto.reportType ===
-        'equipment-listing-by-department-and-room-with-price-by-group-rev'
+      'equipment-listing-by-department-by-package-with-price'
+    ) {
+      return this.equipmentListingDepartByGroup(equipmentsRes, filterReportDto);
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-by-group' ||
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-by-group-with-price'
+    ) {
+      return this.equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto,false);
+  } else if (
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-by-group_disabled' ||
+    filterReportDto.reportType ===
+    'equipment-listing-by-department-and-room-by-group-with-price_disabled'
+  ) {
+    return this.equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto,true);
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-by-package' ||
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-by-package-with-price' || filterReportDto.reportType === 'equipment-listing-by-department-and-room-by-package-with-utility'
+    ) {
+      return this.equipmentListingDepartNRoomByGroup(equipmentsRes, filterReportDto,false);
+
+
+    } else if (
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-by-group-revision' ||
+      filterReportDto.reportType ===
+      'equipment-listing-by-department-and-room-with-price-by-group-rev'
     ) {
       // revision data is not updated
       filterReportDto.limit = 20;
@@ -1662,8 +3363,8 @@ export class ReportsService {
       //should replace by filter with rev2 value
       const equipmentsRes_rev2: any =
         await this.projectEquipmentService.findAll(filterReportDto);
-      const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1);
-      const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2);
+      const result_rev1 = this.equipmentListingAll(equipmentsRes_rev1,false);
+      const result_rev2 = this.equipmentListingAll(equipmentsRes_rev2,false);
       return this.equipmentListingDepartNRoomByGroup_revision(
         equipmentsRes_rev1,
         equipmentsRes_rev2,
@@ -1686,7 +3387,7 @@ export class ReportsService {
         results.reportname = 'Department Listing';
       } else if (
         filterReportDto.reportType ===
-          'equipment-room-to-room-variation-with-price' ||
+        'equipment-room-to-room-variation-with-price' ||
         filterReportDto.reportType === 'equipment-room-to-room-variation'
       ) {
         results.reportname = 'Equipment room to room variation';

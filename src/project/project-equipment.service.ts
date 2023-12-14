@@ -32,42 +32,91 @@ export class ProjectEquipmentService {
   ) {}
 
   async create(createProjectEquipmentDto: any): Promise<ProjectEquipment> {
+    mongoose.set('debug', true);
     this.logModel.logAction(`Added equipments`, createProjectEquipmentDto);
-    const project = new this.projectEquipmentModel(createProjectEquipmentDto);
-    return project.save();
+    const projectEqp: any = await this.projectEquipmentModel
+      .findOne({
+        'project.projectId': createProjectEquipmentDto.project.projectId,
+        'department.projectDepartmentId':
+          createProjectEquipmentDto.department.projectDepartmentId,
+        'room.projectRoomId': createProjectEquipmentDto.room.projectRoomId,
+        masterId: createProjectEquipmentDto.masterId,
+      })
+      .lean();
+    console.log('projectEqp', projectEqp);
+
+    if (projectEqp) {
+      const res = await this.projectEquipmentModel.findByIdAndUpdate(
+        projectEqp._id,
+        {
+          $inc: { qty: 1 },
+        },
+      );
+      return res;
+    } else {
+      createProjectEquipmentDto.qty = 1;
+      const project = new this.projectEquipmentModel(createProjectEquipmentDto);
+      return project.save();
+    }
   }
 
+  setRegxfilter(fields, query) {
+    const cond = [];
+    fields.forEach((field) => {
+      cond.push({
+        [field]: new RegExp(`.*${query}.*`, 'i'),
+      });
+    });
+    return cond;
+  }
   async findAll(filterEquipmentDto: FilterEquipmentDto) {
-    // mongoose.set('debug', true);
-    let filters: FilterQuery<ProjectEquipmentDocument> = {};
+    mongoose.set('debug', true);
+    const filters: FilterQuery<ProjectEquipmentDocument> = {};
 
     if (Array.isArray(filterEquipmentDto.projectIds)) {
-      filters = {
-        'project.projectId': { $in: filterEquipmentDto.projectIds },
-        ...filters,
-      };
+      filters['project.projectId'] = { $in: filterEquipmentDto.projectIds };
     } else {
-      filters = {
-        'project.projectId': filterEquipmentDto.projectId,
-        ...filters,
-      };
+      filters['project.projectId'] = filterEquipmentDto.projectId;
     }
     if (filterEquipmentDto.departmentId) {
-      filters = {
-        'department.projectDepartmentId': filterEquipmentDto.departmentId,
-        ...filters,
-      };
+      filters['department.projectDepartmentId'] =
+        filterEquipmentDto.departmentId;
     }
     if (filterEquipmentDto.roomId) {
-      filters = {
-        'room.projectRoomId': filterEquipmentDto.roomId,
-        ...filters,
-      };
+      filters['room.projectRoomId'] = filterEquipmentDto.roomId;
     }
 
+    let orCond = [];
+    if (filterEquipmentDto.roomQuery) {
+      orCond = this.setRegxfilter(
+        ['room.name', 'room.code'],
+        filterEquipmentDto.roomQuery,
+      );
+    }
+    if (filterEquipmentDto.departmentQuery) {
+      orCond = [
+        ...this.setRegxfilter(
+          ['department.name', 'department.code'],
+          filterEquipmentDto.departmentQuery,
+        ),
+        ...orCond,
+      ];
+    }
+    if (filterEquipmentDto.equipmentQuery) {
+      orCond = [
+        ...this.setRegxfilter(
+          ['name', 'code'],
+          filterEquipmentDto.equipmentQuery,
+        ),
+        ...orCond,
+      ];
+    }
+    // filters['$or'] = orCond;
     if (filterEquipmentDto.searchQuery) {
       filters.$text = { $search: filterEquipmentDto.searchQuery };
     }
+    console.log('orCond', orCond);
+    console.log('filters', filters);
 
     const findQuery = this.projectEquipmentModel
       .find(filters)
@@ -95,7 +144,75 @@ export class ProjectEquipmentService {
     // mongoose.set('debug', true);
     return this.ProjectModel.findById(id);
   }
+  async combineEquipmentWithProject(filterEquipmentDto: FilterEquipmentDto) {
+    const projectId = filterEquipmentDto.projectId;
 
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'equipment',
+          localField: 'code',
+          foreignField: 'code',
+          as: 'equipmentData',
+        },
+      },
+      {
+        $lookup: {
+          from: 'projectequipments',
+          localField: 'code',
+          foreignField: 'code',
+          as: 'projectData',
+        },
+      },
+      {
+        $unwind: {
+          path: '$equipmentData',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$projectData',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $match: {
+          $or: [
+            { equipmentData: { $exists: true } },
+            { 'projectData.projectId': projectId },
+          ],
+        },
+      },
+      {
+        $project: {
+          code: 1,
+          name: 1,
+          'project.name': '$projectData.projectId',
+          projectId: '$projectData.projectId',
+          equipmentName: '$equipmentData.name',
+          package: '$equipmentData.equipmentPackage.package',
+          utility: '$equipmentData.utility',
+          brands: '$equipmentData.brands',
+        },
+      },
+      {
+        $group: {
+          _id: '$code',
+          code: { $first: '$code' },
+        },
+      },
+      // Add a $limit stage to limit the result to 100 documents
+      {
+        $limit: 10,
+      },
+    ];
+
+    const results = await this.projectEquipmentModel.aggregate(pipeline).exec();
+
+    //console.log(result);
+    return { results };
+  }
   async update(
     id: string,
     updateProjectDto: UpdateProjectDto,
@@ -152,6 +269,7 @@ export class ProjectEquipmentService {
     const results = await this.ProjectModel.aggregate(pipeline);
     return { results };
   }
+
   //Get Equipments by projectID
   async getProjectEquipmentsbyroom(
     projectId: string,

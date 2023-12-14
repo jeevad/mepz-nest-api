@@ -16,9 +16,16 @@
   <div class='container-fluid mb-5 mt-0'>
     <div class='row d-flex align-items-baseline'>
       <div class='col-xl-12'>    
-        {{#each equipments }}
+        {{#each equipments as |equ_group| }}
           {{#if ../pagewise}} {{#index_gt @index}} <div class="page-break"></div> {{/index_gt}} {{/if}}
-          <p style="margin-bottom:2px;"><strong>{{group}}</strong></p>
+           {{#each equ_group as |equ_group_one key2|}} 
+          {{!  json equ_group_one }}
+          <p style="margin-bottom:2px;"><strong>{{equ_group_one.0.group_labels}} </strong></p>
+              {{#each equ_group_one as |data2 key3|}} 
+             
+              
+           {{#if (gt locations.length 0)}}
+          
           <p style='color: #242729;font-size: 16px; margin-bottom: 5px;'><b> Equipment:</b> <span>{{code}}</span> <span style="margin-left:30px;">{{name}}</span></p>
           <table class='table table-bordered' style="font-size: 15px; margin-bottom:20px;">
             <thead class='table-light'>
@@ -30,7 +37,11 @@
                 <th style="padding-top:6px;padding-bottom:6px; color: #242729;">Quantity</th>
               </tr>
             </thead>
-            <tbody>      
+            <tbody>
+              
+               
+               
+            
               {{#each locations as |data|}}
                 <tr>
                   <td style="padding-top:6px;padding-bottom:6px">{{data.department.code}}</td>
@@ -39,7 +50,10 @@
                   <td style="padding-top:6px;padding-bottom:6px">{{data.room.name}}</td>
                   <td style="padding-top:6px;padding-bottom:6px">{{data.qty}}</td>
                 </tr>      
-              {{/each}}
+               {{/each}}
+             
+             
+              
                 <tr style="border: 0;">
                   <td style="border:0;"></td>
                   <td style="border:0;"></td>
@@ -47,10 +61,18 @@
                   <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">Sub-Total:</td>
                   <td style="border-color: #dfe0e1; border-bottom: 1px solid #dfe0e1; padding-top:6px;padding-bottom:6px">{{sum locations "qty"}}</td>
                 </tr>
+
             </tbody>
-          </table>
+          </table>  
+         
+            {{/if}}
+          {{/each}}
+          <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment {{equ_group_one.0.group_labels}} : {{ calculateSumOfTotalEquipmentLocationListing equ_group_one }}</b></p>
+          {{/each}}
         {{/each}}
-        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : {{ calculateSumOfTotalEquipmentLocationListing equipments }}</b></p>
+        {{!--        <p style="text-align:right; margin-bottom:0px; color: #242729;"><b>Total Equipment : 
+          {{!calculateSumOfTotalEquipmentLocationGrpAll equipments }}</b></p> --}}
+
       </div>
     </div>
   </div>

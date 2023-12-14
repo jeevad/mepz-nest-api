@@ -99,7 +99,7 @@ export class MigrationsService {
       {
         name: 'tb_eq_gen_desc',
         fields:
-          'gd_code as code, gd_desc as name, cost,brands, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort,  remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne,typical_power_consumption as typicalPowerConsumption,water,drainage,ventilation,gas,typical_weight,typical_floor_loading,typical_ceiling_loading,radiation_shielding,corridor_clearance,control_room,tech_room,chiller,file2,file3',
+          'gd_code as code, gd_desc as name, cost,brands, markup_per as markUp, heat_dissipation as heatDissipation, ict_port as ictPort, bss_port as bssPort,  remarks, labels , utility, package , package_remarks as packageRemarks, package as equipmentPackage, labels as equipmentLabel, type_of_power as equipmentPower, file1 as fileOne,file2 as fileTwo,file3 as fileThree,file1_storage,file2_storage,file3_storage,typical_power_consumption as typicalPowerConsumption,water,drainage,ventilation,gas,typical_weight,typical_floor_loading,typical_ceiling_loading,radiation_shielding,corridor_clearance,control_room,tech_room,chiller',
         //date_created as createdAt, typicalPowerConsumption
         service: 'equipmentService',
       },
@@ -165,8 +165,9 @@ export class MigrationsService {
       hcl_code as classification ,type ,com_code as company ,signature1 ,signature2, 
       date_created as createdAt , addr1 as address1, addr2 as address2, city , country, 
       date_start as dateInitiatedProposal, postal as postalZip, date_end as proposedFacilityCompletionDate, 
-      state  FROM tb_hosp_geninfo WHERE id IN('6') ORDER BY h_short_name`,
+      state  FROM tb_hosp_geninfo WHERE id IN('4','6', '7','8', '9', '11','12','13', '15') ORDER BY h_short_name`,
     );
+    // 	SELECT *FROM `tb_hosp_geninfo`WHERE `id` IN('4','6', '7', , '8', '9', '11','12','13', '15', '140','42', '126', '148', '130', '83', '86', '127', '55', '74', '81', '82', '51', '119', '35',   '38', '132', '118', '18', '19', '117', '22', '142', '124', '121', '122', '70', '80', '50', '120', '147', '128', '103', '134', '137', '153', '72', '141', '139', '138', '99', '25', '37')ORDER BY `h_short_name`
     console.log('projects', projects);
 
     for (const project of projects) {
@@ -215,6 +216,7 @@ export class MigrationsService {
     return 'success';
   }
   async migrateProjectEqp(roomDetails) {
+    
     const query = `SELECT tb_prj_prop_line_tmp.gd_code as code, tb_prj_prop_line_tmp.package, tb_prj_prop_line_tmp.apq, 
     tb_prj_prop_line_tmp.fpq, tb_eq_gen_desc.gd_desc as name, 
     tb_prj_prop_line_tmp.qty, tb_eq_gen_desc.g_code, tb_eq_gen_desc.rm_g_code,

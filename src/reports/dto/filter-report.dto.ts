@@ -44,6 +44,23 @@ export class FilterReportDto {
   @ApiProperty({ type: [String] })
   @IsOptional()
   roomIds: string[];
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  package1?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  equipCode?: string;
+  
+
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  apq_filt?: string;
+
+  @ApiPropertyOptional({ type: String })
+  @IsOptional()
+  fpq_filt?: string;
 
   @ApiPropertyOptional({ type: String })
   @IsOptional()
