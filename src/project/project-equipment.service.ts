@@ -61,75 +61,70 @@ export class ProjectEquipmentService {
   }
 
   setRegxfilter(fields, query) {
-    const cond = [];
+    const cond = { $or: [] };
     fields.forEach((field) => {
-      cond.push({
+      cond['$or'].push({
         [field]: new RegExp(`.*${query}.*`, 'i'),
       });
     });
     return cond;
   }
-  async findAll(filterEquipmentDto: FilterEquipmentDto) {
-    mongoose.set('debug', true);
-    const filters: FilterQuery<ProjectEquipmentDocument> = {};
+  async findAll(dto: FilterEquipmentDto) {
+    // mongoose.set('debug', true);
+    const filters: FilterQuery<ProjectEquipmentDocument> = { $and: [] };
 
-    if (Array.isArray(filterEquipmentDto.projectIds)) {
-      filters['project.projectId'] = { $in: filterEquipmentDto.projectIds };
-    } else {
-      filters['project.projectId'] = filterEquipmentDto.projectId;
+    filters['$and'].push({
+      'project.projectId': Array.isArray(dto.projectIds)
+        ? { $in: dto.projectIds }
+        : dto.projectId,
+    });
+    if (dto.departmentId) {
+      filters['$and'].push({
+        'department.projectDepartmentId': dto.departmentId,
+      });
     }
-    if (filterEquipmentDto.departmentId) {
-      filters['department.projectDepartmentId'] =
-        filterEquipmentDto.departmentId;
-    }
-    if (filterEquipmentDto.roomId) {
-      filters['room.projectRoomId'] = filterEquipmentDto.roomId;
+    if (dto.roomId) {
+      filters['$and'].push({
+        'room.projectRoomId': dto.roomId,
+      });
     }
 
-    let orCond = [];
-    if (filterEquipmentDto.roomQuery) {
-      orCond = this.setRegxfilter(
+    // let orCond = [];
+    if (dto.roomQuery) {
+      const orCond = this.setRegxfilter(
         ['room.name', 'room.code'],
-        filterEquipmentDto.roomQuery,
+        dto.roomQuery,
       );
+      filters['$and'].push(orCond);
     }
-    if (filterEquipmentDto.departmentQuery) {
-      orCond = [
-        ...this.setRegxfilter(
-          ['department.name', 'department.code'],
-          filterEquipmentDto.departmentQuery,
-        ),
-        ...orCond,
-      ];
+    if (dto.departmentQuery) {
+      const orCond = this.setRegxfilter(
+        ['department.name', 'department.code'],
+        dto.departmentQuery,
+      );
+      filters['$and'].push(orCond);
     }
-    if (filterEquipmentDto.equipmentQuery) {
-      orCond = [
-        ...this.setRegxfilter(
-          ['name', 'code'],
-          filterEquipmentDto.equipmentQuery,
-        ),
-        ...orCond,
-      ];
+    if (dto.equipmentQuery) {
+      const orCond = this.setRegxfilter(['name', 'code'], dto.equipmentQuery);
+      filters['$and'].push(orCond);
     }
-    // filters['$or'] = orCond;
-    if (filterEquipmentDto.searchQuery) {
-      filters.$text = { $search: filterEquipmentDto.searchQuery };
+    if (dto.searchQuery) {
+      filters.$text = { $search: dto.searchQuery };
     }
-    console.log('orCond', orCond);
-    console.log('filters', filters);
+    // console.log('filters', filters);
 
     const findQuery = this.projectEquipmentModel
       .find(filters)
       // .select({ departments: 0 })
       .sort({ _id: -1 })
-      .skip(filterEquipmentDto.skip);
+      .skip(dto.skip);
 
-    if (filterEquipmentDto.lean) {
+    if (dto.lean) {
       findQuery.lean();
     }
 
-    if (filterEquipmentDto.limit) {
-      findQuery.limit(filterEquipmentDto.limit);
+    if (dto.limit) {
+      findQuery.limit(dto.limit);
     }
 
     const results = await findQuery;
