@@ -69,6 +69,17 @@ export class ProjectEquipmentService {
     });
     return cond;
   }
+  setArrRegxfilter(fields, arrValue) {
+    const cond = { $or: [] };
+    fields.forEach((field) => {
+      arrValue.forEach((item): any => {
+        cond['$or'].push({
+          [field]: new RegExp(`.*${item}.*`, 'i'),
+        });
+      });
+    });
+    return cond;
+  }
   async findAll(dto: FilterEquipmentDto) {
     // mongoose.set('debug', true);
     const filters: FilterQuery<ProjectEquipmentDocument> = { $and: [] };
@@ -108,6 +119,26 @@ export class ProjectEquipmentService {
       const orCond = this.setRegxfilter(['name', 'code'], dto.equipmentQuery);
       filters['$and'].push(orCond);
     }
+
+    if (Array.isArray(dto.rooms)) {
+      const orCond = this.setArrRegxfilter(
+        ['room.name', 'room.code'],
+        dto.rooms,
+      );
+      filters['$and'].push(orCond);
+    }
+    if (Array.isArray(dto.departments)) {
+      const orCond = this.setArrRegxfilter(
+        ['department.name', 'department.code'],
+        dto.departments,
+      );
+      filters['$and'].push(orCond);
+    }
+    if (Array.isArray(dto.equipments)) {
+      const orCond = this.setArrRegxfilter(['name', 'code'], dto.equipments);
+      filters['$and'].push(orCond);
+    }
+
     if (dto.searchQuery) {
       filters.$text = { $search: dto.searchQuery };
     }
@@ -116,7 +147,8 @@ export class ProjectEquipmentService {
     const findQuery = this.projectEquipmentModel
       .find(filters)
       // .select({ departments: 0 })
-      .sort({ _id: -1 })
+      // .sort({ _id: -1 })
+      .sort({ 'project.projectId': 1, 'department.projectDepartmentId': 1 })
       .skip(dto.skip);
 
     if (dto.lean) {

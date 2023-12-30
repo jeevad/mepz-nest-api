@@ -35,7 +35,9 @@ export const AccessLevelSchema = SchemaFactory.createForClass(AccessLevel);
   timestamps: true,
 })
 export class Project {
-  @Prop({ required: true })
+  @Prop({
+    // required: true,
+  })
   code: string;
 
   @Prop({ required: true })
