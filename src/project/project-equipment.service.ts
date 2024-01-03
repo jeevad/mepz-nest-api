@@ -148,7 +148,11 @@ export class ProjectEquipmentService {
       .find(filters)
       // .select({ departments: 0 })
       // .sort({ _id: -1 })
-      .sort({ 'project.projectId': 1, 'department.projectDepartmentId': 1 })
+      .sort({
+        'project.projectId': 1,
+        'department.projectDepartmentId': 1,
+        'room.projectRoomId': 1,
+      })
       .skip(dto.skip);
 
     if (dto.lean) {
